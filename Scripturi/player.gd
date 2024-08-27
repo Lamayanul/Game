@@ -1,0 +1,139 @@
+extends CharacterBody2D
+
+# Signals
+#signal plant_seed
+
+# Variables
+var Speed = 50
+var _currentIdleAnimation = "front_idle" # Current idle animation
+var is_jumping = false
+var jumpDirection = Vector2.ZERO
+
+# Nodes
+var colisiune
+var tilemap
+var _tileMap
+
+func _ready():
+	tilemap = get_tree().current_scene.get_node("TileMap")
+	_tileMap = get_node("/root/world/TileMap")
+	colisiune = get_node("colisiune")
+	add_to_group("player")
+	# Connect the plant_seed signal
+
+
+func _physics_process(delta):
+	if not is_jumping:
+		handle_movement()
+	
+	if Input.is_action_just_pressed("jump") and not is_jumping:
+		jump()
+
+	if is_jumping:
+		position += jumpDirection * Speed  * delta
+	else:
+		position += velocity * delta
+
+func handle_movement():
+	velocity = Vector2.ZERO
+
+	if Input.is_action_pressed("move_right"):
+		velocity.x += 1
+		_currentIdleAnimation = "right_idle"
+	if Input.is_action_pressed("move_left"):
+		velocity.x -= 1
+		_currentIdleAnimation = "left_idle"
+	if Input.is_action_pressed("move_down"):
+		velocity.y += 1
+		_currentIdleAnimation = "front_idle"
+	if Input.is_action_pressed("move_up"):
+		velocity.y -= 1
+		_currentIdleAnimation = "back_idle"
+
+	if Input.is_action_just_pressed("plantSeed"):
+		emit_signal("plant_seed")
+
+	var animatedSprite2D = get_node("AnimatedSprite2D")
+
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * Speed
+		animatedSprite2D.play()
+	else:
+		animatedSprite2D.animation = _currentIdleAnimation
+		animatedSprite2D.play()
+		
+	if velocity.x != 0:
+		if velocity.x < 0:
+			animatedSprite2D.animation = "left_walk"
+		else:
+			animatedSprite2D.animation = "right_walk"
+		animatedSprite2D.flip_v = false
+	if velocity.y != 0:
+		if velocity.y < 0:
+			animatedSprite2D.animation = "back_walk"
+		else:
+			animatedSprite2D.animation = "front_walk"
+		animatedSprite2D.flip_h = false
+
+	move_and_slide()
+
+func jump():
+	is_jumping = true
+
+	# Save the jump direction based on current movement direction
+	jumpDirection = velocity.normalized()
+
+	var animatedSprite2D = get_node("AnimatedSprite2D")
+
+	# Choose jump animation based on movement direction
+	if jumpDirection.x > 0:
+		animatedSprite2D.animation = "right_jump" # Jump animation to the right
+	elif jumpDirection.x < 0:
+		animatedSprite2D.animation = "left_jump" # Jump animation to the left
+	elif jumpDirection.y < 0:
+		animatedSprite2D.animation = "up_jump" # Jump animation upwards
+	elif jumpDirection.y > 0:
+		animatedSprite2D.animation = "down_jump" # Jump animation downwards
+	elif jumpDirection.y == 0:
+		animatedSprite2D.animation = "down_jump"
+	
+	animatedSprite2D.play()
+	
+	disable_collision_for_2_seconds()
+
+func _on_timer_timeout():
+
+	colisiune.disabled = false
+	is_jumping = false
+	
+func disable_collision_for_2_seconds():
+
+	colisiune.disabled = true
+
+	get_node("Timer").start()
+
+func _on_plant_seed():
+	# Handle the plant seed logic here if needed
+	pass
+
+
+func _on_area_2d_body_entered(body):
+	var camera=get_node("Camera2D")
+	if body.is_in_group("player"):
+		camera.zoom=Vector2(3,3)
+
+
+func _on_area_2d_body_exited(body):
+	var camera=get_node("Camera2D")
+	if body.is_in_group("player"):
+		camera.zoom=Vector2(4,4)
+
+
+
+
+func _on_body_entered(body):
+	Speed = 25
+
+
+func _on_body_exited(body):
+	Speed =50

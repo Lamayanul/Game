@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://cl0ym50w3lybq"]
+
+[ext_resource type="Script" path="res://User/inv.gd" id="1_ic7fr"]
+[ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="1_vr0hg"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_f0a3l"]
+
+[node name="Inv" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ic7fr")
+
+[node name="Back" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_vr0hg")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+columns = 4
+
+[node name="SlotContainer" parent="MarginContainer/GridContainer" instance=ExtResource("2_f0a3l")]
+layout_mode = 2
+
+[node name="SlotContainer2" parent="MarginContainer/GridContainer" instance=ExtResource("2_f0a3l")]
+layout_mode = 2
+
+[node name="SlotContainer3" parent="MarginContainer/GridContainer" instance=ExtResource("2_f0a3l")]
+layout_mode = 2
+
+[node name="SlotContainer4" parent="MarginContainer/GridContainer" instance=ExtResource("2_f0a3l")]
+layout_mode = 2

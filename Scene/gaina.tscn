@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://6m8ei4lxodxm"]
+
+[ext_resource type="Script" path="res://Scripturi/gaina.gd" id="1_cyn6q"]
+[ext_resource type="Texture2D" uid="uid://bykk211tg8ws" path="res://Sprout Lands - Sprites - Basic pack/Characters/Free Chicken Sprites.png" id="1_o4p8k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e08t4"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dlmf"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3gmg"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idx2u"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87kvy"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0b0qj"]
+atlas = ExtResource("1_o4p8k")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_72f35"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e08t4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5dlmf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3gmg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idx2u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87kvy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0b0qj")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5crw"]
+size = Vector2(5, 2)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_cyn6q")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_72f35")
+animation = &"idle"
+offset = Vector2(0, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 9)
+shape = SubResource("RectangleShape2D_v5crw")
