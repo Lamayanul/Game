@@ -1,10 +1,19 @@
 extends PanelContainer
 class_name Slot
 
-@onready var texture_rect = $TextureHolder/TextureRect  # Asigură-te că accesezi corect TextureRect
+@onready var texture_rect = $TextureHolder/TextureRect
+  # Asigură-te că accesezi corect TextureRect
 @onready var label = %Label
-
+@export var is_selected: bool = false
 var filled:bool=false
+
+
+
+
+
+signal slot_selected(slot)
+
+@export var number : int = 0
 
 @export var cantitate: int = 0:
 	set(value):
@@ -15,19 +24,21 @@ var filled:bool=false
 		else:
 			label.text = ""
 
-@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
+#@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
 
-@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate}:
+@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number}:
 	set(value):
 		property = value 
 		texture_rect.texture = property["TEXTURE"]  # Actualizează direct textura în TextureRect
 		cantitate = property["CANTITATE"]
+		number = property["NUMBER"]
 
 # Metoda pentru setarea texturii și cantității
 func set_property(data):
 	property = data
 	texture_rect.texture = property["TEXTURE"]
 	cantitate = property["CANTITATE"]
+	number = property["NUMBER"]
 	label.text = str(cantitate)
 	if cantitate > 0:
 		label.text = str(cantitate)
@@ -37,7 +48,19 @@ func set_property(data):
 		filled=false
 	else:
 		filled=true
+	
+	
+func get_texture() -> Texture:
+	return property.get("TEXTURE", null)  # Returnează textura din dictionary, sau null dacă nu există
 
+func get_cantitate() -> int:
+	return property.get("CANTITATE", 0)
+	
+func get_number()->int:
+	return property.get("NUMBER",0)
+	
+	
+	
 func _get_drag_data(_at_position):
 	
 	var preview_texture = TextureRect.new()
@@ -61,3 +84,53 @@ func _drop_data(_pos, data):
 	property = data.property
 	data.property = temp
 	set_property(property)  # Actualizează textura și cantitatea după drop
+	
+
+
+func _ready():
+	# Conectează semnalul de selecție
+	connect("gui_input",Callable( self, "_on_gui_input"))
+	
+
+func _on_gui_input(event):
+	# Detectează click-ul pentru a selecta slotul
+	if event is InputEventMouseButton and event.pressed:
+		is_selected = true
+		emit_signal("slot_selected", self)
+
+func select():
+	is_selected = true
+	
+	
+
+func deselect():
+	is_selected = false
+	
+func clear_item():
+
+	 # Resetează textura la null
+	$TextureHolder/TextureRect.texture = null  
+	
+	# Resetează textul etichetei la gol
+	%Label.text = ""
+	
+	# Resetează cantitatea
+	cantitate = 0
+
+	# Resetează ID-ul sau alte proprietăți relevante
+	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0}
+
+	# Marchează slotul ca fiind gol
+	filled = false  
+	
+	# Oprește funcționalitatea drag-and-drop
+	set_drag_preview(null)
+	
+func get_id() -> String:
+	if property and property.has("Number") != null:
+		for key in ItemData.content.keys():
+			if ItemData.content[key]["number"] == number:
+				return key
+	return "0"
+	
+	

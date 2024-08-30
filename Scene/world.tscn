@@ -245,7 +245,7 @@ scale = Vector2(3.15831, -3.02098)
 shape = SubResource("RectangleShape2D_7fe0x")
 
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
-position = Vector2(-63, 92)
+position = Vector2(-95, 102)
 metadata/_edit_group_ = true
 
 [node name="Timer" type="Timer" parent="player"]
@@ -259,7 +259,7 @@ position = Vector2(68, 10)
 wait_time = 2.0
 
 [node name="Area2D" parent="." instance=ExtResource("8_nd5dy")]
-position = Vector2(-2, 8)
+position = Vector2(-16, 29)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -277,14 +277,18 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Item" parent="." instance=ExtResource("13_6ft7m")]
-position = Vector2(-149, 32)
-ID = "1"
+position = Vector2(-93, 25)
+metadata/_edit_group_ = true
 
 [node name="Area2D2" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 position = Vector2(-176.5, -20)
 shape = SubResource("RectangleShape2D_0l4ak")
+
+[node name="Item2" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(-197, 60)
+ID = "1"
 
 [connection signal="body_entered" from="TileMap/Area2D" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/Area2D" to="player" method="_on_area_2d_body_exited"]

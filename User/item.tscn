@@ -5,6 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_axomy"]
 
 [node name="Item" type="Sprite2D"]
+y_sort_enabled = true
 script = ExtResource("1_adwne")
 
 [node name="Area2D" type="Area2D" parent="."]

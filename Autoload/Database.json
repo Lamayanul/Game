@@ -1,12 +1,14 @@
 {
  "0":{
   "texture" : "Egg_item.png",
-  "cantitate":3
+  "cantitate":3,
+  "number":0
 	 },
 
 
  "1":{
   "texture" : "grid_selector.png",
-  "cantitate":3
+  "cantitate":3,
+  "number":1
 	 }
 }
