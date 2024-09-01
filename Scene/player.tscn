@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://def8fyw03nhf6"]
+[gd_scene load_steps=80 format=3 uid="uid://def8fyw03nhf6"]
 
 [ext_resource type="Texture2D" uid="uid://du8pusfbqst35" path="res://Base Character - Free/idle.png" id="1_3sdfn"]
 [ext_resource type="Script" path="res://Scripturi/player.gd" id="1_cqeva"]
@@ -575,6 +575,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fivss"]
 size = Vector2(10.6094, 3.0625)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5r8jg"]
+size = Vector2(7, 6)
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
 position = Vector2(40, 34)
@@ -585,7 +588,7 @@ texture_filter = 1
 position = Vector2(-29, -24)
 scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_qhxai")
-animation = &"front_walk"
+animation = &"front_idle"
 
 [node name="colisiune" type="CollisionShape2D" parent="."]
 position = Vector2(-28.3047, -16)
@@ -598,3 +601,14 @@ limit_smoothed = true
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
+
+[node name="item_mana" type="Node2D" parent="."]
+position = Vector2(-22, -21)
+metadata/_edit_group_ = true
+
+[node name="sprite" type="Sprite2D" parent="item_mana"]
+
+[node name="Area2D" type="Area2D" parent="item_mana/sprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="item_mana/sprite/Area2D"]
+shape = SubResource("RectangleShape2D_5r8jg")

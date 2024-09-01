@@ -6,14 +6,19 @@ class_name Slot
 @onready var label = %Label
 @export var is_selected: bool = false
 var filled:bool=false
-
+var item_id: String = ""  # ID-ul itemului stivuit
 
 
 
 
 signal slot_selected(slot)
 
-@export var number : int = 0
+
+@export var number : int = 0:
+	set(value):
+		number = value
+		item_id = get_id()
+
 
 @export var cantitate: int = 0:
 	set(value):
@@ -32,22 +37,27 @@ signal slot_selected(slot)
 		texture_rect.texture = property["TEXTURE"]  # Actualizează direct textura în TextureRect
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
+	
 
 # Metoda pentru setarea texturii și cantității
 func set_property(data):
-	property = data
-	texture_rect.texture = property["TEXTURE"]
-	cantitate = property["CANTITATE"]
-	number = property["NUMBER"]
-	label.text = str(cantitate)
-	if cantitate > 0:
+	#if item_id != "" and item_id ==str( data["NUMBER"]):
+		#cantitate+=property["CANTITATE"]
+		#
+	#else:
+		property = data
+		texture_rect.texture = property["TEXTURE"]
+		cantitate = property["CANTITATE"]
+		number = property["NUMBER"]
 		label.text = str(cantitate)
-	else:
-		label.text = ""
-	if data["TEXTURE"]==null:
-		filled=false
-	else:
-		filled=true
+		if cantitate > 0:
+			label.text = str(cantitate)
+		else:
+			label.text = ""
+		if data["TEXTURE"]==null:
+			filled=false
+		else:
+			filled=true
 	
 	
 func get_texture() -> Texture:
@@ -124,7 +134,7 @@ func clear_item():
 	filled = false  
 	
 	# Oprește funcționalitatea drag-and-drop
-	set_drag_preview(null)
+	#set_drag_preview(null)
 	
 func get_id() -> String:
 	if property and property.has("Number") != null:

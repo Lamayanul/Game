@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://item.gd" id="1_adwne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_axomy"]
+size = Vector2(20, 4)
 
 [node name="Item" type="Sprite2D"]
 y_sort_enabled = true
@@ -11,6 +12,7 @@ script = ExtResource("1_adwne")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_axomy")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]

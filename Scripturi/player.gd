@@ -8,7 +8,7 @@ var Speed = 50
 var _currentIdleAnimation = "front_idle" # Current idle animation
 var is_jumping = false
 var jumpDirection = Vector2.ZERO
-
+@onready var hand_sprite = $item_mana/sprite
 # Nodes
 var colisiune
 var tilemap
@@ -128,12 +128,20 @@ func _on_area_2d_body_exited(body):
 	if body.is_in_group("player"):
 		camera.zoom=Vector2(4,4)
 
-
-
-
 func _on_body_entered(_body):
 	Speed = 25
 
 
 func _on_body_exited(_body):
 	Speed =50
+	
+	
+
+# Funcția pentru echiparea unui item
+func equip_item(item_texture: Texture):
+	if item_texture:
+		print("Texture set successfully")
+		hand_sprite.texture = item_texture
+		hand_sprite.visible = true
+	else:
+		print("Texture is null")

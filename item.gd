@@ -1,6 +1,6 @@
 extends Sprite2D
 
-@export var ID = "0"
+@export var ID ="0"
 
 @onready var shadow = Sprite2D.new()
 
@@ -15,13 +15,22 @@ var item_cantitate: int
 
 func _ready():
 	# Setează textura folosind ID-ul
-	texture = load("res://assets/" + ItemData.get_texture(ID))
+	set_texture1(load("res://assets/" + ItemData.get_texture(ID)) as Texture)
 	original_position = position  
+
+
 
 func _on_body_entered(body):
 	if body.name == "player":
-		get_parent().find_child("Inv").add_item(ID)
-		queue_free()
+		var inventory = get_parent().find_child("Inv")
+		
+		if inventory.plin < 4:
+			get_parent().find_child("Inv").add_item(ID)
+			inventory.plin+=1
+			queue_free()
+			print(inventory.plin)
+		else:
+			print("Inventarul este plin")
 
 func _process(delta: float):
 	time_passed += delta
