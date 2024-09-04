@@ -8,7 +8,12 @@ var Speed = 50
 var _currentIdleAnimation = "front_idle" # Current idle animation
 var is_jumping = false
 var jumpDirection = Vector2.ZERO
-@onready var hand_sprite = $item_mana/sprite
+@onready var hand_sprite = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite"
+@onready var info_label = $"../CanvasLayer/InfoLabel"
+@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
+@onready var color_rect = $"../CanvasLayer/ColorRect"
+
+var info:String=""
 # Nodes
 var colisiune
 var tilemap
@@ -19,7 +24,9 @@ func _ready():
 	_tileMap = get_node("/root/world/TileMap")
 	colisiune = get_node("colisiune")
 	add_to_group("player")
-	# Connect the plant_seed signal
+	color_rect.color = Color(0, 0, 0, 0.5)  # Negru cu 50% transparență
+	color_rect.visible=false
+
 
 
 func _physics_process(delta):
@@ -138,10 +145,29 @@ func _on_body_exited(_body):
 	
 
 # Funcția pentru echiparea unui item
-func equip_item(item_texture: Texture):
+func equip_item(item_texture: Texture, item_nume : String):
 	if item_texture:
 		print("Texture set successfully")
 		hand_sprite.texture = item_texture
 		hand_sprite.visible = true
+		hand_sprite.scale=Vector2(0.5,0.5)
+		info = "[center]ITEM : "  +item_nume+"[/center]"
 	else:
 		print("Texture is null")
+		
+func inequip_item():
+	hand_sprite.texture=null
+	info_label.clear()
+
+
+func _on_area_2d_mouse_entered():
+	info_label.visible=true
+	color_rect.visible=true
+	info_label.text=info
+	print("intrare")
+
+
+func _on_area_2d_mouse_exited():
+	info_label.visible=false
+	color_rect.visible=false
+	print("iesire")

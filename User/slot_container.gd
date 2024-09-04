@@ -13,7 +13,10 @@ var item_id: String = ""  # ID-ul itemului stivuit
 
 signal slot_selected(slot)
 
-
+@export var nume: String:
+	set(value):
+		nume=value
+		
 @export var number : int = 0:
 	set(value):
 		number = value
@@ -31,12 +34,13 @@ signal slot_selected(slot)
 
 #@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
 
-@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number}:
+@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume}:
 	set(value):
 		property = value 
 		texture_rect.texture = property["TEXTURE"]  # Actualizează direct textura în TextureRect
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
+		nume = property["NUME"]
 	
 
 # Metoda pentru setarea texturii și cantității
@@ -49,6 +53,7 @@ func set_property(data):
 		texture_rect.texture = property["TEXTURE"]
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
+		nume=property["NUME"]
 		label.text = str(cantitate)
 		if cantitate > 0:
 			label.text = str(cantitate)
@@ -68,6 +73,9 @@ func get_cantitate() -> int:
 	
 func get_number()->int:
 	return property.get("NUMBER",0)
+	
+func get_nume()->String:
+	return property.get("NUME","")
 	
 	
 	
@@ -128,7 +136,7 @@ func clear_item():
 	cantitate = 0
 
 	# Resetează ID-ul sau alte proprietăți relevante
-	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0}
+	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0, "NUME":""}
 
 	# Marchează slotul ca fiind gol
 	filled = false  
@@ -143,4 +151,12 @@ func get_id() -> String:
 				return key
 	return "0"
 	
-	
+
+func decrease_cantitate(amount: int) -> bool:
+	if cantitate > 0:
+		cantitate -= amount
+		if cantitate <= 0:
+			cantitate = 0
+			return true  # Itemul trebuie să fie eliminat
+		return false
+	return true  # Itemul nu are cantitate

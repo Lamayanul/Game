@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=27 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://bpjsxu52b667r" path="res://Scene/fade_area.tscn" id="8_nd5dy"]
 [ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="12_na5if"]
 [ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/item.tscn" id="13_6ft7m"]
+[ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="13_6781w"]
+[ext_resource type="Script" path="res://Scripturi/hand.gd" id="14_1eu7x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g1xpc"]
 texture = ExtResource("1_okv3e")
@@ -202,6 +204,11 @@ sources/5 = SubResource("TileSetAtlasSource_yxyun")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7fe0x"]
 size = Vector2(18.9975, 15.0613)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4ynlc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cxkb"]
+size = Vector2(7, 6)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0l4ak"]
 size = Vector2(25, 16)
 
@@ -245,8 +252,7 @@ scale = Vector2(3.15831, -3.02098)
 shape = SubResource("RectangleShape2D_7fe0x")
 
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
-position = Vector2(-95, 102)
-metadata/_edit_group_ = true
+position = Vector2(-102, 95)
 
 [node name="Timer" type="Timer" parent="player"]
 wait_time = 0.5
@@ -276,6 +282,69 @@ offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -305.0
+offset_top = -199.0
+offset_right = -98.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4ynlc")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/PanelContainer"]
+position = Vector2(102, 83.9999)
+scale = Vector2(2.32, 2.32)
+texture = ExtResource("13_6781w")
+
+[node name="item_mana" type="Node2D" parent="CanvasLayer/PanelContainer/Sprite2D"]
+position = Vector2(-5.96046e-08, -8.18966)
+scale = Vector2(5.07708, 6.02854)
+
+[node name="sprite" type="Sprite2D" parent="CanvasLayer/PanelContainer/Sprite2D/item_mana"]
+script = ExtResource("14_1eu7x")
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"]
+shape = SubResource("RectangleShape2D_2cxkb")
+
+[node name="InfoLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -263.0
+offset_top = -298.0
+offset_right = -139.0
+offset_bottom = -212.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+bbcode_enabled = true
+fit_content = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+z_index = -1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -262.0
+offset_top = -297.0
+offset_right = -139.0
+offset_bottom = -212.0
+grow_horizontal = 0
+grow_vertical = 0
+
 [node name="Area2D2" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
@@ -285,7 +354,6 @@ shape = SubResource("RectangleShape2D_0l4ak")
 [node name="Item" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-138, 23)
 ID = "2"
-metadata/_edit_group_ = true
 
 [node name="Item2" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-197, 60)
@@ -307,5 +375,7 @@ ID = "1"
 [connection signal="body_exited" from="TileMap/Area2D" to="player" method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="player/Timer" to="player" method="_on_timer_timeout"]
 [connection signal="timeout" from="gaina/directionChangeTimer" to="gaina" method="_on_direction_change_timer_timeout"]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_exited"]
 [connection signal="body_entered" from="Area2D2" to="player" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D2" to="player" method="_on_body_exited"]

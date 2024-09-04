@@ -5,39 +5,72 @@ var selected_slot: Slot = null  # Slotul selectat
 @onready var texture_rect = $MarginContainer/TextureRect
 @onready var grid = $"../../TileMap/Grid"  # Referința la grid
 @export var plin:int =0
-
-
+@onready var info_label = $"../InfoLabel"
 
 # Dimensiunea unui tile (ajustează după caz)
 #var tile_size = Vector2(16, 16)
 
-func add_item(ID="0"):
-
-	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
-	var item_cantitate = ItemData.get_cantitate(ID)
-	var item_number = ItemData.get_number(ID)
-	
-	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER":item_number}
-	
-	var start_index = 0
-	var index = start_index
-
-	for i in range(start_index, grid_container.get_child_count()):
-		var child = grid_container.get_child(i)
-		if child != null and child.has_method("set_property"):
-			if not child.filled:
-				index = i
-				break
+#func add_item(ID="0"):
+#
+	#var item_texture = load("res://assets/" + ItemData.get_texture(ID))
+	#var item_cantitate = ItemData.get_cantitate(ID)
+	#var item_number = ItemData.get_number(ID)
+	#
+	#var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER":item_number}
+	#
+	#var start_index = 0
+	#var index = start_index
+#
+	#for i in range(start_index, grid_container.get_child_count()):
+		#var child = grid_container.get_child(i)
+		#if child != null and child.has_method("set_property"):
+			#if not child.filled:
+				#index = i
+				#break
 			#elif child.get_id() == ID:
 				#child.set_property(item_data)
 				#return
-				
-			
-	var slot = grid_container.get_child(index)
-	if slot != null and slot.has_method("set_property"):
-		slot.set_property(item_data)
-	else:
-		print("Eroare: Slotul este null sau nu are metoda set_property.")
+				#
+			#
+	#var slot = grid_container.get_child(index)
+	#if slot != null and slot.has_method("set_property"):
+		#slot.set_property(item_data)
+	#else:
+		#print("Eroare: Slotul este null sau nu are metoda set_property.")
+
+func add_item(ID="", item_cantita=1):
+	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
+	var item_nume=ItemData.get_nume(ID)
+	var item_number = ItemData.get_number(ID)
+	var item_cantitate=item_cantita
+	print("cantitate: ", item_cantitate)
+	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number,"NUME":item_nume}
+	if ID=="0":
+		item_cantitate=0
+	# 1. Verifică dacă există deja un item cu același ID în inventar
+	for i in range(grid_container.get_child_count()):
+		var child = grid_container.get_child(i)
+		if child is Slot:
+			if child.filled and child.get_id() == ID:
+				# 2. Stivuiește itemele dacă găsești un slot cu același ID
+				child.cantitate += item_cantitate
+				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number,"NUME":item_nume})
+				plin=plin
+				return
+
+	# 3. Dacă nu există un slot cu același ID, caută un slot gol și adaugă itemul acolo
+	for i in range(grid_container.get_child_count()):
+		var child = grid_container.get_child(i)
+		if child is Slot:
+			if not child.filled:
+				child.set_property(item_data)
+				child.filled = true
+				plin+=1
+				return
+	
+	# Dacă inventarul este plin și nu există sloturi libere
+	print("Inventarul este plin!")
+
 
 func _ready():
 	for child in grid_container.get_children():
@@ -59,7 +92,8 @@ func _on_slot_selected(slot: Slot):
 	update_selector_position(selected_slot)
 	var player = get_node("/root/world/player")  # Referința la nodul player
 	if player and slot.get_texture() != null:
-		player.equip_item(slot.get_texture())
+		player.equip_item(slot.get_texture(),slot.get_nume())
+
 
 func update_selector_position(slot: Slot):
 	var slot_position = slot.get_global_position()
@@ -69,6 +103,8 @@ func update_selector_position(slot: Slot):
 func _input(_event):
 	if Input.is_action_just_pressed("drop"):
 		drop_selected_item()
+	if Input.is_action_just_pressed("drop_1"):
+		drop_selected_item_1()
 
 
 
@@ -80,17 +116,22 @@ func drop_selected_item():
 			selected_slot.clear_item()
 		if ID:
 			print("ID-ul itemului este: ", ID)
+			#var item_cantitate = selected_slot.get_cantitate()
+			#var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
+			var player = get_node("/root/world/player")
 			
 			# Obține poziția mouse-ului în coordonate globale
-			var mouse_position = Vector2(100,100)
+			#var mouse = get_global_mouse_position()
 			var world = get_node("/root/world/")
-			
+			var cantiti=selected_slot.get_cantitate()
 			# Convertește coordonatele mouse-ului în coordonatele locale ale TileMap
-			var _local_mouse_position = world.to_local(mouse_position)
+			#var mouse_position_global = get_viewport().get_mouse_position()
+			#var mouse_position_local = world.to_local(mouse_position_global)
 			# Drop itemul la poziția exactă a mouse-ului
-			drop_item(ID, mouse_position)
+
+			drop_item(ID,cantiti)
 			
-			print("Poziția calculată pentru drop: ", mouse_position)
+			#print("Poziția calculată pentru drop: ", drop_position)
 			
 			# Curăță și deselectează slotul
 			selected_slot.clear_item()
@@ -98,6 +139,11 @@ func drop_selected_item():
 			selected_slot = null  # Deselectează slotul după drop
 			plin-=1
 			print(plin)
+			
+			player.inequip_item()
+			
+			
+			
 		else:
 			print("ID-ul itemului nu a fost găsit în slotul selectat.")
 	else:
@@ -106,15 +152,11 @@ func drop_selected_item():
 
 
 # În funcția de drop
-func drop_item(ID: String, position: Vector2):
+func drop_item(ID: String, cantiti: int):
 	# Obține textura și cantitatea din ItemData
-	var item_cantitate = ItemData.get_cantitate(ID)
+	var item_cantitate = cantiti
 	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
 	var item_texture = load(item_texture_path) as Texture
-	
-
-	
-	
 	
 	# Încarcă scena itemului
 	var item_scene = load("res://User/item.tscn") as PackedScene
@@ -126,11 +168,13 @@ func drop_item(ID: String, position: Vector2):
 		item_instance.set_cantitate(item_cantitate)
 		item_instance.set_texture1(item_texture)
 		
-		item_instance.ID = selected_slot.get_id()
-		var local_position = world_node.to_local(position)
-		item_instance.position = local_position  # Folosește 'position' pentru coordonate locale
+		item_instance.ID = ID
+		var position=Vector2(100,100)
 		
+		item_instance.position = position  # Folosește 'position' pentru coordonate locale
+		#global_cantiti=cantiti
 		world_node.add_child(item_instance)
+		
 		#item_instance.scale = Vector2(2, 2)  # Asigură-te că este vizibil
 		#item_instance.modulate = Color(1, 1, 1, 1)  # Asigură-te că nu este transparent
 		#item_instance.visible = true  # Asigură-te că este vizibil
@@ -150,3 +194,38 @@ func drop_item(ID: String, position: Vector2):
 			#items_node.add_child(load("res://User/item.tscn").instantiate()) 
 			#items_node.add_child(item_instance)
 	
+func drop_selected_item_1():
+	print("Funcția drop_selected_item_1 a fost apelată")
+	if selected_slot:
+		var ID = selected_slot.get_id()  # Obține ID-ul itemului din slotul selectat
+		if ID == "0":
+			selected_slot.clear_item()
+		if ID:
+			print("ID-ul itemului este: ", ID)
+			#var item_cantitate = selected_slot.get_cantitate()
+			var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
+			# Obține poziția mouse-ului în coordonate globale
+			var mouse_position = Vector2(100,100)
+			var world = get_node("/root/world/")
+			#var cantiti=selected_slot.get_cantitate()
+			# Convertește coordonatele mouse-ului în coordonatele locale ale TileMap
+			var _local_mouse_position = world.to_local(mouse_position)
+
+			if selected_slot.decrease_cantitate(cantitate_de_drop): 
+				
+				selected_slot.clear_item()
+				selected_slot.deselect()
+				selected_slot = null
+				plin -= 1
+				var player = get_node("/root/world/player")
+				player.inequip_item()  # Dez-echipează itemul
+				
+			if ID=="0":
+				cantitate_de_drop=0
+			drop_item(ID , cantitate_de_drop)
+			
+
+		else:
+			print("ID-ul itemului nu a fost găsit în slotul selectat.")
+	else:
+		print("Niciun slot nu este selectat")

@@ -16,6 +16,9 @@ func get_cantitate(ID="0"):
 func get_number(ID="0"):
  return content[ID]["number"]
 
+func get_nume(ID="0"):
+ return content[ID]["nume"]
+
 #func get_id(number: int) -> String:
  #for id in content.keys():
   #if content[id]["number"] == number:

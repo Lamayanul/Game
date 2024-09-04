@@ -2,19 +2,22 @@
  "0":{
   "texture" : "",
   "cantitate":0,
-  "number":0
+  "number":0,
+  "nume":""
 	 },
 
 
  "1":{
   "texture" : "Egg_item.png",
-  "cantitate":3,
-  "number":1
+  "cantitate":1,
+  "number":1,
+  "nume":"ou",
 	 },
 	
 "2":{
 	"texture":"axe.png",
 	"cantitate":1,
-	"number":2
+	"number":2,
+	"nume":"topor",
 	}
 }
