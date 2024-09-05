@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # Signals
-#signal plant_seed
+
 
 # Variables
 var Speed = 50
@@ -57,8 +57,7 @@ func handle_movement():
 		velocity.y -= 1
 		_currentIdleAnimation = "back_idle"
 
-	if Input.is_action_just_pressed("plantSeed"):
-		emit_signal("plant_seed")
+
 
 	var animatedSprite2D = get_node("AnimatedSprite2D")
 
@@ -118,10 +117,6 @@ func disable_collision_for_2_seconds():
 	colisiune.disabled = true
 
 	get_node("Timer").start()
-
-func _on_plant_seed():
-	# Handle the plant seed logic here if needed
-	pass
 
 
 func _on_area_2d_body_entered(body):

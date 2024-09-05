@@ -6,6 +6,9 @@ var selected_slot: Slot = null  # Slotul selectat
 @onready var grid = $"../../TileMap/Grid"  # Referința la grid
 @export var plin:int =0
 @onready var info_label = $"../InfoLabel"
+@onready var hand_sprite = $"../PanelContainer/Sprite2D/item_mana/sprite"
+
+signal plantSeed
 
 # Dimensiunea unui tile (ajustează după caz)
 #var tile_size = Vector2(16, 16)
@@ -82,10 +85,13 @@ func _ready():
 		var first_slot = grid_container.get_child(0)
 		if first_slot is Slot:
 			_on_slot_selected(first_slot)
+	$"../../Item7".item_cantitate=3
 
 func _on_slot_selected(slot: Slot):
 	if selected_slot:
 		selected_slot.deselect()  # Deselectează slotul anterior
+		hand_sprite.texture=null
+		info_label.clear()
 	
 	selected_slot = slot
 	selected_slot.select()
@@ -93,6 +99,7 @@ func _on_slot_selected(slot: Slot):
 	var player = get_node("/root/world/player")  # Referința la nodul player
 	if player and slot.get_texture() != null:
 		player.equip_item(slot.get_texture(),slot.get_nume())
+	
 
 
 func update_selector_position(slot: Slot):
@@ -105,6 +112,8 @@ func _input(_event):
 		drop_selected_item()
 	if Input.is_action_just_pressed("drop_1"):
 		drop_selected_item_1()
+	if Input.is_action_just_pressed("plantSeed"):
+		plantare()
 
 
 
@@ -207,6 +216,7 @@ func drop_selected_item_1():
 			# Obține poziția mouse-ului în coordonate globale
 			var mouse_position = Vector2(100,100)
 			var world = get_node("/root/world/")
+			var player = get_node("/root/world/player")
 			#var cantiti=selected_slot.get_cantitate()
 			# Convertește coordonatele mouse-ului în coordonatele locale ale TileMap
 			var _local_mouse_position = world.to_local(mouse_position)
@@ -217,15 +227,35 @@ func drop_selected_item_1():
 				selected_slot.deselect()
 				selected_slot = null
 				plin -= 1
-				var player = get_node("/root/world/player")
 				player.inequip_item()  # Dez-echipează itemul
 				
 			if ID=="0":
 				cantitate_de_drop=0
 			drop_item(ID , cantitate_de_drop)
-			
+			player.inequip_item() 
 
 		else:
 			print("ID-ul itemului nu a fost găsit în slotul selectat.")
 	else:
 		print("Niciun slot nu este selectat")
+
+func plantare():
+	var tilemap=get_node("/root/world/TileMap")
+	var drop=1
+	if selected_slot:
+		var ID=selected_slot.get_id()
+		if ID=="3":
+			emit_signal("plantSeed")
+			tilemap._on_player_plant_seed()
+			if selected_slot.decrease_cantitate(drop): 
+				selected_slot.clear_item()
+				selected_slot.deselect()
+				selected_slot = null
+				plin -= 1
+				var player = get_node("/root/world/player")
+				player.inequip_item()
+		
+		
+		
+		
+		

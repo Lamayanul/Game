@@ -352,7 +352,7 @@ position = Vector2(-176.5, -20)
 shape = SubResource("RectangleShape2D_0l4ak")
 
 [node name="Item" parent="." instance=ExtResource("13_6ft7m")]
-position = Vector2(-138, 23)
+position = Vector2(-109, 24)
 ID = "2"
 
 [node name="Item2" parent="." instance=ExtResource("13_6ft7m")]
@@ -371,10 +371,19 @@ ID = "1"
 position = Vector2(-214, 13)
 ID = "1"
 
+[node name="Item6" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(-192, 89)
+ID = "3"
+
+[node name="Item7" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(-68, 129)
+ID = "3"
+
 [connection signal="body_entered" from="TileMap/Area2D" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/Area2D" to="player" method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="player/Timer" to="player" method="_on_timer_timeout"]
 [connection signal="timeout" from="gaina/directionChangeTimer" to="gaina" method="_on_direction_change_timer_timeout"]
+[connection signal="plantSeed" from="CanvasLayer/Inv" to="TileMap" method="_on_player_plant_seed"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_exited"]
 [connection signal="body_entered" from="Area2D2" to="player" method="_on_body_entered"]
