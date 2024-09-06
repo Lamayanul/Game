@@ -7,6 +7,9 @@ var selected_slot: Slot = null  # Slotul selectat
 @export var plin:int =0
 @onready var info_label = $"../InfoLabel"
 @onready var hand_sprite = $"../PanelContainer/Sprite2D/item_mana/sprite"
+@onready var color_rect = $"../ColorRect"
+@onready var tilemap = $"../../TileMap"
+
 
 signal plantSeed
 
@@ -74,11 +77,11 @@ func add_item(ID="", item_cantita=1):
 	# Dacă inventarul este plin și nu există sloturi libere
 	print("Inventarul este plin!")
 
-
 func _ready():
 	for child in grid_container.get_children():
 		if child is Slot:
 			child.connect("slot_selected", Callable(self, "_on_slot_selected"))
+
 	
 	  # Selectează automat primul slot
 	if grid_container.get_child_count() > 0:
@@ -88,17 +91,31 @@ func _ready():
 	$"../../Item7".item_cantitate=3
 
 func _on_slot_selected(slot: Slot):
-	if selected_slot:
-		selected_slot.deselect()  # Deselectează slotul anterior
-		hand_sprite.texture=null
-		info_label.clear()
+	selected_slot = slot  # Setează slotul selectat
 	
-	selected_slot = slot
-	selected_slot.select()
-	update_selector_position(selected_slot)
-	var player = get_node("/root/world/player")  # Referința la nodul player
+	# Resetează sprite-ul și eticheta
+	hand_sprite.texture = null
+	info_label.clear()
+	color_rect.visible = false
+	info_label.visible = false
+	
+	# Dacă slotul selectat are un item (este plin), actualizează sprite-ul și eticheta
+	if slot.get_texture() != null:
+		hand_sprite.texture = slot.get_texture()
+		hand_sprite.visible = true
+		hand_sprite.scale = Vector2(0.5, 0.5)
+		
+		info_label.text = "[center]ITEM: " + slot.get_nume() + "[/center]"
+		info_label.visible = false
+		color_rect.visible = false
+
+	# Actualizează poziția selectorului
+	update_selector_position(slot)
+	
+	# Echipează itemul la jucător
+	var player = get_node("/root/world/player")
 	if player and slot.get_texture() != null:
-		player.equip_item(slot.get_texture(),slot.get_nume())
+		player.equip_item(slot.get_texture(), slot.get_nume())
 	
 
 
@@ -131,7 +148,7 @@ func drop_selected_item():
 			
 			# Obține poziția mouse-ului în coordonate globale
 			#var mouse = get_global_mouse_position()
-			var world = get_node("/root/world/")
+			var _world = get_node("/root/world/")
 			var cantiti=selected_slot.get_cantitate()
 			# Convertește coordonatele mouse-ului în coordonatele locale ale TileMap
 			#var mouse_position_global = get_viewport().get_mouse_position()
@@ -178,9 +195,9 @@ func drop_item(ID: String, cantiti: int):
 		item_instance.set_texture1(item_texture)
 		
 		item_instance.ID = ID
-		var position=Vector2(100,100)
-		
-		item_instance.position = position  # Folosește 'position' pentru coordonate locale
+		var position_drop=Vector2(100,100)
+
+		item_instance.position = position_drop  # Folosește 'position' pentru coordonate locale
 		#global_cantiti=cantiti
 		world_node.add_child(item_instance)
 		
@@ -240,20 +257,19 @@ func drop_selected_item_1():
 		print("Niciun slot nu este selectat")
 
 func plantare():
-	var tilemap=get_node("/root/world/TileMap")
-	var drop=1
+	var _tilemap=get_node("/root/world/TileMap")
 	if selected_slot:
 		var ID=selected_slot.get_id()
 		if ID=="3":
 			emit_signal("plantSeed")
-			tilemap._on_player_plant_seed()
-			if selected_slot.decrease_cantitate(drop): 
-				selected_slot.clear_item()
-				selected_slot.deselect()
-				selected_slot = null
-				plin -= 1
-				var player = get_node("/root/world/player")
-				player.inequip_item()
+			#tilemap._on_player_plant_seed()
+			#if selected_slot.decrease_cantitate(drop): 
+				#selected_slot.clear_item()
+				#selected_slot.deselect()
+				#selected_slot = null
+				#plin -= 1
+				#var player = get_node("/root/world/player")
+				#player.inequip_item()
 		
 		
 		

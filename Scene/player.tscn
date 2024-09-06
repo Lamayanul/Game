@@ -577,8 +577,8 @@ size = Vector2(10.6094, 3.0625)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
+position = Vector2(28, 16)
 script = ExtResource("1_cqeva")
-metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -592,7 +592,7 @@ position = Vector2(-28.3047, -16)
 shape = SubResource("RectangleShape2D_fivss")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-31, -19)
+position = Vector2(-28, -16)
 zoom = Vector2(4, 4)
 limit_smoothed = true
 position_smoothing_enabled = true

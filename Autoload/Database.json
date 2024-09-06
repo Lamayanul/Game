@@ -26,5 +26,12 @@
 	"cantitate":1,
 	"number":3,
 	"nume":"seminte grau",
+	},
+	
+"4":{
+	"texture":"grau_de_recoltat.png",
+	"cantitate":1,
+	"number":4,
+	"nume":"grau",
 	}
 }

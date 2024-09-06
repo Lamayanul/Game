@@ -38,8 +38,8 @@ func _process(delta: float):
 	position.y = original_position.y + sin(time_passed * float_speed) * float_amplitude
 
 # Metodă pentru a seta textura pe obiect
-func set_texture1(texture: Texture):
-	item_texture = texture
+func set_texture1(texture_drop: Texture):
+	item_texture = texture_drop
 	self.texture = item_texture  # Asigură-te că setezi textura pe Sprite2D
 
 # Metodă pentru a seta cantitatea pe obiect

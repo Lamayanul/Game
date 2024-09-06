@@ -147,11 +147,14 @@ func equip_item(item_texture: Texture, item_nume : String):
 		hand_sprite.visible = true
 		hand_sprite.scale=Vector2(0.5,0.5)
 		info = "[center]ITEM : "  +item_nume+"[/center]"
+		
 	else:
 		print("Texture is null")
-		
+
+
 func inequip_item():
 	hand_sprite.texture=null
+	info_label.visible=false
 	info_label.clear()
 
 
