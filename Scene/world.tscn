@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=28 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/item.tscn" id="13_6ft7m"]
 [ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="13_6781w"]
 [ext_resource type="Script" path="res://Scripturi/hand.gd" id="14_1eu7x"]
+[ext_resource type="PackedScene" uid="uid://dn1osqamgorag" path="res://Scene/enemy.tscn" id="16_bmbsw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g1xpc"]
 texture = ExtResource("1_okv3e")
@@ -380,10 +381,14 @@ ID = "3"
 position = Vector2(-68, 129)
 ID = "3"
 
+[node name="CharacterBody2D" parent="." instance=ExtResource("16_bmbsw")]
+position = Vector2(124, 37)
+
 [connection signal="body_entered" from="TileMap/Area2D" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/Area2D" to="player" method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="player/Timer" to="player" method="_on_timer_timeout"]
 [connection signal="timeout" from="gaina/directionChangeTimer" to="gaina" method="_on_direction_change_timer_timeout"]
+[connection signal="attacking" from="CanvasLayer/Inv" to="player" method="_on_inv_attacking"]
 [connection signal="plantSeed" from="CanvasLayer/Inv" to="TileMap" method="_on_player_plant_seed"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_exited"]

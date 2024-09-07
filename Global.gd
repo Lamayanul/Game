@@ -1,6 +1,3 @@
 extends Node
 
-
-signal seed_changed(seed)
-
-signal update_station
+var player_current_attack=false

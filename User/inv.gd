@@ -12,7 +12,7 @@ var selected_slot: Slot = null  # Slotul selectat
 
 
 signal plantSeed
-
+signal attacking
 # Dimensiunea unui tile (ajustează după caz)
 #var tile_size = Vector2(16, 16)
 
@@ -99,6 +99,7 @@ func _on_slot_selected(slot: Slot):
 	color_rect.visible = false
 	info_label.visible = false
 	
+	
 	# Dacă slotul selectat are un item (este plin), actualizează sprite-ul și eticheta
 	if slot.get_texture() != null:
 		hand_sprite.texture = slot.get_texture()
@@ -131,6 +132,8 @@ func _input(_event):
 		drop_selected_item_1()
 	if Input.is_action_just_pressed("plantSeed"):
 		plantare()
+	if Input.is_action_just_pressed("attack"):
+		attack()
 
 
 
@@ -270,7 +273,11 @@ func plantare():
 				#plin -= 1
 				#var player = get_node("/root/world/player")
 				#player.inequip_item()
-		
+func attack():
+	if selected_slot:
+		var ID=selected_slot.get_id()
+		if ID=="2":
+			emit_signal("attacking")
 		
 		
 		
