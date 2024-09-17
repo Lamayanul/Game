@@ -23,8 +23,7 @@ func _ready():
 func _on_body_entered(body):
 	if body.name == "player":
 		var inventory=get_parent().find_child("Inv") #get_parent().find_child("Inv")
-		
-		if inventory.plin <=4:
+		if inventory.plin <4:
 			get_parent().find_child("Inv").add_item(ID,self.get_cantiti())
 			#inventory.plin+=1
 			queue_free()
@@ -32,6 +31,7 @@ func _on_body_entered(body):
 			#print("cantitate: ",item_cantitate)
 		else:
 			print("Inventarul este plin")
+	
 
 func _process(delta: float):
 	time_passed += delta

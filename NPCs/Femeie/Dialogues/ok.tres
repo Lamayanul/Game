@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=2 format=3 uid="uid://c3idn6vlnqbuq"]
+
+[ext_resource type="Script" path="res://Scripturi/Dialogue.gd" id="1_1xmga"]
+
+[resource]
+script = ExtResource("1_1xmga")
+name = "Femeie"
+dialogue = ""
+path_option = "Nu,nu esti!"
+options = Array[ExtResource("1_1xmga")]([])

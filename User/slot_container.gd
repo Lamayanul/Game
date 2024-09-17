@@ -101,9 +101,14 @@ func _drop_data(_pos, data):
 	var temp = property
 	property = data.property
 	data.property = temp
-	set_property(property)  # Actualizează textura și cantitatea după drop
-	
+	set_property(property)
+	data.set_property(data.property)
 
+	## Actualizează cantitatea pentru ambele sloturi
+	#cantitate = property["CANTITATE"]
+	#label.text = str(cantitate)
+	#if cantitate <= 0:
+		#label.text = ""
 
 func _ready():
 	# Conectează semnalul de selecție
@@ -130,7 +135,7 @@ func clear_item():
 	$TextureHolder/TextureRect.texture = null  
 	
 	# Resetează textul etichetei la gol
-	%Label.text = ""
+	label.text = ""
 	
 	# Resetează cantitatea
 	cantitate = 0
@@ -154,9 +159,13 @@ func get_id() -> String:
 
 func decrease_cantitate(amount: int) -> bool:
 	if cantitate > 0:
-		cantitate -= amount
+		cantitate -= amount  # Scade cantitatea
+		property["CANTITATE"]=cantitate
 		if cantitate <= 0:
-			cantitate = 0
-			return true  # Itemul trebuie să fie eliminat
-		return false
-	return true  # Itemul nu are cantitate
+			cantitate = 0  # Asigură-te că nu e negativă
+			clear_item()  # Curăță slotul dacă cantitatea ajunge la 0
+			return true  # Itemul trebuie eliminat
+		else:
+			label.text = str(cantitate)  # Actualizează eticheta
+		return false  # Itemul încă are cantitate, deci nu trebuie eliminat
+	return true  # Itemul deja nu are cantitate, deci trebuie eliminat

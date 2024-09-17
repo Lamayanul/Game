@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=4 format=3 uid="uid://b2pricfqbcnsl"]
+
+[ext_resource type="Script" path="res://Scripturi/Dialogue.gd" id="1_lbgxt"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_erup6"]
+[ext_resource type="Resource" uid="uid://c3idn6vlnqbuq" path="res://NPCs/Femeie/Dialogues/ok.tres" id="2_mnohq"]
+
+[resource]
+script = ExtResource("1_lbgxt")
+texture = ExtResource("2_erup6")
+name = "Femeie"
+dialogue = "Sunt Capsunica."
+path_option = "Buna!"
+options = Array[ExtResource("1_lbgxt")]([ExtResource("2_mnohq")])

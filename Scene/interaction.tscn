@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://cl67vfry0c1d1"]
+
+[ext_resource type="Script" path="res://Scripturi/interaction.gd" id="1_2s125"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y46pu"]
+size = Vector2(75, 53)
+
+[node name="Interaction" type="Area2D"]
+script = ExtResource("1_2s125")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y46pu")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 0, 1)
+offset_left = -20.0
+offset_top = -33.0
+offset_right = 20.0
+offset_bottom = -10.0
+text = "!"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

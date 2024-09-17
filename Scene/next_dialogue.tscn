@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ceh5kkub4k6hx"]
+
+[ext_resource type="Script" path="res://Scripturi/next_dialogue.gd" id="1_yhruc"]
+
+[node name="NextDialogue" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_yhruc")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -33,5 +33,19 @@
 	"cantitate":1,
 	"number":4,
 	"nume":"grau",
+	},
+	
+"5":{
+	"texture":"vinete_seminte.png",
+	"cantitate":1,
+	"number":5,
+	"nume":"seminte vinete",
+	},
+	
+"6":{
+	"texture":"lemn.png",
+	"cantitate":1,
+	"number":6,
+	"nume":"lemn",
 	}
 }

@@ -23,6 +23,7 @@ func _process(_delta):
 		grid.position = map_to_local(grid_cell)  # Plasează gridul pe tile-ul respectiv
 	else:
 		grid.visible = false  # Ascunde gridul
+		grid.position = Vector2(-1, -1) 
 	if Input.is_action_just_pressed("harvest"):
 		if plantedFlower.has(local_to_map(grid.position)) and is_harvestable(local_to_map(grid.position)):
 			print("da")
@@ -71,7 +72,8 @@ func harvest_plant(coord)->void:
 		plantedFlower.erase(coord)
 		plant.queue_free()
 		print("Plant harvested at:", coord)
-		inventory.add_item("4",2)
+		#inventory.add_item("4",2)
+		inventory.drop_item_harvest("4",2,coord)
 		
 		
 		

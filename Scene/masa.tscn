@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmvk4vvugft5a"]
+
+[ext_resource type="Texture2D" uid="uid://ba6lvafspansb" path="res://Sprout Lands - Sprites - Basic pack/Objects/masa.png" id="1_bsbex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rxsqv"]
+size = Vector2(20, 16)
+
+[node name="RigidBody2D" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.42188, 1.42188)
+texture = ExtResource("1_bsbex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_rxsqv")

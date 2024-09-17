@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://dw47dvtt86u5e"]
+
+[ext_resource type="Script" path="res://Scripturi/npc.gd" id="1_7up86"]
+[ext_resource type="Texture2D" uid="uid://cb14w7o5ov5se" path="res://Tiny Wonder Farm Free/characters/main character/walk and idle.png" id="1_14piw"]
+[ext_resource type="Resource" uid="uid://bo8iynp45l0ps" path="res://NPCs/Femeie/Dialogues/0.tres" id="2_56fjn"]
+[ext_resource type="PackedScene" uid="uid://cl67vfry0c1d1" path="res://Scene/interaction.tscn" id="4_hhyc6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_47h6i"]
+size = Vector2(30, 9)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+y_sort_enabled = true
+scale = Vector2(0.217945, 0.217945)
+script = ExtResource("1_7up86")
+dialogue = ExtResource("2_56fjn")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(3.8147e-06, 3.8147e-06)
+scale = Vector2(4.20833, 4.20833)
+texture = ExtResource("1_14piw")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6, 42.5)
+shape = SubResource("RectangleShape2D_47h6i")
+
+[node name="Interaction" parent="." instance=ExtResource("4_hhyc6")]
+position = Vector2(4.58831, 9.17661)
+scale = Vector2(2.91827, 4.01122)
