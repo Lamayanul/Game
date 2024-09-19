@@ -23,6 +23,7 @@ DialogueManager="*res://Scene/dialogue_manager.tscn"
 [global_group]
 
 enemy_hitbox=""
+player_hitbox=""
 
 [input]
 

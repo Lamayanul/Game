@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 var enemy_inattack_range=false
 var enemy_attack_cooldown=true
+var enemy_current_attack=false
 @export var health=100
 var player_alive=true
 var player_current_attack=false
@@ -27,6 +28,10 @@ var info:String=""
 @onready var enemy = $"../enemy"
 @onready var animation_player = $AnimationPlayer
 @onready var healthbar = $CanvasLayer/healthbar
+var knockback_force = 500
+@onready var healthbar_player = $CanvasLayer/healthbar_player
+@onready var player_icon = $CanvasLayer/healthbar_player/player_icon
+@onready var camera_enemy = $"../enemy/camera_enemy"
 
 
 # Nodes
@@ -44,6 +49,7 @@ func _ready():
 	color_rect.visible=false
 	arma_colisiune.disabled=true
 	healthbar.value=health
+	$player_hitbox.add_to_group("player_hitbox")
 
 
 
@@ -291,4 +297,19 @@ func _on_arma_area_entered(area):
 	else:
 		print("nu este enemy_hitbox")
 		
-		
+func deal_with_damage():
+	if(enemy_inattack_range and enemy_current_attack==true):
+			health-=10
+			#healthbar.value=health
+			healthbar_player.value=health
+			if health<=0:
+				self.queue_free()
+				player_icon.texture=null
+				camera_enemy.make_current()
+			apply_knockback()
+			enemy_inattack_range = false
+			enemy_current_attack = false
+			
+func apply_knockback():
+	var direction = (position - get_node("/root/world/enemy/").position).normalized()
+	velocity = direction * knockback_force

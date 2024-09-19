@@ -1,9 +1,34 @@
-[gd_scene load_steps=52 format=3 uid="uid://dn1osqamgorag"]
+[gd_scene load_steps=59 format=3 uid="uid://dn1osqamgorag"]
 
 [ext_resource type="Script" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
 [ext_resource type="Texture2D" uid="uid://b4otyj2854hm1" path="res://Base Character - Premium/basic/death.png" id="1_inn2y"]
 [ext_resource type="Texture2D" uid="uid://c7y4nlm26ofww" path="res://Base Character - Premium/basic/idle.png" id="2_423kg"]
 [ext_resource type="Texture2D" uid="uid://c3skfildne1id" path="res://Base Character - Premium/basic/walk.png" id="3_1hsc2"]
+[ext_resource type="Texture2D" uid="uid://b5jdylaryywae" path="res://fantasy_epicweapons_pack1_nobg.png" id="5_y6c5c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6p5mf"]
+size = Vector2(7, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_56oj4"]
+size = Vector2(11.5, 12)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh2jg"]
+bg_color = Color(0, 0, 0, 0.415686)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 15
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06cge"]
+bg_color = Color(0.762345, 0, 0.147706, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 15
+anti_aliasing = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_60upv"]
 atlas = ExtResource("1_inn2y")
@@ -332,29 +357,171 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6p5mf"]
-size = Vector2(7, 2)
+[sub_resource type="Animation" id="Animation_v1oxp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:sprite_frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("SpriteFrames_fd2io")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk-dreapta"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../arma:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.933751]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../arma/colisiune:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../AnimationPlayer:speed_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.0]
+}
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_56oj4"]
-size = Vector2(11.5, 12)
+[sub_resource type="Animation" id="Animation_n42wk"]
+resource_name = "atac-right"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:sprite_frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.16667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("SpriteFrames_fd2io"), SubResource("SpriteFrames_fd2io")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk-dreapta", &"walk-dreapta"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.633333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../arma:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1, 1.16667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.933751, -0.555015, -0.366519, -0.0837758, 0.198968, 0.481711, 0.670206, 0.954695]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../arma/colisiune:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../AnimationPlayer:speed_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.16667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [6.0, 6.0]
+}
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh2jg"]
-bg_color = Color(0, 0, 0, 0.415686)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 15
-anti_aliasing = false
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6wi7"]
+_data = {
+"RESET": SubResource("Animation_v1oxp"),
+"atac-right": SubResource("Animation_n42wk")
+}
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06cge"]
-bg_color = Color(0.762345, 0, 0.147706, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 15
-anti_aliasing = false
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wv2m2"]
+size = Vector2(4.56923, 39.8235)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xey0k"]
+radius = 47.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_brlc1"]
+radius = 17.4642
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -364,14 +531,6 @@ script = ExtResource("1_8c6dx")
 
 [node name="ChangeDirection" type="Timer" parent="."]
 wait_time = 2.0
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -6)
-sprite_frames = SubResource("SpriteFrames_fd2io")
-animation = &"idle"
-frame = 3
-frame_progress = 0.710149
-offset = Vector2(0, 5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -384,7 +543,6 @@ position = Vector2(0.25, 0)
 shape = SubResource("RectangleShape2D_56oj4")
 
 [node name="take_damage" type="Timer" parent="."]
-wait_time = 0.5
 one_shot = true
 
 [node name="color" type="Timer" parent="."]
@@ -401,6 +559,58 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_06cge")
 value = 100.0
 show_percentage = false
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -6)
+sprite_frames = SubResource("SpriteFrames_fd2io")
+animation = &"walk-dreapta"
+offset = Vector2(0, 5)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_h6wi7")
+}
+speed_scale = 6.0
+
+[node name="arma" type="Area2D" parent="."]
+position = Vector2(7.10543e-15, 3.55271e-15)
+rotation = -0.933751
+scale = Vector2(0.758864, 0.758864)
+metadata/_edit_group_ = true
+
+[node name="colisiune" type="CollisionShape2D" parent="arma"]
+position = Vector2(14.2844, 2)
+rotation = 1.5708
+scale = Vector2(0.437711, 0.437711)
+shape = SubResource("RectangleShape2D_wv2m2")
+
+[node name="Sprite2D" type="Sprite2D" parent="arma"]
+position = Vector2(14, 2)
+rotation = 0.785398
+scale = Vector2(0.437711, 0.437711)
+texture = ExtResource("5_y6c5c")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="detection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection"]
+shape = SubResource("CircleShape2D_xey0k")
+
+[node name="atack_zone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="atack_zone"]
+shape = SubResource("CircleShape2D_brlc1")
+
+[node name="atack" type="Timer" parent="."]
+
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
 [connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]
 [connection signal="timeout" from="color" to="." method="_on_color_timeout"]
+[connection signal="body_entered" from="arma" to="." method="_on_arma_area_entered"]
+[connection signal="body_entered" from="detection" to="." method="_on_detection_body_entered"]
+[connection signal="body_exited" from="detection" to="." method="_on_detection_body_exited"]
+[connection signal="area_entered" from="atack_zone" to="." method="_on_atack_zone_area_entered"]
+[connection signal="area_exited" from="atack_zone" to="." method="_on_atack_zone_area_exited"]
+[connection signal="timeout" from="atack" to="." method="_on_atack_timeout"]

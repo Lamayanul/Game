@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=53 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -19,9 +19,17 @@
 [ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/item.tscn" id="13_6ft7m"]
 [ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="13_6781w"]
 [ext_resource type="Script" path="res://Scripturi/hand.gd" id="14_1eu7x"]
+[ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="14_2xshd"]
+[ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="15_37cqh"]
 [ext_resource type="PackedScene" uid="uid://dn1osqamgorag" path="res://Scene/enemy.tscn" id="16_bmbsw"]
+[ext_resource type="Texture2D" uid="uid://deagc4swpklua" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill.png" id="16_g28i7"]
+[ext_resource type="Texture2D" uid="uid://b4vhtfygj1b01" path="res://Sprout Lands - Sprites - Basic pack/Objects/Default_A_slender_man_with_pale_white_skin_and_sparkling_black_3_ade6ffc6-635a-4a0b-88db-1cc946d37965_0.png" id="17_1jawh"]
+[ext_resource type="Texture2D" uid="uid://e3jqsek4cshc" path="res://Sprout Lands - Sprites - Basic pack/Objects/under-2.png" id="18_0f6a8"]
+[ext_resource type="Texture2D" uid="uid://d02ev55og5vnx" path="res://Sprout Lands - Sprites - Basic pack/Objects/border-e.png" id="19_gb0mj"]
+[ext_resource type="Texture2D" uid="uid://dhbxoe4r8xpn0" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill-e.png" id="20_s7q07"]
 [ext_resource type="Script" path="res://Scripturi/hide.gd" id="21_is0hl"]
 [ext_resource type="Texture2D" uid="uid://c4lliews52urs" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/roof.png" id="21_k0o5l"]
+[ext_resource type="Texture2D" uid="uid://c4g7to0xl2luq" path="res://Sprout Lands - Sprites - Basic pack/Objects/red-white-v-is-word-v.png" id="21_sq2bc"]
 [ext_resource type="Script" path="res://Scripturi/arie_usa.gd" id="24_xpt4l"]
 [ext_resource type="PackedScene" uid="uid://bmvk4vvugft5a" path="res://Scene/masa.tscn" id="24_xs56o"]
 [ext_resource type="PackedScene" uid="uid://dw47dvtt86u5e" path="res://Scene/npc.tscn" id="25_i1c00"]
@@ -396,6 +404,11 @@ corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40q2b"]
 bg_color = Color(0.983633, 0.300296, 0.237555, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -464,6 +477,7 @@ one_shot = true
 [node name="CanvasLayer" type="CanvasLayer" parent="player"]
 
 [node name="healthbar" type="ProgressBar" parent="player/CanvasLayer"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -476,15 +490,48 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_40q2b")
 step = 1.0
 value = 100.0
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="player/CanvasLayer"]
+[node name="healthbar_player" type="TextureProgressBar" parent="player/CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -345.0
-offset_bottom = 109.0
+offset_left = -250.0
+offset_bottom = 110.0
 grow_horizontal = 0
-value = 2.0
-fill_mode = 1
+value = 100.0
+texture_under = ExtResource("14_2xshd")
+texture_over = ExtResource("15_37cqh")
+texture_progress = ExtResource("16_g28i7")
+
+[node name="player_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_player"]
+position = Vector2(151, 55)
+scale = Vector2(0.160991, 0.154976)
+texture = ExtResource("17_1jawh")
+region_enabled = true
+region_rect = Rect2(0, 152, 1120, 680)
+
+[node name="healthbar_enemy" type="TextureProgressBar" parent="player/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -454.0
+offset_right = -204.0
+offset_bottom = 110.0
+grow_horizontal = 0
+value = 100.0
+texture_under = ExtResource("18_0f6a8")
+texture_over = ExtResource("19_gb0mj")
+texture_progress = ExtResource("20_s7q07")
+
+[node name="vs_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_enemy"]
+position = Vector2(221, 56)
+scale = Vector2(0.0509375, 0.0509375)
+texture = ExtResource("21_sq2bc")
+
+[node name="enemy_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_enemy"]
+position = Vector2(112, 55.0518)
+scale = Vector2(0.220089, 0.200954)
+region_enabled = true
+region_rect = Rect2(0, 56, 1120, 528)
 
 [node name="gaina" parent="." instance=ExtResource("7_f17pw")]
 position = Vector2(68, 10)
@@ -618,6 +665,14 @@ ID = "5"
 
 [node name="enemy" parent="." instance=ExtResource("16_bmbsw")]
 position = Vector2(87, 76)
+collision_layer = 2
+
+[node name="camera_enemy" type="Camera2D" parent="enemy"]
+zoom = Vector2(4, 4)
+limit_smoothed = true
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
 
 [node name="hide" type="Area2D" parent="."]
 script = ExtResource("21_is0hl")
