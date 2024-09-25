@@ -24,10 +24,13 @@ func _on_body_entered(body):
 	if body.name == "player":
 		var inventory=get_parent().find_child("Inv") #get_parent().find_child("Inv")
 		if inventory.plin <4:
+			if inventory.plin<0:
+				inventory.plin=0
 			get_parent().find_child("Inv").add_item(ID,self.get_cantiti())
 			#inventory.plin+=1
 			queue_free()
 			print(inventory.plin)
+			
 			#print("cantitate: ",item_cantitate)
 		else:
 			print("Inventarul este plin")
@@ -44,6 +47,9 @@ func set_texture1(texture_drop: Texture):
 
 # Metodă pentru a seta cantitatea pe obiect
 func set_cantitate(cantitate: int):
+	if cantitate==0:
+		
+		return
 	item_cantitate = cantitate
 	# Dacă ai un Label pentru a afișa cantitatea, îl poți seta aici
 	# Exemplu: label.text = str(item_cantitate)

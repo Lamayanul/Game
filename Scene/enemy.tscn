@@ -434,7 +434,6 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_n42wk"]
 resource_name = "atac-right"
-length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -442,7 +441,7 @@ tracks/0/path = NodePath(".:sprite_frames")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.16667),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [SubResource("SpriteFrames_fd2io"), SubResource("SpriteFrames_fd2io")]
@@ -454,7 +453,7 @@ tracks/1/path = NodePath(".:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.2),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [&"walk-dreapta", &"walk-dreapta"]
@@ -478,10 +477,10 @@ tracks/3/path = NodePath("../arma:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1, 1.16667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667, 0.833333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [-0.933751, -0.555015, -0.366519, -0.0837758, 0.198968, 0.481711, 0.670206, 0.954695]
+"values": [-0.933751, -0.555015, -0.366519, -0.0837758, 0.198968, 0.481711, 0.670206]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -490,7 +489,7 @@ tracks/4/path = NodePath("../arma/colisiune:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 1.2),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, false]
@@ -502,10 +501,10 @@ tracks/5/path = NodePath("../AnimationPlayer:speed_scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 1.16667),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [6.0, 6.0]
+"values": [5.0, 5.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h6wi7"]
@@ -543,6 +542,7 @@ position = Vector2(0.25, 0)
 shape = SubResource("RectangleShape2D_56oj4")
 
 [node name="take_damage" type="Timer" parent="."]
+wait_time = 0.1
 one_shot = true
 
 [node name="color" type="Timer" parent="."]
@@ -560,10 +560,10 @@ value = 100.0
 show_percentage = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -6)
+position = Vector2(0, -3)
 sprite_frames = SubResource("SpriteFrames_fd2io")
 animation = &"walk-dreapta"
-offset = Vector2(0, 5)
+offset = Vector2(0, 2)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite2D")
@@ -573,6 +573,7 @@ libraries = {
 speed_scale = 6.0
 
 [node name="arma" type="Area2D" parent="."]
+y_sort_enabled = true
 position = Vector2(7.10543e-15, 3.55271e-15)
 rotation = -0.933751
 scale = Vector2(0.758864, 0.758864)

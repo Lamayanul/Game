@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=54 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -31,8 +31,9 @@
 [ext_resource type="Texture2D" uid="uid://c4lliews52urs" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/roof.png" id="21_k0o5l"]
 [ext_resource type="Texture2D" uid="uid://c4g7to0xl2luq" path="res://Sprout Lands - Sprites - Basic pack/Objects/red-white-v-is-word-v.png" id="21_sq2bc"]
 [ext_resource type="Script" path="res://Scripturi/arie_usa.gd" id="24_xpt4l"]
-[ext_resource type="PackedScene" uid="uid://bmvk4vvugft5a" path="res://Scene/masa.tscn" id="24_xs56o"]
 [ext_resource type="PackedScene" uid="uid://dw47dvtt86u5e" path="res://Scene/npc.tscn" id="25_i1c00"]
+[ext_resource type="PackedScene" uid="uid://wce5a7wkc8oc" path="res://Scene/barca.tscn" id="34_cermi"]
+[ext_resource type="PackedScene" uid="uid://cf23cht88wint" path="res://Scene/copac.tscn" id="34_nbs6s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g1xpc"]
 texture = ExtResource("1_okv3e")
@@ -539,8 +540,8 @@ position = Vector2(68, 10)
 [node name="directionChangeTimer" type="Timer" parent="gaina"]
 wait_time = 2.0
 
-[node name="Area2D" parent="." instance=ExtResource("8_nd5dy")]
-position = Vector2(-16, 29)
+[node name="copac_original" parent="." instance=ExtResource("8_nd5dy")]
+position = Vector2(-77, -9)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -556,6 +557,7 @@ offset_right = 145.0
 offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 0
+metadata/_edit_use_anchors_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
 anchors_preset = 3
@@ -664,7 +666,7 @@ position = Vector2(-162, 27)
 ID = "5"
 
 [node name="enemy" parent="." instance=ExtResource("16_bmbsw")]
-position = Vector2(87, 76)
+position = Vector2(99, 80)
 collision_layer = 2
 
 [node name="camera_enemy" type="Camera2D" parent="enemy"]
@@ -698,16 +700,13 @@ shape = SubResource("RectangleShape2D_kilgi")
 [node name="usa" type="Sprite2D" parent="hide/arie-usa"]
 y_sort_enabled = true
 
-[node name="RigidBody2D" parent="." instance=ExtResource("24_xs56o")]
-y_sort_enabled = true
-position = Vector2(382, -34)
-mass = 0.1
-gravity_scale = 0.5
-lock_rotation = true
-freeze = true
-
 [node name="npc" parent="." instance=ExtResource("25_i1c00")]
 position = Vector2(290, 141)
+
+[node name="boat" parent="." instance=ExtResource("34_cermi")]
+position = Vector2(203, 175)
+
+[node name="Area2D" parent="." instance=ExtResource("34_nbs6s")]
 
 [connection signal="body_entered" from="TileMap/Area2D" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/Area2D" to="player" method="_on_area_2d_body_exited"]

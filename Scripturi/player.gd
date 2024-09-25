@@ -49,17 +49,22 @@ func _ready():
 	color_rect.visible=false
 	arma_colisiune.disabled=true
 	healthbar.value=health
-	$player_hitbox.add_to_group("player_hitbox")
+	add_to_group("player_hitbox")
 
 
 
 func _physics_process(delta):
+	
+	
 	if health<=0:
 		health=0
 		player_alive=false
 		print("player killed")
 		self.queue_free()
 		
+	#var global_mouse_position = get_global_mouse_position()
+	#print("Mouse position: ", global_mouse_position)
+	
 	if is_attacking:
 		return  
 		
@@ -77,64 +82,48 @@ func _physics_process(delta):
 func handle_movement():
 	if is_jumping or is_attacking:
 		return
-		
+
 	velocity = Vector2.ZERO
-	
 
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
-		#_currentIdleAnimation = "right_idle"
-		_currentIdleAnimation="right"
-		last_direction = Vector2(1, 0) 
+		_currentIdleAnimation = "right"
+		last_direction = Vector2(1, 0)
 	if Input.is_action_pressed("move_left"):
 		velocity.x -= 1
-		#_currentIdleAnimation = "left_idle"
-		_currentIdleAnimation="left"
-		last_direction = Vector2(-1, 0) 
+		_currentIdleAnimation = "left"
+		last_direction = Vector2(-1, 0)
 	if Input.is_action_pressed("move_down"):
 		velocity.y += 1
-		#_currentIdleAnimation = "front_idle"
-		_currentIdleAnimation="down"
+		_currentIdleAnimation = "down"
 		last_direction = Vector2(0, 1)
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
-		#_currentIdleAnimation = "back_idle"
-		_currentIdleAnimation="up"
+		_currentIdleAnimation = "up"
 		last_direction = Vector2(0, -1)
 
-
-
-	#var animatedSprite2D = get_node("AnimatedSprite2D")
-
+	# Dacă ambele taste de mișcare sunt apăsate (diagonală), prioritizează direcția orizontală
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * Speed
-		#animatedSprite2D.play()
+
+		# Prioritizează animațiile pe axa X dacă jucătorul se deplasează diagonal
+		if velocity.x != 0:
+			if velocity.x < 0:
+				animation_player.play("walk-left")
+			else:
+				animation_player.play("walk-right")
+		elif velocity.y != 0:
+			if velocity.y < 0:
+				animation_player.play("walk-up")
+			else:
+				animation_player.play("walk-down")
 		current_state = "walking"
 	else:
-		#animatedSprite2D.animation = _currentIdleAnimation
-		animation_player.play("idle-"+_currentIdleAnimation)
-		#animatedSprite2D.play()
-		
+		# Niciun input de mișcare, animația de idle
+		animation_player.play("idle-" + _currentIdleAnimation)
 		current_state = "idle"
-		
-	if velocity.x != 0:
-		if velocity.x < 0:
-			#animatedSprite2D.animation = "left_walk"
-			animation_player.play("walk-left") 
-		else:
-			#animatedSprite2D.animation = "right_walk"
-			animation_player.play("walk-right") 
-		#animatedSprite2D.flip_v = false
-	if velocity.y != 0:
-		if velocity.y < 0:
-			#animatedSprite2D.animation = "back_walk"
-			animation_player.play("walk-up") 
-		
-		else:
-			#animatedSprite2D.animation = "front_walk"
-			animation_player.play("walk-down") 
-		#animatedSprite2D.flip_h = false
-	is_on_floor()
+
+	# Mișcar
 	move_and_slide()
 
 func jump():
@@ -302,14 +291,16 @@ func deal_with_damage():
 			health-=10
 			#healthbar.value=health
 			healthbar_player.value=health
+			apply_knockback()
 			if health<=0:
 				self.queue_free()
 				player_icon.texture=null
 				camera_enemy.make_current()
-			apply_knockback()
+			
 			enemy_inattack_range = false
 			enemy_current_attack = false
 			
 func apply_knockback():
 	var direction = (position - get_node("/root/world/enemy/").position).normalized()
 	velocity = direction * knockback_force
+	move_and_slide()

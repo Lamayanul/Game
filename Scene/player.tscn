@@ -1589,7 +1589,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ftj"]
 size = Vector2(15, 16)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["player_hitbox"]]
+[node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_layer = 3
 script = ExtResource("1_cqeva")
@@ -1606,9 +1606,9 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
 [node name="attack_timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.1
 
-[node name="arma" type="Area2D" parent="."]
+[node name="arma" type="Area2D" parent="." groups=["arma"]]
 
 [node name="arma_colisiune" type="CollisionShape2D" parent="arma"]
 position = Vector2(2, 10.5)

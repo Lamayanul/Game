@@ -139,6 +139,8 @@ func _input(_event):
 		plantare()
 	if Input.is_action_just_pressed("attack"):
 		attack()
+	if Input.is_action_just_pressed("eat"):
+		eat()
 
 
 
@@ -188,6 +190,8 @@ func drop_selected_item():
 # În funcția de drop
 func drop_item(ID: String, cantiti: int):
 	# Obține textura și cantitatea din ItemData
+	if cantiti==0:
+		return
 	var item_cantitate = cantiti
 	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
 	var item_texture = load(item_texture_path) as Texture
@@ -295,6 +299,9 @@ func attack():
 func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 	# Obține textura și cantitatea din ItemData
 	var item_cantitate = cantiti
+	if cantiti==0:
+		plin=0
+		return
 	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
 	var item_texture = load(item_texture_path) as Texture
 	
@@ -317,3 +324,56 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 		#global_cantiti=cantiti
 		world_node.add_child(item_instance)
 		
+
+
+func eat():
+	for i in range(grid_container.get_child_count()):
+		var slot = grid_container.get_child(i)
+		if slot is Slot and slot.filled:
+			var ID = slot.get_id()
+			
+			if ID == "1": 
+				var cantitate_de_mancat = 1  
+				player.health += 10 
+				player.healthbar_player.value=player.health 
+				if player.health > 100:
+					player.health = 100 
+
+				if slot.decrease_cantitate(cantitate_de_mancat):
+					slot.clear_item() 
+					slot.deselect()
+					plin -= 1  
+					player.inequip_item()
+					print("Ai mâncat un item, viața ta a crescut.")
+				return
+
+	print("Nu ai mâncare în inventar!")
+
+
+
+func drop_item_everywhere(ID: String, cantiti: int,location:Vector2):
+	# Obține textura și cantitatea din ItemData
+	var item_cantitate = cantiti
+	if cantiti==0:
+		plin=0
+		return
+	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
+	var item_texture = load(item_texture_path) as Texture
+	
+	# Încarcă scena itemului
+	var item_scene = load("res://User/item.tscn") as PackedScene
+	if item_scene:
+		# Instanțiază scena
+		var world_node = get_node("/root/world/")
+		
+		var item_instance = item_scene.instantiate()
+		item_instance.set_cantitate(item_cantitate)
+		item_instance.set_texture1(item_texture)
+		
+		item_instance.ID = ID
+
+		item_instance.position = location
+		#drop_position=Vector2(100,100)
+		# Folosește 'position' pentru coordonate locale
+		#global_cantiti=cantiti
+		world_node.add_child(item_instance)

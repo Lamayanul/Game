@@ -10,7 +10,7 @@ var player_current_attack=false
 var original_color = Color(1, 1, 1, 1)  # Culoarea originală
 var hit_color = Color(1, 0, 0, 1) 
 @onready var color = $color
-var knockback_force = 500
+var knockback_force = 1000
 var moveDirection = Vector2.ZERO
 @onready var healthbar = $healthbar
 @onready var animation_player = $AnimationPlayer
@@ -24,10 +24,11 @@ var is_attacking = false
 @onready var player_hitbox = get_node("/root/world/player/player_hitbox")
 @onready var enemy_icon = $"../player/CanvasLayer/healthbar_enemy/enemy_icon"
 @onready var healthbar_enemy = $"../player/CanvasLayer/healthbar_enemy"
-@export var stop_distance: float = 15
+@export var stop_distance: float = 20
 @onready var atack = $atack
 
 func _ready():
+	healthbar_enemy.value=0
 	$ChangeDirection.start()
 	add_to_group("enemy_hitbox")
 	select_new_direction()
@@ -48,11 +49,6 @@ func _physics_process(_delta):
 		velocity = moveDirection * MoveSpeed
 		move_and_slide()
 		movement()
-
-
-	
-
-
 	
 
 func select_new_direction():
@@ -128,7 +124,7 @@ func _on_arma_area_entered(area):
 		print(area)
 		player.enemy_inattack_range=true
 		player.enemy_current_attack=true
-	
+		player.deal_with_damage()
 		
 
 
@@ -168,6 +164,7 @@ func _on_detection_body_entered(body):
 	if body.is_in_group("player"):
 		player_chase=true
 		enemy_icon.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/enemy.png")
+		healthbar_enemy.value=health
 		chase()
 
 
@@ -175,29 +172,38 @@ func _on_detection_body_exited(body):
 	if body.is_in_group("player"):
 		player_chase=false
 		enemy_icon.texture=null
+		healthbar_enemy.value=0
 		movement()
 
 		
 		
 func atac_mode():
-	arma.visible=true
-	animation_player.play("atac-right")
-	player.deal_with_damage()
+	call_deferred("activate")
 
 
 func _on_atack_zone_area_entered(area):
 	if area.is_in_group("player_hitbox") and  is_attacking==false:
 		print(area)
 		is_attacking = true
-		atack.start()
+		
 		atac_mode()
+		atack.start()
+		arma.visible=false
 		
 		
-func _on_atack_zone_area_exited(area):
+
+func activate():
+	arma.visible=true
+	animation_player.play("atac-right")
+	move_and_slide()
+	
+func _on_atack_zone_area_exited(_area):
 	is_attacking = false  # Dezactivează modul de atac după ce animația s-a terminat
 	atack.stop()
+	arma.visible=false
 	
 
 func _on_atack_timeout():
+
 	if is_attacking:
 		atac_mode()
