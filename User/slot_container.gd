@@ -7,6 +7,7 @@ class_name Slot
 @export var is_selected: bool = false
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
+@onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 
 
@@ -103,7 +104,7 @@ func _drop_data(_pos, data):
 	data.property = temp
 	set_property(property)
 	data.set_property(data.property)
-
+	
 	## Actualizează cantitatea pentru ambele sloturi
 	#cantitate = property["CANTITATE"]
 	#label.text = str(cantitate)

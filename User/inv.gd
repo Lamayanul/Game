@@ -97,7 +97,7 @@ func _on_slot_selected(slot: Slot):
 		selected_slot.deselect() 
 	selected_slot = slot  
 	selected_slot.select()
-	
+
 	hand_sprite.texture = null
 	info_label.clear()
 	color_rect.visible = false
@@ -106,6 +106,7 @@ func _on_slot_selected(slot: Slot):
 	
 	# Dacă slotul selectat are un item (este plin), actualizează sprite-ul și eticheta
 	if slot.get_texture() != null:
+
 		hand_sprite.texture = slot.get_texture()
 		hand_sprite.visible = true
 		hand_sprite.scale = Vector2(0.5, 0.5)
@@ -173,7 +174,8 @@ func drop_selected_item():
 			selected_slot.clear_item()
 			selected_slot.deselect()
 			selected_slot = null  # Deselectează slotul după drop
-			plin-=1
+		
+			update_inventory_status()
 			print(plin)
 			
 			player.inequip_item()
@@ -184,6 +186,13 @@ func drop_selected_item():
 			print("ID-ul itemului nu a fost găsit în slotul selectat.")
 	else:
 		print("Niciun slot nu este selectat")
+		
+func update_inventory_status():
+	plin = 0
+	for i in range(grid_container.get_child_count()):
+		var child = grid_container.get_child(i)
+		if child is Slot and child.filled:
+			plin += 1
 
 
 
@@ -269,7 +278,7 @@ func drop_selected_item_1():
 			
 			drop_item(ID , cantitate_de_drop)
 			#player.inequip_item() 
-
+			update_inventory_status()
 		else:
 			print("ID-ul itemului nu a fost găsit în slotul selectat.")
 	else:

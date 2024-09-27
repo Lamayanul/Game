@@ -1589,9 +1589,11 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ftj"]
 size = Vector2(15, 16)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
 collision_layer = 3
+platform_on_leave = 2
+platform_floor_layers = 0
 script = ExtResource("1_cqeva")
 
 [node name="colisiune" type="CollisionShape2D" parent="."]

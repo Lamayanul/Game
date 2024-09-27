@@ -525,7 +525,8 @@ radius = 17.4642
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
 position = Vector2(0, -5)
-platform_floor_layers = 1
+platform_on_leave = 2
+platform_floor_layers = 0
 script = ExtResource("1_8c6dx")
 
 [node name="ChangeDirection" type="Timer" parent="."]

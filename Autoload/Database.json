@@ -47,5 +47,12 @@
 	"cantitate":1,
 	"number":6,
 	"nume":"lemn",
-	}
+	},
+	
+"7":{
+	"texture":"mar.png",
+	"cantitate":1,
+	"number":7,
+	"nume":"mar",
+	},
 }

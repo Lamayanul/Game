@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1d5fbrhmnevj"
-path="res://.godot/imported/Water.png-6268aae57400e88976330095732f6226.ctex"
+uid="uid://bv8cym72g8b6q"
+path="res://.godot/imported/mar.png-5e1259e9a502a7de6cc724790b510ec0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Tilesets/ground tiles/water frames/Water.png"
-dest_files=["res://.godot/imported/Water.png-6268aae57400e88976330095732f6226.ctex"]
+source_file="res://assets/mar.png"
+dest_files=["res://.godot/imported/mar.png-5e1259e9a502a7de6cc724790b510ec0.ctex"]
 
 [params]
 
