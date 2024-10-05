@@ -55,4 +55,11 @@
 	"number":7,
 	"nume":"mar",
 	},
+	
+"8":{
+	"texture":"berry.png",
+	"cantitate":1,
+	"number":8,
+	"nume":"berry",
+	},
 }

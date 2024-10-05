@@ -62,8 +62,9 @@ func play_taiere_animation():
 
 	# Condiții pentru tăierea fructelor
 	if fructe and index_taiere == 4:
-		var pos = Vector2(-20, 10)
-		inv.drop_item_everywhere("7", 3, pos)  # Drop fructe
+		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+		var drop_position = global_position + drop_offset 
+		inv.drop_item_everywhere("7", 3, drop_position)  # Drop fructe
 		fructe = false  # Resetăm starea fructelor după ce au fost culese
 		animation_player.stop()  # Oprim animația curentă (taiere-fructe)
 		animation_player.play("taiere")  # Pornim animația de tăiere fără fructe
@@ -76,7 +77,9 @@ func play_taiere_animation():
 	if index_taiere == 8:
 		var pos = Vector2(-20, 10)
 		animation_player.play("gata")  # Animația finală pentru tăiere completă
-		inv.drop_item_everywhere("6", 3, pos) 
+		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+		var drop_position = global_position + drop_offset 
+		inv.drop_item_everywhere("6", 3, drop_position) 
 		if fructe:
 			inv.drop_item_everywhere("7", 3, pos)  # # Drop lemn sau alte resurse
 		reset_tree_state()  # Resetăm starea copacului

@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://dy736vf2x46vm"]
+
+[ext_resource type="Texture2D" uid="uid://bbh7d134cn5q0" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Objects/Trees, stumps and bushes.png" id="1_eb5y1"]
+[ext_resource type="Script" path="res://Scripturi/bush.gd" id="1_j4c84"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxbks"]
+size = Vector2(14, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4030u"]
+size = Vector2(16, 15)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_h28c4"]
+blend_mode = 1
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_32dwq"]
+polygon = PackedVector2Array(-3, -8, 3, -8, 3, -7, 5, -7, 5, -6, 6, -6, 6, -5, 7, -5, 7, -3, 8, -3, 8, -1, 7, -1, 7, 0, 8, 0, 8, 4, 7, 4, 7, 5, 6, 5, 6, 6, 4, 6, 4, 7, -4, 7, -4, 6, -6, 6, -6, 5, -7, 5, -7, 4, -8, 4, -8, 1, -7, 1, -7, 0, -8, 0, -8, -3, -7, -3, -7, -5, -6, -5, -6, -6, -5, -6, -5, -7, -3, -7)
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_j4c84")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="Bush_fructe" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("1_eb5y1")
+region_enabled = true
+region_rect = Rect2(32, 48, 16, 16)
+
+[node name="Bush_normal" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("1_eb5y1")
+region_enabled = true
+region_rect = Rect2(16, 48, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_dxbks")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_4030u")
+
+[node name="Timer_respawn" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+material = SubResource("CanvasItemMaterial_h28c4")
+occluder = SubResource("OccluderPolygon2D_32dwq")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="Timer_respawn" to="." method="_on_timer_respawn_timeout"]

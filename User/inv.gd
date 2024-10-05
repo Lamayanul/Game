@@ -3,15 +3,13 @@ extends PanelContainer
 @onready var grid_container = $MarginContainer/GridContainer
 var selected_slot: Slot = null  # Slotul selectat
 @onready var texture_rect = $MarginContainer/TextureRect
-@onready var grid = $"../../TileMap/Grid"  # Referința la grid
+@onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
 @export var plin:int =0
 @onready var info_label = $"../InfoLabel"
 @onready var hand_sprite = $"../PanelContainer/Sprite2D/item_mana/sprite"
 @onready var color_rect = $"../ColorRect"
 @onready var tilemap = $"../../TileMap"
 @onready var player = $"../../player"
-
-
 
 signal plantSeed
 signal attacking
@@ -332,31 +330,38 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 		# Folosește 'position' pentru coordonate locale
 		#global_cantiti=cantiti
 		world_node.add_child(item_instance)
-		
 
 
 func eat():
-	for i in range(grid_container.get_child_count()):
-		var slot = grid_container.get_child(i)
-		if slot is Slot and slot.filled:
-			var ID = slot.get_id()
-			
-			if ID == "1": 
-				var cantitate_de_mancat = 1  
-				player.health += 10 
-				player.healthbar_player.value=player.health 
-				if player.health > 100:
-					player.health = 100 
+	# Verificăm dacă există un slot selectat
+	if selected_slot == null:
+		print("Nu ai selectat nimic în inventar!")
+		return
+	
+	var slot = selected_slot  # Slotul selectat
+	if slot is Slot and slot.filled:
+		var ID = slot.get_id()
+		
+		if ID == "1":  # Verificăm dacă itemul este de tip mâncare
+			var cantitate_de_mancat = 1  # Cantitatea de mâncare consumată
+			player.health += 10  # Creștem sănătatea jucătorului
+			player.healthbar_player.value = player.health  # Actualizăm bara de sănătate
+			if player.health > 100:  # Asigurăm că sănătatea nu trece peste 100
+				player.health = 100 
 
-				if slot.decrease_cantitate(cantitate_de_mancat):
-					slot.clear_item() 
-					slot.deselect()
-					plin -= 1  
-					player.inequip_item()
-					print("Ai mâncat un item, viața ta a crescut.")
-				return
+			# Reducem cantitatea din item și dacă rămâne 0, golim slotul
+			if slot.decrease_cantitate(cantitate_de_mancat):
+				slot.clear_item()  # Golim slotul
+				slot.deselect()  # Deselectăm slotul după ce itemul a fost consumat
+				plin -= 1  # Reducem numărul de sloturi pline din inventar
+				player.inequip_item()  # Scoatem itemul din echipare dacă era echipat
+				print("Ai mâncat un item, viața ta a crescut.")
+			return
+	else:
+		print("Slotul selectat nu conține mâncare!")
 
 	print("Nu ai mâncare în inventar!")
+
 
 
 

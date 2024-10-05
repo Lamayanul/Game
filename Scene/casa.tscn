@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnsr4kcnkmcl0"]
+
+[ext_resource type="Texture2D" uid="uid://bp8xncdk28n6j" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/podea.png" id="1_65jxi"]
+[ext_resource type="Texture2D" uid="uid://6v73cmdxnh3j" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/cladire.png" id="2_7yqyp"]
+
+[node name="Node2D" type="StaticBody2D"]
+position = Vector2(0, 64)
+
+[node name="podea" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("1_65jxi")
+
+[node name="Cladire" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("2_7yqyp")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, 0.217851)
+scale = Vector2(1, 1.00223)
+polygon = PackedVector2Array(-77, -64, -77, 48, -5, 48, -5, 43, -72, 43, -72, -48, 72, -48, 72, 43, 5, 43, 5, 48, 77, 48, 77, -64)
