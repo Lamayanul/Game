@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=73 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -27,10 +27,12 @@
 [ext_resource type="Texture2D" uid="uid://b4vhtfygj1b01" path="res://Sprout Lands - Sprites - Basic pack/Objects/Default_A_slender_man_with_pale_white_skin_and_sparkling_black_3_ade6ffc6-635a-4a0b-88db-1cc946d37965_0.png" id="17_1jawh"]
 [ext_resource type="Texture2D" uid="uid://e3jqsek4cshc" path="res://Sprout Lands - Sprites - Basic pack/Objects/under-2.png" id="18_0f6a8"]
 [ext_resource type="Texture2D" uid="uid://d02ev55og5vnx" path="res://Sprout Lands - Sprites - Basic pack/Objects/border-e.png" id="19_gb0mj"]
+[ext_resource type="Script" path="res://Scripturi/healthbar_player.gd" id="19_gvmqj"]
 [ext_resource type="Texture2D" uid="uid://dhbxoe4r8xpn0" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill-e.png" id="20_s7q07"]
 [ext_resource type="Script" path="res://Scripturi/hide.gd" id="21_is0hl"]
 [ext_resource type="Texture2D" uid="uid://c4lliews52urs" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/roof.png" id="21_k0o5l"]
 [ext_resource type="Texture2D" uid="uid://c4g7to0xl2luq" path="res://Sprout Lands - Sprites - Basic pack/Objects/red-white-v-is-word-v.png" id="21_sq2bc"]
+[ext_resource type="Texture2D" uid="uid://k53p4qddpl6h" path="res://Sprout Lands - Sprites - Basic pack/Objects/pla.jpg" id="24_mk8bm"]
 [ext_resource type="Script" path="res://Scripturi/arie_usa.gd" id="24_xpt4l"]
 [ext_resource type="PackedScene" uid="uid://dw47dvtt86u5e" path="res://Scene/npc.tscn" id="25_i1c00"]
 [ext_resource type="PackedScene" uid="uid://wce5a7wkc8oc" path="res://Scene/barca.tscn" id="34_cermi"]
@@ -603,6 +605,7 @@ value = 100.0
 texture_under = ExtResource("14_2xshd")
 texture_over = ExtResource("15_37cqh")
 texture_progress = ExtResource("16_g28i7")
+script = ExtResource("19_gvmqj")
 
 [node name="player_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_player"]
 position = Vector2(151, 55)
@@ -634,6 +637,20 @@ position = Vector2(112, 55.0518)
 scale = Vector2(0.220089, 0.200954)
 region_enabled = true
 region_rect = Rect2(0, 56, 1120, 528)
+
+[node name="Poster" type="TextureRect" parent="player/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -251.0
+offset_top = 113.0
+offset_right = -5.0
+offset_bottom = 605.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+texture = ExtResource("24_mk8bm")
+expand_mode = 5
+stretch_mode = 6
 
 [node name="copac_original" parent="." instance=ExtResource("8_nd5dy")]
 position = Vector2(-77, -9)
@@ -779,7 +796,6 @@ position = Vector2(424, -17)
 shape = SubResource("RectangleShape2D_nwjuv")
 
 [node name="acoperis" type="Sprite2D" parent="hide"]
-visible = false
 light_mask = 0
 z_index = 1
 y_sort_enabled = true
@@ -824,16 +840,18 @@ scale = Vector2(4, 4)
 
 [node name="Lantern" parent="." instance=ExtResource("38_ko1f3")]
 y_sort_enabled = true
-position = Vector2(363, 9)
+position = Vector2(370, 10)
 scale = Vector2(0.4125, 0.4125)
 
-[node name="Node2D" parent="." instance=ExtResource("40_1y6tq")]
+[node name="casa" parent="." instance=ExtResource("40_1y6tq")]
 position = Vector2(424, -16)
 
 [connection signal="body_entered" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="gaina/directionChangeTimer" to="gaina" method="_on_direction_change_timer_timeout"]
 [connection signal="timeout" from="player/Timer" to="player" method="_on_timer_timeout"]
+[connection signal="mouse_entered" from="player/CanvasLayer/healthbar_player" to="player/CanvasLayer/healthbar_player" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="player/CanvasLayer/healthbar_player" to="player/CanvasLayer/healthbar_player" method="_on_mouse_exited"]
 [connection signal="attacking" from="CanvasLayer/Inv" to="player" method="_on_inv_attacking"]
 [connection signal="plantSeed" from="CanvasLayer/Inv" to="TileMap" method="_on_player_plant_seed"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_entered"]

@@ -1,49 +1,26 @@
 extends PanelContainer
 
+#------------------------------grid-uri--------------------------------------------------------------
 @onready var grid_container = $MarginContainer/GridContainer
-var selected_slot: Slot = null  # Slotul selectat
-@onready var texture_rect = $MarginContainer/TextureRect
 @onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
+
+#-------------------------------diverse---------------------------------------------------------------
+@onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
 @onready var info_label = $"../InfoLabel"
 @onready var hand_sprite = $"../PanelContainer/Sprite2D/item_mana/sprite"
 @onready var color_rect = $"../ColorRect"
+
+#--------------------------noduri-principale--------------------------------------------------------
+var selected_slot: Slot = null  # Slotul selectat
 @onready var tilemap = $"../../TileMap"
 @onready var player = $"../../player"
 
+#-----------------------------Semnale----------------------------------------------------------------
 signal plantSeed
 signal attacking
-# Dimensiunea unui tile (ajustează după caz)
-#var tile_size = Vector2(16, 16)
 
-#func add_item(ID="0"):
-#
-	#var item_texture = load("res://assets/" + ItemData.get_texture(ID))
-	#var item_cantitate = ItemData.get_cantitate(ID)
-	#var item_number = ItemData.get_number(ID)
-	#
-	#var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER":item_number}
-	#
-	#var start_index = 0
-	#var index = start_index
-#
-	#for i in range(start_index, grid_container.get_child_count()):
-		#var child = grid_container.get_child(i)
-		#if child != null and child.has_method("set_property"):
-			#if not child.filled:
-				#index = i
-				#break
-			#elif child.get_id() == ID:
-				#child.set_property(item_data)
-				#return
-				#
-			#
-	#var slot = grid_container.get_child(index)
-	#if slot != null and slot.has_method("set_property"):
-		#slot.set_property(item_data)
-	#else:
-		#print("Eroare: Slotul este null sau nu are metoda set_property.")
-
+#---------------------------------------add_item()-----------------------------------------------------
 func add_item(ID="", item_cantita=1):
 	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
 	var item_nume=ItemData.get_nume(ID)
@@ -77,6 +54,8 @@ func add_item(ID="", item_cantita=1):
 	# Dacă inventarul este plin și nu există sloturi libere
 	print("Inventarul este plin!")
 
+
+#--------------------------------_ready()----------------------------------------------------------------
 func _ready():
 	for child in grid_container.get_children():
 		if child is Slot:
@@ -90,6 +69,8 @@ func _ready():
 			_on_slot_selected(first_slot)
 	$"../../Item7".item_cantitate=3
 
+
+#-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
 	if selected_slot:
 		selected_slot.deselect() 
@@ -129,6 +110,7 @@ func update_selector_position(slot: Slot):
 	texture_rect.global_position = slot_position
 
 
+#---------------------------------------input-uri-diverse----------------------------------------------------
 func _input(_event):
 	if Input.is_action_just_pressed("drop"):
 		drop_selected_item()
@@ -142,7 +124,7 @@ func _input(_event):
 		eat()
 
 
-
+#---------------------------------drop-item-selected-----------------------------------------------------
 func drop_selected_item():
 	print("Funcția drop_selected_item a fost apelată")
 	if selected_slot:
@@ -194,7 +176,7 @@ func update_inventory_status():
 
 
 
-# În funcția de drop
+#--------------------------------functie-drop-default--------------------------------------------------
 func drop_item(ID: String, cantiti: int):
 	# Obține textura și cantitatea din ItemData
 	if cantiti==0:
@@ -220,30 +202,10 @@ func drop_item(ID: String, cantiti: int):
 		var drop_position = player_position + (player_direction * drop_distance)
 		
 		item_instance.position = drop_position 
-		#drop_position=Vector2(100,100)
-		# Folosește 'position' pentru coordonate locale
-		#global_cantiti=cantiti
 		world_node.add_child(item_instance)
 		
-		#item_instance.scale = Vector2(2, 2)  # Asigură-te că este vizibil
-		#item_instance.modulate = Color(1, 1, 1, 1)  # Asigură-te că nu este transparent
-		#item_instance.visible = true  # Asigură-te că este vizibil
-		
-		
-		#item_instance.set_texture1(item_texture)
-		#item_instance.set_cantitate(item_cantitate)
-		
-		
-		#item_instance.scale = Vector2(2, 2)  # Asigură-te că este vizibil
-		#item_instance.modulate = Color(1, 1, 1, 1)  # Asigură-te că nu este transparent
-		#item_instance.visible = true  # Asigură-te că este vizibil
-		
-		# Adaugă instanța itemului în nodul world
-		#var items_node = get_node("/root/world/")
-		#if items_node:
-			#items_node.add_child(load("res://User/item.tscn").instantiate()) 
-			#items_node.add_child(item_instance)
 	
+#-----------------------------------drop-pt-cate-un-item----------------------------------------------
 func drop_selected_item_1():
 	print("Funcția drop_selected_item_1 a fost apelată")
 	if selected_slot:
@@ -282,27 +244,23 @@ func drop_selected_item_1():
 	else:
 		print("Niciun slot nu este selectat")
 
+
+#----------------------------------apelare-plantare()-------------------------------------------------
 func plantare():
 	var _tilemap=get_node("/root/world/TileMap")
 	if selected_slot:
 		var ID=selected_slot.get_id()
 		if ID=="3":
 			emit_signal("plantSeed")
-			#tilemap._on_player_plant_seed()
-			#if selected_slot.decrease_cantitate(drop): 
-				#selected_slot.clear_item()
-				#selected_slot.deselect()
-				#selected_slot = null
-				#plin -= 1
-				#var player = get_node("/root/world/player")
-				#player.inequip_item()
+
+#---------------------select-arma-atac---------------------------------------------------------------
 func attack():
 	if selected_slot:
 		var ID=selected_slot.get_id()
 		if ID=="2":
 			emit_signal("attacking")
 		
-		
+#---------------------------harvest-drop------------------------------------------------------------
 func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 	# Obține textura și cantitatea din ItemData
 	var item_cantitate = cantiti
@@ -332,6 +290,7 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 		world_node.add_child(item_instance)
 
 
+#------------------------------------------functie-eat()-----------------------------------------------
 func eat():
 	# Verificăm dacă există un slot selectat
 	if selected_slot == null:
@@ -364,9 +323,8 @@ func eat():
 
 
 
-
+#-------------------------------------drop-locatie-apropiata------------------------------------------
 func drop_item_everywhere(ID: String, cantiti: int,location:Vector2):
-	# Obține textura și cantitatea din ItemData
 	var item_cantitate = cantiti
 	if cantiti==0:
 		plin=0
@@ -387,7 +345,4 @@ func drop_item_everywhere(ID: String, cantiti: int,location:Vector2):
 		item_instance.ID = ID
 
 		item_instance.position = location
-		#drop_position=Vector2(100,100)
-		# Folosește 'position' pentru coordonate locale
-		#global_cantiti=cantiti
 		world_node.add_child(item_instance)

@@ -4,7 +4,7 @@ extends Area2D
 @onready var bush_normal = $StaticBody2D/Bush_normal
 @onready var timer_respawn = $Timer_respawn
 @onready var inv = $"../CanvasLayer/Inv"
-var player_in_zone = false  # Flag pentru a verifica dacă jucătorul este în zonă
+var player_in_zone = false  
 #@export var cycles_per_second:float=1.0
 #var hue :float =0.0
 

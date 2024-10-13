@@ -1,45 +1,56 @@
 extends CharacterBody2D
 
-
+#---------------------------enemy-player-health-control---------------------------------------------------
 var enemy_inattack_range=false
 var enemy_attack_cooldown=true
 var enemy_current_attack=false
-@export var health=100
 var player_alive=true
 var player_current_attack=false
+@onready var healthbar = $CanvasLayer/healthbar
+@onready var healthbar_player = $CanvasLayer/healthbar_player
+var is_attacking = false
+
+#-----------------------------jump/movement----------------------------------------------------------
 var can_jump = true 
-# Variables
-var Speed = 50
-#var _currentIdleAnimation = "front_idle" # Current idle animation
-var _currentIdleAnimation="down"
 var is_jumping = false
 var jumpDirection = Vector2.ZERO
+var last_direction = Vector2(0, 1)
+var knockback_force = 500
+
+#--------------------------------Animation-start---------------------------------------------------
+var _currentIdleAnimation="down"
+@onready var animation_player = $AnimationPlayer
+var current_state = "idle"
+@onready var animatedSprite2D = $AnimatedSprite2D
+
+#-------------------------------------Info-hand-sprite------------------------------------------
 @onready var hand_sprite = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite"
 @onready var info_label = $"../CanvasLayer/InfoLabel"
 @onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
 @onready var color_rect = $"../CanvasLayer/ColorRect"
-var current_state = "idle"
-var last_direction = Vector2(0, 1)
 var info:String=""
-@onready var animatedSprite2D = $AnimatedSprite2D
+@onready var player_icon = $CanvasLayer/healthbar_player/player_icon
+
+#----------------------------------Enemy-action/stats-------------------------------------------------
 @onready var attack_timer = $attack_timer
 @onready var arma =$arma
 @onready var arma_colisiune = $arma/arma_colisiune
 @onready var enemy = $"../enemy"
-@onready var animation_player = $AnimationPlayer
-@onready var healthbar = $CanvasLayer/healthbar
-var knockback_force = 500
-@onready var healthbar_player = $CanvasLayer/healthbar_player
-@onready var player_icon = $CanvasLayer/healthbar_player/player_icon
 @onready var camera_enemy = $"../enemy/camera_enemy"
-
-
-# Nodes
 var colisiune
+
+#-------------------------------------Player-stats----------------------------------------------
+var Speed = 50
+@export var health=100
+
+
+
+#----------------------------------TileMap------------------------------------------------------------
 var tilemap
 var _tileMap
-var is_attacking = false
 
+
+#-----------------------------------_ready()--------------------------------------------------------
 func _ready():
 	tilemap = get_tree().current_scene.get_node("TileMap")
 	_tileMap = get_node("/root/world/TileMap")
@@ -52,9 +63,8 @@ func _ready():
 	add_to_group("player_hitbox")
 
 
-
+#------------------------------_physics_process()------------------------------------------------------
 func _physics_process(delta):
-	
 	
 	if health<=0:
 		health=0
@@ -79,6 +89,8 @@ func _physics_process(delta):
 	else:
 		position += velocity * delta
 
+
+#----------------------------------player-movement------------------------------------------------------
 func handle_movement():
 	if is_jumping or is_attacking:
 		return
@@ -102,11 +114,9 @@ func handle_movement():
 		_currentIdleAnimation = "up"
 		last_direction = Vector2(0, -1)
 
-	# Dacă ambele taste de mișcare sunt apăsate (diagonală), prioritizează direcția orizontală
+	
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * Speed
-
-		# Prioritizează animațiile pe axa X dacă jucătorul se deplasează diagonal
 		if velocity.x != 0:
 			if velocity.x < 0:
 				animation_player.play("walk-left")
@@ -119,44 +129,35 @@ func handle_movement():
 				animation_player.play("walk-down")
 		current_state = "walking"
 	else:
-		# Niciun input de mișcare, animația de idle
 		animation_player.play("idle-" + _currentIdleAnimation)
 		current_state = "idle"
 
-	# Mișcar
 	move_and_slide()
 
+
+#-----------------------------------player-jump--------------------------------------------------------
 func jump():
 	if is_attacking:  # Blochează săritura în timpul atacului
 		return
 
 	is_jumping = true
 	current_state = "jumping"
-	# Save the jump direction based on current movement direction
 	jumpDirection = velocity.normalized()
-
-	#var animatedSprite2D = get_node("AnimatedSprite2D")
-
-	# Choose jump animation based on movement direction
 	if jumpDirection.x > 0:
-		#animatedSprite2D.animation = "right_jump" # Jump animation to the right
 		animation_player.play("jump-right") 
 	elif jumpDirection.x < 0:
-		#animatedSprite2D.animation = "left_jump" # Jump animation to the left
 		animation_player.play("jump-left") 
 	elif jumpDirection.y < 0:
-		#animatedSprite2D.animation = "up_jump" # Jump animation upwards
 		animation_player.play("jump-up") 
 	elif jumpDirection.y > 0:
-		#animatedSprite2D.animation = "down_jump" # Jump animation downwards
 		animation_player.play("jump-down") 
 	elif jumpDirection.y == 0 or jumpDirection.x==0:
-		#animatedSprite2D.animation = "down_jump"
+
 		animation_player.play("jump-down") 
 	
-	#animatedSprite2D.play()
 	
 	disable_collision_for_2_seconds()
+
 
 func _on_timer_timeout():
 
@@ -170,6 +171,8 @@ func disable_collision_for_2_seconds():
 	get_node("Timer").start()
 
 
+
+#-------------------------------On-hill-zoom---------------------------------------------------------
 func _on_area_2d_body_entered(body):
 	var camera=get_node("Camera2D")
 	if body.is_in_group("player"):
@@ -190,7 +193,7 @@ func _on_body_exited(_body):
 	
 	
 
-# Funcția pentru echiparea unui item
+#----------------------------------equip_item/inequip_item---------------------------------------------
 func equip_item(item_texture: Texture, item_nume : String):
 	if item_texture:
 		print("Texture set successfully")
@@ -208,7 +211,6 @@ func inequip_item():
 	info_label.visible=false
 	info_label.clear()
 
-
 func _on_area_2d_mouse_entered():
 	info_label.visible=true
 	color_rect.visible=true
@@ -216,57 +218,46 @@ func _on_area_2d_mouse_entered():
 	print("intrare")
 	
 
-
 func _on_area_2d_mouse_exited():
 	info_label.visible=false
 	color_rect.visible=false
 	print("iesire")
 
 
+#-------------------------------player-attack--------------------------------------------------------
 func _on_inv_attacking():
-	#health-=10
-	#healthbar.value=health
+	
 	
 	player_current_attack=true
-	if is_jumping:  # Nu permite atacul dacă jucătorul sare
+	if is_jumping:  
 		return
-	#arma_colisiune.disabled=false
+	
 	is_attacking = true
 	current_state = "attacking"
 	
-	# Alege animația de atac în funcție de ultima direcție
+	
 	if last_direction.x > 0:  # Dreapta
-		#_currentIdleAnimation = "atack-right"
 		animation_player.play("atack-right") 
-		#animatedSprite2D.animation = "right_attack"
 	elif last_direction.x < 0:   # Stânga
-		#_currentIdleAnimation = "atack-left"
-		#animatedSprite2D.animation = "left_attack"
 		animation_player.play("atack-left") 
 	elif last_direction.y > 0:  # Jos
-		#_currentIdleAnimation = "atack-down"
-		#animatedSprite2D.animation = "down_attack"
 		animation_player.play("atack-down") 
 	elif last_direction.y < 0:  # Sus
-		#_currentIdleAnimation = "atack-up"
-		#animatedSprite2D.animation = "up_attack"
 		animation_player.play("atack-up") 
 	
-	#animatedSprite2D.play()
 	attack_timer.start(0.5)
-	#
+	
 func _on_attack_timer_timeout():
 	is_attacking = false
-	#arma_colisiune.disabled=true
-	current_state = "idle"  # Sau starea corespunzătoare după atac
+	current_state = "idle"  
 	if last_direction.x > 0:
-		_currentIdleAnimation = "right"#"right_idle"
+		_currentIdleAnimation = "right"
 	elif last_direction.x < 0:
-		_currentIdleAnimation = "left"#"left_idle"
+		_currentIdleAnimation = "left"
 	elif last_direction.y > 0:
-		_currentIdleAnimation ="down" #"front_idle"
+		_currentIdleAnimation ="down"
 	elif last_direction.y < 0:
-		_currentIdleAnimation = "up"#"back_idle"
+		_currentIdleAnimation = "up"
 	player_current_attack=false
 
 
@@ -289,7 +280,6 @@ func _on_arma_area_entered(area):
 func deal_with_damage():
 	if(enemy_inattack_range and enemy_current_attack==true):
 			health-=10
-			#healthbar.value=health
 			healthbar_player.value=health
 			apply_knockback()
 			if health<=0:

@@ -180,30 +180,38 @@ func enter_boat():
 	# Jucătorul intră în barcă
 	player_in_boat=true
 	player.visible=false
+	player.is_jumping=false
+	player.can_jump=false
 	 # Ascundem jucătorul
 	player.set_process(false)  # Dezactivăm procesarea jucătorului
 	miscare = false  # Oprim mișcarea aleatorie cât timp controlăm barca manual
 	change_direction_timer.stop()  # Oprim schimbarea direcției aleatorii
 	print("Jucătorul a intrat în barcă")
+	
 
 func exit_boat():
 	# Jucătorul iese din barcă
 	player_in_boat=false
 	player.visible=true
 	miscare = false #
+	player.is_jumping=false
+	player.can_jump=true
 	player.set_process(true)  # Reactivăm procesarea jucătorului
 	change_direction_timer.stop()  # Repornim timer-ul pentru schimbarea direcției aleatorii
 	print("Jucătorul a ieșit din barcă")
 	
 	
+	
 func _on_in_boat_body_entered(body):
 	if body.is_in_group("player"):
 		player_near_boat=true
+		player.is_jumping=false
 
 
 func _on_in_boat_body_exited(body):
 	if body.is_in_group("player"):
 		player_near_boat=false
+		player.is_jumping=true
 
 
 #---------------------------------handl-ere-----------------------------------------------------------------
