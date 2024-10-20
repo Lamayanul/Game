@@ -1,9 +1,10 @@
 extends TileMap
-
+class_name tilemap
 
 @onready var grid = $Grid_ogor
 @onready var grid_land = $Grid_land
-
+var last_direction = Vector2(0, 1)
+@onready var animation_player=get_node("/root/world/player/AnimationPlayer")
 @onready var inventory = get_node("/root/world/CanvasLayer/Inv")
 var selected_slot: Slot = null  
 @onready var player = get_node("/root/world/player")
@@ -12,6 +13,9 @@ var cell
 var planting_mode = false
 var curentSeed=preload("res://Flowers/grau.tscn")
 var plantedFlower:Dictionary={}
+@onready var animatie_sapa: Timer = $animatie_sapa
+@onready var hide: hide = $"../hide"
+
 
 
 #-------------------------------_ready--------------------------------------------------------------------------
@@ -22,7 +26,11 @@ func _ready():
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
-	var mouse_pos = get_global_mouse_position()  # Obține poziția mouse-ului în coordonatele globale
+	var player_position = player.global_position
+	var player_direction = player.last_direction.normalized()  # Direcția „în față”
+	var drop_distance = 10  # Ajustează distanța conform nevoilor tale
+	var drop_position = player_position + (player_direction * drop_distance)
+	var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
 	var grid_cell = local_to_map(mouse_pos)  # Convertește poziția mouse-ului la coordonatele TileMap-ului
 
 	# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
@@ -42,18 +50,23 @@ func _process(_delta):
 		
 	
 	if tile_data_land != null and tile_data_land.get_custom_data("land") and not grid.visible:
-		grid_land.visible = false  #gridul de land
+		#grid_land.visible = true  #gridul de land
 		grid_land.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "land"
 	else:
 		grid_land.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "land"
 		
 	  # Adaugă "plant_ogor" în Input Map
 	planting_mode = true
-		
-	if planting_mode and grid_land.visible and Input.is_action_just_pressed("plant_ogor"):
-		# Înlocuiește tile-ul de "land" cu un tile de "ogor"
-		replace_land_with_ogor(grid_cell)
-		planting_mode = false  # Dezactivăm modulul de plantare după plantare
+	if inventory.selected_slot:
+		var ID=inventory.selected_slot.get_id()
+		if ID=="9":
+			grid_land.visible=true
+			if planting_mode and grid_land.visible and hide.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
+				inventory.attack()
+				#animatie_sapa.start() ------------------------probleme de timing
+				replace_land_with_ogor(grid_cell)
+				planting_mode = false 
+			
 		
 	if Input.is_action_just_pressed("harvest"):
 		if plantedFlower.has(local_to_map(grid.position)) and is_harvestable(local_to_map(grid.position)):
@@ -64,17 +77,11 @@ func _process(_delta):
 
 #------------------------------schimbare tile din land in ogor--------------------------------------------------------
 func replace_land_with_ogor(grid_cell: Vector2):
-	# Asigură-te că coordonatele sunt corecte și că tile-ul este de tip "land"
 	var tile_data_land = get_cell_tile_data(1, grid_cell)
 
-	
 	if tile_data_land != null and tile_data_land.get_custom_data("land"):
-		# Eliminăm tile-ul de "land" de pe stratul de "land" (Layer 1)
-		#set_cell(1, grid_cell, -1)  # -1 înseamnă că tile-ul este șters
-		
-		# Plasăm tile-ul de "ogor" pe stratul de "ogor" (Layer 2)
 		set_cell(2,grid_cell,2,Vector2(1,1))
-		set_cells_terrain_connect(2, [grid_cell], 0 ,0,true)  # Înlocuiește cu ID-ul corect pentru tile-ul de "ogor"
+		set_cells_terrain_connect(2, [grid_cell], 0 ,0,true)  
 		print("Tile-ul de 'ogor' a fost plantat la:", grid_cell)
 
 
@@ -90,7 +97,7 @@ func _on_player_plant_seed():
 	if tile.get_custom_data("ogor"):
 		if plantedFlower.has(cellLocalCoord):
 			print("A plant already exists at:", cellLocalCoord)
-			return  # Ieși din funcție pentru a evita plantarea din nou
+			return  
 		plant_seed(cellLocalCoord)
 		
 	if inventory.selected_slot!=null:
@@ -123,7 +130,7 @@ func is_harvestable(coord)->bool:
 	print("harvest",coord)
 	print(plant)
 	if plant != null:
-		return plant.harvest_ready  # Sau metoda din clasa plantei care verifică maturitatea
+		return plant.harvest_ready 
 	return false
 	
 	
@@ -139,4 +146,6 @@ func harvest_plant(coord)->void:
 		inventory.drop_item_harvest("4",2,coord)
 		
 		
-		
+func _on_animatie_sapa_timeout() -> void:
+	animation_player.stop()
+	animatie_sapa.stop()

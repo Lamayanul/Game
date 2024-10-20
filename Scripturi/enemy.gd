@@ -84,7 +84,7 @@ func movement():
 func deal_with_damage():
 	if(player_inattack_range and player_current_attack==true):
 		if can_take_damage==true:
-			health-=10
+			health-=player.attack_weapon
 			healthbar.value=health
 			healthbar_enemy.value=health
 			$healthbar.visible=true

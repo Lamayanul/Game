@@ -30,7 +30,7 @@ var current_state = "idle"
 @onready var color_rect = $"../CanvasLayer/ColorRect"
 var info:String=""
 @onready var player_icon = $CanvasLayer/healthbar_player/player_icon
-
+var attack_weapon=0;
 #----------------------------------Enemy-action/stats-------------------------------------------------
 @onready var attack_timer = $attack_timer
 @onready var arma =$arma
@@ -225,7 +225,7 @@ func _on_area_2d_mouse_exited():
 
 
 #-------------------------------player-attack--------------------------------------------------------
-func _on_inv_attacking():
+func _on_inv_attacking(ID):
 	
 	
 	player_current_attack=true
@@ -235,15 +235,27 @@ func _on_inv_attacking():
 	is_attacking = true
 	current_state = "attacking"
 	
-	
-	if last_direction.x > 0:  # Dreapta
-		animation_player.play("atack-right") 
-	elif last_direction.x < 0:   # Stânga
-		animation_player.play("atack-left") 
-	elif last_direction.y > 0:  # Jos
-		animation_player.play("atack-down") 
-	elif last_direction.y < 0:  # Sus
-		animation_player.play("atack-up") 
+	if ID=="2":
+		attack_weapon=10;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("axe-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("axe-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("axe-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("axe-up") 
+	if ID=="9":
+		attack_weapon=5;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("hoe-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("hoe-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("hoe-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("hoe-up") 
+		
 	
 	attack_timer.start(0.5)
 	

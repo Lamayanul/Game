@@ -101,7 +101,6 @@ func _on_slot_selected(slot: Slot):
 	#var player = get_node("/root/world/player")
 	if player and slot.get_texture() != null:
 		player.equip_item(slot.get_texture(), slot.get_nume())
-		
 	
 
 
@@ -257,8 +256,8 @@ func plantare():
 func attack():
 	if selected_slot:
 		var ID=selected_slot.get_id()
-		if ID=="2":
-			emit_signal("attacking")
+		if ID=="2" || ID=="9":
+			emit_signal("attacking",ID)
 		
 #---------------------------harvest-drop------------------------------------------------------------
 func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
@@ -301,7 +300,7 @@ func eat():
 	if slot is Slot and slot.filled:
 		var ID = slot.get_id()
 		
-		if ID == "1":  # Verificăm dacă itemul este de tip mâncare
+		if ID == "1" || ID=="8":  # Verificăm dacă itemul este de tip mâncare
 			var cantitate_de_mancat = 1  # Cantitatea de mâncare consumată
 			player.health += 10  # Creștem sănătatea jucătorului
 			player.healthbar_player.value = player.health  # Actualizăm bara de sănătate

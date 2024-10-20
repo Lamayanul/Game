@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgc7bfs3whjaw"]
 
-[ext_resource type="Script" path="res://User/slot_container.gd" id="1_l8wts"]
+[ext_resource type="Script" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/slot_container.gd" id="1_l8wts"]
 [ext_resource type="Texture2D" uid="uid://ddd6b1k5r0k1f" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_Slot.png" id="2_60n7o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qudmq"]

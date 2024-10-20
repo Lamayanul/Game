@@ -1,4 +1,7 @@
 extends Area2D
+class_name hide
+@onready var grid_land: Sprite2D = $"../TileMap/Grid_land"
+@onready var tile_map: TileMap = $"../TileMap"
 
 # Opacitatea când obiectul este în zona de detectare
 #var _darkenedColor = Color(0.7, 0.7, 0.7, 1.0)
@@ -6,7 +9,7 @@ extends Area2D
 # Opacitatea normală când obiectul nu este în zona de detectare
 var _normalColor = Color(1, 1, 1, 1) # Opac
 var _transparent=Color(0,0,0,0)
-
+var can_plant = true
 
 # NodePath pentru jucător
 @export var player_path : NodePath
@@ -38,14 +41,23 @@ func _on_body_entered(body: Node):
 		if acoperis:
 			acoperis.modulate = _transparent
 			body.can_jump = false
+			can_plant = false
+			tile_map.planting_mode=false
+			grid_land.visible=false
+			
+			
 			
 
 		
 
 func _on_body_exited(body: Node):
 	print("Body exited: " + body.name)
-
+	grid_land.visible=true
 	if body.is_in_group("player") or body.is_in_group("gaina"):
 		if acoperis:
 			acoperis.modulate = _normalColor
 			body.can_jump = true
+			tile_map.planting_mode=true
+			grid_land.visible=true
+			can_plant = true
+			
