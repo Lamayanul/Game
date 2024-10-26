@@ -14,7 +14,7 @@ var planting_mode = false
 var curentSeed=preload("res://Flowers/grau.tscn")
 var plantedFlower:Dictionary={}
 @onready var animatie_sapa: Timer = $animatie_sapa
-@onready var hide: hide = $"../hide"
+@onready var hido = $"../hide"
 
 
 
@@ -26,52 +26,53 @@ func _ready():
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
-	var player_position = player.global_position
-	var player_direction = player.last_direction.normalized()  # Direcția „în față”
-	var drop_distance = 10  # Ajustează distanța conform nevoilor tale
-	var drop_position = player_position + (player_direction * drop_distance)
-	var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
-	var grid_cell = local_to_map(mouse_pos)  # Convertește poziția mouse-ului la coordonatele TileMap-ului
+	if player and is_instance_valid(player):
+		var player_position = player.global_position
+		var player_direction = player.last_direction.normalized()  # Direcția „în față”
+		var drop_distance = 10  # Ajustează distanța conform nevoilor tale
+		var _drop_position = player_position + (player_direction * drop_distance)#####################
+		var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
+		var grid_cell = local_to_map(mouse_pos)  # Convertește poziția mouse-ului la coordonatele TileMap-ului
 
-	# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
-	var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
-	var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
+		# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
+		var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
+		var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
 
-	# Resetăm vizibilitatea gridurilor
-	grid.visible = false
-	grid_land.visible = false
+		# Resetăm vizibilitatea gridurilor
+		grid.visible = false
+		grid_land.visible = false
 
-	# Verificăm întâi dacă tile-ul este de tip "ogor"
-	if tile_data != null and tile_data.get_custom_data("ogor"):
-		grid.visible = true  # Afișăm grid-ul pentru "ogor"
-		grid.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "ogor"
-	else:
-		grid.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "ogor"
-		
-	
-	if tile_data_land != null and tile_data_land.get_custom_data("land") and not grid.visible:
-		#grid_land.visible = true  #gridul de land
-		grid_land.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "land"
-	else:
-		grid_land.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "land"
-		
-	  # Adaugă "plant_ogor" în Input Map
-	planting_mode = true
-	if inventory.selected_slot:
-		var ID=inventory.selected_slot.get_id()
-		if ID=="9":
-			grid_land.visible=true
-			if planting_mode and grid_land.visible and hide.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
-				inventory.attack()
-				#animatie_sapa.start() ------------------------probleme de timing
-				replace_land_with_ogor(grid_cell)
-				planting_mode = false 
+		# Verificăm întâi dacă tile-ul este de tip "ogor"
+		if tile_data != null and tile_data.get_custom_data("ogor"):
+			grid.visible = true  # Afișăm grid-ul pentru "ogor"
+			grid.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "ogor"
+		else:
+			grid.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "ogor"
 			
 		
-	if Input.is_action_just_pressed("harvest"):
-		if plantedFlower.has(local_to_map(grid.position)) and is_harvestable(local_to_map(grid.position)):
-			print("da")
-			harvest_plant(local_to_map(grid.position))
+		if tile_data_land != null and tile_data_land.get_custom_data("land") and not grid.visible:
+			#grid_land.visible = true  #gridul de land
+			grid_land.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "land"
+		else:
+			grid_land.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "land"
+			
+		  # Adaugă "plant_ogor" în Input Map
+		planting_mode = true
+		if inventory.selected_slot:
+			var ID=inventory.selected_slot.get_id()
+			if ID=="9":
+				grid_land.visible=true
+				if planting_mode and grid_land.visible and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
+					inventory.attack()
+					#animatie_sapa.start() ------------------------probleme de timing
+					replace_land_with_ogor(grid_cell)
+					planting_mode = false 
+				
+			
+		if Input.is_action_just_pressed("harvest"):
+			if plantedFlower.has(local_to_map(grid.position)) and is_harvestable(local_to_map(grid.position)):
+				print("da")
+				harvest_plant(local_to_map(grid.position))
 
 
 

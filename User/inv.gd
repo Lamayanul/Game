@@ -13,7 +13,7 @@ extends PanelContainer
 
 #--------------------------noduri-principale--------------------------------------------------------
 var selected_slot: Slot = null  # Slotul selectat
-@onready var tilemap = $"../../TileMap"
+@onready var tile_map = $"../../TileMap"
 @onready var player = $"../../player"
 
 #-----------------------------Semnale----------------------------------------------------------------
@@ -256,7 +256,7 @@ func plantare():
 func attack():
 	if selected_slot:
 		var ID=selected_slot.get_id()
-		if ID=="2" || ID=="9":
+		if ID=="2" || ID=="9" || ID=="10":
 			emit_signal("attacking",ID)
 		
 #---------------------------harvest-drop------------------------------------------------------------
@@ -281,7 +281,7 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 		
 		item_instance.ID = ID
 		
-		var global_position1=tilemap.map_to_local(location)
+		var global_position1=tile_map.map_to_local(location)
 		item_instance.position = global_position1
 		#drop_position=Vector2(100,100)
 		# Folosește 'position' pentru coordonate locale

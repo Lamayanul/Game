@@ -20,7 +20,7 @@ var is_resetting = false
 @export var player_path : NodePath
 func _ready():
 	_staticbody = get_node("StaticBody2D")
-	respawn_fruits.start()  # Pornim timer-ul pentru fructe
+	respawn_fruits.start()  
 
 	if player_path:
 		_playerSprite = get_node(player_path)
@@ -44,13 +44,14 @@ func _on_body_exited(body: Node):
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("arma"):
-		call_deferred("play_taiere_animation")
+		if inv.selected_slot.get_id()=="2":
+			call_deferred("play_taiere_animation")
 
 func play_taiere_animation():
 	if not is_cutting:
-		return  # Dacă nu se poate tăia, ieșim din funcție
+		return 
 
-	# Jucăm animația în funcție de starea fructelor
+	
 	if fructe:
 		animation_player.play("taiere-fructe")
 	else:
@@ -60,51 +61,57 @@ func play_taiere_animation():
 	index_taiere += 1
 	print("Index taiere: ", index_taiere)
 
-	# Condiții pentru tăierea fructelor
+
 	if fructe and index_taiere == 4:
-		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10)) 
 		var drop_position = global_position + drop_offset 
-		inv.drop_item_everywhere("7", 3, drop_position)  # Drop fructe
-		fructe = false  # Resetăm starea fructelor după ce au fost culese
-		animation_player.stop()  # Oprim animația curentă (taiere-fructe)
-		animation_player.play("taiere")  # Pornim animația de tăiere fără fructe
+		inv.drop_item_everywhere("7", 3, drop_position) 
+		fructe = false 
+		animation_player.stop() 
+		animation_player.play("taiere")  
 		
-		return  # Ne asigurăm că animația curentă este întreruptă corect
+		return 
 		
 		
 		
-	# Condiții pentru tăierea copacului complet
+
 	if index_taiere == 8:
 		var pos = Vector2(-20, 10)
-		animation_player.play("gata")  # Animația finală pentru tăiere completă
-		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+		animation_player.play("gata") 
+		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
 		var drop_position = global_position + drop_offset 
 		inv.drop_item_everywhere("6", 3, drop_position) 
 		if fructe:
-			inv.drop_item_everywhere("7", 3, pos)  # # Drop lemn sau alte resurse
-		reset_tree_state()  # Resetăm starea copacului
-		respawn_tree.start()  # Pornim respawn-ul pomului
+			inv.drop_item_everywhere("7", 3, pos) 
+		#reset_tree_state() 
+		#respawn_tree.start()  
+		queue_free()
+		var radacina_mare_scene = load("res://Scene/radacina_mare.tscn")
+		var radacina_mare_instance = radacina_mare_scene.instantiate()
+		radacina_mare_instance.global_position = global_position
+		get_parent().add_child(radacina_mare_instance)
+
+		
 
 func reset_tree_state():
-	# Funcție pentru resetarea completă a stării copacului
-	index_taiere = 0  # Resetăm progresul tăierii
-	is_cutting = false  # Nu se mai poate tăia până la respawn
-	fructe = false  # Resetăm fructele
-	is_resetting = true  # Marcăm că pomul este în proces de resetare
+
+	index_taiere = 0  
+	is_cutting = false 
+	fructe = false 
+	is_resetting = true 
 
 	respawn_fruits.stop()
 	respawn_tree.start()
 	
-	
-# Funcție pentru resetarea copacului după ce este tăiat complet
+
 func _on_respawn_tree_timeout():
-	if is_resetting:  # Verificăm dacă resetarea este în curs
-		animation_player.play("RESET")  # Animația de resetare a pomului
-		is_cutting = true  # Permite din nou tăierea copacului
-		is_resetting = false  # Resetarea este completă
+	if is_resetting:  
+		animation_player.play("RESET")  
+		is_cutting = true  
+		is_resetting = false 
 		respawn_fruits.start()
 # Funcție pentru apariția fructelor
 func _on_respawn_fruits_timeout():
-	if not fructe and not is_resetting:  # Verificăm dacă fructele nu sunt deja prezente și resetarea nu este activă
-		animation_player.play("fructe")  # Animația pentru apariția fructelor
-		fructe = true  # Fructele sunt disponibile pentru următoarea tăiere
+	if not fructe and not is_resetting:  
+		animation_player.play("fructe") 
+		fructe = true  

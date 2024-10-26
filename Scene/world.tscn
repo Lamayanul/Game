@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=77 format=3 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
@@ -43,6 +43,8 @@
 [ext_resource type="PackedScene" uid="uid://ckve6ynedo0v3" path="res://Scene/lantern.tscn" id="38_ko1f3"]
 [ext_resource type="PackedScene" uid="uid://csows3c8c0xwh" path="res://Scene/light.tscn" id="39_i42uy"]
 [ext_resource type="PackedScene" uid="uid://bnsr4kcnkmcl0" path="res://Scene/casa.tscn" id="40_1y6tq"]
+[ext_resource type="PackedScene" uid="uid://cxhpbnyxkgt2p" path="res://Scene/radacina_mare.tscn" id="44_2kx76"]
+[ext_resource type="PackedScene" uid="uid://ce7vjuj8ei7os" path="res://Scene/piatra.tscn" id="45_22r8t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g1xpc"]
 texture = ExtResource("1_okv3e")
@@ -550,7 +552,7 @@ layer_2/z_index = -1
 layer_2/tile_data = PackedInt32Array(458742, 131074, 0, 524277, 65538, 1, 458741, 65538, 0, 524276, 65538, 1, 458740, 65538, 0, 458739, 65538, 0, 524275, 65538, 1, 589813, 65538, 1, 589812, 65538, 1, 589811, 65538, 1, 655349, 65538, 2, 655348, 65538, 2, 655347, 65538, 2, 655350, 131074, 2, 589814, 131074, 1, 524274, 2, 1, 458738, 2, 0, 589810, 2, 1, 655346, 2, 2, 524278, 131074, 1)
 layer_3/name = "items"
 layer_3/y_sort_enabled = true
-layer_3/tile_data = PackedInt32Array(-65539, 65540, 0, -3, 65540, 1, -65538, 131076, 0, -2, 131076, 1, -196605, 65540, 0, -131069, 65540, 1, -196604, 131076, 0, -131068, 131076, 1, 327687, 65540, 0, 393223, 65540, 1, 327688, 131076, 0, 393224, 131076, 1, 393225, 65540, 0, 458761, 65540, 1, 393226, 131076, 0, 458762, 131076, 1, 524293, 65540, 0, 589829, 65540, 1, 524294, 131076, 0, 589830, 131076, 1, 524289, 65540, 0, 589825, 65540, 1, 524290, 131076, 0, 589826, 131076, 1, 131075, 262148, 2, 196608, 262148, 2, 327678, 262148, 2, -196599, 196612, 2, -65523, 196612, 2, 196620, 196612, 2, -393210, 65540, 3, -393209, 65540, 3, -262146, 65540, 3, -196616, 65540, 3, 327675, 65540, 3, 458748, 65540, 3, 458749, 65540, 3, 589823, 524292, 1, -262148, 524292, 1, -131078, 524292, 1, -327688, 524292, 1, -327669, 524292, 1, -262125, 327684, 4, -589812, 393220, 4, 327697, 196613, 3, 327696, 131077, 3, 327695, 131077, 3, 327694, 131077, 3, 327693, 65541, 0, 393229, 5, 1, 458765, 5, 1, 524301, 65541, 2, 524302, 131077, 3, 524303, 131077, 3, 524304, 131077, 3, 524305, 196613, 3, 458767, 524292, 4)
+layer_3/tile_data = PackedInt32Array(-65539, 65540, 0, -3, 65540, 1, -65538, 131076, 0, -2, 131076, 1, -196605, 65540, 0, -131069, 65540, 1, -196604, 131076, 0, -131068, 131076, 1, 327687, 65540, 0, 393223, 65540, 1, 327688, 131076, 0, 393224, 131076, 1, 393225, 65540, 0, 458761, 65540, 1, 393226, 131076, 0, 458762, 131076, 1, 524293, 65540, 0, 589829, 65540, 1, 524294, 131076, 0, 589830, 131076, 1, 524289, 65540, 0, 589825, 65540, 1, 524290, 131076, 0, 589826, 131076, 1, 131075, 262148, 2, 196608, 262148, 2, 327678, 262148, 2, -196599, 196612, 2, -65523, 196612, 2, 196620, 196612, 2, -393210, 65540, 3, -393209, 65540, 3, -262146, 65540, 3, -196616, 65540, 3, 327675, 65540, 3, 458748, 65540, 3, 458749, 65540, 3, 589823, 524292, 1, -131078, 524292, 1, -327688, 524292, 1, -327669, 524292, 1, -262125, 327684, 4, -589812, 393220, 4, 327697, 196613, 3, 327696, 131077, 3, 327695, 131077, 3, 327694, 131077, 3, 327693, 65541, 0, 393229, 5, 1, 458765, 5, 1, 524301, 65541, 2, 524302, 131077, 3, 524303, 131077, 3, 524304, 131077, 3, 524305, 196613, 3, 458767, 524292, 4)
 layer_4/name = "cliff"
 layer_4/y_sort_enabled = true
 layer_4/tile_data = PackedInt32Array(-262157, 1, 0, -262156, 65537, 0, -262155, 65537, 0, -262154, 131073, 0, -196621, 1, 1, -131085, 1, 1, -65549, 1, 2, -196620, 65537, 1, -196619, 65537, 1, -196618, 131073, 1, -131082, 131073, 1, -65546, 131073, 2, -65548, 589825, 5, -65547, 655361, 5, -131084, 589825, 4, -131083, 655361, 4, -12, 589825, 6, -11, 655361, 6)
@@ -582,7 +584,7 @@ platform_floor_layers = 0
 wait_time = 2.0
 
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
-position = Vector2(-127, 56)
+position = Vector2(18, -57)
 
 [node name="Timer" type="Timer" parent="player"]
 wait_time = 0.5
@@ -859,6 +861,16 @@ scale = Vector2(0.4125, 0.4125)
 
 [node name="casa" parent="." instance=ExtResource("40_1y6tq")]
 position = Vector2(424, -16)
+
+[node name="Area2D" parent="." instance=ExtResource("44_2kx76")]
+position = Vector2(37, -86)
+
+[node name="Item11" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(95, -65)
+ID = "10"
+
+[node name="Area2D2" parent="." instance=ExtResource("45_22r8t")]
+position = Vector2(-58, -67)
 
 [connection signal="body_entered" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]

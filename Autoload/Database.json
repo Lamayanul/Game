@@ -68,5 +68,16 @@
 	"number":9,
 	"nume":"hoe",
 	},
-
+"10":{
+	"texture":"pickaxe.png",
+	"cantitate":1,
+	"number":10,
+	"nume":"pickaxe",
+	},
+"11":{
+	"texture":"piatra-item.png",
+	"cantitate":1,
+	"number":11,
+	"nume":"piatra",
+	},
 }

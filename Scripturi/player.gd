@@ -46,13 +46,13 @@ var Speed = 50
 
 
 #----------------------------------TileMap------------------------------------------------------------
-var tilemap
+var tile_map
 var _tileMap
 
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
-	tilemap = get_tree().current_scene.get_node("TileMap")
+	tile_map = get_tree().current_scene.get_node("TileMap")
 	_tileMap = get_node("/root/world/TileMap")
 	colisiune = get_node("colisiune")
 	add_to_group("player")
@@ -255,6 +255,16 @@ func _on_inv_attacking(ID):
 			animation_player.play("hoe-down") 
 		elif last_direction.y < 0:  # Sus
 			animation_player.play("hoe-up") 
+	if ID=="10":
+		attack_weapon=5;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("pickaxe-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("pickaxe-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("pickaxe-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("pickaxe-up") 
 		
 	
 	attack_timer.start(0.5)

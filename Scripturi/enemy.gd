@@ -26,6 +26,12 @@ var is_attacking = false
 @onready var healthbar_enemy = $"../player/CanvasLayer/healthbar_enemy"
 @export var stop_distance: float = 20
 @onready var atack = $atack
+var happy=0;
+var angry=0;
+var dictator=0;
+
+
+
 
 func _ready():
 	healthbar_enemy.value=0
@@ -37,12 +43,13 @@ func _ready():
 
 
 func _physics_process(_delta):
-	# Actualizează viteza de mișcare
+	
+	
+	
 	velocity = moveDirection * MoveSpeed
 	
-		# Verificăm dacă inamicul trebuie să urmărească jucătorul
 	
-	if player_chase:
+	if player_chase and angry >= 3:
 		chase()
 	else:
 		# Altfel, mișcarea normală
@@ -84,6 +91,8 @@ func movement():
 func deal_with_damage():
 	if(player_inattack_range and player_current_attack==true):
 		if can_take_damage==true:
+			angry+=1
+			print(angry)
 			health-=player.attack_weapon
 			healthbar.value=health
 			healthbar_enemy.value=health
@@ -130,6 +139,7 @@ func _on_arma_area_entered(area):
 
 
 func chase():
+	
 	if player_chase:
 		# Calcul distanță dintre inamic și jucător
 		var direction = (player.position - position).normalized()
@@ -162,10 +172,11 @@ func chase():
 
 func _on_detection_body_entered(body):
 	if body.is_in_group("player"):
-		player_chase=true
 		enemy_icon.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/enemy.png")
 		healthbar_enemy.value=health
-		chase()
+		if angry>=3:
+			player_chase=true
+			chase()
 
 
 func _on_detection_body_exited(body):
@@ -182,7 +193,7 @@ func atac_mode():
 
 
 func _on_atack_zone_area_entered(area):
-	if area.is_in_group("player_hitbox") and  is_attacking==false:
+	if area.is_in_group("player_hitbox") and  is_attacking==false and angry>=3:
 		print(area)
 		is_attacking = true
 		
