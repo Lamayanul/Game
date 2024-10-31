@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://0nyc1xpouaxs"]
+
+[ext_resource type="Texture2D" uid="uid://cnw1kvj3nbdbh" path="res://assets/gard_pivot.png" id="1_de1ye"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tqu21"]
+size = Vector2(6, 5)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_de1ye")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_tqu21")

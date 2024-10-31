@@ -80,4 +80,10 @@
 	"number":11,
 	"nume":"piatra",
 	},
+"12":{
+	"texture":"gard_pivot.png",
+	"cantitate":1,
+	"number":12,
+	"nume":"gard",
+	},
 }

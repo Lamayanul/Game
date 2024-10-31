@@ -15,12 +15,16 @@ var curentSeed=preload("res://Flowers/grau.tscn")
 var plantedFlower:Dictionary={}
 @onready var animatie_sapa: Timer = $animatie_sapa
 @onready var hido = $"../hide"
+var placing_gard_mode = false  
+@export var gard_tile_id: int = 3  
+@onready var grid_gard = $Grid_gard
 
 
 
 #-------------------------------_ready--------------------------------------------------------------------------
 func _ready():
 	grid_land.visible=false
+	grid_gard.visible = false
 
 
 
@@ -37,10 +41,12 @@ func _process(_delta):
 		# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
 		var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
 		var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
+		var tile_data_gard = get_cell_tile_data(3, grid_cell)
 
 		# Resetăm vizibilitatea gridurilor
 		grid.visible = false
 		grid_land.visible = false
+		grid_gard.visible=false
 
 		# Verificăm întâi dacă tile-ul este de tip "ogor"
 		if tile_data != null and tile_data.get_custom_data("ogor"):
@@ -74,6 +80,25 @@ func _process(_delta):
 				print("da")
 				harvest_plant(local_to_map(grid.position))
 
+		if inventory.selected_slot and inventory.selected_slot.get_id() == "12": # Folosim ID-ul itemului gard
+			grid_gard.visible = true
+			grid_gard.position = map_to_local(grid_cell)
+			placing_gard_mode = true
+		else:
+			grid_gard.visible = false
+			placing_gard_mode = false
+
+			
+		if Input.is_action_just_pressed("place_gard") and placing_gard_mode:
+			place_gard(grid_cell)
+			
+func place_gard(grid_cell: Vector2):
+		set_cell(3, grid_cell, 5, Vector2(0, 3))  # Plasează gardul
+		set_cells_terrain_connect(4, [grid_cell], 0 ,0,true) 
+		print("Gard plasat la:", grid_cell)
+		inventory.selected_slot.decrease_cantitate(1)
+		
+		
 
 
 #------------------------------schimbare tile din land in ogor--------------------------------------------------------

@@ -12,6 +12,7 @@ var item_id: String = ""  # ID-ul itemului stivuit
 
 
 
+
 signal slot_selected(slot)
 
 @export var nume: String:
@@ -134,9 +135,9 @@ func clear_item():
 
 	 # Resetează textura la null
 	$TextureHolder/TextureRect.texture = null  
-	
 	# Resetează textul etichetei la gol
 	label.text = ""
+	
 	
 	# Resetează cantitatea
 	cantitate = 0
@@ -166,6 +167,7 @@ func decrease_cantitate(amount: int) -> bool:
 			cantitate = 0  # Asigură-te că nu e negativă
 			clear_item()  # Curăță slotul dacă cantitatea ajunge la 0
 			return true  # Itemul trebuie eliminat
+			
 		else:
 			label.text = str(cantitate)  # Actualizează eticheta
 		return false  # Itemul încă are cantitate, deci nu trebuie eliminat

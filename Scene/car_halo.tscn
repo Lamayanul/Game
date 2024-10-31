@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cg0cy8qwrmmj4"]
+
+[ext_resource type="Texture2D" uid="uid://danfwjaw7a0kb" path="res://Sprout Lands - Sprites - Basic pack/Objects/pisica-halo2.png" id="1_dnjt4"]
+[ext_resource type="Texture2D" uid="uid://c5kilxa8hjura" path="res://Sprout Lands - Sprites - Basic pack/Objects/pisica-halo1.png" id="2_op2qr"]
+[ext_resource type="Script" path="res://Scripturi/cat_halo.gd" id="3_6jdv0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r20p5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dnjt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_op2qr")
+}],
+"loop": true,
+"name": &"idle-cat",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h1xgh"]
+size = Vector2(30, 4)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+y_sort_enabled = true
+scale = Vector2(2.63393, 2.63393)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_r20p5")
+animation = &"idle-cat"
+frame = 1
+frame_progress = 0.462768
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.379661, 4.17628)
+shape = SubResource("RectangleShape2D_h1xgh")
+script = ExtResource("3_6jdv0")

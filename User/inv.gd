@@ -74,6 +74,8 @@ func _ready():
 func _on_slot_selected(slot: Slot):
 	if selected_slot:
 		selected_slot.deselect() 
+		
+		
 	selected_slot = slot  
 	selected_slot.select()
 
@@ -121,7 +123,23 @@ func _input(_event):
 		attack()
 	if Input.is_action_just_pressed("eat"):
 		eat()
+	
+	if Input.is_action_just_pressed("slot_1"):
+		select_slot_by_index(0)
+	if Input.is_action_just_pressed("slot_2"):
+		select_slot_by_index(1)
+	if Input.is_action_just_pressed("slot_3"):
+		select_slot_by_index(2)
+	if Input.is_action_just_pressed("slot_4"):
+		select_slot_by_index(3)
 
+
+#-----------------------------------select_slot_by_index------------------------------------------------
+func select_slot_by_index(index: int):
+	if index >= 0 and index < grid_container.get_child_count():
+		var slot = grid_container.get_child(index)
+		if slot is Slot:
+			_on_slot_selected(slot)
 
 #---------------------------------drop-item-selected-----------------------------------------------------
 func drop_selected_item():
@@ -158,7 +176,7 @@ func drop_selected_item():
 			print(plin)
 			
 			player.inequip_item()
-			
+			info_label.visible=false
 			
 			
 		else:

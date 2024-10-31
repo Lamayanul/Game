@@ -1,6 +1,7 @@
 extends Sprite2D
 
 @export var ID =""
+@export var item_cantitate:int =1
 
 @onready var shadow = Sprite2D.new()
 
@@ -11,7 +12,7 @@ var time_passed: float = 0.0
 
 # Variabile pentru textura și cantitate
 var item_texture: Texture
-var item_cantitate: int=1
+
 
 func _ready():
 	# Setează textura folosind ID-ul

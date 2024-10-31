@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckve6ynedo0v3"]
+[gd_scene load_steps=4 format=3 uid="uid://ckve6ynedo0v3"]
 
-[ext_resource type="Texture2D" uid="uid://m3fwun0kwmdj" path="res://Pixel Art Lantern Pack/Lantern 1/Bronze/Orange Light/Lantern 1 - Beonze and Orange_000.png" id="1_8sivy"]
 [ext_resource type="Script" path="res://Scripturi/lantern.gd" id="2_y6luv"]
 
 [sub_resource type="Gradient" id="Gradient_qs1k1"]
@@ -17,7 +16,6 @@ fill_to = Vector2(0.918803, 0.311966)
 z_index = -1
 position = Vector2(0, 2.38419e-07)
 scale = Vector2(0.275, 0.275)
-texture = ExtResource("1_8sivy")
 script = ExtResource("2_y6luv")
 metadata/_edit_group_ = true
 
