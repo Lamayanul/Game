@@ -148,6 +148,7 @@ func drop_selected_item():
 		var ID = selected_slot.get_id()  # Obține ID-ul itemului din slotul selectat
 		if ID == "0":
 			selected_slot.clear_item()
+		
 		if ID:
 			print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
@@ -176,7 +177,7 @@ func drop_selected_item():
 			print(plin)
 			
 			player.inequip_item()
-			info_label.visible=false
+			info_label.text=""
 			
 			
 		else:
@@ -198,6 +199,7 @@ func drop_item(ID: String, cantiti: int):
 	# Obține textura și cantitatea din ItemData
 	if cantiti==0:
 		return
+	
 	var item_cantitate = cantiti
 	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
 	var item_texture = load(item_texture_path) as Texture
@@ -220,7 +222,8 @@ func drop_item(ID: String, cantiti: int):
 		
 		item_instance.position = drop_position 
 		world_node.add_child(item_instance)
-		
+		player.inequip_item()
+		info_label.text=""
 	
 #-----------------------------------drop-pt-cate-un-item----------------------------------------------
 func drop_selected_item_1():
@@ -274,7 +277,7 @@ func plantare():
 func attack():
 	if selected_slot:
 		var ID=selected_slot.get_id()
-		if ID=="2" || ID=="9" || ID=="10":
+		if ID=="2" || ID=="9" || ID=="10" || ID=="13":
 			emit_signal("attacking",ID)
 		
 #---------------------------harvest-drop------------------------------------------------------------

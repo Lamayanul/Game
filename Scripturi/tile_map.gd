@@ -13,6 +13,7 @@ var cell
 var planting_mode = false
 var curentSeed=preload("res://Flowers/grau.tscn")
 var plantedFlower:Dictionary={}
+var plantedGard:Dictionary={}
 @onready var animatie_sapa: Timer = $animatie_sapa
 @onready var hido = $"../hide"
 var placing_gard_mode = false  
@@ -41,7 +42,7 @@ func _process(_delta):
 		# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
 		var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
 		var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
-		var tile_data_gard = get_cell_tile_data(3, grid_cell)
+		var _tile_data_gard = get_cell_tile_data(3, grid_cell)
 
 		# Resetăm vizibilitatea gridurilor
 		grid.visible = false
@@ -87,19 +88,40 @@ func _process(_delta):
 		else:
 			grid_gard.visible = false
 			placing_gard_mode = false
-
+			
+#------------------------------------gard_planting/remove----------------------------------------------------------------
 			
 		if Input.is_action_just_pressed("place_gard") and placing_gard_mode:
 			place_gard(grid_cell)
 			
+			
+		if Input.is_action_just_pressed("remove_gard"):
+			player_position = player.global_position
+			player_direction = player.last_direction.normalized()
+			var target_position = player_position + (player_direction * 10)
+			grid_cell = local_to_map(target_position)
+			remove_gard(grid_cell)
+			
+
 func place_gard(grid_cell: Vector2):
+	var tile_data_gard = get_cell_tile_data(3, grid_cell)
+	if tile_data_gard != null:
+		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
+		return 
+	var tile_data_land = get_cell_tile_data(1, grid_cell)
+	if  tile_data_land != null and tile_data_land.get_custom_data("land-gard"):
+	
 		set_cell(3, grid_cell, 5, Vector2(0, 3))  # Plasează gardul
-		set_cells_terrain_connect(4, [grid_cell], 0 ,0,true) 
+		set_cells_terrain_connect(3, [grid_cell], 1 ,0,true) 
 		print("Gard plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
-		
-		
+	
+			
 
+func remove_gard(grid_cell:Vector2):
+	set_cell(3, grid_cell, -1)
+
+	
 
 #------------------------------schimbare tile din land in ogor--------------------------------------------------------
 func replace_land_with_ogor(grid_cell: Vector2):

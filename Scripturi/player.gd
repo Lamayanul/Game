@@ -26,6 +26,7 @@ var current_state = "idle"
 #-------------------------------------Info-hand-sprite------------------------------------------
 @onready var hand_sprite = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite"
 @onready var info_label = $"../CanvasLayer/InfoLabel"
+
 @onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
 @onready var color_rect = $"../CanvasLayer/ColorRect"
 var info:String=""
@@ -42,12 +43,16 @@ var colisiune
 #-------------------------------------Player-stats----------------------------------------------
 var Speed = 50
 @export var health=100
-
-
+@onready var scut: Sprite2D = $Scut/Sprite2D
+@onready var shield_touch: CollisionShape2D = $"shield-touch"
+@export var max_shield_durability =100;
+var shield_durability = max_shield_durability 
+var shield_damage_resistance = 1.0
 
 #----------------------------------TileMap------------------------------------------------------------
 var tile_map
 var _tileMap
+@onready var inv: PanelContainer = $"../CanvasLayer/Inv"
 
 
 #-----------------------------------_ready()--------------------------------------------------------
@@ -61,6 +66,10 @@ func _ready():
 	arma_colisiune.disabled=true
 	healthbar.value=health
 	add_to_group("player_hitbox")
+	info_label.text=""
+	info_label.visible=false
+	scut.visible=false
+	shield_touch.disabled=true
 
 
 #------------------------------_physics_process()------------------------------------------------------
@@ -195,6 +204,9 @@ func _on_body_exited(_body):
 
 #----------------------------------equip_item/inequip_item---------------------------------------------
 func equip_item(item_texture: Texture, item_nume : String):
+	if scut.visible and inv.selected_slot.get_id() != "13":
+		scut.visible = false
+		shield_touch.disabled = true
 	if item_texture:
 		print("Texture set successfully")
 		hand_sprite.texture = item_texture
@@ -207,9 +219,14 @@ func equip_item(item_texture: Texture, item_nume : String):
 
 
 func inequip_item():
+	scut.visible = false
+	shield_touch.disabled = true
+		
 	hand_sprite.texture=null
 	info_label.visible=false
 	info_label.clear()
+	info = "" 
+	info_label.text = ""
 
 func _on_area_2d_mouse_entered():
 	info_label.visible=true
@@ -220,6 +237,7 @@ func _on_area_2d_mouse_entered():
 
 func _on_area_2d_mouse_exited():
 	info_label.visible=false
+	info_label.text=""
 	color_rect.visible=false
 	print("iesire")
 
@@ -236,6 +254,8 @@ func _on_inv_attacking(ID):
 	current_state = "attacking"
 	
 	if ID=="2":
+		scut.visible=false
+		shield_touch.disabled=true
 		attack_weapon=10;
 		if last_direction.x > 0:  # Dreapta
 			animation_player.play("axe-right") 
@@ -246,6 +266,8 @@ func _on_inv_attacking(ID):
 		elif last_direction.y < 0:  # Sus
 			animation_player.play("axe-up") 
 	if ID=="9":
+		scut.visible=false
+		shield_touch.disabled=true
 		attack_weapon=5;
 		if last_direction.x > 0:  # Dreapta
 			animation_player.play("hoe-right") 
@@ -256,6 +278,8 @@ func _on_inv_attacking(ID):
 		elif last_direction.y < 0:  # Sus
 			animation_player.play("hoe-up") 
 	if ID=="10":
+		scut.visible=false
+		shield_touch.disabled=true
 		attack_weapon=5;
 		if last_direction.x > 0:  # Dreapta
 			animation_player.play("pickaxe-right") 
@@ -265,7 +289,18 @@ func _on_inv_attacking(ID):
 			animation_player.play("pickaxe-down") 
 		elif last_direction.y < 0:  # Sus
 			animation_player.play("pickaxe-up") 
-		
+	if ID=="13":
+		scut.visible=true
+		shield_touch.disabled=false
+		attack_weapon=0;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("shield-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("shield-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("shield-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("shield-up") 
 	
 	attack_timer.start(0.5)
 	
@@ -300,19 +335,57 @@ func _on_arma_area_entered(area):
 		print("nu este enemy_hitbox")
 		
 func deal_with_damage():
-	if(enemy_inattack_range and enemy_current_attack==true):
-			health-=10
-			healthbar_player.value=health
-			apply_knockback()
-			if health<=0:
-				self.queue_free()
-				player_icon.texture=null
-				camera_enemy.make_current()
-			
-			enemy_inattack_range = false
-			enemy_current_attack = false
-			
+	if enemy_inattack_range and enemy_current_attack == true:
+		var base_damage = 10
+		var final_damage = apply_damage_with_shield(base_damage)  # Daune ajustate după calculul scutului
+
+		# Aplică daunele finale la viața jucătorului
+		health -= final_damage
+		healthbar_player.value = health
+
+		apply_knockback()  # Efect opțional de recul
+		if health <= 0:
+			self.queue_free()  # Jucătorul moare
+			player_icon.texture = null
+			$"../TileMap/Grid_gard".visible = false
+			$"../TileMap/Grid_land".visible = false
+			$"../TileMap/Grid_ogor".visible = false
+			camera_enemy.make_current()
+
+		enemy_inattack_range = false
+		enemy_current_attack = false
+
+
 func apply_knockback():
 	var direction = (position - get_node("/root/world/enemy/").position).normalized()
 	velocity = direction * knockback_force
 	move_and_slide()
+
+func apply_damage_with_shield(base_damage: float) -> float:
+	var damage_taken = base_damage  # Daunele inițiale
+   
+	if shield_durability > 0 and inv.selected_slot.get_id() == "13":
+		# Eficiența scutului, bazată pe durabilitate
+		var shield_effectiveness = float(shield_durability) / max_shield_durability
+		# Limităm eficiența la 0.5 pentru a reduce daunele la jumătate în loc să le eliminăm
+		var adjusted_effectiveness = min(0.8, shield_effectiveness)
+		
+		# Calculăm daunele, limitând reducerea
+		damage_taken = base_damage * (1 - (shield_damage_resistance * adjusted_effectiveness))
+		damage_taken = max(damage_taken, base_damage * 0.1)  # Daunele nu scad sub 10% din valoarea de bază
+		
+		# Reducem durabilitatea scutului
+		shield_durability -= base_damage * 0.3 # Durabilitatea scade mai lent, ajustabil în funcție de nevoi
+		 # Ne asigurăm că durabilitatea nu scade sub zero
+
+		# Dezactivăm scutul când durabilitatea ajunge la zero
+		if shield_durability <= 0:
+			scut.visible = false
+			inv.selected_slot.clear_item()
+			inequip_item()
+			print("Scutul s-a rupt!")
+
+	print("Durabilitatea scutului:", shield_durability)  # Pentru debugging
+	print("Daune calculate:", damage_taken)  # Pentru debugging
+	
+	return damage_taken

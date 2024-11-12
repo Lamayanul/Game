@@ -86,4 +86,10 @@
 	"number":12,
 	"nume":"gard",
 	},
+"13":{
+	"texture":"shield.png",
+	"cantitate":1,
+	"number":13,
+	"nume":"scut",
+	},
 }

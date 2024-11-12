@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var movement = 50
+var movement = 10
 @export var target: Node2D = null
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var sprite_2d = $Sprite2D
@@ -185,6 +185,7 @@ func enter_boat():
 	 # Ascundem jucătorul
 	player.set_process(false)  # Dezactivăm procesarea jucătorului
 	miscare = false  # Oprim mișcarea aleatorie cât timp controlăm barca manual
+	movement=50
 	change_direction_timer.stop()  # Oprim schimbarea direcției aleatorii
 	print("Jucătorul a intrat în barcă")
 	
@@ -197,6 +198,7 @@ func exit_boat():
 	player.is_jumping=false
 	player.can_jump=true
 	player.set_process(true)  # Reactivăm procesarea jucătorului
+	movement=10
 	change_direction_timer.stop()  # Repornim timer-ul pentru schimbarea direcției aleatorii
 	print("Jucătorul a ieșit din barcă")
 	
@@ -217,7 +219,7 @@ func _on_in_boat_body_exited(body):
 #---------------------------------handl-ere-----------------------------------------------------------------
 
 func handle_boat_control(_delta):
-
+	
 	# Control manual pentru barcă
 	if Input.is_action_pressed("move_left"):
 		moveDirectionHandlerBoat = Vector2.LEFT
@@ -245,10 +247,12 @@ func handle_boat_control(_delta):
 		move_and_slide()
 		
 	else:
+		
 		animated_sprite_2d.play("idle_dez")
 	
 		
 func handle_player_control(_delta):
+	
 	pass
  
 		
