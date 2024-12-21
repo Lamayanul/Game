@@ -3,7 +3,10 @@ extends PanelContainer
 #------------------------------grid-uri--------------------------------------------------------------
 @onready var grid_container = $MarginContainer/GridContainer
 @onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
-
+@onready var slot_container_5 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
+@onready var slot_container_7 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
+@onready var slot_container_6 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+@onready var oven = get_node("/root/world/Node2D")
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
@@ -73,8 +76,8 @@ func _ready():
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
 	if selected_slot:
-		selected_slot.deselect() 
-		
+		selected_slot.deselect()
+		player.info=""
 		
 	selected_slot = slot  
 	selected_slot.select()
@@ -109,10 +112,19 @@ func _on_slot_selected(slot: Slot):
 func update_selector_position(slot: Slot):
 	var slot_position = slot.get_global_position()
 	texture_rect.global_position = slot_position
+	
+	
+# Referințe la sloturile din inventar
+@onready var slot_container: Slot = $MarginContainer/GridContainer/SlotContainer
+@onready var slot_container_2: Slot = $MarginContainer/GridContainer/SlotContainer2
+@onready var slot_container_4: Slot = $MarginContainer/GridContainer/SlotContainer4
+@onready var slot_container_3: Slot = $MarginContainer/GridContainer/SlotContainer3
 
+# Sloturile tale
+var slots = []
 
 #---------------------------------------input-uri-diverse----------------------------------------------------
-func _input(_event):
+func _input(event):
 	if Input.is_action_just_pressed("drop"):
 		drop_selected_item()
 	if Input.is_action_just_pressed("drop_1"):
@@ -132,6 +144,79 @@ func _input(_event):
 		select_slot_by_index(2)
 	if Input.is_action_just_pressed("slot_4"):
 		select_slot_by_index(3)
+	if event is InputEventMouseButton and oven.in_zona==true:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			if selected_slot.get_item() != null:
+				# Obține detaliile itemului din slotul selectat
+				var item_data = selected_slot.get_item()
+				
+				# Verifică dacă itemul conține cheia "NUMBER"
+				if item_data.has("NUMBER"):
+					var item_number = str(item_data["NUMBER"])
+
+					# Verifică mai întâi dacă itemul poate fi adăugat în slotul 6
+					if slot_container_6.get_id() == item_number:
+						# Itemul există deja în slotul de crafting 6, adăugăm cantitatea
+						slot_container_6.set_property({
+							"TEXTURE": item_data["TEXTURE"],
+							"CANTITATE": slot_container_6.get_cantitate() + item_data["CANTITATE"],
+							"NUMBER": item_data["NUMBER"],
+							"NUME": item_data["NUME"]})
+						# Curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de crafting 6.")
+
+					# Dacă itemul nu a fost adăugat în slotul 6, încearcă să-l adaugi în slotul 7
+					elif slot_container_7.get_id() == item_number:
+						# Itemul există deja în slotul de crafting 7, adăugăm cantitatea
+						slot_container_7.set_property({
+							"TEXTURE": item_data["TEXTURE"],
+							"CANTITATE": slot_container_7.get_cantitate() + item_data["CANTITATE"],
+							"NUMBER": item_data["NUMBER"],
+							"NUME": item_data["NUME"]})
+						# Curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de crafting 7.")
+
+					# Dacă ambele sloturi sunt ocupate, nu mai adăuga itemul și afișează un mesaj
+					else:
+						if slot_container_6.get_id() != "0" and slot_container_7.get_id() != "0":
+							print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
+							# Poți adăuga un mesaj vizual pentru a înștiința utilizatorul că sloturile sunt pline
+
+						# Dacă niciun slot nu conține itemul, adaugă-l în primul slot disponibil
+						elif slot_container_6.get_id() == "0":  # Verifică dacă slotul 6 este gol
+							slot_container_6.set_property({
+								"TEXTURE": item_data["TEXTURE"],
+								"CANTITATE": item_data["CANTITATE"],
+								"NUMBER": item_data["NUMBER"],
+								"NUME": item_data["NUME"]})
+							selected_slot.clear_item()
+							plin -= 1
+							print("Item adăugat în slotul de crafting 6.")
+						elif slot_container_7.get_id() == "0":  # Verifică dacă slotul 7 este gol
+							slot_container_7.set_property({
+								"TEXTURE": item_data["TEXTURE"],
+								"CANTITATE": item_data["CANTITATE"],
+								"NUMBER": item_data["NUMBER"],
+								"NUME": item_data["NUME"]})
+							print("Item adăugat în slotul de crafting 7.")
+							selected_slot.clear_item()
+							plin -= 1
+						# Curăță itemul din slotul selectat doar dacă s-a adăugat cu succes
+						if slot_container_6.get_id() == "0" or slot_container_7.get_id() == "0":
+							selected_slot.clear_item()
+							plin -= 1
+							print("Item transferat.")
+						else:
+							print("Nu există locuri libere pentru acest item.")
+
+			else:
+				print("Nu este niciun item selectat pentru transfer.")
+
+
 
 
 #-----------------------------------select_slot_by_index------------------------------------------------
@@ -366,3 +451,15 @@ func drop_item_everywhere(ID: String, cantiti: int,location:Vector2):
 
 		item_instance.position = location
 		world_node.add_child(item_instance)
+
+func has_shield() -> bool:
+	player.scut.visible=true
+	player.shield_touch.disabled=false
+	for i in range(grid_container.get_child_count()):
+		var slot = grid_container.get_child(i)
+		if slot is Slot:
+			# Verifica daca slotul este plin si contine un scut
+			if slot.filled and slot.get_id() == "13":  # presupunem ca ID-ul scutului este "13"
+				return true
+	return false
+	

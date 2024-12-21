@@ -25,8 +25,12 @@ DialogueManager="*res://Scene/dialogue_manager.tscn"
 enemy_hitbox=""
 player_hitbox=""
 arma=""
-player=""
 LightSource=""
+scut=""
+player_char=""
+player=""
+gaina=""
+chick=""
 
 [input]
 

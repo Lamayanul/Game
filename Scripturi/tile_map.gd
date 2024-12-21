@@ -19,6 +19,7 @@ var plantedGard:Dictionary={}
 var placing_gard_mode = false  
 @export var gard_tile_id: int = 3  
 @onready var grid_gard = $Grid_gard
+@onready var arma_colisiune= get_node("/root/world/player/arma/arma_colisiune")
 
 
 
@@ -95,12 +96,14 @@ func _process(_delta):
 			place_gard(grid_cell)
 			
 			
-		if Input.is_action_just_pressed("remove_gard"):
-			player_position = player.global_position
-			player_direction = player.last_direction.normalized()
-			var target_position = player_position + (player_direction * 10)
-			grid_cell = local_to_map(target_position)
-			remove_gard(grid_cell)
+		#if inventory.selected_slot and inventory.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
+			#player_position = arma_colisiune.global_position
+			#player_direction = player.last_direction.normalized()
+			#var target_position = player_position 
+			#grid_cell = local_to_map(target_position)
+			#remove_gard(grid_cell)
+		
+
 			
 
 func place_gard(grid_cell: Vector2):

@@ -6,7 +6,6 @@
   "nume":""
 	 },
 
-
  "1":{
   "texture" : "Egg_item.png",
   "cantitate":1,
@@ -91,5 +90,17 @@
 	"cantitate":1,
 	"number":13,
 	"nume":"scut",
+	},
+"14":{
+	"texture":"gambling_mace.png",
+	"cantitate":1,
+	"number":14,
+	"nume":"Buzduganul norocului",
+	},
+"15":{
+	"texture":"pie.png",
+	"cantitate":1,
+	"number":15,
+	"nume":"apple pie",
 	},
 }

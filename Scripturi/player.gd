@@ -9,13 +9,14 @@ var player_current_attack=false
 @onready var healthbar = $CanvasLayer/healthbar
 @onready var healthbar_player = $CanvasLayer/healthbar_player
 var is_attacking = false
-
+var scut_used=0
 #-----------------------------jump/movement----------------------------------------------------------
 var can_jump = true 
 var is_jumping = false
 var jumpDirection = Vector2.ZERO
 var last_direction = Vector2(0, 1)
 var knockback_force = 500
+@onready var camera_2d: Camera2D = $Camera2D
 
 #--------------------------------Animation-start---------------------------------------------------
 var _currentIdleAnimation="down"
@@ -39,12 +40,15 @@ var attack_weapon=0;
 @onready var enemy = $"../enemy"
 @onready var camera_enemy = $"../enemy/camera_enemy"
 var colisiune
+@onready var camera_boat: Camera2D = $"../boat/camera_boat"
+
 
 #-------------------------------------Player-stats----------------------------------------------
 var Speed = 50
 @export var health=100
-@onready var scut: Sprite2D = $Scut/Sprite2D
-@onready var shield_touch: CollisionShape2D = $"shield-touch"
+@onready var scut: Area2D =$StaticBody2D/Scut
+@onready var scut_sprite: Sprite2D =$StaticBody2D/Scut/Sprite2D
+@onready var shield_touch: CollisionShape2D =$"StaticBody2D/shield-touch"
 @export var max_shield_durability =100;
 var shield_durability = max_shield_durability 
 var shield_damage_resistance = 1.0
@@ -70,6 +74,11 @@ func _ready():
 	info_label.visible=false
 	scut.visible=false
 	shield_touch.disabled=true
+	scut.add_to_group("scut")
+	scut.monitoring = true
+
+
+
 
 
 #------------------------------_physics_process()------------------------------------------------------
@@ -97,7 +106,14 @@ func _physics_process(delta):
 		position += jumpDirection * Speed  * delta
 	else:
 		position += velocity * delta
-
+		
+	if scut.visible:
+		update_shield_position()
+	if inv.has_shield and scut_used>0:
+		scut.visible=true
+		shield_touch.disabled=false
+		position_shield_opposite()
+	
 
 #----------------------------------player-movement------------------------------------------------------
 func handle_movement():
@@ -216,12 +232,14 @@ func equip_item(item_texture: Texture, item_nume : String):
 		
 	else:
 		print("Texture is null")
+	
 
 
 func inequip_item():
 	scut.visible = false
-	shield_touch.disabled = true
-		
+	scut_used=0
+	shield_touch.call_deferred("set_disabled", true)
+	
 	hand_sprite.texture=null
 	info_label.visible=false
 	info_label.clear()
@@ -293,6 +311,7 @@ func _on_inv_attacking(ID):
 		scut.visible=true
 		shield_touch.disabled=false
 		attack_weapon=0;
+		scut_used=1
 		if last_direction.x > 0:  # Dreapta
 			animation_player.play("shield-right") 
 		elif last_direction.x < 0:   # Stânga
@@ -355,6 +374,26 @@ func deal_with_damage():
 		enemy_inattack_range = false
 		enemy_current_attack = false
 
+func deal_with_damage1():
+	if enemy_inattack_range and enemy_current_attack == true:
+		var base_damage = 10
+		 
+
+		# Aplică daunele finale la viața jucătorului
+		health -= base_damage
+		healthbar_player.value = health
+		print("player health: " ,health)
+		apply_knockback()  # Efect opțional de recul
+		if health <= 0:
+			self.queue_free()  # Jucătorul moare
+			player_icon.texture = null
+			$"../TileMap/Grid_gard".visible = false
+			$"../TileMap/Grid_land".visible = false
+			$"../TileMap/Grid_ogor".visible = false
+			camera_enemy.make_current()
+
+		enemy_inattack_range = false
+		enemy_current_attack = false
 
 func apply_knockback():
 	var direction = (position - get_node("/root/world/enemy/").position).normalized()
@@ -364,7 +403,7 @@ func apply_knockback():
 func apply_damage_with_shield(base_damage: float) -> float:
 	var damage_taken = base_damage  # Daunele inițiale
    
-	if shield_durability > 0 and inv.selected_slot.get_id() == "13":
+	if shield_durability > 0 and shield_touch.disabled==false: #inv.selected_slot.get_id() == "13":
 		# Eficiența scutului, bazată pe durabilitate
 		var shield_effectiveness = float(shield_durability) / max_shield_durability
 		# Limităm eficiența la 0.5 pentru a reduce daunele la jumătate în loc să le eliminăm
@@ -381,6 +420,7 @@ func apply_damage_with_shield(base_damage: float) -> float:
 		# Dezactivăm scutul când durabilitatea ajunge la zero
 		if shield_durability <= 0:
 			scut.visible = false
+			
 			inv.selected_slot.clear_item()
 			inequip_item()
 			print("Scutul s-a rupt!")
@@ -389,3 +429,74 @@ func apply_damage_with_shield(base_damage: float) -> float:
 	print("Daune calculate:", damage_taken)  # Pentru debugging
 	
 	return damage_taken
+	
+func update_shield_position():
+	
+	# Alinierea scutului cu direcția playerului
+	if last_direction.x > 0:  # Dreapta
+		scut.position=Vector2(9,-9)
+		$"StaticBody2D/shield-touch".position=Vector2(10,3)
+		scut_sprite.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-right.png" )# Ajustați valorile după necesitate
+		$"StaticBody2D/shield-touch".shape = RectangleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.extents = Vector2(2, 7)
+		
+		
+	elif last_direction.x < 0:  # Stânga
+		scut.position=Vector2(-7.5,-9)
+		$"StaticBody2D/shield-touch".position=Vector2(-8.5,3)
+		scut_sprite.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-left.png" )
+		$"StaticBody2D/shield-touch".shape = RectangleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.extents = Vector2(2, 7)
+		
+	
+	elif last_direction.y > 0:  # Jos
+		scut.position=Vector2(0,-4)
+		$"StaticBody2D/shield-touch".position=Vector2(0,8)
+		scut_sprite.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-temp.png" )
+		$"StaticBody2D/shield-touch".shape = CircleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.radius=6.5
+		
+		
+	elif last_direction.y < 0:  # Sus
+		scut.position=Vector2(1,-16)
+		$"StaticBody2D/shield-touch".position=Vector2(1,-4)
+		scut_sprite.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-up.png" )
+		$"StaticBody2D/shield-touch".shape = CircleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.radius=6.5
+		
+		
+		
+func position_shield_opposite():
+	
+	if last_direction.x > 0:  # Dreapta
+		scut.position=Vector2(-7.5,-9)
+		$"StaticBody2D/shield-touch".position=Vector2(-8.5,3)
+		scut_sprite.texture = load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-left.png")
+		$"StaticBody2D/shield-touch".shape = RectangleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.extents = Vector2(2, 7)
+	elif last_direction.x < 0:  # Stânga
+		scut.position=Vector2(9,-9)
+		$"StaticBody2D/shield-touch".position=Vector2(10,3)
+		scut_sprite.texture = load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-right.png")
+		$"StaticBody2D/shield-touch".shape = RectangleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.extents = Vector2(2, 7)
+	elif last_direction.y > 0:  # Jos
+		scut.position=Vector2(1,-16)
+		$"StaticBody2D/shield-touch".position=Vector2(1,-4)
+		scut_sprite.texture = load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-up.png")
+		$"StaticBody2D/shield-touch".shape = CircleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.radius=6.5
+	elif last_direction.y < 0:  # Sus
+		scut.position=Vector2(0,-4)
+		$"StaticBody2D/shield-touch".position=Vector2(0,8)
+		scut_sprite.texture = load("res://Sprout Lands - Sprites - Basic pack/Objects/shield-temp.png")
+		$"StaticBody2D/shield-touch".shape = CircleShape2D.new()
+		$"StaticBody2D/shield-touch".shape.radius=6.5
+		
+func _on_arma_body_entered_gard(body):
+	if body is TileMap:
+		var collision_point = arma_colisiune.global_position
+		var tile_position = body.local_to_map(collision_point)
+		var tile_data = body.get_cell_tile_data(3, tile_position)
+		if tile_data and tile_data.get_custom_data("gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
+			body.set_cell(3, tile_position, -1)

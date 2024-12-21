@@ -1409,7 +1409,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../Scut:position")
+tracks/5/path = NodePath("../StaticBody2D/Scut:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1421,7 +1421,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../Scut/CollisionShape2D:disabled")
+tracks/6/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:disabled")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1433,7 +1433,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../Scut/CollisionShape2D:shape")
+tracks/7/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:shape")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1445,7 +1445,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Scut/Sprite2D:texture")
+tracks/8/path = NodePath("../StaticBody2D/Scut/Sprite2D:texture")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1457,7 +1457,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../shield-touch:shape")
+tracks/9/path = NodePath("../StaticBody2D/shield-touch:shape")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1469,7 +1469,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../shield-touch:position")
+tracks/10/path = NodePath("../StaticBody2D/shield-touch:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2828,11 +2828,11 @@ radius = 6.5
 
 [sub_resource type="Animation" id="Animation_j3x3c"]
 resource_name = "shield-down"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../Scut:position")
+tracks/0/path = NodePath("../StaticBody2D/Scut:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2844,7 +2844,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../Scut/CollisionShape2D:disabled")
+tracks/1/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -2856,7 +2856,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../Scut/CollisionShape2D:shape")
+tracks/2/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:shape")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -2868,7 +2868,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Scut/Sprite2D:texture")
+tracks/3/path = NodePath("../StaticBody2D/Scut/Sprite2D:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2880,7 +2880,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../shield-touch:shape")
+tracks/4/path = NodePath("../StaticBody2D/shield-touch:shape")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2892,7 +2892,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../shield-touch:position")
+tracks/5/path = NodePath("../StaticBody2D/shield-touch:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2907,11 +2907,11 @@ size = Vector2(3.5, 14)
 
 [sub_resource type="Animation" id="Animation_5n6u2"]
 resource_name = "shield-left"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../Scut:position")
+tracks/0/path = NodePath("../StaticBody2D/Scut:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2923,7 +2923,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../Scut/CollisionShape2D:disabled")
+tracks/1/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -2935,7 +2935,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../Scut/CollisionShape2D:shape")
+tracks/2/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:shape")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -2947,7 +2947,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Scut/Sprite2D:texture")
+tracks/3/path = NodePath("../StaticBody2D/Scut/Sprite2D:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2959,7 +2959,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../shield-touch:shape")
+tracks/4/path = NodePath("../StaticBody2D/shield-touch:shape")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2971,7 +2971,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../shield-touch:position")
+tracks/5/path = NodePath("../StaticBody2D/shield-touch:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2987,7 +2987,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../Scut:position")
+tracks/0/path = NodePath("../StaticBody2D/Scut:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2999,7 +2999,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../Scut/CollisionShape2D:disabled")
+tracks/1/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -3011,7 +3011,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../Scut/CollisionShape2D:shape")
+tracks/2/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:shape")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -3023,7 +3023,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Scut/Sprite2D:texture")
+tracks/3/path = NodePath("../StaticBody2D/Scut/Sprite2D:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -3035,7 +3035,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../shield-touch:shape")
+tracks/4/path = NodePath("../StaticBody2D/shield-touch:shape")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -3047,7 +3047,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../shield-touch:position")
+tracks/5/path = NodePath("../StaticBody2D/shield-touch:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -3062,7 +3062,7 @@ radius = 7.0
 
 [sub_resource type="Animation" id="Animation_bmfg0"]
 resource_name = "shield-up"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -3078,7 +3078,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../Scut:position")
+tracks/1/path = NodePath("../StaticBody2D/Scut:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -3090,7 +3090,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../Scut/CollisionShape2D:disabled")
+tracks/2/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -3102,7 +3102,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../Scut/CollisionShape2D:shape")
+tracks/3/path = NodePath("../StaticBody2D/Scut/CollisionShape2D:shape")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -3114,7 +3114,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../Scut/Sprite2D:texture")
+tracks/4/path = NodePath("../StaticBody2D/Scut/Sprite2D:texture")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -3126,7 +3126,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../shield-touch:shape")
+tracks/5/path = NodePath("../StaticBody2D/shield-touch:shape")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -3138,7 +3138,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../shield-touch:position")
+tracks/6/path = NodePath("../StaticBody2D/shield-touch:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -3270,7 +3270,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_3nv48"]
 resource_name = "walk-up"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -3346,11 +3346,13 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ftj"]
-size = Vector2(15, 16)
+size = Vector2(13, 8)
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
 collision_layer = 3
+collision_mask = 3
+slide_on_ceiling = false
 platform_on_leave = 2
 platform_floor_layers = 0
 script = ExtResource("1_cqeva")
@@ -3392,26 +3394,34 @@ libraries = {
 [node name="player_hitbox" type="Area2D" parent="." groups=["player_hitbox"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox"]
-position = Vector2(0.5, 0)
+position = Vector2(1, 4)
 shape = SubResource("RectangleShape2D_l0ftj")
 
-[node name="Scut" type="Area2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+y_sort_enabled = true
+collision_layer = 4
+collision_mask = 4
+
+[node name="Scut" type="Area2D" parent="StaticBody2D" groups=["scut"]]
 y_sort_enabled = true
 position = Vector2(10, -9)
+collision_layer = 4
+collision_mask = 4
+metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Scut"]
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Scut"]
 position = Vector2(9.53674e-07, 12)
 scale = Vector2(0.895007, 0.895007)
 texture = ExtResource("9_hvehg")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scut"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/Scut"]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_kcy8e")
 
-[node name="shield-touch" type="CollisionShape2D" parent="."]
+[node name="shield-touch" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_103pq")
 
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]
-[connection signal="body_entered" from="arma" to="." method="_on_arma_body_entered"]
+[connection signal="body_entered" from="arma" to="." method="_on_arma_body_entered_gard"]

@@ -19,6 +19,8 @@ var player_in_boat=false
 var player_near_boat=false
 @onready var animated_sprite_2d = $AnimatedSprite2D
 var moveDirectionHandlerBoat=Vector2.ZERO
+@onready var camera_boat: Camera2D = $camera_boat
+
 #-----------------------------------ready----------------------------------------------------
 
 func _ready():
@@ -27,6 +29,7 @@ func _ready():
 	is_anchored=true
 	change_direction_timer.stop()
 	player_in_boat=false
+
 	
 
 #----------------------------urmarire----------------------------------------------------------
@@ -153,6 +156,9 @@ func _on_change_direction_timeout():
 	if random_move_active:
 		select_new_direction()
 
+func is_vector_approx_equal(v1: Vector2, v2: Vector2, epsilon: float) -> bool:
+	return abs(v1.x - v2.x) <= epsilon and abs(v1.y - v2.y) <= epsilon
+
 func select_new_direction():
 	# Alegem o direcție aleatorie pentru barcă
 	var random = RandomNumberGenerator.new()
@@ -160,6 +166,13 @@ func select_new_direction():
 		random.randi_range(-1, 1), 
 		random.randi_range(-1, 1)
 	).normalized() 
+	var epsilon = 0.001
+
+	# Comparăm vectorii cu toleranță
+	if is_vector_approx_equal(moveDirection, Vector2(-1, 0), epsilon) || is_vector_approx_equal(moveDirection, Vector2(1, 0), epsilon):
+		moveDirection = Vector2(0, 0)
+	elif is_vector_approx_equal(moveDirection, Vector2(-0.707107, 0.707107), epsilon) ||  is_vector_approx_equal(moveDirection, Vector2(0, 1), epsilon) ||  is_vector_approx_equal(moveDirection, Vector2(0.707107, 0.707107), epsilon):
+		moveDirection = Vector2(-0.707107, -0.707107)
 	print("Noua direcție aleasă: ", moveDirection)
 
 #----------------------------in apropierea barcii--------------------------------------------------------
@@ -167,6 +180,8 @@ func _on_areaancorare_body_entered(body):
 	if body.is_in_group("player"):  
 		player_in_proximity = true
 		print("Jucătorul este în apropierea bărcii")
+		
+		
 
 func _on_areaancorare_body_exited(body):
 	if body.is_in_group("player"): 
@@ -179,13 +194,17 @@ func _on_areaancorare_body_exited(body):
 func enter_boat():
 	# Jucătorul intră în barcă
 	player_in_boat=true
-	player.visible=false
+	#player.visible=false
 	player.is_jumping=false
 	player.can_jump=false
 	 # Ascundem jucătorul
-	player.set_process(false)  # Dezactivăm procesarea jucătorului
+	player.set_process(false)
+	player.set_physics_process(false)  # Dezactivăm procesarea jucătorului
 	miscare = false  # Oprim mișcarea aleatorie cât timp controlăm barca manual
 	movement=50
+	camera_boat.make_current()
+	player.reparent(self)  # Reatașează jucătorul ca „child” al bărcii
+	player.global_position = global_position + Vector2(0,3) 
 	change_direction_timer.stop()  # Oprim schimbarea direcției aleatorii
 	print("Jucătorul a intrat în barcă")
 	
@@ -197,7 +216,10 @@ func exit_boat():
 	miscare = false #
 	player.is_jumping=false
 	player.can_jump=true
-	player.set_process(true)  # Reactivăm procesarea jucătorului
+	player.set_process(true)
+	player.set_physics_process(true)  
+	player.reparent(get_tree().get_root().get_node("world")) 
+	player.camera_2d.make_current()
 	movement=10
 	change_direction_timer.stop()  # Repornim timer-ul pentru schimbarea direcției aleatorii
 	print("Jucătorul a ieșit din barcă")
@@ -208,12 +230,18 @@ func _on_in_boat_body_entered(body):
 	if body.is_in_group("player"):
 		player_near_boat=true
 		player.is_jumping=false
+		player.Speed=10
+		
+
 
 
 func _on_in_boat_body_exited(body):
 	if body.is_in_group("player"):
 		player_near_boat=false
 		player.is_jumping=true
+		player.Speed=50
+		
+	
 
 
 #---------------------------------handl-ere-----------------------------------------------------------------
@@ -238,7 +266,7 @@ func handle_boat_control(_delta):
 	else:
 		moveDirectionHandlerBoat = Vector2.ZERO
 		
-
+	
 
 	if moveDirectionHandlerBoat != Vector2.ZERO:
 		
@@ -254,5 +282,4 @@ func handle_boat_control(_delta):
 func handle_player_control(_delta):
 	
 	pass
- 
-		
+	

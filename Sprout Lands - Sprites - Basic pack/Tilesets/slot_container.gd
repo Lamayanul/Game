@@ -12,7 +12,6 @@ var item_id: String = ""  # ID-ul itemului stivuit
 
 
 
-
 signal slot_selected(slot)
 
 @export var nume: String:
@@ -172,3 +171,32 @@ func decrease_cantitate(amount: int) -> bool:
 			label.text = str(cantitate)  # Actualizează eticheta
 		return false  # Itemul încă are cantitate, deci nu trebuie eliminat
 	return true  # Itemul deja nu are cantitate, deci trebuie eliminat
+
+
+func increase_cantitate(amount: int):
+	cantitate += amount
+	if cantitate > 0:
+		# Actualizează cantitatea afișată în UI
+		label.text = str(cantitate)
+	else:
+		label.text = ""
+		
+func add_item(item_id: String, amount: int):
+	self.set_property({
+		"TEXTURE": load("res://assets/" + ItemData.get_texture(item_id)),
+		"CANTITATE": amount,
+		"NUMBER": ItemData.get_number(item_id),
+		"NUME": ItemData.get_nume(item_id)
+	})
+	self.filled = true
+	
+func get_item() -> Dictionary:
+	# Verificăm dacă slotul conține un item valid
+	if filled:
+		return {
+			"TEXTURE": property["TEXTURE"],  # Textura itemului
+			"CANTITATE": property["CANTITATE"],  # Cantitatea
+			"NUMBER": property["NUMBER"],  # Numărul/ID-ul itemului
+			"NUME": property["NUME"]}
+	else:
+		return {}  # Returnează un dicționar gol dacă nu există un item

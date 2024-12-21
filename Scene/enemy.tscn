@@ -525,6 +525,8 @@ radius = 17.4642
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
 position = Vector2(0, -5)
+collision_layer = 7
+collision_mask = 7
 platform_on_leave = 2
 platform_floor_layers = 0
 script = ExtResource("1_8c6dx")
@@ -578,6 +580,8 @@ y_sort_enabled = true
 position = Vector2(7.10543e-15, 3.55271e-15)
 rotation = -0.933751
 scale = Vector2(0.758864, 0.758864)
+collision_layer = 5
+collision_mask = 5
 metadata/_edit_group_ = true
 
 [node name="colisiune" type="CollisionShape2D" parent="arma"]
@@ -610,7 +614,7 @@ shape = SubResource("CircleShape2D_brlc1")
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
 [connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]
 [connection signal="timeout" from="color" to="." method="_on_color_timeout"]
-[connection signal="body_entered" from="arma" to="." method="_on_arma_area_entered"]
+[connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]
 [connection signal="body_entered" from="detection" to="." method="_on_detection_body_entered"]
 [connection signal="body_exited" from="detection" to="." method="_on_detection_body_exited"]
 [connection signal="area_entered" from="atack_zone" to="." method="_on_atack_zone_area_entered"]

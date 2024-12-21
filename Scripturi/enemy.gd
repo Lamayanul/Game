@@ -129,12 +129,18 @@ func _on_change_direction_timeout():
 	
 #
 func _on_arma_area_entered(area):
-	if area.is_in_group("player_hitbox"):
-		print(area)
+	if area.is_in_group("scut"):
+		print("---------------------------------------------------------")
 		player.enemy_inattack_range=true
 		player.enemy_current_attack=true
 		player.deal_with_damage()
-		
+	elif area.is_in_group("player_hitbox"):
+		#print(area)
+		player.enemy_inattack_range=true
+		player.enemy_current_attack=true
+		player.deal_with_damage1()
+	
+
 
 
 
@@ -194,7 +200,7 @@ func atac_mode():
 
 func _on_atack_zone_area_entered(area):
 	if area.is_in_group("player_hitbox") and  is_attacking==false and angry>=3:
-		print(area)
+		#print(area)
 		is_attacking = true
 		
 		atac_mode()

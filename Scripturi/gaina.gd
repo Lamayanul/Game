@@ -2,13 +2,19 @@ extends CharacterBody2D
 
 # Variables
 @export var MoveSpeed: float = 20.0
+var hungry=false
 var moveDirection = Vector2.ZERO
 var currentState = ChicState.Idle
 var animatedSprite: AnimatedSprite2D
+@onready var timer: Timer = $Timer
+@onready var timer_2: Timer = $Timer2
 
 enum ChicState {
 	Idle,
-	Walk
+	Walk,
+	Fly,
+	EatL,
+	EatS
 }
 
 func _ready():
@@ -17,6 +23,7 @@ func _ready():
 	select_new_direction()
 	pick_new_state()
 	add_to_group("gaina")
+	timer.start()
 
 func _physics_process(_delta):
 	if currentState == ChicState.Walk:
@@ -31,7 +38,11 @@ func _physics_process(_delta):
 				animatedSprite.flip_h = false
 	elif currentState == ChicState.Idle:
 		velocity = Vector2.ZERO
-		animatedSprite.play("idle")
+		if hungry==true:
+			animatedSprite.play("eat-short")
+		else:	
+			animatedSprite.play("idle")
+
 
 func _on_direction_change_timer_timeout():
 	select_new_direction()
@@ -49,3 +60,25 @@ func pick_new_state():
 		currentState = ChicState.Walk
 	elif currentState == ChicState.Walk:
 		currentState = ChicState.Idle
+
+
+func _on_timer_timeout() -> void:
+	hungry = true
+	currentState = ChicState.Idle  # Starea devine Idle pentru a permite animația "eat-short"
+	timer_2.start()  # Pornește al doilea timer pentru resetarea stării hungry
+
+func _on_reset_hungry_timer_timeout() -> void:
+	hungry = false  # Resetează starea hungry
+	currentState = ChicState.Idle  # Revine la starea inițială
+	
+# Oprește găina complet și o ascunde
+func stop_chicken() -> void:
+	velocity = Vector2.ZERO  # Oprește mișcarea
+	currentState = ChicState.Idle  # Resetează starea # Oprește al doilea timer
+	$directionChangeTimer.stop()  # Oprește schimbarea direcției
+	animatedSprite.hide()  # Ascunde sprite-ul
+	
+func start_chicken()->void:
+	$directionChangeTimer.start()  # Oprește schimbarea direcției
+	currentState = ChicState.Idle
+	animatedSprite.show() 

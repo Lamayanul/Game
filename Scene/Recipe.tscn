@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://djcerbpr1l45f"]
+
+[ext_resource type="Script" path="res://Scripturi/recipe.gd" id="1_mxfqi"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_u6eyl"]
+
+[node name="Recipe" type="GridContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 3
+script = ExtResource("1_mxfqi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SlotContainer" parent="HBoxContainer" instance=ExtResource("1_u6eyl")]
+layout_mode = 2
+
+[node name="SlotContainer2" parent="HBoxContainer" instance=ExtResource("1_u6eyl")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Button"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Craft"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotContainer5" parent="HBoxContainer" instance=ExtResource("1_u6eyl")]
+layout_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
