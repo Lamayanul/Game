@@ -10,6 +10,10 @@ var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 
+@onready var slot_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer")
+@onready var slot_container_2 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer2")
+@onready var slot_container_3 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer3")
+@onready var slot_container_4 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer4")
 
 
 signal slot_selected(slot)
@@ -99,11 +103,39 @@ func _can_drop_data(_at_position, _data):
 	return _data is Slot
 
 func _drop_data(_pos, data):
-	var temp = property
-	property = data.property
-	data.property = temp
-	set_property(property)
-	data.set_property(data.property)
+	if not (data is Slot):
+		return  # Asigură-te că datele droppate provin dintr-un slot valid
+	#if not has_free_slot():
+		#print("Inventarul este plin! Nu se poate adăuga acest item.")
+		#return  # Nu se face nimic dacă inventarul este plin
+		
+	var source_property = data.property  # Proprietățile itemului din slotul sursă
+	var target_property = property       # Proprietățile itemului din slotul țintă
+
+	if source_property != null and target_property != null:
+		# Dacă itemele au același NUMBER, adună cantitățile
+		if source_property.has("NUMBER") and target_property.has("NUMBER") and source_property["NUMBER"] == target_property["NUMBER"]:
+			target_property["CANTITATE"] += source_property["CANTITATE"]
+			data.clear_item()  # Golește slotul sursă
+			set_property(target_property)  # Actualizează slotul țintă
+			print("Cantitățile au fost combinate.")
+		else:
+			# Dacă itemele sunt diferite, interschimbă-le
+			var temp = target_property
+			set_property(source_property)
+			data.set_property(temp)
+			inv.plin+=1
+			print(inv.plin)
+			print("Itemele au fost schimbate între sloturi.")
+			
+	elif source_property != null and target_property == null:
+		# Dacă slotul țintă este gol, mută itemul acolo
+		set_property(source_property)
+		data.clear_item()
+		print("Item mutat în slotul gol.")
+	else:
+		print("Nu s-a putut face drop-ul.")
+	
 	
 	## Actualizează cantitatea pentru ambele sloturi
 	#cantitate = property["CANTITATE"]
@@ -200,3 +232,14 @@ func get_item() -> Dictionary:
 			"NUME": property["NUME"]}
 	else:
 		return {}  # Returnează un dicționar gol dacă nu există un item
+# Verifică dacă există locuri libere în inventar
+func has_free_slot() -> bool:
+	# Lista sloturilor din inventar
+	var slot_list = [slot_container, slot_container_2, slot_container_3, slot_container_4]
+	
+	# Verifică fiecare slot pentru a vedea dacă există loc liber
+	for slot in slot_list:
+		if slot.get_id() == "0":  # Presupunem că un slot gol are ID-ul "0"
+			return true  # Există un loc libe
+	
+	return false  # Nu există locuri libere

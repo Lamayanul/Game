@@ -26,6 +26,11 @@ var is_attacking = false
 @onready var healthbar_enemy = $"../player/CanvasLayer/healthbar_enemy"
 @export var stop_distance: float = 20
 @onready var atack = $atack
+var stare_atac= false
+@onready var doge: Timer = $doge
+
+
+var fugi=false
 var happy=0;
 var angry=0;
 var dictator=0;
@@ -44,19 +49,36 @@ func _ready():
 
 func _physics_process(_delta):
 	
-	
-	
-	velocity = moveDirection * MoveSpeed
-	
-	
-	if player_chase and angry >= 3:
-		chase()
-	else:
-		# Altfel, mișcarea normală
+	#if stare_atac==true:
+		#initiate_attack()
+	#
+	#
+	#velocity = moveDirection * MoveSpeed
+	#
+	#
+	#if player_chase and angry >= 3:
+		#chase()
+	#
+	#else:
+		## Altfel, mișcarea normală
+		#velocity = moveDirection * MoveSpeed
+		#move_and_slide()
+		#movement()
+	#if fugi:
+		#initiate_doge()
+		#move_and_slide()
+		
+	if stare_atac and not is_attacking:
+		initiate_attack()
+
+	# Continuă cu logica de mișcare și alte comportamente
+	if not is_attacking:
 		velocity = moveDirection * MoveSpeed
-		move_and_slide()
-		movement()
-	
+		if player_chase and angry >= 3:
+			chase()
+		else:
+			move_and_slide()
+			movement()
 
 func select_new_direction():
 	var random = RandomNumberGenerator.new()
@@ -194,33 +216,83 @@ func _on_detection_body_exited(body):
 
 		
 		
-func atac_mode():
-	call_deferred("activate")
+func initiate_attack():
+	is_attacking = true
+
+	# Select animation based on direction
+	match lastPosition:
+		Vector2(-1, 0):
+			animation_player.play("attack-right")
+		Vector2(1, 0):
+			animation_player.play("attack-left")
+		Vector2(0, -1):
+			animation_player.play("attack-up")
+		Vector2(0, 1):
+			animation_player.play("attack-down")
+	fugi=true
+
+func initiate_doge():
+
+	is_attacking = true
+
+	# Select animation based on direction
+	match lastPosition:
+		Vector2(1, 0):
+			animation_player.play("run-left")
+			velocity = Vector2(1, 0) * MoveSpeed
+		Vector2(-1, 0):
+			velocity = Vector2(-1, 0) * MoveSpeed
+			animation_player.play("run-right")
+		Vector2(0, 1):
+			animation_player.play("run-up")
+			velocity = Vector2(0, 1) * MoveSpeed
+		Vector2(0, -1):
+			animation_player.play("run-down")
+			velocity = Vector2(0, -1) * MoveSpeed
+	move_and_slide()  
+	fugi=false
+	
+	
+#func _on_AnimationPlayer_animation_finished(anim_name):
+	#match anim_name:
+		#"attack-down":
+			#is_attacking = false
+			#stare_atac=false
+		#"attack-up":
+			#is_attacking = false
+			#stare_atac=false
+		#"attack-left":
+			#is_attacking = false
+			#stare_atac=false
+		#"attack-right":
+			#is_attacking = false
+			#stare_atac=false
+
 
 
 func _on_atack_zone_area_entered(area):
 	if area.is_in_group("player_hitbox") and  is_attacking==false and angry>=3:
-		#print(area)
-		is_attacking = true
-		
-		atac_mode()
+		stare_atac=true
 		atack.start()
-		arma.visible=false
+		doge.start()
+
+
+
 		
 		
-
-func activate():
-	arma.visible=true
-	animation_player.play("atac-right")
-	move_and_slide()
-	
-func _on_atack_zone_area_exited(_area):
-	is_attacking = false  # Dezactivează modul de atac după ce animația s-a terminat
-	atack.stop()
-	arma.visible=false
+#func _on_atack_zone_area_exited(_area):
+#
+	#atack.stop()
 	
 
-func _on_atack_timeout():
 
-	if is_attacking:
-		atac_mode()
+func _on_atack_timeout() -> void:
+	is_attacking = false
+	stare_atac=false
+	#if fugi:
+		#initiate_doge()
+	
+
+
+func _on_doge_timeout() -> void:
+	initiate_doge()

@@ -12,6 +12,7 @@ var instance = scene_resource.instantiate()
 var harv_egg=false
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 var can_interact=false
+@onready var fly_anime: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
 	animated_sprite_2d.hide()
@@ -19,7 +20,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if is_clocit:
 		animated_sprite_2d.show()
+
 		animation_player.play("clocit")
+		
 		
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

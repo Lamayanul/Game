@@ -123,6 +123,7 @@ func place_gard(grid_cell: Vector2):
 
 func remove_gard(grid_cell:Vector2):
 	set_cell(3, grid_cell, -1)
+	
 
 	
 

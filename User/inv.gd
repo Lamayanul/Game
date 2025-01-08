@@ -6,7 +6,15 @@ extends PanelContainer
 @onready var slot_container_5 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
 @onready var slot_container_7 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
 @onready var slot_container_6 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+
+
+@onready var slot_container_chest = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer")
+@onready var slot_container_chest_2 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer2")
+@onready var slot_container_chest_3 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer3")
+@onready var slot_container_chest_4 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer4")
+
 @onready var oven = get_node("/root/world/Node2D")
+@onready var chest = get_node("/root/world/Chest")
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
@@ -144,78 +152,93 @@ func _input(event):
 		select_slot_by_index(2)
 	if Input.is_action_just_pressed("slot_4"):
 		select_slot_by_index(3)
-	if event is InputEventMouseButton and oven.in_zona==true:
+	if event is InputEventMouseButton and oven.in_zona == true:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			if selected_slot.get_item() != null:
 				# Obține detaliile itemului din slotul selectat
 				var item_data = selected_slot.get_item()
-				
-				# Verifică dacă itemul conține cheia "NUMBER"
-				if item_data.has("NUMBER"):
-					var item_number = str(item_data["NUMBER"])
 
-					# Verifică mai întâi dacă itemul poate fi adăugat în slotul 6
-					if slot_container_6.get_id() == item_number:
-						# Itemul există deja în slotul de crafting 6, adăugăm cantitatea
-						slot_container_6.set_property({
-							"TEXTURE": item_data["TEXTURE"],
-							"CANTITATE": slot_container_6.get_cantitate() + item_data["CANTITATE"],
-							"NUMBER": item_data["NUMBER"],
-							"NUME": item_data["NUME"]})
-						# Curăță itemul din slotul selectat
-						selected_slot.clear_item()
-						plin -= 1
-						print("Item transferat cu succes în slotul de crafting 6.")
+				# Încearcă să transferi itemul în slotul 6
+				if transfer_item_to_slot(item_data, slot_container_6):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de crafting 6.")
 
-					# Dacă itemul nu a fost adăugat în slotul 6, încearcă să-l adaugi în slotul 7
-					elif slot_container_7.get_id() == item_number:
-						# Itemul există deja în slotul de crafting 7, adăugăm cantitatea
-						slot_container_7.set_property({
-							"TEXTURE": item_data["TEXTURE"],
-							"CANTITATE": slot_container_7.get_cantitate() + item_data["CANTITATE"],
-							"NUMBER": item_data["NUMBER"],
-							"NUME": item_data["NUME"]})
-						# Curăță itemul din slotul selectat
-						selected_slot.clear_item()
-						plin -= 1
-						print("Item transferat cu succes în slotul de crafting 7.")
+				# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+				elif transfer_item_to_slot(item_data, slot_container_7):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de crafting 7.")
 
-					# Dacă ambele sloturi sunt ocupate, nu mai adăuga itemul și afișează un mesaj
-					else:
-						if slot_container_6.get_id() != "0" and slot_container_7.get_id() != "0":
-							print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
-							# Poți adăuga un mesaj vizual pentru a înștiința utilizatorul că sloturile sunt pline
-
-						# Dacă niciun slot nu conține itemul, adaugă-l în primul slot disponibil
-						elif slot_container_6.get_id() == "0":  # Verifică dacă slotul 6 este gol
-							slot_container_6.set_property({
-								"TEXTURE": item_data["TEXTURE"],
-								"CANTITATE": item_data["CANTITATE"],
-								"NUMBER": item_data["NUMBER"],
-								"NUME": item_data["NUME"]})
-							selected_slot.clear_item()
-							plin -= 1
-							print("Item adăugat în slotul de crafting 6.")
-						elif slot_container_7.get_id() == "0":  # Verifică dacă slotul 7 este gol
-							slot_container_7.set_property({
-								"TEXTURE": item_data["TEXTURE"],
-								"CANTITATE": item_data["CANTITATE"],
-								"NUMBER": item_data["NUMBER"],
-								"NUME": item_data["NUME"]})
-							print("Item adăugat în slotul de crafting 7.")
-							selected_slot.clear_item()
-							plin -= 1
-						# Curăță itemul din slotul selectat doar dacă s-a adăugat cu succes
-						if slot_container_6.get_id() == "0" or slot_container_7.get_id() == "0":
-							selected_slot.clear_item()
-							plin -= 1
-							print("Item transferat.")
-						else:
-							print("Nu există locuri libere pentru acest item.")
-
+				# Dacă niciun slot nu este disponibil, afișează un mesaj
+				else:
+					print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
 			else:
 				print("Nu este niciun item selectat pentru transfer.")
+				
+	if event is InputEventMouseButton and chest.player_in_area == true:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			if selected_slot and selected_slot.get_item() != null:
+				# Obține detaliile itemului din slotul selectat
+				var item_data = selected_slot.get_item()
 
+				# Încearcă să transferi itemul în slotul 6
+				if transfer_item_to_slot(item_data, slot_container_chest):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de chest1.")
+
+				# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+				elif transfer_item_to_slot(item_data, slot_container_chest_2):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de chest2.")
+					
+				elif transfer_item_to_slot(item_data, slot_container_chest_3):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de chest3.")
+					
+				elif transfer_item_to_slot(item_data, slot_container_chest_4):
+					# Dacă transferul este reușit, curăță itemul din slotul selectat
+					selected_slot.clear_item()
+					plin -= 1
+					print("Item transferat cu succes în slotul de chest4.")
+
+				# Dacă niciun slot nu este disponibil, afișează un mesaj
+				else:
+					print("Toate sloturile sunt pline de chest.")
+			else:
+				print("Nu este niciun item selectat pentru transfer.")
+# Funcție pentru a transfera un item într-un slot specific
+func transfer_item_to_slot(item_data: Dictionary, slot_container: Node) -> bool:
+	# Verifică dacă slotul conține deja acest tip de item
+	if typeof(item_data) == TYPE_DICTIONARY and item_data.has("NUMBER"):
+		if slot_container.get_id() == str(item_data["NUMBER"]):
+			# Adaugă cantitatea la itemul existent
+			slot_container.set_property({
+				"TEXTURE": item_data["TEXTURE"],
+				"CANTITATE": slot_container.get_cantitate() + item_data["CANTITATE"],
+				"NUMBER": item_data["NUMBER"],
+				"NUME": item_data["NUME"]
+			})
+			return true  # Itemul a fost transferat cu succes
+		elif slot_container.get_id() == "0":  # Verifică dacă slotul este gol
+			# Adaugă itemul în slotul gol
+			slot_container.set_property({
+				"TEXTURE": item_data["TEXTURE"],
+				"CANTITATE": item_data["CANTITATE"],
+				"NUMBER": item_data["NUMBER"],
+				"NUME": item_data["NUME"]
+			})
+			return true  # Itemul a fost transferat cu succes
+	return false  # Slotul este ocupat și nu conține același tip de item
+	
 
 
 

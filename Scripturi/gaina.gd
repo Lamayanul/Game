@@ -7,7 +7,11 @@ var moveDirection = Vector2.ZERO
 var currentState = ChicState.Idle
 var animatedSprite: AnimatedSprite2D
 @onready var timer: Timer = $Timer
-@onready var timer_2: Timer = $Timer2
+@onready var hungry_timer: Timer = $hungry
+@onready var fly_anime: AnimatedSprite2D = $fly
+var fly=false
+@onready var fly_timer: Timer = $fly_timer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 enum ChicState {
 	Idle,
@@ -24,9 +28,30 @@ func _ready():
 	pick_new_state()
 	add_to_group("gaina")
 	timer.start()
+	fly_anime.hide()
+
+
 
 func _physics_process(_delta):
-	if currentState == ChicState.Walk:
+	# Prioritizează starea de fly
+	if fly:
+		#hungry_timer.stop()
+		#timer.stop()
+		fly_anime.show()
+		animatedSprite.hide()
+		velocity = moveDirection * MoveSpeed  # Adaugă mișcare și în timpul zborului
+		move_and_slide()
+
+		# Redă animația de zbor doar dacă nu este deja redată
+		if not animation_player.is_playing():
+			if moveDirection.x < 0:
+				animation_player.play("fly-st")
+			elif moveDirection.x > 0:
+				animation_player.play("fly-dr")
+		return  # Ieși din funcție pentru a preveni logica altor stări
+	
+	# Gestionarea celorlalte stări
+	elif currentState == ChicState.Walk:
 		velocity = moveDirection * MoveSpeed
 		move_and_slide()
 
@@ -36,12 +61,16 @@ func _physics_process(_delta):
 				animatedSprite.flip_h = true
 			elif moveDirection.x > 0:
 				animatedSprite.flip_h = false
+			
 	elif currentState == ChicState.Idle:
 		velocity = Vector2.ZERO
-		if hungry==true:
+		if hungry == true:
 			animatedSprite.play("eat-short")
-		else:	
+		else:
 			animatedSprite.play("idle")
+
+
+
 
 
 func _on_direction_change_timer_timeout():
@@ -56,6 +85,8 @@ func select_new_direction():
 	).normalized()
 
 func pick_new_state():
+	if fly:
+		return
 	if currentState == ChicState.Idle:
 		currentState = ChicState.Walk
 	elif currentState == ChicState.Walk:
@@ -65,7 +96,7 @@ func pick_new_state():
 func _on_timer_timeout() -> void:
 	hungry = true
 	currentState = ChicState.Idle  # Starea devine Idle pentru a permite animația "eat-short"
-	timer_2.start()  # Pornește al doilea timer pentru resetarea stării hungry
+	hungry_timer.start()  # Pornește al doilea timer pentru resetarea stării hungry
 
 func _on_reset_hungry_timer_timeout() -> void:
 	hungry = false  # Resetează starea hungry
@@ -82,3 +113,31 @@ func start_chicken()->void:
 	$directionChangeTimer.start()  # Oprește schimbarea direcției
 	currentState = ChicState.Idle
 	animatedSprite.show() 
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		fly_timer.start()
+		fly=true
+
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		fly=false
+
+#
+func _on_fly_timer_timeout() -> void:
+	reset_after_fly()
+
+#func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+	#if fly and anim_name in ["fly-st", "fly-dr"]:
+		#reset_after_fly()
+
+func reset_after_fly():
+	fly=false
+	fly_anime.hide()  # Ascunde animația de zbor
+	animatedSprite.show()  # Reafișează animația normală
+	fly_anime.stop() 
+	#hungry_timer.start()
+	#timer.start() 

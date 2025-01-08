@@ -500,3 +500,6 @@ func _on_arma_body_entered_gard(body):
 		var tile_data = body.get_cell_tile_data(3, tile_position)
 		if tile_data and tile_data.get_custom_data("gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
 			body.set_cell(3, tile_position, -1)
+			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+			var drop_position = global_position + drop_offset 
+			inv.drop_item_everywhere("6",1,drop_position)

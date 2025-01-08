@@ -877,6 +877,11 @@ animations = [{
 "name": &"axe-up",
 "speed": 10.0
 }, {
+"frames": [],
+"loop": true,
+"name": &"doge",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vomi4")
@@ -3346,7 +3351,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ftj"]
-size = Vector2(13, 8)
+size = Vector2(12, 8)
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
@@ -3369,7 +3374,7 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
 [node name="attack_timer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.5
 
 [node name="arma" type="Area2D" parent="." groups=["arma"]]
 
@@ -3394,7 +3399,7 @@ libraries = {
 [node name="player_hitbox" type="Area2D" parent="." groups=["player_hitbox"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox"]
-position = Vector2(1, 4)
+position = Vector2(0.75, 4)
 shape = SubResource("RectangleShape2D_l0ftj")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
