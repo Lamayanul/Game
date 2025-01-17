@@ -495,11 +495,37 @@ func position_shield_opposite():
 		
 func _on_arma_body_entered_gard(body):
 	if body is TileMap:
+		
+		# Obține punctul de coliziune și poziția tile-ului
 		var collision_point = arma_colisiune.global_position
 		var tile_position = body.local_to_map(collision_point)
+
+		# Verifică și obține datele de pe stratul gard (3)
 		var tile_data = body.get_cell_tile_data(3, tile_position)
-		if tile_data and tile_data.get_custom_data("gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
+
+		# Verifică și obține datele de pe stratul cliff-gard (4)
+		var tile_data_cliff_gard = body.get_cell_tile_data(5, tile_position)
+		
+		# Condiții pentru gardul de pe stratul 3
+		if tile_data and tile_data.get_custom_data("gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:
+			# Șterge gardul de pe stratul 3
 			body.set_cell(3, tile_position, -1)
+			
+			# Creează un drop pentru gard
 			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
-			var drop_position = global_position + drop_offset 
-			inv.drop_item_everywhere("6",1,drop_position)
+			var drop_position = global_position + drop_offset
+			inv.call_deferred("drop_item_everywhere","6", 1, drop_position)
+
+		# Condiții pentru gardul de pe stratul 4
+		if tile_data_cliff_gard and tile_data_cliff_gard.get_custom_data("cliff-gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:
+			# Șterge gardul de pe stratul 4
+			print("stratul 4")
+			body.set_cell(5, tile_position, -1)
+
+
+			# Creează un drop pentru gard (poate reutiliza același logică ca stratul 3)
+			var drop_offset_cliff = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+			var drop_position_cliff = global_position + drop_offset_cliff
+			inv.call_deferred("drop_item_everywhere","6", 1, drop_position_cliff)
+
+		print("Gardurile au fost eliminate de la poziția:", tile_position)

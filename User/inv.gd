@@ -41,6 +41,7 @@ func add_item(ID="", item_cantita=1):
 	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number,"NUME":item_nume}
 	if ID=="0":
 		item_cantitate=0
+	
 	# 1. Verifică dacă există deja un item cu același ID în inventar
 	for i in range(grid_container.get_child_count()):
 		var child = grid_container.get_child(i)

@@ -241,15 +241,19 @@ columns = 2
 
 [node name="SlotContainer4" parent="CanvasLayer/GridContainer" instance=ExtResource("3_robgt")]
 layout_mode = 2
+slot_type = "no_inv"
 
 [node name="SlotContainer3" parent="CanvasLayer/GridContainer" instance=ExtResource("3_robgt")]
 layout_mode = 2
+slot_type = "no_inv"
 
 [node name="SlotContainer" parent="CanvasLayer/GridContainer" instance=ExtResource("3_robgt")]
 layout_mode = 2
+slot_type = "no_inv"
 
 [node name="SlotContainer2" parent="CanvasLayer/GridContainer" instance=ExtResource("3_robgt")]
 layout_mode = 2
+slot_type = "no_inv"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

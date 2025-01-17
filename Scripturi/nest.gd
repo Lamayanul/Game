@@ -13,6 +13,8 @@ var harv_egg=false
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 var can_interact=false
 @onready var fly_anime: AnimatedSprite2D = $AnimatedSprite2D
+@onready var area_2d: Area2D = $Area2D
+@onready var timer_3: Timer = $Timer3
 
 func _ready() -> void:
 	animated_sprite_2d.hide()
@@ -64,5 +66,10 @@ func egg_move():
 func _on_timer_2_timeout() -> void:
 	animation_player.play("eclozare")
 	clocit_times=0
-	instance.position=Vector2(88,19.5)
+	timer_3.start()
+
+
+func _on_timer_3_timeout() -> void:
+	instance.position=area_2d.global_position;
 	world.add_child(instance)
+	timer_3.stop()

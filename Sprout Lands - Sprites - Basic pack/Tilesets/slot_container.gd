@@ -10,6 +10,12 @@ var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 
+@export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
+
+# Proprietatea care definește obiectul din slot
+var property_1: Dictionary = {}
+
+
 @onready var slot_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer")
 @onready var slot_container_2 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer2")
 @onready var slot_container_3 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer3")
@@ -105,36 +111,59 @@ func _can_drop_data(_at_position, _data):
 func _drop_data(_pos, data):
 	if not (data is Slot):
 		return  # Asigură-te că datele droppate provin dintr-un slot valid
-	#if not has_free_slot():
-		#print("Inventarul este plin! Nu se poate adăuga acest item.")
-		#return  # Nu se face nimic dacă inventarul este plin
-		
-	var source_property = data.property  # Proprietățile itemului din slotul sursă
-	var target_property = property       # Proprietățile itemului din slotul țintă
 
-	if source_property != null and target_property != null:
-		# Dacă itemele au același NUMBER, adună cantitățile
+	if self == data:
+		print("Itemul este deja în acest slot. Nu se face nicio acțiune.")
+		return  # Nu facem nimic dacă sloturile sunt identice
+
+	var source_property = data.property  # Proprietatea itemului din slotul sursă
+	var target_property = property       # Proprietatea itemului din slotul țintă
+	#var EMPTY_ITEM = {"texture" : "","cantitate":0,"number":0,"nume":""}
+	if source_property != null and target_property.has("NUMBER") and target_property.has("CANTITATE") and target_property["NUMBER"] == 0 and target_property["CANTITATE"] == 0:
+
+		# Mutăm itemul într-un slot gol
+		print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		set_property(source_property)
+		data.clear_item()
+
+		# Ajustează `inv.plin` în funcție de tipurile de sloturi
+		if data.slot_type == "inventory" and self.slot_type == "no_inv":
+			inv.plin -= 1  # Mutare din inventar în no_inv
+			print("Mutat1 din inventar în no_inv. Inv plin:", inv.plin)
+			
+		elif data.slot_type == "no_inv" and self.slot_type == "inventory":
+			inv.plin += 1  # Mutare din no_inv în inventar
+			print("Mutat1 din no_inv în inventar. Inv plin:", inv.plin)
+	
+
+	elif source_property != null and target_property != null:
+		# Dacă itemele sunt de același tip, adunăm cantitățile
 		if source_property.has("NUMBER") and target_property.has("NUMBER") and source_property["NUMBER"] == target_property["NUMBER"]:
 			target_property["CANTITATE"] += source_property["CANTITATE"]
-			data.clear_item()  # Golește slotul sursă
-			set_property(target_property)  # Actualizează slotul țintă
+			data.clear_item()
+			set_property(target_property)
 			print("Cantitățile au fost combinate.")
 		else:
-			# Dacă itemele sunt diferite, interschimbă-le
+			# Schimbăm itemele între sloturile inventory și no_inv
+			# Verificăm că tipurile de sloturi sunt diferite (inventory și no_inv)
+			if data.slot_type == "inventory" and self.slot_type == "no_inv":
+				# Actualizăm inv.plin corespunzător
+				
+				print("Mutat item din inventory în no_inv. Inv plin:", inv.plin)
+			elif data.slot_type == "no_inv" and self.slot_type == "inventory":
+				
+				print("Mutat item din no_inv în inventory. Inv plin:", inv.plin)
+
+			# Acum schimbăm efectiv itemele între sloturi
 			var temp = target_property
 			set_property(source_property)
 			data.set_property(temp)
-			inv.plin+=1
-			print(inv.plin)
 			print("Itemele au fost schimbate între sloturi.")
-			
-	elif source_property != null and target_property == null:
-		# Dacă slotul țintă este gol, mută itemul acolo
-		set_property(source_property)
-		data.clear_item()
-		print("Item mutat în slotul gol.")
+
 	else:
 		print("Nu s-a putut face drop-ul.")
+
+	
 	
 	
 	## Actualizează cantitatea pentru ambele sloturi

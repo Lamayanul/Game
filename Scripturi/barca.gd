@@ -20,6 +20,7 @@ var player_near_boat=false
 @onready var animated_sprite_2d = $AnimatedSprite2D
 var moveDirectionHandlerBoat=Vector2.ZERO
 @onready var camera_boat: Camera2D = $camera_boat
+@onready var visible_on_screen_notifier_2d: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
 
 #-----------------------------------ready----------------------------------------------------
 
@@ -29,6 +30,7 @@ func _ready():
 	is_anchored=true
 	change_direction_timer.stop()
 	player_in_boat=false
+
 
 	
 
@@ -282,4 +284,3 @@ func handle_boat_control(_delta):
 func handle_player_control(_delta):
 	
 	pass
-	

@@ -44,6 +44,7 @@ func _process(_delta):
 		var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
 		var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
 		var _tile_data_gard = get_cell_tile_data(3, grid_cell)
+		var _tile_data_land_gard= get_cell_tile_data(4, grid_cell)
 
 		# Resetăm vizibilitatea gridurilor
 		grid.visible = false
@@ -94,6 +95,7 @@ func _process(_delta):
 			
 		if Input.is_action_just_pressed("place_gard") and placing_gard_mode:
 			place_gard(grid_cell)
+			place_gard_deal(grid_cell)
 			
 			
 		#if inventory.selected_slot and inventory.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
@@ -104,7 +106,6 @@ func _process(_delta):
 			#remove_gard(grid_cell)
 		
 
-			
 
 func place_gard(grid_cell: Vector2):
 	var tile_data_gard = get_cell_tile_data(3, grid_cell)
@@ -119,10 +120,22 @@ func place_gard(grid_cell: Vector2):
 		print("Gard plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 	
-			
+func place_gard_deal(grid_cell: Vector2):
+	var tile_data_gard = get_cell_tile_data(5, grid_cell)
+	if tile_data_gard != null:
+		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
+		return 
+	var tile_data_cliff_gard = get_cell_tile_data(4, grid_cell)
+	if  tile_data_cliff_gard != null and tile_data_cliff_gard.get_custom_data("place_gard_deal"):
+	
+		set_cell(5, grid_cell, 12, Vector2(0, 3))  # Plasează gardul
+		set_cells_terrain_connect(5, [grid_cell], 2 ,0,true) 
+		print("Gard plasat la:", grid_cell)
+		inventory.selected_slot.decrease_cantitate(1)
 
 func remove_gard(grid_cell:Vector2):
 	set_cell(3, grid_cell, -1)
+	set_cell(4, grid_cell, -1)
 	
 
 	

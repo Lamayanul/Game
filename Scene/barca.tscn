@@ -472,6 +472,10 @@ wait_time = 3.0
 position = Vector2(-6, 12)
 shape = SubResource("RectangleShape2D_8pog4")
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-4, 14.5)
+scale = Vector2(3.1, 1.75)
+
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_target_reached"]
 [connection signal="timeout" from="ancorare" to="." method="_on_ancorare_timeout"]
@@ -480,3 +484,5 @@ shape = SubResource("RectangleShape2D_8pog4")
 [connection signal="timeout" from="change_direction_timer" to="." method="_on_change_direction_timeout"]
 [connection signal="body_entered" from="in_boat" to="." method="_on_in_boat_body_entered"]
 [connection signal="body_exited" from="in_boat" to="." method="_on_in_boat_body_exited"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

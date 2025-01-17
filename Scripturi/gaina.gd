@@ -34,24 +34,24 @@ func _ready():
 
 func _physics_process(_delta):
 	# Prioritizează starea de fly
-	if fly:
-		#hungry_timer.stop()
-		#timer.stop()
-		fly_anime.show()
-		animatedSprite.hide()
-		velocity = moveDirection * MoveSpeed  # Adaugă mișcare și în timpul zborului
-		move_and_slide()
-
-		# Redă animația de zbor doar dacă nu este deja redată
-		if not animation_player.is_playing():
-			if moveDirection.x < 0:
-				animation_player.play("fly-st")
-			elif moveDirection.x > 0:
-				animation_player.play("fly-dr")
-		return  # Ieși din funcție pentru a preveni logica altor stări
+	#if fly:
+		###hungry_timer.stop()
+		###timer.stop()
+		##fly_anime.show()
+		##animatedSprite.hide()
+		##velocity = moveDirection * MoveSpeed  # Adaugă mișcare și în timpul zborului
+		#move_and_slide()
+#
+		## Redă animația de zbor doar dacă nu este deja redată
+		#if not animation_player.is_playing():
+			#if moveDirection.x < 0:
+				#animation_player.play("fly-st")
+			#elif moveDirection.x > 0:
+				#animation_player.play("fly-dr")
+		#return  # Ieși din funcție pentru a preveni logica altor stări
 	
 	# Gestionarea celorlalte stări
-	elif currentState == ChicState.Walk:
+	if currentState == ChicState.Walk:
 		velocity = moveDirection * MoveSpeed
 		move_and_slide()
 
@@ -85,8 +85,8 @@ func select_new_direction():
 	).normalized()
 
 func pick_new_state():
-	if fly:
-		return
+	#if fly:
+		#return
 	if currentState == ChicState.Idle:
 		currentState = ChicState.Walk
 	elif currentState == ChicState.Walk:
@@ -127,17 +127,17 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		fly=false
 
 #
-func _on_fly_timer_timeout() -> void:
-	reset_after_fly()
+#func _on_fly_timer_timeout() -> void:
+	#reset_after_fly()
 
 #func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	#if fly and anim_name in ["fly-st", "fly-dr"]:
 		#reset_after_fly()
 
-func reset_after_fly():
-	fly=false
-	fly_anime.hide()  # Ascunde animația de zbor
-	animatedSprite.show()  # Reafișează animația normală
-	fly_anime.stop() 
-	#hungry_timer.start()
-	#timer.start() 
+#func reset_after_fly():
+	#fly=false
+	#fly_anime.hide()  # Ascunde animația de zbor
+	#animatedSprite.show()  # Reafișează animația normală
+	#fly_anime.stop() 
+	##hungry_timer.start()
+	##timer.start() 
