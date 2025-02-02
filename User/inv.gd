@@ -155,6 +155,8 @@ func _input(event):
 		select_slot_by_index(3)
 	if event is InputEventMouseButton and oven.in_zona == true:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			if selected_slot==null:
+				return
 			if selected_slot.get_item() != null:
 				# Obține detaliile itemului din slotul selectat
 				var item_data = selected_slot.get_item()

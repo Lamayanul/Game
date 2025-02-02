@@ -18,7 +18,7 @@ func _ready():
 	# Setează textura folosind ID-ul
 	set_texture1(load("res://assets/" + ItemData.get_texture(ID)) as Texture)
 	original_position = position  
-
+	custom_scale()
 
 
 func _on_body_entered(body):
@@ -39,7 +39,9 @@ func _on_body_entered(body):
 			print("Inventarul este plin")
 	
 
-
+func custom_scale():
+	if ID=="15":
+		scale=Vector2(0.65,0.65)
 
 func _process(delta: float):
 	time_passed += delta
@@ -48,6 +50,7 @@ func _process(delta: float):
 # Metodă pentru a seta textura pe obiect
 func set_texture1(texture_drop: Texture):
 	item_texture = texture_drop
+
 	self.texture = item_texture  # Asigură-te că setezi textura pe Sprite2D
 
 # Metodă pentru a seta cantitatea pe obiect

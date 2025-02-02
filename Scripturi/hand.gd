@@ -7,8 +7,6 @@ var time_passed: float = 0.0
 @onready var sprite = $"."
 
 
-
-
 func _process(delta: float):
 	time_passed += delta
 	position.y = original_position.y + sin(time_passed * float_speed) * float_amplitude * 0.5

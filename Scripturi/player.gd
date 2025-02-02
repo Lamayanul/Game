@@ -502,7 +502,7 @@ func _on_arma_body_entered_gard(body):
 
 		# Verifică și obține datele de pe stratul gard (3)
 		var tile_data = body.get_cell_tile_data(3, tile_position)
-
+		var tile_for_podea= body.get_cell_tile_data(2, tile_position)
 		# Verifică și obține datele de pe stratul cliff-gard (4)
 		var tile_data_cliff_gard = body.get_cell_tile_data(5, tile_position)
 		
@@ -515,7 +515,7 @@ func _on_arma_body_entered_gard(body):
 			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
 			var drop_position = global_position + drop_offset
 			inv.call_deferred("drop_item_everywhere","6", 1, drop_position)
-
+	
 		# Condiții pentru gardul de pe stratul 4
 		if tile_data_cliff_gard and tile_data_cliff_gard.get_custom_data("cliff-gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:
 			# Șterge gardul de pe stratul 4
@@ -527,5 +527,15 @@ func _on_arma_body_entered_gard(body):
 			var drop_offset_cliff = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
 			var drop_position_cliff = global_position + drop_offset_cliff
 			inv.call_deferred("drop_item_everywhere","6", 1, drop_position_cliff)
-
-		print("Gardurile au fost eliminate de la poziția:", tile_position)
+			
+		
+		if tile_for_podea and tile_for_podea.get_custom_data("floo_podea") and inv.selected_slot and inv.selected_slot.get_id() == "10" and not arma_colisiune.disabled:
+			# Șterge gardul de pe stratul 3
+			body.set_cell(2, tile_position, -1)
+			
+			# Creează un drop pentru gard
+			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+			var drop_position = global_position + drop_offset
+			inv.call_deferred("drop_item_everywhere","16", 1, drop_position)
+			
+			print("Podelele au fost eliminate de la poziția:", tile_position)

@@ -10,6 +10,25 @@ size = Vector2(6, 4)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0js41"]
 size = Vector2(24, 8)
 
+[sub_resource type="Gradient" id="Gradient_ri4gk"]
+offsets = PackedFloat32Array(0, 0.0961538, 0.677885)
+colors = PackedColorArray(1, 1, 1, 1, 0.759398, 0.759398, 0.759398, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n8dtt"]
+gradient = SubResource("Gradient_ri4gk")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_2hcjl"]
+offsets = PackedFloat32Array(0, 0.0769231, 0.668269)
+colors = PackedColorArray(1, 1, 1, 1, 0.635593, 0.635593, 0.635593, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fm4ks"]
+gradient = SubResource("Gradient_2hcjl")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_e54lm"]
 atlas = ExtResource("3_f7d8a")
 region = Rect2(0, 0, 40, 56)
@@ -109,25 +128,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_ri4gk"]
-offsets = PackedFloat32Array(0, 0.0961538, 0.677885)
-colors = PackedColorArray(1, 1, 1, 1, 0.759398, 0.759398, 0.759398, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_n8dtt"]
-gradient = SubResource("Gradient_ri4gk")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="Gradient" id="Gradient_2hcjl"]
-offsets = PackedFloat32Array(0, 0.0769231, 0.668269)
-colors = PackedColorArray(1, 1, 1, 1, 0.635593, 0.635593, 0.635593, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_fm4ks"]
-gradient = SubResource("Gradient_2hcjl")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0, 0)
-
 [node name="StaticBody2D" type="StaticBody2D" groups=["LightSource"]]
 y_sort_enabled = true
 position = Vector2(0, 15)
@@ -141,12 +141,42 @@ offset = Vector2(0, -18)
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_1nyqx")
 
-[node name="area" type="Area2D" parent="."]
+[node name="area" type="Area2D" parent="." groups=["pillar"]]
 position = Vector2(4, -31)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="area"]
 position = Vector2(-4, -7)
 shape = SubResource("RectangleShape2D_0js41")
+
+[node name="PointLight2D" type="PointLight2D" parent="area"]
+position = Vector2(-13, 42)
+scale = Vector2(2, 2)
+enabled = false
+color = Color(1, 0.953736, 0.404767, 1)
+texture = SubResource("GradientTexture2D_n8dtt")
+
+[node name="PointLight2D2" type="PointLight2D" parent="area"]
+position = Vector2(4, 42)
+enabled = false
+color = Color(1, 0.902123, 0.284181, 1)
+texture = SubResource("GradientTexture2D_fm4ks")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="area"]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(5, 0)
+scale = Vector2(0.238, 0.214286)
+sprite_frames = SubResource("SpriteFrames_psms2")
+animation = &"null"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="area"]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(-13, 0)
+scale = Vector2(0.238, 0.214286)
+sprite_frames = SubResource("SpriteFrames_psms2")
+animation = &"ongoing"
+frame_progress = 0.426418
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 visible = false
@@ -167,32 +197,3 @@ scale = Vector2(0.238, 0.214286)
 texture = ExtResource("3_f7d8a")
 region_enabled = true
 region_rect = Rect2(0, 0, 40, 56)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(9, -31)
-scale = Vector2(0.238, 0.214286)
-sprite_frames = SubResource("SpriteFrames_psms2")
-animation = &"null"
-
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(-9, -31)
-scale = Vector2(0.238, 0.214286)
-sprite_frames = SubResource("SpriteFrames_psms2")
-animation = &"ongoing"
-frame_progress = 0.426418
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-9, 11)
-enabled = false
-color = Color(1, 0.953736, 0.404767, 1)
-texture = SubResource("GradientTexture2D_n8dtt")
-
-[node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(8, 11)
-enabled = false
-color = Color(1, 0.902123, 0.284181, 1)
-texture = SubResource("GradientTexture2D_fm4ks")

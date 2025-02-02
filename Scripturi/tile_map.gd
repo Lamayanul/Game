@@ -17,11 +17,14 @@ var plantedGard:Dictionary={}
 @onready var animatie_sapa: Timer = $animatie_sapa
 @onready var hido = $"../hide"
 var placing_gard_mode = false  
+var placing_house=false
 @export var gard_tile_id: int = 3  
 @onready var grid_gard = $Grid_gard
 @onready var arma_colisiune= get_node("/root/world/player/arma/arma_colisiune")
-
-
+@onready var grid_house: Sprite2D = $Grid_house
+var house_tiles = [Vector2(0,0), Vector2(0,1), Vector2(0,2),Vector2(1,0),Vector2(1,2),Vector2(2,0),Vector2(2,1),Vector2(2,2),Vector2(4,2),Vector2(3,2)] # Diferite variante de tile
+var house_tile_index = 0  # Indexul tile-ului curent
+var placing_podea=false
 
 #-------------------------------_ready--------------------------------------------------------------------------
 func _ready():
@@ -50,6 +53,7 @@ func _process(_delta):
 		grid.visible = false
 		grid_land.visible = false
 		grid_gard.visible=false
+		grid_house.visible=false
 
 		# Verificăm întâi dacă tile-ul este de tip "ogor"
 		if tile_data != null and tile_data.get_custom_data("ogor"):
@@ -91,11 +95,41 @@ func _process(_delta):
 			grid_gard.visible = false
 			placing_gard_mode = false
 			
+			
+		if inventory.selected_slot and inventory.selected_slot.get_id() == "6" : # Folosim ID-ul itemului gard
+			grid_house.visible = true
+			grid_house.position = map_to_local(grid_cell)
+			placing_house = true
+		else:
+			grid_house.visible = false
+			placing_house= false
+			
+		if inventory.selected_slot and inventory.selected_slot.get_id() == "16" : # Folosim ID-ul itemului gard
+
+			grid_house.position = map_to_local(grid_cell)
+			placing_podea = true
+		else:
+
+			placing_podea= false
 #------------------------------------gard_planting/remove----------------------------------------------------------------
 			
-		if Input.is_action_just_pressed("place_gard") and placing_gard_mode:
-			place_gard(grid_cell)
-			place_gard_deal(grid_cell)
+		
+		if placing_house and Input.is_action_just_pressed("cycle_house"):
+			var tile_data_house = get_cell_tile_data(3, grid_cell)  # Check the house tile layer (layer 3)
+	
+			if tile_data_house != null and tile_data_house.get_custom_data("house"): 
+				house_tile_index = (house_tile_index + 1) % house_tiles.size()
+				change_existing_house_tile(grid_cell)
+		
+	
+		if Input.is_action_just_pressed("place_gard"):
+			if placing_gard_mode:
+				place_gard(grid_cell)
+				place_gard_deal(grid_cell)
+			elif placing_house:
+				place_house(grid_cell)
+			elif placing_podea:
+				place_podea(grid_cell)
 			
 			
 		#if inventory.selected_slot and inventory.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
@@ -105,7 +139,12 @@ func _process(_delta):
 			#grid_cell = local_to_map(target_position)
 			#remove_gard(grid_cell)
 		
-
+func change_existing_house_tile(grid_cell: Vector2):
+	var selected_tile = house_tiles[house_tile_index]
+	
+	set_cell(3, grid_cell, 7, selected_tile)  
+	
+	print("House tile modificat la varianta:", selected_tile, "la:", grid_cell)
 
 func place_gard(grid_cell: Vector2):
 	var tile_data_gard = get_cell_tile_data(3, grid_cell)
@@ -131,6 +170,34 @@ func place_gard_deal(grid_cell: Vector2):
 		set_cell(5, grid_cell, 12, Vector2(0, 3))  # Plasează gardul
 		set_cells_terrain_connect(5, [grid_cell], 2 ,0,true) 
 		print("Gard plasat la:", grid_cell)
+		inventory.selected_slot.decrease_cantitate(1)
+
+func place_house(grid_cell: Vector2):
+	print("house")
+	var tile_data = get_cell_tile_data(3, grid_cell)
+	if tile_data != null:
+		print("House nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
+		return 
+	var tile_data_house = get_cell_tile_data(1, grid_cell)
+	if  tile_data_house != null and tile_data_house.get_custom_data("house"):
+	
+		set_cell(3, grid_cell, 7, Vector2(1, 2))  # Plasează gardul
+
+		print("House plasat la:", grid_cell)
+		inventory.selected_slot.decrease_cantitate(1)
+
+func place_podea(grid_cell: Vector2):
+	print("house")
+	var tile_data = get_cell_tile_data(2, grid_cell)
+	if tile_data != null:
+		print("House nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
+		return 
+	var tile_data_house = get_cell_tile_data(1, grid_cell)
+	if  tile_data_house != null and tile_data_house.get_custom_data("floor"):
+	
+		set_cell(2, grid_cell, 7, Vector2(1, 1))  # Plasează gardul
+
+		print("Podea plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 
 func remove_gard(grid_cell:Vector2):

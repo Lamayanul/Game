@@ -69,14 +69,15 @@ func play_taiere_animation():
 		fructe = false 
 		animation_player.stop() 
 		animation_player.play("taiere")  
-		
 		return 
 		
 		
 		
 
 	if index_taiere == 8:
+
 		var pos = Vector2(-20, 10)
+		animation_player.stop() 
 		animation_player.play("gata") 
 		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
 		var drop_position = global_position + drop_offset 
@@ -84,14 +85,13 @@ func play_taiere_animation():
 		if fructe:
 			inv.drop_item_everywhere("7", 3, pos) 
 		#reset_tree_state() 
-		#respawn_tree.start()  
+		#respawn_tree.start()   
 		queue_free()
 		var radacina_mare_scene = load("res://Scene/radacina_mare.tscn")
 		var radacina_mare_instance = radacina_mare_scene.instantiate()
-		radacina_mare_instance.global_position = global_position
+		radacina_mare_instance.global_position = global_position + Vector2(3,11)
 		get_parent().add_child(radacina_mare_instance)
 
-		
 
 func reset_tree_state():
 

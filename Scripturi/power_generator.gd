@@ -9,7 +9,7 @@ var open_fuel = false
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 @onready var progress_bar: ProgressBar = $CanvasLayer/ProgressBar
 var generator_on = false 
-
+var legat=false
 var fuel_capacity = 100
 var timp_ramas: int = 0  # Timpul total rămas în secunde
 
@@ -83,10 +83,14 @@ func _on_button_pressed() -> void:
 		generator_on = true
 		timer.start()
 
-
 func _on_button_3_pressed() -> void:
 	# Oprește sau pornește generatorul
 	if generator_on:
 		print("Generator oprit.")
 		generator_on = false
 		timer.stop()
+
+func _on_area_interact_area_entered(area: Area2D) -> void:
+	# Verifică dacă zona care a intrat în aria de interacțiune face parte din grupul "pillar"
+	if area.is_in_group("pillar"):
+		legat=true

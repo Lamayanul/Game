@@ -3377,6 +3377,7 @@ drag_vertical_enabled = true
 wait_time = 0.5
 
 [node name="arma" type="Area2D" parent="." groups=["arma"]]
+collision_mask = 5
 
 [node name="arma_colisiune" type="CollisionShape2D" parent="arma"]
 position = Vector2(2, 10.5)
