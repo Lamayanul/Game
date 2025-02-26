@@ -17,7 +17,7 @@ var jumpDirection = Vector2.ZERO
 var last_direction = Vector2(0, 1)
 var knockback_force = 500
 @onready var camera_2d: Camera2D = $Camera2D
-
+@onready var fantana_bar = get_node("/root/world/Fantana/CanvasLayer/ProgressBar")
 #--------------------------------Animation-start---------------------------------------------------
 var _currentIdleAnimation="down"
 @onready var animation_player = $AnimationPlayer
@@ -52,12 +52,13 @@ var Speed = 50
 @export var max_shield_durability =100;
 var shield_durability = max_shield_durability 
 var shield_damage_resistance = 1.0
-
+var selected_slot: Slot = null 
 #----------------------------------TileMap------------------------------------------------------------
 var tile_map
 var _tileMap
 @onready var inv: PanelContainer = $"../CanvasLayer/Inv"
-
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
+var farming_on=false
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -259,7 +260,9 @@ func _on_area_2d_mouse_exited():
 	color_rect.visible=false
 	print("iesire")
 
-
+	
+	
+	
 #-------------------------------player-attack--------------------------------------------------------
 func _on_inv_attacking(ID):
 	
@@ -320,8 +323,38 @@ func _on_inv_attacking(ID):
 			animation_player.play("shield-down") 
 		elif last_direction.y < 0:  # Sus
 			animation_player.play("shield-up") 
-	
+	if ID=="22":
+		fantana_bar.value-=10
+		if fantana_bar.value<=0:
+			return
+		farming_on=true
+		scut.visible=false
+		shield_touch.disabled=true
+		attack_weapon=10;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("water-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("water-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("water-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("water-up") 
+			
+	if ID=="3":
+		scut.visible=false
+		shield_touch.disabled=true
+		#attack_weapon=10;
+		if last_direction.x > 0:  # Dreapta
+			animation_player.play("food-right") 
+		elif last_direction.x < 0:   # Stânga
+			animation_player.play("food-left") 
+		elif last_direction.y > 0:  # Jos
+			animation_player.play("food-down") 
+		elif last_direction.y < 0:  # Sus
+			animation_player.play("food-up")
+		spawn_items_around_player("3")
 	attack_timer.start(0.5)
+	
 	
 func _on_attack_timer_timeout():
 	is_attacking = false
@@ -335,7 +368,7 @@ func _on_attack_timer_timeout():
 	elif last_direction.y < 0:
 		_currentIdleAnimation = "up"
 	player_current_attack=false
-
+	farming_on=false
 
 #
 #func _on_arma_body_entered(body):
@@ -346,6 +379,9 @@ func _on_attack_timer_timeout():
 	#
 
 func _on_arma_area_entered(area):
+	if area.is_in_group("arma"):
+		audio_stream_player_2d.play()
+		return
 	if area.is_in_group("enemy_hitbox"):
 		enemy.player_inattack_range=true
 		enemy.player_current_attack=true
@@ -494,23 +530,34 @@ func position_shield_opposite():
 		$"StaticBody2D/shield-touch".shape.radius=6.5
 		
 func _on_arma_body_entered_gard(body):
-	if body is TileMap:
+
+	if body is TileMapLayer:
 		
 		# Obține punctul de coliziune și poziția tile-ului
 		var collision_point = arma_colisiune.global_position
 		var tile_position = body.local_to_map(collision_point)
 
 		# Verifică și obține datele de pe stratul gard (3)
-		var tile_data = body.get_cell_tile_data(3, tile_position)
-		var tile_for_podea= body.get_cell_tile_data(2, tile_position)
-		# Verifică și obține datele de pe stratul cliff-gard (4)
-		var tile_data_cliff_gard = body.get_cell_tile_data(5, tile_position)
+		#var tile_data = body.get_cell_tile_data(3, tile_position)
+		var items_layer = body.get_parent().get_node("items")  # Accesăm nodul TileMap pentru items
+		print("aaaaaaaaaaaaaaaaaaa",items_layer)
+		var tile_data = items_layer.get_cell_tile_data( tile_position)  # Folosim stratul 0 (sau altul)
 		
+		
+		#var podea_layer = body.get_node("../TileMap/ogor")  # Accesăm nodul TileMap pentru items
+		#var tile_for_podea = podea_layer.get_cell_tile_data(2, tile_position) 
+		var layer_ogor = body.get_parent().get_node("ogor") 
+		var tile_for_podea = layer_ogor.get_cell_tile_data( tile_position)
+		#var tile_for_podea= body.get_cell_tile_data(2, tile_position)
+		# Verifică și obține datele de pe stratul cliff-gard (4)
+		#var tile_data_cliff_gard = body.get_cell_tile_data(5, tile_position)
+		var layer_cliff = body.get_parent().get_node("cliff-H") 
+		var tile_data_cliff_gard = layer_cliff.get_cell_tile_data( tile_position)
 		# Condiții pentru gardul de pe stratul 3
 		if tile_data and tile_data.get_custom_data("gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:
 			# Șterge gardul de pe stratul 3
-			body.set_cell(3, tile_position, -1)
-			
+			#body.set_cell(3, tile_position, -1)
+			body.set_cell( tile_position, -1)
 			# Creează un drop pentru gard
 			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
 			var drop_position = global_position + drop_offset
@@ -520,8 +567,8 @@ func _on_arma_body_entered_gard(body):
 		if tile_data_cliff_gard and tile_data_cliff_gard.get_custom_data("cliff-gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:
 			# Șterge gardul de pe stratul 4
 			print("stratul 4")
-			body.set_cell(5, tile_position, -1)
-
+			#body.set_cell(5, tile_position, -1)
+			body.set_cell( tile_position, -1)
 
 			# Creează un drop pentru gard (poate reutiliza același logică ca stratul 3)
 			var drop_offset_cliff = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
@@ -531,7 +578,9 @@ func _on_arma_body_entered_gard(body):
 		
 		if tile_for_podea and tile_for_podea.get_custom_data("floo_podea") and inv.selected_slot and inv.selected_slot.get_id() == "10" and not arma_colisiune.disabled:
 			# Șterge gardul de pe stratul 3
-			body.set_cell(2, tile_position, -1)
+
+			body.set_cell( tile_position, -1)
+			#tile_for_podea.set_cell(tile_position,-1)
 			
 			# Creează un drop pentru gard
 			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
@@ -539,3 +588,31 @@ func _on_arma_body_entered_gard(body):
 			inv.call_deferred("drop_item_everywhere","16", 1, drop_position)
 			
 			print("Podelele au fost eliminate de la poziția:", tile_position)
+
+func spawn_items_around_player(ID):
+	var player_position = self.global_position
+	var item_scene = load("res://Scene/graunte.tscn")  # Încarcă scena obiectului
+	var num_items = 5  # Numărul de obiecte de instanțiat
+	var spawn_radius = 20  # Raza în care vor apărea obiectele în jurul playerului
+	
+	if item_scene:
+		for i in range(num_items):
+			var item_instance = item_scene.instantiate()  # Creează o instanță
+			
+			# 🔹 Generează un unghi aleatoriu (0 - 360° în radiani)
+			var random_angle = randf() * TAU  # TAU = 2 * PI
+
+			# 🔹 Generează o distanță aleatoare între 30 și spawn_radius
+			var random_distance = randf_range(10, spawn_radius)
+			
+			# 🔹 Transformă în coordonate X și Y
+			var random_offset = Vector2(cos(random_angle), sin(random_angle)) * random_distance
+
+			# 🔹 Plasează obiectul la poziția finală
+			item_instance.position = player_position + random_offset
+			get_parent().add_child(item_instance)  # Adaugă în scenă
+			
+			print("Instanțiat obiect la:", item_instance.position)
+	
+	# 🔹 Scade cantitatea doar după ce toate obiectele au fost plasate
+	inv.selected_slot.decrease_cantitate(1)

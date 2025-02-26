@@ -12,6 +12,9 @@ var animatedSprite: AnimatedSprite2D
 var fly=false
 @onready var fly_timer: Timer = $fly_timer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@export var target: Node2D = null
+@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
+
 
 enum ChicState {
 	Idle,
@@ -22,6 +25,7 @@ enum ChicState {
 }
 
 func _ready():
+	call_deferred("seeker_setup")
 	animatedSprite = $AnimatedSprite2D
 	$directionChangeTimer.start()
 	select_new_direction()
@@ -33,24 +37,14 @@ func _ready():
 
 
 func _physics_process(_delta):
-	# Prioritizează starea de fly
-	#if fly:
-		###hungry_timer.stop()
-		###timer.stop()
-		##fly_anime.show()
-		##animatedSprite.hide()
-		##velocity = moveDirection * MoveSpeed  # Adaugă mișcare și în timpul zborului
-		#move_and_slide()
-#
-		## Redă animația de zbor doar dacă nu este deja redată
-		#if not animation_player.is_playing():
-			#if moveDirection.x < 0:
-				#animation_player.play("fly-st")
-			#elif moveDirection.x > 0:
-				#animation_player.play("fly-dr")
-		#return  # Ieși din funcție pentru a preveni logica altor stări
+	if navigation_agent_2d.is_navigation_finished():
+		return
+
+	var curent_agent_position=global_position
+	var next_path_position = navigation_agent_2d.get_next_path_position()
+	velocity=curent_agent_position.direction_to(next_path_position)* MoveSpeed
+	move_and_slide()
 	
-	# Gestionarea celorlalte stări
 	if currentState == ChicState.Walk:
 		velocity = moveDirection * MoveSpeed
 		move_and_slide()
@@ -70,6 +64,10 @@ func _physics_process(_delta):
 			animatedSprite.play("idle")
 
 
+func seeker_setup():
+	await get_tree().physics_frame
+	if target:
+		navigation_agent_2d.target_position=target.global_position
 
 
 
@@ -125,19 +123,3 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		fly=false
-
-#
-#func _on_fly_timer_timeout() -> void:
-	#reset_after_fly()
-
-#func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
-	#if fly and anim_name in ["fly-st", "fly-dr"]:
-		#reset_after_fly()
-
-#func reset_after_fly():
-	#fly=false
-	#fly_anime.hide()  # Ascunde animația de zbor
-	#animatedSprite.show()  # Reafișează animația normală
-	#fly_anime.stop() 
-	##hungry_timer.start()
-	##timer.start() 

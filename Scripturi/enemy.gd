@@ -28,9 +28,10 @@ var is_attacking = false
 @onready var atack = $atack
 var stare_atac= false
 @onready var doge: Timer = $doge
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
+var already_hit = false 
+var is_fleeing = false 
 
-
-var fugi=false
 var happy=0;
 var angry=0;
 var dictator=0;
@@ -42,43 +43,22 @@ func _ready():
 	healthbar_enemy.value=0
 	$ChangeDirection.start()
 	add_to_group("enemy_hitbox")
-	select_new_direction()
+	#select_new_direction()
 	arma.visible=false
 	$arma/colisiune.disabled=true
 
 
-func _physics_process(_delta):
-	
-	#if stare_atac==true:
-		#initiate_attack()
-	#
-	#
-	#velocity = moveDirection * MoveSpeed
-	#
-	#
-	#if player_chase and angry >= 3:
-		#chase()
-	#
-	#else:
-		## Altfel, mișcarea normală
-		#velocity = moveDirection * MoveSpeed
-		#move_and_slide()
-		#movement()
-	#if fugi:
-		#initiate_doge()
-		#move_and_slide()
-		
-	if stare_atac and not is_attacking:
-		initiate_attack()
 
-	# Continuă cu logica de mișcare și alte comportamente
+
+func _physics_process(_delta):
+	if is_fleeing:
+		move_and_slide()
+		return  
+		
 	if not is_attacking:
 		velocity = moveDirection * MoveSpeed
-		if player_chase and angry >= 3:
-			chase()
-		else:
-			move_and_slide()
-			movement()
+		move_and_slide()
+		movement()
 
 func select_new_direction():
 	var random = RandomNumberGenerator.new()
@@ -149,54 +129,36 @@ func apply_knockback():
 func _on_change_direction_timeout():
 	select_new_direction()
 	
-#
+
 func _on_arma_area_entered(area):
-	if area.is_in_group("scut"):
-		print("---------------------------------------------------------")
-		player.enemy_inattack_range=true
-		player.enemy_current_attack=true
+	print("Aria detectată:", area.name)
+	if already_hit:
+		return
+		 
+	if area.is_in_group("arma"):
+		print("Se activează arma, se redă sunetul.")
+		audio_stream_player_2d.play()
+		already_hit = true  
+		return  # Oprește funcția aici, fără a verifica celelalte condiții.5
+
+	elif area.is_in_group("scut"):
+		print("Scut detectat!")
+		player.enemy_inattack_range = true
+		player.enemy_current_attack = true
 		player.deal_with_damage()
+		already_hit = true  
+		return
+
 	elif area.is_in_group("player_hitbox"):
-		#print(area)
-		player.enemy_inattack_range=true
-		player.enemy_current_attack=true
+		print("Jucător lovit!")
+		player.enemy_inattack_range = true
+		player.enemy_current_attack = true
 		player.deal_with_damage1()
-	
 
+func _on_arma_area_exited(area: Area2D) -> void:
+	await get_tree().process_frame
+	already_hit = false
 
-
-
-func chase():
-	
-	if player_chase:
-		# Calcul distanță dintre inamic și jucător
-		var direction = (player.position - position).normalized()
-		var distance_to_player = position.distance_to(player.position)
-		# Mișcarea inamicului spre jucător
-		if distance_to_player > stop_distance:
-			position += direction * Speed * 0.02
-			velocity = direction * Speed
-		
-	
-			move_and_slide()
-			# Determină direcția de mișcare dominantă pentru a seta animația
-			if abs(direction.x) > abs(direction.y):  # Mișcare pe X
-				if direction.x < 0:
-					animated_sprite_2d.play("walk-stanga")
-					lastPosition = Vector2(-1, 0)
-				else:
-					animated_sprite_2d.play("walk-dreapta")
-					lastPosition = Vector2(1, 0)
-			else:  # Mișcare pe Y
-				if direction.y < 0:
-					animated_sprite_2d.play("walk-sus")
-					lastPosition = Vector2(0, -1)
-				else:
-					animated_sprite_2d.play("walk-jos")
-					lastPosition = Vector2(0, 1)
-		else:
-			animated_sprite_2d.play("idle")
-	
 
 func _on_detection_body_entered(body):
 	if body.is_in_group("player"):
@@ -204,7 +166,7 @@ func _on_detection_body_entered(body):
 		healthbar_enemy.value=health
 		if angry>=3:
 			player_chase=true
-			chase()
+			#chase()
 
 
 func _on_detection_body_exited(body):
@@ -214,85 +176,65 @@ func _on_detection_body_exited(body):
 		healthbar_enemy.value=0
 		movement()
 
+func _on_atack_zone_area_entered(area):
+	if area.is_in_group("player_hitbox") and not is_attacking and not is_fleeing and angry >= 3:
+		# Determină direcția către jucător
+		var direction_to_player = (player.position - position).normalized()
 		
+		# Setează animația de atac în direcția jucătorului
+		if abs(direction_to_player.x) > abs(direction_to_player.y):
+			if direction_to_player.x < 0:
+				animation_player.play("attack-right")
+			else:
+				animation_player.play("attack-left")
+		else:
+			if direction_to_player.y < 0:
+				animation_player.play("attack-up")
+			else:
+				animation_player.play("attack-down")
 		
-func initiate_attack():
-	is_attacking = true
+		stare_atac = true
+		is_attacking = true
+		atack.start()  # Inițiază atacul
 
-	# Select animation based on direction
-	match lastPosition:
-		Vector2(-1, 0):
-			animation_player.play("attack-right")
-		Vector2(1, 0):
-			animation_player.play("attack-left")
-		Vector2(0, -1):
-			animation_player.play("attack-up")
-		Vector2(0, 1):
-			animation_player.play("attack-down")
-	fugi=true
+
+
+func _on_atack_timeout():
+	is_attacking = false
+	stare_atac = false
+	atack.stop()
+	initiate_doge()
+
 
 func initiate_doge():
-
-	is_attacking = true
-
-	# Select animation based on direction
-	match lastPosition:
-		Vector2(1, 0):
+	if not player:
+		return
+	$ChangeDirection.stop()
+	is_fleeing = true 
+	# Direcția opusă față de jucător
+	var direction_away = (position - player.position).normalized()
+	
+	var dodge_speed = MoveSpeed * 2
+	
+	# Aplică mișcarea de fugă
+	velocity = direction_away * dodge_speed
+	move_and_slide()
+	# Alegerea animației în funcție de direcția fugii
+	if abs(direction_away.x) > abs(direction_away.y):
+		if direction_away.x < 0:
 			animation_player.play("run-left")
-			velocity = Vector2(1, 0) * MoveSpeed
-		Vector2(-1, 0):
-			velocity = Vector2(-1, 0) * MoveSpeed
+		else:
 			animation_player.play("run-right")
-		Vector2(0, 1):
+	else:
+		if direction_away.y < 0:
 			animation_player.play("run-up")
-			velocity = Vector2(0, 1) * MoveSpeed
-		Vector2(0, -1):
+		else:
 			animation_player.play("run-down")
-			velocity = Vector2(0, -1) * MoveSpeed
-	move_and_slide()  
-	fugi=false
-	
-	
-#func _on_AnimationPlayer_animation_finished(anim_name):
-	#match anim_name:
-		#"attack-down":
-			#is_attacking = false
-			#stare_atac=false
-		#"attack-up":
-			#is_attacking = false
-			#stare_atac=false
-		#"attack-left":
-			#is_attacking = false
-			#stare_atac=false
-		#"attack-right":
-			#is_attacking = false
-			#stare_atac=false
+	doge.start()
 
 
-
-func _on_atack_zone_area_entered(area):
-	if area.is_in_group("player_hitbox") and  is_attacking==false and angry>=3:
-		stare_atac=true
-		atack.start()
-		doge.start()
-
-
-
-		
-		
-#func _on_atack_zone_area_exited(_area):
-#
-	#atack.stop()
-	
-
-
-func _on_atack_timeout() -> void:
+func _on_doge_timeout():
+	is_fleeing = false  # Oprește fuga
 	is_attacking = false
-	stare_atac=false
-	#if fugi:
-		#initiate_doge()
-	
-
-
-func _on_doge_timeout() -> void:
-	initiate_doge()
+	$ChangeDirection.start()
+	select_new_direction()

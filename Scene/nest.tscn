@@ -734,6 +734,7 @@ scale = Vector2(0.635328, 0.635328)
 script = ExtResource("1_jchlo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
 texture = ExtResource("1_bviby")
 offset = Vector2(0, 10)
 

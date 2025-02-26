@@ -8,7 +8,7 @@ class_name Slot
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
-
+@onready var water_fill = get_node("/root/world/Fantana/CanvasLayer")
 
 @export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
 
@@ -197,7 +197,7 @@ func clear_item():
 	$TextureHolder/TextureRect.texture = null  
 	# Resetează textul etichetei la gol
 	label.text = ""
-	
+	water_fill.visible=false
 	
 	# Resetează cantitatea
 	cantitate = 0

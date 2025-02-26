@@ -13,6 +13,8 @@ var legat=false
 var fuel_capacity = 100
 var timp_ramas: int = 0  # Timpul total rămas în secunde
 
+
+
 func _ready() -> void:
 	canvas_layer.visible = false
 	progress_bar.min_value = 0  # Minimul valorii (0%)
@@ -82,6 +84,7 @@ func _on_button_pressed() -> void:
 		print("Generator pornit.")
 		generator_on = true
 		timer.start()
+
 
 func _on_button_3_pressed() -> void:
 	# Oprește sau pornește generatorul

@@ -40,6 +40,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("gaina")and is_clocit:
 		is_clocit = false  # Setează starea ca fals
 		gaina.start_chicken()
+	if body.is_in_group("player"):
 		can_interact=false
 		
 func _input(event):

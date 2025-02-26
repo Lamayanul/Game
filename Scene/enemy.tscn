@@ -1,9 +1,10 @@
-[gd_scene load_steps=123 format=3 uid="uid://dn1osqamgorag"]
+[gd_scene load_steps=124 format=3 uid="uid://dn1osqamgorag"]
 
 [ext_resource type="Script" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
 [ext_resource type="Texture2D" uid="uid://b4otyj2854hm1" path="res://Base Character - Premium/basic/death.png" id="1_inn2y"]
 [ext_resource type="Texture2D" uid="uid://c7y4nlm26ofww" path="res://Base Character - Premium/basic/idle.png" id="2_423kg"]
 [ext_resource type="Texture2D" uid="uid://dgxx50eriayau" path="res://Base Character - Premium/attack/sword.png" id="2_a767a"]
+[ext_resource type="AudioStream" uid="uid://djsovd73q0vq" path="res://Sound/sword_meet.wav" id="2_tn1ve"]
 [ext_resource type="Texture2D" uid="uid://c3skfildne1id" path="res://Base Character - Premium/basic/walk.png" id="3_1hsc2"]
 [ext_resource type="Texture2D" uid="uid://huvx4f8x78sp" path="res://Base Character - Premium/basic/run.png" id="5_7tyfx"]
 
@@ -11,7 +12,7 @@
 size = Vector2(7, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_56oj4"]
-size = Vector2(11.5, 12)
+size = Vector2(9, 6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh2jg"]
 bg_color = Color(0, 0, 0, 0.415686)
@@ -1353,7 +1354,7 @@ size = Vector2(32.646, 9.03165)
 radius = 47.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_brlc1"]
-radius = 14.0357
+radius = 24.0208
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -1366,6 +1367,7 @@ script = ExtResource("1_8c6dx")
 
 [node name="ChangeDirection" type="Timer" parent="."]
 wait_time = 2.0
+autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -1374,12 +1376,11 @@ shape = SubResource("RectangleShape2D_6p5mf")
 [node name="enemy_hitbox" type="Area2D" parent="." groups=["enemy_hitbox"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox"]
-position = Vector2(0.25, 0)
+position = Vector2(0.5, 3)
 shape = SubResource("RectangleShape2D_56oj4")
 
 [node name="take_damage" type="Timer" parent="."]
 wait_time = 0.5
-one_shot = true
 
 [node name="color" type="Timer" parent="."]
 wait_time = 0.2
@@ -1408,7 +1409,7 @@ libraries = {
 }
 speed_scale = 2.0
 
-[node name="arma" type="Area2D" parent="."]
+[node name="arma" type="Area2D" parent="." groups=["arma"]]
 y_sort_enabled = true
 position = Vector2(7.10543e-15, 3.55271e-15)
 rotation = -0.933751
@@ -1423,6 +1424,11 @@ rotation = 1.77453
 scale = Vector2(0.437711, 0.437711)
 shape = SubResource("RectangleShape2D_wv2m2")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arma"]
+rotation = 0.933751
+scale = Vector2(1.31776, 1.31776)
+stream = ExtResource("2_tn1ve")
+
 [node name="detection" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detection"]
@@ -1435,15 +1441,15 @@ shape = SubResource("CircleShape2D_brlc1")
 
 [node name="atack" type="Timer" parent="."]
 wait_time = 0.5
-autostart = true
 
 [node name="doge" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 1.5
 
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
 [connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]
 [connection signal="timeout" from="color" to="." method="_on_color_timeout"]
 [connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]
+[connection signal="area_exited" from="arma" to="." method="_on_arma_area_exited"]
 [connection signal="body_entered" from="detection" to="." method="_on_detection_body_entered"]
 [connection signal="body_exited" from="detection" to="." method="_on_detection_body_exited"]
 [connection signal="area_entered" from="atack_zone" to="." method="_on_atack_zone_area_entered"]

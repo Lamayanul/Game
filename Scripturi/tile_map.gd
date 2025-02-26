@@ -8,6 +8,7 @@ var last_direction = Vector2(0, 1)
 @onready var inventory = get_node("/root/world/CanvasLayer/Inv")
 var selected_slot: Slot = null  
 @onready var player = get_node("/root/world/player")
+@onready var seminte_grid: Sprite2D = $Seminte
 var drop=1
 var cell
 var planting_mode = false
@@ -23,8 +24,16 @@ var placing_house=false
 @onready var arma_colisiune= get_node("/root/world/player/arma/arma_colisiune")
 @onready var grid_house: Sprite2D = $Grid_house
 var house_tiles = [Vector2(0,0), Vector2(0,1), Vector2(0,2),Vector2(1,0),Vector2(1,2),Vector2(2,0),Vector2(2,1),Vector2(2,2),Vector2(4,2),Vector2(3,2)] # Diferite variante de tile
+var roof_tiles=[Vector2(0,0),Vector2(1,0),Vector2(2,0),Vector2(0,1),Vector2(1,1),Vector2(2,1),Vector2(0,2),Vector2(1,2),Vector2(2,2),Vector2(0,3),Vector2(1,3),Vector2(2,3),Vector2(0,4),Vector2(1,4),Vector2(2,4),]
 var house_tile_index = 0  # Indexul tile-ului curent
+var roof_tile_index=0
+var extra_house_tiles = [Vector2(0,0), Vector2(5,0)] # Set nou de tile-uri
+var extra_tile_index = 0  # Indexul pentru setul nou
+var ogor_tile_tiles=[Vector2(1,1),Vector2(0,0),Vector2(0,1),Vector2(0,2),Vector2(1,0),Vector2(2,0),Vector2(2,1),Vector2(2,2),Vector2(1,2)]
+var ogor_tile_index=0
 var placing_podea=false
+var placing_roof=false
+@onready var fantana_bar = get_node("/root/world/Fantana/CanvasLayer/ProgressBar")
 
 #-------------------------------_ready--------------------------------------------------------------------------
 func _ready():
@@ -35,6 +44,7 @@ func _ready():
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
+	watering_ogor()
 	if player and is_instance_valid(player):
 		var player_position = player.global_position
 		var player_direction = player.last_direction.normalized()  # Direcția „în față”
@@ -42,19 +52,20 @@ func _process(_delta):
 		var _drop_position = player_position + (player_direction * drop_distance)#####################
 		var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
 		var grid_cell = local_to_map(mouse_pos)  # Convertește poziția mouse-ului la coordonatele TileMap-ului
-
+		#var tile_data = get_cell_tile_data(2, grid_cell)
 		# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
-		var tile_data = get_cell_tile_data(2, grid_cell)  # Stratul pentru "ogor"
-		var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
-		var _tile_data_gard = get_cell_tile_data(3, grid_cell)
-		var _tile_data_land_gard= get_cell_tile_data(4, grid_cell)
-
+		var tile_data = $ogor.get_cell_tile_data( grid_cell)  # Stratul pentru "ogor"
+		var tile_data_land = $land.get_cell_tile_data( grid_cell) 
+		#var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
+		#var _tile_data_gard = get_cell_tile_data(3, grid_cell)
+		#var _tile_data_land_gard= get_cell_tile_data(4, grid_cell)
+		
 		# Resetăm vizibilitatea gridurilor
 		grid.visible = false
 		grid_land.visible = false
 		grid_gard.visible=false
-		grid_house.visible=false
 
+		
 		# Verificăm întâi dacă tile-ul este de tip "ogor"
 		if tile_data != null and tile_data.get_custom_data("ogor"):
 			grid.visible = true  # Afișăm grid-ul pentru "ogor"
@@ -69,13 +80,16 @@ func _process(_delta):
 		else:
 			grid_land.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "land"
 			
+			
+			
 		  # Adaugă "plant_ogor" în Input Map
 		planting_mode = true
 		if inventory.selected_slot:
 			var ID=inventory.selected_slot.get_id()
 			if ID=="9":
 				grid_land.visible=true
-				if planting_mode and grid_land.visible and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
+				if planting_mode and (grid_land.visible or grid.visible) and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
+					
 					inventory.attack()
 					#animatie_sapa.start() ------------------------probleme de timing
 					replace_land_with_ogor(grid_cell)
@@ -95,31 +109,51 @@ func _process(_delta):
 			grid_gard.visible = false
 			placing_gard_mode = false
 			
-			
-		if inventory.selected_slot and inventory.selected_slot.get_id() == "6" : # Folosim ID-ul itemului gard
-			grid_house.visible = true
-			grid_house.position = map_to_local(grid_cell)
-			placing_house = true
+		
+				
+		if inventory.selected_slot:
+			var selected_id = inventory.selected_slot.get_id()
+	
+			if selected_id in ["6", "16", "17"]:  # Dacă e gard, podea sau acoperiș
+				grid_house.visible = true
+				grid_house.position = map_to_local(grid_cell)
+		
+				placing_house = selected_id == "6"
+				placing_podea = selected_id == "16"
+				placing_roof = selected_id == "17"
+			else:
+				grid_house.visible = false
+				placing_house = false
+				placing_podea = false
+				placing_roof = false
 		else:
 			grid_house.visible = false
-			placing_house= false
-			
-		if inventory.selected_slot and inventory.selected_slot.get_id() == "16" : # Folosim ID-ul itemului gard
+			placing_house = false
+			placing_podea = false
+			placing_roof = false
 
-			grid_house.position = map_to_local(grid_cell)
-			placing_podea = true
-		else:
-
-			placing_podea= false
 #------------------------------------gard_planting/remove----------------------------------------------------------------
 			
 		
 		if placing_house and Input.is_action_just_pressed("cycle_house"):
-			var tile_data_house = get_cell_tile_data(3, grid_cell)  # Check the house tile layer (layer 3)
-	
+			var tile_data_house = $items.get_cell_tile_data( grid_cell)  # Check the house tile layer (layer 3)
 			if tile_data_house != null and tile_data_house.get_custom_data("house"): 
 				house_tile_index = (house_tile_index + 1) % house_tiles.size()
 				change_existing_house_tile(grid_cell)
+		
+		if placing_roof and Input.is_action_just_pressed("cycle_house"):
+			var tile_data_roof = $cliff.get_cell_tile_data( grid_cell)  # Check the house tile layer (layer 3)
+			if tile_data_roof != null and tile_data_roof.get_custom_data("roof"): 
+				roof_tile_index = (roof_tile_index + 1) % roof_tiles.size()
+				change_existing_roof_tile(grid_cell)
+				
+		if placing_house and Input.is_action_just_pressed("cycle_house"):
+			var tile_data_extra = $items.get_cell_tile_data(grid_cell)
+			if tile_data_extra != null and tile_data_extra.get_custom_data("extra"): 
+				extra_tile_index = (extra_tile_index + 1) % extra_house_tiles.size()
+				change_existing_house_tile(grid_cell)
+		
+		
 		
 	
 		if Input.is_action_just_pressed("place_gard"):
@@ -130,75 +164,116 @@ func _process(_delta):
 				place_house(grid_cell)
 			elif placing_podea:
 				place_podea(grid_cell)
+			elif placing_roof:
+				place_roof(grid_cell)
 			
 			
+		var player_pos = player.global_position
+		var player_cell = local_to_map(player_pos)
+		var tile_data_player = $cliff.get_cell_tile_data(player_cell)
+		if tile_data_player and tile_data_player.get_custom_data("roof"):  # Verifică dacă e un acoperiș
+			$cliff.modulate = Color(1, 1, 1, 0.3)  # Face acoperișul semi-transparent
+		else:
+			$cliff.modulate = Color(1, 1, 1, 1)  # Revine la normal
 		#if inventory.selected_slot and inventory.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
 			#player_position = arma_colisiune.global_position
 			#player_direction = player.last_direction.normalized()
 			#var target_position = player_position 
 			#grid_cell = local_to_map(target_position)
 			#remove_gard(grid_cell)
-		
+	
 func change_existing_house_tile(grid_cell: Vector2):
-	var selected_tile = house_tiles[house_tile_index]
-	
-	set_cell(3, grid_cell, 7, selected_tile)  
-	
-	print("House tile modificat la varianta:", selected_tile, "la:", grid_cell)
+	if Input.is_action_pressed("shift"):  # Dacă ținem Shift, schimbăm tile-urile adiționale
+		var selected_tile = extra_house_tiles[extra_tile_index]
+		$items.set_cell(grid_cell, 13, selected_tile)  # Layer 13 pentru noul set de tile-uri
+		print("Additional house tile modificat la varianta:", selected_tile, "la:", grid_cell)
+	else:  # Dacă nu e Shift apăsat, schimbăm tile-urile normale
+
+		var selected_tile = house_tiles[house_tile_index]
+		$items.set_cell(grid_cell, 7, selected_tile)  
+		print("House tile modificat la varianta:", selected_tile, "la:", grid_cell)
+
+
+
+
+func change_existing_roof_tile(grid_cell: Vector2):
+	var selected_tile = roof_tiles[roof_tile_index]
+	$cliff.set_cell( grid_cell, 8, selected_tile)  
+	print( "Roof tile modificat la varianta:", selected_tile, "la:", grid_cell)
+
+
 
 func place_gard(grid_cell: Vector2):
-	var tile_data_gard = get_cell_tile_data(3, grid_cell)
+	var tile_data_gard =$items. get_cell_tile_data(grid_cell)
 	if tile_data_gard != null:
 		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_land = get_cell_tile_data(1, grid_cell)
+	var tile_data_land =$land. get_cell_tile_data( grid_cell)
 	if  tile_data_land != null and tile_data_land.get_custom_data("land-gard"):
 	
-		set_cell(3, grid_cell, 5, Vector2(0, 3))  # Plasează gardul
-		set_cells_terrain_connect(3, [grid_cell], 1 ,0,true) 
+		$items.set_cell( grid_cell, 5, Vector2(0, 3))  # Plasează gardul
+		$items.set_cells_terrain_connect( [grid_cell], 1 ,0,true) 
 		print("Gard plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 	
 func place_gard_deal(grid_cell: Vector2):
-	var tile_data_gard = get_cell_tile_data(5, grid_cell)
+	var tile_data_gard = $"cliff-H".get_cell_tile_data( grid_cell)
 	if tile_data_gard != null:
 		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_cliff_gard = get_cell_tile_data(4, grid_cell)
+	var tile_data_cliff_gard =$cliff.get_cell_tile_data( grid_cell)
 	if  tile_data_cliff_gard != null and tile_data_cliff_gard.get_custom_data("place_gard_deal"):
 	
-		set_cell(5, grid_cell, 12, Vector2(0, 3))  # Plasează gardul
-		set_cells_terrain_connect(5, [grid_cell], 2 ,0,true) 
+		$"cliff-H".set_cell( grid_cell, 12, Vector2(0, 3))  # Plasează gardul
+		$"cliff-H".set_cells_terrain_connect( [grid_cell], 2 ,0,true) 
 		print("Gard plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 
 func place_house(grid_cell: Vector2):
 	print("house")
-	var tile_data = get_cell_tile_data(3, grid_cell)
+	var tile_data = $items.get_cell_tile_data( grid_cell)
 	if tile_data != null:
 		print("House nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_house = get_cell_tile_data(1, grid_cell)
+	var tile_data_house = $land.get_cell_tile_data( grid_cell)
 	if  tile_data_house != null and tile_data_house.get_custom_data("house"):
 	
-		set_cell(3, grid_cell, 7, Vector2(1, 2))  # Plasează gardul
+		$items.set_cell( grid_cell, 7, Vector2(1, 2))  # Plasează gardul
 
 		print("House plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 
 func place_podea(grid_cell: Vector2):
 	print("house")
-	var tile_data = get_cell_tile_data(2, grid_cell)
+	var tile_data = $ogor.get_cell_tile_data( grid_cell)
 	if tile_data != null:
 		print("House nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_house = get_cell_tile_data(1, grid_cell)
+	var tile_data_house = $land.get_cell_tile_data( grid_cell)
 	if  tile_data_house != null and tile_data_house.get_custom_data("floor"):
 	
-		set_cell(2, grid_cell, 7, Vector2(1, 1))  # Plasează gardul
+		$ogor.set_cell( grid_cell, 7, Vector2(1, 1))  # Plasează gardul
 
 		print("Podea plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
+
+
+func place_roof(grid_cell: Vector2):
+	var tile_data = $cliff.get_cell_tile_data( grid_cell)
+	if tile_data != null:
+		print("House nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
+		return 
+	var tile_data_roof = $cliff.get_cell_tile_data( grid_cell)
+	if  tile_data_roof == null :
+	
+		$cliff.set_cell( grid_cell, 8, Vector2(0, 2))  # Plasează gardul
+
+		print("House plasat la:", grid_cell)
+		inventory.selected_slot.decrease_cantitate(1)
+
+
+
+
 
 func remove_gard(grid_cell:Vector2):
 	set_cell(3, grid_cell, -1)
@@ -209,19 +284,41 @@ func remove_gard(grid_cell:Vector2):
 
 #------------------------------schimbare tile din land in ogor--------------------------------------------------------
 func replace_land_with_ogor(grid_cell: Vector2):
-	var tile_data_land = get_cell_tile_data(1, grid_cell)
+	#var tile_data_land = $land.get_cell_tile_data( grid_cell)
+	#if tile_data_land != null and tile_data_land.get_custom_data("land"):
+		#$ogor.set_cell(grid_cell,2,Vector2(1,1))
+		#$ogor.set_cells_terrain_connect( [grid_cell], 0 ,0,true)  
+		#print("Tile-ul de 'ogor' a fost plantat la:", grid_cell)
+	var ogor_data_tiles = $land.get_cell_tile_data( grid_cell)  # Check the house tile layer (layer 3)
+	if ogor_data_tiles != null and ogor_data_tiles.get_custom_data("land"): 
+		ogor_tile_index = (ogor_tile_index + 1) % ogor_tile_tiles.size()
+		var selected_tile = ogor_tile_tiles[ogor_tile_index]
+		$ogor.set_cell( grid_cell, 2, selected_tile)  
+		print( "Ogor tile modificat la varianta:", selected_tile, "la:", grid_cell)
+		
 
-	if tile_data_land != null and tile_data_land.get_custom_data("land"):
-		set_cell(2,grid_cell,2,Vector2(1,1))
-		set_cells_terrain_connect(2, [grid_cell], 0 ,0,true)  
-		print("Tile-ul de 'ogor' a fost plantat la:", grid_cell)
-
-
-
+func watering_ogor():
+	var cellLocalCoord=local_to_map(grid.position)
+	var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
+	if tile==null  or curentSeed==null:
+		return
+	if tile.get_custom_data("ogor") and fantana_bar.value>=0:
+		if plantedFlower.has(cellLocalCoord):
+			if inventory.selected_slot:
+				var ID=inventory.selected_slot.get_id()
+				if ID=="22" and player.farming_on:
+					var player_position = player.global_position
+					var player_direction = player.last_direction.normalized()  # Direcția „în față”
+					var drop_distance = 10  # Ajustează distanța conform nevoilor tale
+					var _drop_position = player_position + (player_direction * drop_distance)#####################
+					var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
+					var grid_cell = local_to_map(mouse_pos)
+					$ogor.set_cell( grid_cell, 14, Vector2(0,0))  
+					$umezeala.start()
 #----------------------------------plantare plante-----------------------------------------------------------
 func _on_player_plant_seed():
 	var cellLocalCoord=local_to_map(grid.position)
-	var tile:TileData=get_cell_tile_data(2,cellLocalCoord)
+	var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
 	cell=cellLocalCoord
 	if tile==null  or curentSeed==null:
 		return
@@ -281,3 +378,18 @@ func harvest_plant(coord)->void:
 func _on_animatie_sapa_timeout() -> void:
 	animation_player.stop()
 	animatie_sapa.stop()
+
+
+func _on_umezeala_timeout() -> void:
+	var cellLocalCoord=local_to_map(grid.position)
+	var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
+	if tile:
+		if tile.get_custom_data("umed"):
+			var player_position = player.global_position
+			var player_direction = player.last_direction.normalized()  # Direcția „în față”
+			var drop_distance = 10  # Ajustează distanța conform nevoilor tale
+			var _drop_position = player_position + (player_direction * drop_distance)#####################
+			var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
+			var grid_cell = local_to_map(mouse_pos)
+			print("nu merge")
+			$ogor.set_cell( grid_cell, 2, Vector2(1,1))  

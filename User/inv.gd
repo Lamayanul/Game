@@ -13,8 +13,13 @@ extends PanelContainer
 @onready var slot_container_chest_3 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer3")
 @onready var slot_container_chest_4 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer4")
 
+@onready var slot_container_8: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer")
+@onready var slot_container_9: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer2")
+
+
 @onready var oven = get_node("/root/world/Node2D")
 @onready var chest = get_node("/root/world/Chest")
+@onready var pillar = get_tree().get_nodes_in_group("LightSource")
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
@@ -26,45 +31,54 @@ extends PanelContainer
 var selected_slot: Slot = null  # Slotul selectat
 @onready var tile_map = $"../../TileMap"
 @onready var player = $"../../player"
+var timp_ramas=0
+@onready var label: Label = $CanvasLayer/Label
+@onready var timer: Timer = $CanvasLayer/Timer
+@onready var player_light = get_node("/root/world/player/PointLight2D")
+@onready var light: PointLight2D = $PointLight2D
+@onready var slot_container12: Slot = $CanvasLayer/GridContainer/SlotContainer
+var id=""
 
 #-----------------------------Semnale----------------------------------------------------------------
 signal plantSeed
 signal attacking
 
 #---------------------------------------add_item()-----------------------------------------------------
-func add_item(ID="", item_cantita=1):
+func add_item(ID="", item_cantita=1) -> bool:
 	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
-	var item_nume=ItemData.get_nume(ID)
+	var item_nume = ItemData.get_nume(ID)
 	var item_number = ItemData.get_number(ID)
-	var item_cantitate=item_cantita
-	print("cantitate: ", item_cantitate)
-	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number,"NUME":item_nume}
-	if ID=="0":
-		item_cantitate=0
-	
-	# 1. Verifică dacă există deja un item cu același ID în inventar
+	var item_cantitate = item_cantita
+	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume}
+
+	print("Încerc să adaug item ID:", ID, " Cantitate:", item_cantitate)
+
+	# 1. Încearcă să stivuiască itemul dacă există deja în inventar
 	for i in range(grid_container.get_child_count()):
 		var child = grid_container.get_child(i)
 		if child is Slot:
+			print("Slot", i, " - ID:", child.get_id(), " Filled:", child.filled)
 			if child.filled and child.get_id() == ID:
-				# 2. Stivuiește itemele dacă găsești un slot cu același ID
+				print("Item găsit în slot", i, ". Stivuiesc...")
 				child.cantitate += item_cantitate
-				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number,"NUME":item_nume})
-				plin=plin
-			
-				return
+				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume})
+				return true  # A reușit să adauge obiectul, returnează `true`
 	
-	# 3. Dacă nu există un slot cu același ID, caută un slot gol și adaugă itemul acolo
+	# 2. Dacă nu există un slot cu același ID, caută un slot gol
 	for i in range(grid_container.get_child_count()):
 		var child = grid_container.get_child(i)
 		if child is Slot:
+			print("Verific slot gol:", i, " - Filled:", child.filled)
 			if not child.filled:
+				print("Am găsit slot gol la", i, ". Adaug itemul.")
 				child.set_property(item_data)
 				child.filled = true
-				plin+=1
-				return
-	# Dacă inventarul este plin și nu există sloturi libere
-	print("Inventarul este plin!")
+				plin += 1
+				return true  # A reușit să adauge obiectul, returnează `true`
+
+	# 3. Dacă inventarul este plin și nu există sloturi libere
+	print("Inventarul este plin! Nu pot adăuga itemul.")
+	return false  # Nu a reușit să adauge obiectul
 
 
 #--------------------------------_ready()----------------------------------------------------------------
@@ -79,9 +93,12 @@ func _ready():
 		var first_slot = grid_container.get_child(0)
 		if first_slot is Slot:
 			_on_slot_selected(first_slot)
-	$"../../Item7".item_cantitate=3
-
-
+	slots = [slot_container, slot_container_2, slot_container_3, slot_container_4]
+	print("Slots list:", slots)  # Verifică dacă toate sunt valide
+	
+func _process(_delta: float) -> void:
+	lamp()
+	has_backpack()
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
 	if selected_slot:
@@ -212,12 +229,34 @@ func _input(event):
 					selected_slot.clear_item()
 					plin -= 1
 					print("Item transferat cu succes în slotul de chest4.")
-
 				# Dacă niciun slot nu este disponibil, afișează un mesaj
 				else:
 					print("Toate sloturile sunt pline de chest.")
+					
 			else:
 				print("Nu este niciun item selectat pentru transfer.")
+	#for p in pillar:
+		#if p.pillar_area:
+			#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+				#if selected_slot and selected_slot.get_item() != null:
+					## Obține detaliile itemului din slotul selectat
+					#var item_data = selected_slot.get_item()
+#
+					## Încearcă să transferi itemul în slotul 6
+					#if transfer_item_to_slot(item_data, slot_container_8):
+						## Dacă transferul este reușit, curăță itemul din slotul selectat
+						#selected_slot.clear_item()
+						#plin -= 1
+						#print("Item transferat cu succes în slotul de chest1.")
+#
+					## Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+					#elif transfer_item_to_slot(item_data, slot_container_9):
+						## Dacă transferul este reușit, curăță itemul din slotul selectat
+						#selected_slot.clear_item()
+						#plin -= 1
+						#print("Item transferat cu succes în slotul de chest2.")
+
+
 # Funcție pentru a transfera un item într-un slot specific
 func transfer_item_to_slot(item_data: Dictionary, slot_container: Node) -> bool:
 	# Verifică dacă slotul conține deja acest tip de item
@@ -324,8 +363,8 @@ func drop_item(ID: String, cantiti: int):
 		var item_instance = item_scene.instantiate()
 		item_instance.set_cantitate(item_cantitate)
 		item_instance.set_texture1(item_texture)
-		
 		item_instance.ID = ID
+		#item_instance.set_lumina(ID)
 		var player_position = player.global_position
 		var player_direction = player.last_direction.normalized()  # Direcția „în față”
 		var drop_distance = 20  # Ajustează distanța conform nevoilor tale
@@ -335,6 +374,9 @@ func drop_item(ID: String, cantiti: int):
 		world_node.add_child(item_instance)
 		player.inequip_item()
 		info_label.text=""
+		#if ID=="18":
+			#var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
+			#backpack.visible = false
 	
 #-----------------------------------drop-pt-cate-un-item----------------------------------------------
 func drop_selected_item_1():
@@ -388,7 +430,7 @@ func plantare():
 func attack():
 	if selected_slot:
 		var ID=selected_slot.get_id()
-		if ID=="2" || ID=="9" || ID=="10" || ID=="13":
+		if ID=="2" || ID=="9" || ID=="10" || ID=="13" || ID=="22" || ID=="3":
 			emit_signal("attacking",ID)
 		
 #---------------------------harvest-drop------------------------------------------------------------
@@ -489,3 +531,83 @@ func has_shield() -> bool:
 				return true
 	return false
 	
+func has_backpack():
+	var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
+	if not backpack:  
+		print("EROARE: Nodul 'Backpack-afis' nu a fost găsit!")
+		return  
+
+	# Verificăm dacă rucsacul există în orice slot din inventar
+	var has_backpack = false
+	for slot in slots:
+		 # Presupun că ai un array `slots` în inventar
+		if slot is Slot  and slot.get_id() == "18":
+
+			has_backpack = true
+			break  # Nu mai căutăm, am găsit rucsacul
+	
+	backpack.visible = has_backpack  # Devine invizibil doar dacă e scos complet din inventar
+
+func lamp():
+	var item_23_gasit = false
+	lamp_inv()
+	for i in range(grid_container.get_child_count()):
+			var slot = grid_container.get_child(i)
+			if slot is Slot:
+				# Verifica daca slotul este plin si contine un scut
+				if slot.get_id() == "23":
+					id=slot.get_id()
+					item_23_gasit = true
+					$CanvasLayer.visible = true
+					lumina_pe_player()
+					if slot_container12.get_id()=="7":
+						var cantitate= slot_container12.get_cantitate()
+						if cantitate>0:
+							timp_ramas=cantitate*60
+							label.text = format_time(timp_ramas)
+							timer.start()
+							slot_container12.clear_item()
+							
+	if not item_23_gasit:
+		$CanvasLayer.visible = false
+		player_light.visible=false
+		player_light.enabled=false
+
+func lumina_pe_player():
+	if timp_ramas>0:
+		player_light.visible=true
+		player_light.enabled=true
+		
+func _on_timer_timeout() -> void:
+	if timp_ramas > 0:
+		timp_ramas -= 1  # Scade o secundă din timpul rămas
+		label.text = format_time(timp_ramas)  # 🔥 Actualizează UI-ul
+
+		# Consumă 1 combustibil la fiecare 60 secunde
+		if timp_ramas % 60 == 0:
+			var cantitate = slot_container12.get_cantitate()
+			if cantitate > 0:
+				slot_container12.set_cantitate(cantitate - 1)  # 🔥 Consumă combustibil
+				print("Cantitatea rămasă: " + str(cantitate - 1))
+
+			if cantitate - 1 <= 0:
+				print("Combustibilul s-a epuizat!")
+			
+	else:
+		light.enabled=false
+		timer.stop()
+		print("Timpul a expirat!")
+		
+
+
+func format_time(seconds: int) -> String:
+	var minutes = seconds / 60
+	var secs = seconds % 60
+	return str(minutes).pad_zeros(2) + ":" + str(secs).pad_zeros(2)
+
+func lamp_inv():
+	if not timer.is_stopped():
+		var items = get_tree().get_nodes_in_group("item")
+		for item in items:
+			if item.ID=="23":
+				item.set_lumina("23")
