@@ -1,4 +1,4 @@
-[gd_scene load_steps=123 format=3 uid="uid://dn1osqamgorag"]
+[gd_scene load_steps=122 format=3 uid="uid://dn1osqamgorag"]
 
 [ext_resource type="Script" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
 [ext_resource type="Texture2D" uid="uid://b4otyj2854hm1" path="res://Base Character - Premium/basic/death.png" id="1_inn2y"]
@@ -11,7 +11,7 @@
 size = Vector2(7, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_56oj4"]
-size = Vector2(11.5, 12)
+size = Vector2(9, 6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh2jg"]
 bg_color = Color(0, 0, 0, 0.415686)
@@ -828,54 +828,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../arma:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.933751]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../arma/colisiune:disabled")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../arma/colisiune:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-2.32625, -14.9487)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../arma/colisiune:rotation")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.77453]
-}
 
 [sub_resource type="Animation" id="Animation_7ymt1"]
 resource_name = "attack-down"
@@ -914,42 +866,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../arma/colisiune:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../arma/colisiune:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.333333, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-0.659139, -15.7349), Vector2(-12.7115, 9.406), Vector2(1.06816, 12.6699), Vector2(-5.02099, 2.07604)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../arma/colisiune:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.333333, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [2.03622, 2.48758, 1.24323, 1.12001]
 }
 
 [sub_resource type="Animation" id="Animation_jnt1r"]
@@ -990,42 +906,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../arma/colisiune:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../arma/colisiune:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-2.32625, -14.9487), Vector2(5.88173, 14.6247), Vector2(7.88297, 13.7746), Vector2(0.741299, 7.64795)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../arma/colisiune:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [1.77453, 0.957146, 0.887153, 0.887153]
-}
 
 [sub_resource type="Animation" id="Animation_hw77a"]
 resource_name = "attack-right"
@@ -1065,42 +945,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../arma/colisiune:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../arma/colisiune:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(13.9186, 7.73302), Vector2(-11.0162, -8.2414), Vector2(-8.89763, -9.80907), Vector2(-6.3132, -1.88566)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../arma/colisiune:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [3.24836, 0.950329, 0.925025, 0.915504]
-}
 
 [sub_resource type="Animation" id="Animation_5f7a0"]
 resource_name = "attack-up"
@@ -1139,42 +983,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../arma/colisiune:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../arma/colisiune:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(14.1768, 5.64979), Vector2(9.53361, -7.0545), Vector2(-4.93592, -11.1013), Vector2(3.41079, 2.39403)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../arma/colisiune:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.666667, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [3.06997, 2.5529, 1.075, 0.915504]
 }
 
 [sub_resource type="Animation" id="Animation_tnyqr"]
@@ -1346,14 +1154,11 @@ _data = {
 "run-up": SubResource("Animation_u0p57")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wv2m2"]
-size = Vector2(32.646, 9.03165)
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_xey0k"]
 radius = 47.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_brlc1"]
-radius = 14.0357
+radius = 24.0208
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -1366,6 +1171,7 @@ script = ExtResource("1_8c6dx")
 
 [node name="ChangeDirection" type="Timer" parent="."]
 wait_time = 2.0
+autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -1374,12 +1180,8 @@ shape = SubResource("RectangleShape2D_6p5mf")
 [node name="enemy_hitbox" type="Area2D" parent="." groups=["enemy_hitbox"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox"]
-position = Vector2(0.25, 0)
+position = Vector2(0.5, 3)
 shape = SubResource("RectangleShape2D_56oj4")
-
-[node name="take_damage" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
 
 [node name="color" type="Timer" parent="."]
 wait_time = 0.2
@@ -1408,21 +1210,6 @@ libraries = {
 }
 speed_scale = 2.0
 
-[node name="arma" type="Area2D" parent="."]
-y_sort_enabled = true
-position = Vector2(7.10543e-15, 3.55271e-15)
-rotation = -0.933751
-scale = Vector2(0.758864, 0.758864)
-collision_layer = 5
-collision_mask = 5
-metadata/_edit_group_ = true
-
-[node name="colisiune" type="CollisionShape2D" parent="arma"]
-position = Vector2(-2.32625, -14.9487)
-rotation = 1.77453
-scale = Vector2(0.437711, 0.437711)
-shape = SubResource("RectangleShape2D_wv2m2")
-
 [node name="detection" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detection"]
@@ -1433,20 +1220,9 @@ shape = SubResource("CircleShape2D_xey0k")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="atack_zone"]
 shape = SubResource("CircleShape2D_brlc1")
 
-[node name="atack" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-
-[node name="doge" type="Timer" parent="."]
-wait_time = 4.0
-
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
-[connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]
 [connection signal="timeout" from="color" to="." method="_on_color_timeout"]
-[connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]
 [connection signal="body_entered" from="detection" to="." method="_on_detection_body_entered"]
 [connection signal="body_exited" from="detection" to="." method="_on_detection_body_exited"]
 [connection signal="area_entered" from="atack_zone" to="." method="_on_atack_zone_area_entered"]
 [connection signal="area_exited" from="atack_zone" to="." method="_on_atack_zone_area_exited"]
-[connection signal="timeout" from="atack" to="." method="_on_atack_timeout"]
-[connection signal="timeout" from="doge" to="." method="_on_doge_timeout"]

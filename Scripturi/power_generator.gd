@@ -6,12 +6,14 @@ var open_fuel = false
 @onready var label: Label = $CanvasLayer/Label
 @onready var slot_container: Slot = $CanvasLayer/SlotContainer
 @onready var timer: Timer = $Timer
-@onready var inv = get_node("/root/world/CanvasLayer/Inv")
+@onready var inv = get_node("/root/world/Inventar/Inv")
 @onready var progress_bar: ProgressBar = $CanvasLayer/ProgressBar
 var generator_on = false 
 var legat=false
 var fuel_capacity = 100
 var timp_ramas: int = 0  # Timpul total rămas în secunde
+
+
 
 func _ready() -> void:
 	canvas_layer.visible = false
@@ -82,6 +84,7 @@ func _on_button_pressed() -> void:
 		print("Generator pornit.")
 		generator_on = true
 		timer.start()
+
 
 func _on_button_3_pressed() -> void:
 	# Oprește sau pornește generatorul

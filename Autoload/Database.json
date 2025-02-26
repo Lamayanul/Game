@@ -109,4 +109,52 @@
 	"number":16,
 	"nume":"podea",
 	},
+"17":{
+	"texture":"roof.png",
+	"cantitate":1,
+	"number":17,
+	"nume":"roof",
+	},
+"18":{
+	"texture":"backpack.png",
+	"cantitate":1,
+	"number":18,
+	"nume":"backpack",
+	},
+"19":{
+	"texture":"blue_lightBulb.png",
+	"cantitate":1,
+	"number":19,
+	"nume":"bec albastru",
+	},
+"20":{
+	"texture":"red_lightBulb.png",
+	"cantitate":1,
+	"number":20,
+	"nume":"bec rosu",
+	},
+"21":{
+	"texture":"orange_lightBulb.png",
+	"cantitate":1,
+	"number":21,
+	"nume":"bec portocaliu",
+	},
+"22":{
+	"texture":"water_can.png",
+	"cantitate":1,
+	"number":22,
+	"nume":"stropitoare",
+	},
+"23":{
+	"texture":"lamp.png",
+	"cantitate":1,
+	"number":23,
+	"nume":"felinar",
+	},
+"24":{
+	"texture":"graunte.png",
+	"cantitate":1,
+	"number":24,
+	"nume":"graunte",
+	},
 }

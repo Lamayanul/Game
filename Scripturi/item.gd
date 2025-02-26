@@ -9,9 +9,12 @@ var float_amplitude: float = 2.0
 var float_speed: float = 2.0 
 var original_position: Vector2 
 var time_passed: float = 0.0  
-
 # Variabile pentru textura și cantitate
 var item_texture: Texture
+@onready var grid_container = get_node("/root/world/Inventar/Inv/MarginContainer/GridContainer")
+@onready var player_light = get_node("/root/world/player/PointLight2D")
+
+
 
 
 func _ready():
@@ -23,29 +26,33 @@ func _ready():
 
 func _on_body_entered(body):
 	if body.name == "player":
-		var inventory=get_parent().find_child("Inv") #get_parent().find_child("Inv")
-		if inventory.plin <4:
-			if inventory.plin<0:
-				inventory.plin=0
-				
-			
-			get_parent().find_child("Inv").add_item(ID,self.get_cantiti())
-			#inventory.plin+=1
+		var inventory = get_parent().find_child("Inv")
+		
+		print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
+		print("Inventar plin:", inventory.plin)
+
+		# 1. Încearcă să adauge itemul în inventar
+		var added = inventory.add_item(ID, self.get_cantiti())
+
+		# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
+		if added:
 			queue_free()
-			print(inventory.plin)
-			
-			#print("cantitate: ",item_cantitate)
+			print("Obiect colectat și șters.")
 		else:
-			print("Inventarul este plin")
+			print("Inventarul este plin! Nu pot adăuga obiectul.")
+
 	
 
 func custom_scale():
-	if ID=="15":
+	if ID=="15" || ID=="23":
 		scale=Vector2(0.65,0.65)
 
 func _process(delta: float):
+
 	time_passed += delta
 	position.y = original_position.y + sin(time_passed * float_speed) * float_amplitude
+	#lamp()
+	
 
 # Metodă pentru a seta textura pe obiect
 func set_texture1(texture_drop: Texture):
@@ -59,7 +66,14 @@ func set_cantitate(cantitate: int):
 		
 		return
 	item_cantitate = cantitate
-	# Dacă ai un Label pentru a afișa cantitatea, îl poți seta aici
-	# Exemplu: label.text = str(item_cantitate)
+
 func get_cantiti():
 	return item_cantitate
+	
+func set_lumina(ID):
+	if ID=="23":
+		$PointLight2D.visible=true
+		$PointLight2D.enabled=true
+		print("Aprind lumina!")
+		
+		

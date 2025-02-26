@@ -1,11 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://7seyno1cclqg"]
+[gd_scene load_steps=5 format=3 uid="uid://7seyno1cclqg"]
 
 [ext_resource type="Script" path="res://Scripturi/item.gd" id="1_adwne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_axomy"]
 size = Vector2(20, 4)
 
-[node name="Item" type="Sprite2D"]
+[sub_resource type="Gradient" id="Gradient_mntfa"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f0apx"]
+gradient = SubResource("Gradient_mntfa")
+fill = 1
+fill_from = Vector2(0.503289, 0.483553)
+fill_to = Vector2(0.904605, 0.138158)
+
+[node name="Item" type="Sprite2D" groups=["item"]]
 y_sort_enabled = true
 script = ExtResource("1_adwne")
 
@@ -14,5 +23,10 @@ script = ExtResource("1_adwne")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_axomy")
+
+[node name="PointLight2D" type="PointLight2D" parent="." groups=["lum_item"]]
+visible = false
+color = Color(1, 0.958091, 0, 1)
+texture = SubResource("GradientTexture2D_f0apx")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
