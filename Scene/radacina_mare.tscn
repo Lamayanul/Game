@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxhpbnyxkgt2p"]
+
+[ext_resource type="Texture2D" uid="uid://dhh7mevcyjfvj" path="res://Sprout Lands - Sprites - Basic pack/Objects/radacina-mare.png" id="1_6iin3"]
+[ext_resource type="Script" path="res://Scripturi/radacina_mare.gd" id="1_52k6p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xjn73"]
+size = Vector2(10, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wywxl"]
+size = Vector2(8, 8)
+
+[node name="Area2D" type="Area2D"]
+position = Vector2(0, -3)
+script = ExtResource("1_52k6p")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, 4)
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("1_6iin3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_xjn73")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_wywxl")
+
+[connection signal="area_entered" from="." to="." method="_on_area_2d_area_entered"]

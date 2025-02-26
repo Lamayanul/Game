@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://vxl7ou2g1nux"]
+
+[ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="1_8eseh"]
+
+[node name="Background" type="NinePatchRect"]
+texture = ExtResource("1_8eseh")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11

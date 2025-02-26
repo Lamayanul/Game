@@ -17,14 +17,15 @@ var can_plant = true
 @onready var player = $"../player"
 @onready var colisiune = player.get_node("colisiune")
 
-
+# Noduri
 @onready var acoperis = $acoperis
 
 var _playerSprite : CharacterBody2D
 
 func _ready():
 	
-
+		
+	# Setează playerSprite folosind NodePath
 	if player_path:
 		_playerSprite = get_node(player_path)
 

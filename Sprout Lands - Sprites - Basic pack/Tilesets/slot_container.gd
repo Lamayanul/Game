@@ -7,7 +7,8 @@ class_name Slot
 @export var is_selected: bool = false
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
-@onready var inv = get_node("/root/world/Inventar/Inv")
+@onready var inv = get_node("/root/world/CanvasLayer/Inv")
+
 
 @export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
 
@@ -15,10 +16,10 @@ var item_id: String = ""  # ID-ul itemului stivuit
 var property_1: Dictionary = {}
 
 
-@onready var slot_container = get_node("/root/world/Inventar/Inv/MarginContainer/GridContainer/SlotContainer")
-@onready var slot_container_2 = get_node("/root/world/Inventar/Inv/MarginContainer/GridContainer/SlotContainer2")
-@onready var slot_container_3 = get_node("/root/world/Inventar/Inv/MarginContainer/GridContainer/SlotContainer3")
-@onready var slot_container_4 = get_node("/root/world/Inventar/Inv/MarginContainer/GridContainer/SlotContainer4")
+@onready var slot_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer")
+@onready var slot_container_2 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer2")
+@onready var slot_container_3 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer3")
+@onready var slot_container_4 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer4")
 
 
 signal slot_selected(slot)
@@ -196,6 +197,7 @@ func clear_item():
 	$TextureHolder/TextureRect.texture = null  
 	# Resetează textul etichetei la gol
 	label.text = ""
+	
 	
 	# Resetează cantitatea
 	cantitate = 0

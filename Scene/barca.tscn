@@ -1,0 +1,488 @@
+[gd_scene load_steps=19 format=3 uid="uid://wce5a7wkc8oc"]
+
+[ext_resource type="Script" path="res://Scripturi/barca.gd" id="1_01ybg"]
+[ext_resource type="Texture2D" uid="uid://b2mr4b5nkasqr" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Objects/Boats.png" id="1_40io2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xms1a"]
+size = Vector2(26, 3.5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m3saq"]
+atlas = ExtResource("1_40io2")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3nea"]
+atlas = ExtResource("1_40io2")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsvb2"]
+atlas = ExtResource("1_40io2")
+region = Rect2(0, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfg8n"]
+atlas = ExtResource("1_40io2")
+region = Rect2(48, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eu4g3"]
+atlas = ExtResource("1_40io2")
+region = Rect2(0, 64, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7s8ti"]
+atlas = ExtResource("1_40io2")
+region = Rect2(48, 64, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2a0o"]
+atlas = ExtResource("1_40io2")
+region = Rect2(96, 64, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7prkj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m3saq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3nea")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nsvb2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfg8n")
+}],
+"loop": true,
+"name": &"idle_dez",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eu4g3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7s8ti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2a0o")
+}],
+"loop": true,
+"name": &"sail",
+"speed": 3.0
+}]
+
+[sub_resource type="Animation" id="Animation_t2nxh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("in_boat/CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-6, 12)]
+}
+
+[sub_resource type="Animation" id="Animation_bhg2x"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:sprite_frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("SpriteFrames_7prkj"), SubResource("SpriteFrames_7prkj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle", &"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.766667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-5, 16), Vector2(-5, 16.5), Vector2(-5, 16)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("stanga:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-2, -1), Vector2(-2, -1), Vector2(-1, -1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("stanga:polygon")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 7, 8, 7, 8, 17, -12, 17, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 6, -12, 6, -13, 7, -15, 7), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -13, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dreapta:polygon")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -11.1062, 8.16084, 7.40411, 8.16084, 7.40411, 16.3217, -11.1062, 16.3217, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 7.40411, 6.12063, -11.1062, 6.12063, -13.8827, 7.14074, -15.7337, 8.16084), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dreapta:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.466667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-6, -1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("in_boat/CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.433333, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-6, 11), Vector2(-6, 12), Vector2(-6, 10)]
+}
+
+[sub_resource type="Animation" id="Animation_rhkak"]
+resource_name = "idle-dez"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:sprite_frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("SpriteFrames_7prkj"), SubResource("SpriteFrames_7prkj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle_dez", &"idle_dez"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.766667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-5, 16), Vector2(-5, 16.5), Vector2(-5, 16)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("stanga:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-2, -1), Vector2(-2, -1), Vector2(-1, -1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("stanga:polygon")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 17, -12, 17, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 6, -12, 6, -13, 7, -15, 7), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -13, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("dreapta:polygon")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -11.1062, 8.16084, 7.40411, 8.16084, 7.40411, 16.3217, -11.1062, 16.3217, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 7.40411, 6.12063, -11.1062, 6.12063, -13.8827, 7.14074, -15.7337, 8.16084), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dreapta:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.466667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-6, -1)]
+}
+
+[sub_resource type="Animation" id="Animation_xjw6s"]
+resource_name = "sail"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:sprite_frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("SpriteFrames_7prkj"), SubResource("SpriteFrames_7prkj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"sail", &"sail"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-5, 17), Vector2(-5, 17)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("stanga:polygon")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 16, -15, 16, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 6, -12, 6, -13, 6, -15, 6), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 16, -15, 16, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 6, -12, 6, -13, 6, -15, 6)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("dreapta:polygon")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7), PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("stanga:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1, -1), Vector2(-1, -1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("dreapta:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-6, 0), Vector2(-6, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nxiv0"]
+_data = {
+"RESET": SubResource("Animation_t2nxh"),
+"idle": SubResource("Animation_bhg2x"),
+"idle-dez": SubResource("Animation_rhkak"),
+"sail": SubResource("Animation_xjw6s")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rn5la"]
+size = Vector2(62, 35)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pog4"]
+size = Vector2(20, 7.5)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+z_index = -1
+y_sort_enabled = true
+collision_layer = 3
+collision_mask = 3
+platform_on_leave = 2
+platform_floor_layers = 0
+script = ExtResource("1_01ybg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1_40io2")
+offset = Vector2(0, 10)
+region_enabled = true
+region_rect = Rect2(7, 0, 41, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-5, 16)
+shape = SubResource("RectangleShape2D_xms1a")
+
+[node name="stanga" type="CollisionPolygon2D" parent="."]
+position = Vector2(-1, -1)
+polygon = PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -13, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6)
+
+[node name="dreapta" type="CollisionPolygon2D" parent="."]
+position = Vector2(-6, -1)
+rotation = -6.28318
+scale = Vector2(-1.08048, 0.980291)
+polygon = PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -13, 8, -10, 7, 9, 7, 9, 15, -14, 15, -16, 14, -15, 20, 8, 20, 10, 15, 10, 7, 10, 5, -10, 5, -13, 6, -15, 7)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-4, 9)
+sprite_frames = SubResource("SpriteFrames_7prkj")
+animation = &"idle_dez"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nxiv0")
+}
+
+[node name="ancorare" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="area-ancorare" type="Area2D" parent="."]
+
+[node name="colisiune-ancorare" type="CollisionShape2D" parent="area-ancorare"]
+position = Vector2(-4, 14.5)
+shape = SubResource("RectangleShape2D_rn5la")
+
+[node name="change_direction_timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="in_boat" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="in_boat"]
+position = Vector2(-6, 12)
+shape = SubResource("RectangleShape2D_8pog4")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-4, 14.5)
+scale = Vector2(3.1, 1.75)
+
+[connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
+[connection signal="target_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_target_reached"]
+[connection signal="timeout" from="ancorare" to="." method="_on_ancorare_timeout"]
+[connection signal="body_entered" from="area-ancorare" to="." method="_on_areaancorare_body_entered"]
+[connection signal="body_exited" from="area-ancorare" to="." method="_on_areaancorare_body_exited"]
+[connection signal="timeout" from="change_direction_timer" to="." method="_on_change_direction_timeout"]
+[connection signal="body_entered" from="in_boat" to="." method="_on_in_boat_body_entered"]
+[connection signal="body_exited" from="in_boat" to="." method="_on_in_boat_body_exited"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

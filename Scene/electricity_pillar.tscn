@@ -1,9 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://oole82yty3pu"]
+[gd_scene load_steps=18 format=3 uid="uid://oole82yty3pu"]
 
 [ext_resource type="Texture2D" uid="uid://fqj17kux55p" path="res://Sprout Lands - Sprites - Basic pack/Objects/pillar_zzz.png" id="1_p4hv0"]
 [ext_resource type="Script" path="res://Scripturi/electricity_pillar.gd" id="1_wdscv"]
 [ext_resource type="Texture2D" uid="uid://2dfysv8dle1d" path="res://Sprout Lands - Sprites - Basic pack/Objects/Lantern 1 - Beonze and Orange.png" id="3_f7d8a"]
-[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="4_q4gob"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1nyqx"]
 size = Vector2(6, 4)
@@ -21,13 +20,13 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_2hcjl"]
-offsets = PackedFloat32Array(0, 0.701923)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.0769231, 0.668269)
+colors = PackedColorArray(1, 1, 1, 1, 0.635593, 0.635593, 0.635593, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fm4ks"]
 gradient = SubResource("Gradient_2hcjl")
 fill = 1
-fill_from = Vector2(0.506579, 0.503289)
+fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0, 0)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e54lm"]
@@ -129,8 +128,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0yoaf"]
-
 [node name="StaticBody2D" type="StaticBody2D" groups=["LightSource"]]
 y_sort_enabled = true
 position = Vector2(0, 15)
@@ -182,6 +179,7 @@ animation = &"ongoing"
 frame_progress = 0.426418
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-9, -31)
@@ -199,37 +197,3 @@ scale = Vector2(0.238, 0.214286)
 texture = ExtResource("3_f7d8a")
 region_enabled = true
 region_rect = Rect2(0, 0, 40, 56)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -66.0
-offset_top = -32.0
-offset_right = 66.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-columns = 2
-
-[node name="SlotContainer" parent="CanvasLayer/GridContainer" instance=ExtResource("4_q4gob")]
-layout_mode = 2
-slot_type = "no_inv"
-
-[node name="SlotContainer2" parent="CanvasLayer/GridContainer" instance=ExtResource("4_q4gob")]
-layout_mode = 2
-slot_type = "no_inv"
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 10)
-shape = SubResource("CircleShape2D_0yoaf")
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

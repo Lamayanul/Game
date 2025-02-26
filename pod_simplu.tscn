@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjdoruthjm008"]
+
+[ext_resource type="Script" path="res://Scripturi/pod_simplu.gd" id="1_07fct"]
+[ext_resource type="Texture2D" uid="uid://cefkppc2ss76i" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Tilesets/Building parts/pod_simplu.png" id="1_ek87s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33e53"]
+size = Vector2(16, 20)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+z_index = -1
+y_sort_enabled = true
+position = Vector2(0, -2)
+scale = Vector2(1.31489, 1.31489)
+script = ExtResource("1_07fct")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ek87s")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_33e53")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-7.6052, -14.4499, -7.6052, 10.6473, -6.84468, 13.6894, -5.32364, 13.6894, -3.8026, 12.1683, -3.8026, 10.6473, 3.8026, 10.6473, 3.8026, 12.1683, 5.32364, 13.6894, 6.84468, 13.6894, 7.6052, 12.9288, 7.6052, -14.4499, 6.84468, -14.4499, 5.32364, -14.4499, 3.8026, -12.9288, 3.8026, -10.6473, 6.84468, -10.6473, 6.84468, 6.08416, 4.56312, 6.08416, 4.56312, 9.88676, -4.56312, 9.88676, -4.56312, 6.08416, -6.84468, 6.08416, -6.84468, -10.6473, -3.8026, -10.6473, -3.8026, -12.9288, -5.32364, -14.4499, -6.84468, -14.4499)
