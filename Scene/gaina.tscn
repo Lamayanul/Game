@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://6m8ei4lxodxm"]
+[gd_scene load_steps=43 format=3 uid="uid://6m8ei4lxodxm"]
 
 [ext_resource type="Script" path="res://Scripturi/gaina.gd" id="1_cyn6q"]
 [ext_resource type="Texture2D" uid="uid://bykk211tg8ws" path="res://Sprout Lands - Sprites - Basic pack/Characters/Free Chicken Sprites.png" id="1_o4p8k"]
@@ -885,8 +885,13 @@ size = Vector2(5, 2)
 [sub_resource type="CircleShape2D" id="CircleShape2D_rbkx2"]
 radius = 16.0312
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cv7me"]
+size = Vector2(11, 9)
+
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["gaina"]]
 y_sort_enabled = true
+collision_layer = 9
+collision_mask = 9
 script = ExtResource("1_cyn6q")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -927,9 +932,24 @@ shape = SubResource("CircleShape2D_rbkx2")
 wait_time = 1.5
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+path_max_distance = 50.0
+avoidance_enabled = true
+debug_enabled = true
+
+[node name="gaina_hitbox" type="Area2D" parent="." groups=["gaina_hitbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gaina_hitbox"]
+position = Vector2(-0.5, 5.5)
+shape = SubResource("RectangleShape2D_cv7me")
+
+[node name="hungry_time" type="Timer" parent="."]
+wait_time = 10.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="hungry" to="." method="_on_reset_hungry_timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="fly_timer" to="." method="_on_fly_timer_timeout"]
+[connection signal="timeout" from="hungry_time" to="." method="_on_hungry_time_timeout"]

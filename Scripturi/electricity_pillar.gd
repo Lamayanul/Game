@@ -16,6 +16,7 @@ var pillar_area=false
 var generator_active = false 
 @onready var pow_area= get_node("/root/world/Power_generator/area_interact") 
 var pil_con=false
+@onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 @export var conect:bool=false
 @onready var powg = get_node("/root/world/Power_generator")
@@ -83,6 +84,13 @@ func BEC():
 			elif slot_container.get_id() == "19" and not timer.is_stopped() and buton and conect:
 				$area/PointLight2D.enabled = true
 				$area/PointLight2D.color = Color(0, 0, 1)  # Albastru pentru ID 19
+				#if slot_container.cantitate>1 and inv.plin!=4:
+					#inv.add_item("19",slot_container.cantitate-1) ###
+					#slot_container.cantitate=1                    ###
+				#elif slot_container.cantitate>1 and inv.plin==4:
+					#inv.drop_item("19",slot_container.cantitate-1)
+					#slot_container.cantitate=1
+					
 			else:
 				$area/PointLight2D.enabled = false
 			

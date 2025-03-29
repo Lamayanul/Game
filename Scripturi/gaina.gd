@@ -14,7 +14,11 @@ var fly=false
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @export var target: Node2D = null
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
-
+var following_target=false
+var targets: Array = []
+var current_target: Node2D = null
+var hrana=0
+@onready var hungry_time: Timer = $hungry_time
 
 enum ChicState {
 	Idle,
@@ -30,24 +34,64 @@ func _ready():
 	$directionChangeTimer.start()
 	select_new_direction()
 	pick_new_state()
-	add_to_group("gaina")
 	timer.start()
 	fly_anime.hide()
-
+	
 
 
 func _physics_process(_delta):
-	if navigation_agent_2d.is_navigation_finished():
+	if hrana==5:
+		movement() 
+		move_and_slide()
+		return
+	else:
+		if targets.size() > 0:
+			select_closest_target()
+
+		if current_target and is_instance_valid(current_target):
+			# 🔹 Verifică dacă am ajuns la țintă
+			if global_position.distance_to(current_target.global_position) < 1:
+				targets.erase(current_target)  # Elimină ținta curentă
+				current_target = null  # Resetează ținta
+				if targets.size() > 0:
+					select_closest_target()  # Alege următoarea țintă
+			
+			if current_target and is_instance_valid(current_target):
+				navigation_agent_2d.target_position = current_target.global_position
+			var next_path_position = navigation_agent_2d.get_next_path_position()
+			velocity = (next_path_position - global_position).normalized() * MoveSpeed
+			move()
+			
+		else:
+			movement() 
+
+	move_and_slide()
+	hungry_time.start()
+
+func select_closest_target():
+	# 🔹 Elimină țintele invalide
+	targets = targets.filter(func(target): return is_instance_valid(target))
+	if targets.is_empty():
+		current_target = null
 		return
 
-	var curent_agent_position=global_position
-	var next_path_position = navigation_agent_2d.get_next_path_position()
-	velocity=curent_agent_position.direction_to(next_path_position)* MoveSpeed
-	move_and_slide()
+	var closest_target = null
+	var min_distance = INF  
+
+	for target in targets:
+		var distance = global_position.distance_to(target.global_position)
+		if distance < min_distance:
+			min_distance = distance
+			closest_target = target
 	
-	if currentState == ChicState.Walk:
+	current_target = closest_target
+	
+
+
+
+func movement():
+	if currentState == ChicState.Walk and not following_target:
 		velocity = moveDirection * MoveSpeed
-		move_and_slide()
 
 		if moveDirection != Vector2.ZERO:
 			animatedSprite.play("walk")
@@ -63,6 +107,13 @@ func _physics_process(_delta):
 		else:
 			animatedSprite.play("idle")
 
+func move():
+	if moveDirection != Vector2.ZERO:
+		animatedSprite.play("walk")
+		if moveDirection.x < 0:
+			animatedSprite.flip_h = true
+		elif moveDirection.x > 0:
+			animatedSprite.flip_h = false
 
 func seeker_setup():
 	await get_tree().physics_frame
@@ -123,3 +174,26 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		fly=false
+
+
+func _on_hungry_time_timeout() -> void:
+	hrana = 0  
+	print("hrana")
+	if targets.size() > 0:
+		select_closest_target()
+
+		if current_target and is_instance_valid(current_target):
+			print("🎯 Reîncep navigarea către:", current_target)
+
+			# Setează ținta și forțează recalcularea traseului
+			navigation_agent_2d.target_position = current_target.global_position
+			navigation_agent_2d.target_position = current_target.global_position
+
+			# Actualizează mișcarea
+			var next_path_position = navigation_agent_2d.get_next_path_position()
+			velocity = (next_path_position - global_position).normalized() * MoveSpeed
+			move()  
+	else:
+		print("⚠️ Nicio țintă disponibilă, stau pe loc!")
+		movement()  
+	

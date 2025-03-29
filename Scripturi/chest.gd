@@ -115,7 +115,21 @@ func generate_items_chest():
 		
 		if item_data["nume"] == "topor":  # De exemplu, pentru ou
 			random_quantity = 1  # Setăm o cantitate specifică
-			
+		if item_data["nume"] == "axe":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "backpack":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "Buzduganul norocului":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "hoe":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "pickaxe":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "scut":  # De exemplu, pentru ou
+			random_quantity = 1
+		if item_data["nume"] == "stropitoare":  # De exemplu, pentru ou
+			random_quantity = 1
+		
 		# Încarcă textura folosind load()
 		var texture_path = "res://assets/" + item_data["texture"]
 		var texture = load(texture_path)

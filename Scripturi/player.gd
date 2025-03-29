@@ -59,6 +59,7 @@ var _tileMap
 @onready var inv: PanelContainer = $"../CanvasLayer/Inv"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 var farming_on=false
+@onready var gaina: CharacterBody2D = $"../gaina"
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -589,7 +590,7 @@ func _on_arma_body_entered_gard(body):
 			
 			print("Podelele au fost eliminate de la poziția:", tile_position)
 
-func spawn_items_around_player(ID):
+func spawn_items_around_player(_ID):
 	var player_position = self.global_position
 	var item_scene = load("res://Scene/graunte.tscn")  # Încarcă scena obiectului
 	var num_items = 5  # Numărul de obiecte de instanțiat
@@ -611,8 +612,10 @@ func spawn_items_around_player(ID):
 			# 🔹 Plasează obiectul la poziția finală
 			item_instance.position = player_position + random_offset
 			get_parent().add_child(item_instance)  # Adaugă în scenă
-			
+			gaina.targets.append(item_instance)
 			print("Instanțiat obiect la:", item_instance.position)
-	
+			gaina.target=item_instance
+			gaina.seeker_setup()
+			gaina.select_closest_target()
 	# 🔹 Scade cantitatea doar după ce toate obiectele au fost plasate
 	inv.selected_slot.decrease_cantitate(1)

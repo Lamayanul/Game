@@ -155,7 +155,7 @@ func _on_arma_area_entered(area):
 		player.enemy_current_attack = true
 		player.deal_with_damage1()
 
-func _on_arma_area_exited(area: Area2D) -> void:
+func _on_arma_area_exited(_area: Area2D) -> void:
 	await get_tree().process_frame
 	already_hit = false
 

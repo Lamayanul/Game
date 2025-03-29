@@ -568,7 +568,7 @@ func lamp():
 							timer.start()
 							slot_container12.clear_item()
 							
-	if not item_23_gasit:
+	if player and not item_23_gasit:
 		$CanvasLayer.visible = false
 		player_light.visible=false
 		player_light.enabled=false

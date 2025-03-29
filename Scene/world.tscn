@@ -1268,11 +1268,10 @@ wait_time = 5.0
 position = Vector2(0, -2)
 texture = ExtResource("24_6nb5a")
 
-[node name="gaina" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_f17pw")]
+[node name="gaina" parent="." instance=ExtResource("7_f17pw")]
 position = Vector2(72, 21)
 platform_on_leave = 2
 platform_floor_layers = 0
-target = NodePath("../player")
 
 [node name="directionChangeTimer" type="Timer" parent="gaina"]
 wait_time = 2.0
@@ -1522,6 +1521,7 @@ ID = "3"
 [node name="Item7" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(227, 58)
 ID = "19"
+item_cantitate = 5
 
 [node name="Item9" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-136, 106)
@@ -1684,6 +1684,7 @@ item_cantitate = 50
 
 [node name="Item19" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(243, -1)
+scale = Vector2(1, 0.995886)
 ID = "22"
 
 [node name="Fantana" parent="." instance=ExtResource("64_hgh7u")]

@@ -36,6 +36,7 @@ pillar=""
 lum_item=""
 item=""
 layer=""
+gaina_hitbox=""
 
 [input]
 
