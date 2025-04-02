@@ -39,7 +39,7 @@ var placing_roof=false
 func _ready():
 	grid_land.visible=false
 	grid_gard.visible = false
-
+	seminte_grid.visible=false
 
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------

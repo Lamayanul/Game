@@ -4013,7 +4013,7 @@ fill = 1
 fill_from = Vector2(0.496711, 0.496711)
 fill_to = Vector2(0.914474, 0.177632)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Persist", "player"]]
 y_sort_enabled = true
 collision_layer = 3
 collision_mask = 3

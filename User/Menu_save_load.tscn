@@ -1,0 +1,125 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5s4pub7glhjy"]
+
+[ext_resource type="Script" path="res://User/menu_save_load.gd" id="1_kn8vx"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_kn8vx")
+
+[node name="SaveLoadPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SaveLoadPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -403.0
+offset_top = -255.0
+offset_right = 403.0
+offset_bottom = 255.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Save_list" type="VBoxContainer" parent="SaveLoadPanel/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreateNew" type="Button" parent="SaveLoadPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 27.0
+offset_top = 571.0
+offset_right = 126.0
+offset_bottom = 602.0
+theme_override_font_sizes/font_size = 32
+text = "Create New"
+
+[node name="Load" type="Button" parent="SaveLoadPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 1033.0
+offset_top = 568.0
+offset_right = 1116.0
+offset_bottom = 621.0
+theme_override_font_sizes/font_size = 32
+text = "Load
+"
+
+[node name="SaveSelected" type="Panel" parent="SaveLoadPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -154.0
+offset_top = -45.0
+offset_right = -22.0
+offset_bottom = 48.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveLoadPanel/SaveSelected"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overwrite" type="Button" parent="SaveLoadPanel/SaveSelected/VBoxContainer"]
+layout_mode = 2
+text = "Overwrite
+"
+
+[node name="Delete" type="Button" parent="SaveLoadPanel/SaveSelected/VBoxContainer"]
+layout_mode = 2
+text = "Delete"
+
+[node name="Option" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Save" type="Button" parent="Option"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Save
+"
+
+[node name="Load" type="Button" parent="Option"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Load"
+
+[connection signal="pressed" from="SaveLoadPanel/CreateNew" to="." method="_on_create_new_pressed"]
+[connection signal="pressed" from="SaveLoadPanel/Load" to="." method="_on_load_resource_pressed"]
+[connection signal="pressed" from="SaveLoadPanel/SaveSelected/VBoxContainer/Overwrite" to="." method="_on_overwrite_pressed"]
+[connection signal="pressed" from="SaveLoadPanel/SaveSelected/VBoxContainer/Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="Option/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Option/Load" to="." method="_on_load_pressed"]

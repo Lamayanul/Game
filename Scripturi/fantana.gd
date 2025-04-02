@@ -21,7 +21,7 @@ func _process(_delta: float) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		if inventory.selected_slot.get_id()=="22":
+		if inventory.selected_slot and inventory.selected_slot.get_id()=="22":
 			$CanvasLayer.visible=true
 			water=true
 

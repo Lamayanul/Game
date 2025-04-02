@@ -1,4 +1,4 @@
-[gd_scene load_steps=129 format=4 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=130 format=4 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Script" path="res://Scripturi/world.gd" id="1_u4a8w"]
@@ -65,6 +65,7 @@
 [ext_resource type="PackedScene" uid="uid://oole82yty3pu" path="res://Scene/electricity_pillar.tscn" id="59_5jree"]
 [ext_resource type="PackedScene" uid="uid://b6i200oqdrag8" path="res://Scene/node_2d.tscn" id="60_ysm1r"]
 [ext_resource type="PackedScene" uid="uid://41es4cnv0ngx" path="res://Scene/fantana.tscn" id="64_hgh7u"]
+[ext_resource type="PackedScene" uid="uid://bihjhov6jgvoy" path="res://User/consola.tscn" id="66_c48fp"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_eqf0o"]
 vertices = PackedVector2Array(8, 8, -6, 8, -6, -6, 8, -6)
@@ -1175,7 +1176,7 @@ polygon = PackedVector2Array(-93, 55, 93, 55, 93, -55, -93, -55)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kilgi"]
 size = Vector2(10, 17.5)
 
-[node name="world" type="Node2D"]
+[node name="world" type="Node2D" groups=["Persist"]]
 y_sort_enabled = true
 position = Vector2(-4, -7)
 script = ExtResource("1_u4a8w")
@@ -1693,6 +1694,8 @@ position = Vector2(22, -52)
 [node name="Item20" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(235, -37)
 ID = "23"
+
+[node name="Node2D4" parent="." instance=ExtResource("66_c48fp")]
 
 [connection signal="body_entered" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]

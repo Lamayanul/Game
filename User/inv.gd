@@ -161,7 +161,9 @@ func _input(event):
 		attack()
 	if Input.is_action_just_pressed("eat"):
 		eat()
-	
+	if Input.is_action_just_pressed("consola"):
+		pass
+		
 	if Input.is_action_just_pressed("slot_1"):
 		select_slot_by_index(0)
 	if Input.is_action_just_pressed("slot_2"):
