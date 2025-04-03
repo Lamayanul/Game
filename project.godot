@@ -40,6 +40,10 @@ item=""
 layer=""
 gaina_hitbox=""
 Persist=""
+enemy=""
+bush=""
+rock=""
+copac=""
 
 [input]
 

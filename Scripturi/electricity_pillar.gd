@@ -77,7 +77,7 @@ func BEC():
 			# Verificăm slot_container
 			if slot_container.get_id() == "21" and not timer.is_stopped() and buton and conect:
 				$area/PointLight2D.enabled = true
-				#$area/PointLight2D.color = Color(1, 0, 0)  # Roșu pentru ID 21
+				$area/PointLight2D.color = Color(0, 1, 0)  # Roșu pentru ID 21
 			elif slot_container.get_id() == "20" and not timer.is_stopped() and buton and conect:
 				$area/PointLight2D.enabled = true
 				$area/PointLight2D.color = Color(1, 0, 0)  # Verde pentru ID 20
@@ -97,7 +97,7 @@ func BEC():
 			# Verificăm slot_container_2
 			if slot_container_2.get_id() == "21" and not timer.is_stopped() and buton and conect:
 				$area/PointLight2D2.enabled = true
-				#$area/PointLight2D2.color = Color(1, 0, 0)  # Roșu pentru ID 21
+				$area/PointLight2D2.color = Color(0, 1, 0)  # Roșu pentru ID 21
 			elif slot_container_2.get_id() == "20" and not timer.is_stopped()  and buton and conect:
 				$area/PointLight2D2.enabled = true
 				$area/PointLight2D2.color = Color(1, 0, 0)  # Verde pentru ID 20

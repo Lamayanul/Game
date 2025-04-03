@@ -716,7 +716,7 @@ size = Vector2(8, 6)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n5mj1"]
 size = Vector2(24, 23)
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" groups=["copac"]]
 script = ExtResource("1_vugtq")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]

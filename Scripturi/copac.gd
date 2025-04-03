@@ -7,7 +7,7 @@ var _transparentColor = Color(1, 1, 1, 0.5) # Semi-transparent
 var _normalColor = Color(1, 1, 1, 1) # Opac
 
 @onready var animation_player = $StaticBody2D/AnimationPlayer
-@onready var player = $"../player"
+@onready var player = get_node_or_null("/root/world/player")
 @onready var respawn_tree = $Respawn_tree
 @onready var respawn_fruits = $Respawn_fruits
 @onready var inv = $"../CanvasLayer/Inv"

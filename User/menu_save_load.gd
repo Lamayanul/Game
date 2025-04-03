@@ -109,7 +109,7 @@ func dir_contents():
  
 func _on_load_resource_pressed():
 	Persistence.load_data(selected_slot.save_data)
-	print(Persistence.get_save_data().player_position)
+	#print(Persistence.get_save_data().player_position)
  
  
 func _on_overwrite_pressed():

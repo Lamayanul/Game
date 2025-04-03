@@ -34,22 +34,33 @@ size_flags_horizontal = 3
 [node name="CreateNew" type="Button" parent="SaveLoadPanel"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.922
+anchor_right = 0.023
+anchor_bottom = 0.922
 offset_left = 27.0
-offset_top = 571.0
-offset_right = 126.0
-offset_bottom = 602.0
+offset_top = -26.4561
+offset_right = 99.504
+offset_bottom = 4.54395
 theme_override_font_sizes/font_size = 32
 text = "Create New"
 
 [node name="Load" type="Button" parent="SaveLoadPanel"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 0
-offset_left = 1033.0
-offset_top = 568.0
-offset_right = 1116.0
-offset_bottom = 621.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.939
+anchor_top = 0.5
+anchor_right = 0.939
+anchor_bottom = 0.5
+offset_left = -82.728
+offset_top = -33.0
+offset_right = 0.271973
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "Load
 "

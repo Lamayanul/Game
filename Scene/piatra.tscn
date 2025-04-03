@@ -9,7 +9,7 @@ size = Vector2(12, 3)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_86vf5"]
 size = Vector2(12, 10)
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" groups=["rock"]]
 script = ExtResource("1_6p1qi")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]

@@ -4013,7 +4013,7 @@ fill = 1
 fill_from = Vector2(0.496711, 0.496711)
 fill_to = Vector2(0.914474, 0.177632)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["Persist", "player"]]
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
 collision_layer = 3
 collision_mask = 3
@@ -4096,6 +4096,11 @@ shape = SubResource("CircleShape2D_103pq")
 visible = false
 texture = SubResource("GradientTexture2D_eqfay")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]
 [connection signal="body_entered" from="arma" to="." method="_on_arma_body_entered_gard"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

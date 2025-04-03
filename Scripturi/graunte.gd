@@ -3,7 +3,7 @@ extends StaticBody2D
 @onready var tile_map = get_node("/root/world/TileMap")  
 var item_instance = self 
 @onready var gaina = get_node("/root/world/gaina")
-
+@onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,6 +18,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is TileMapLayer:
 		if body.is_in_group("layer"):
 			item_instance.queue_free()
+	if body.is_in_group("player"):
+		inv.add_item("24",1)
+		self.queue_free()
 
 
 

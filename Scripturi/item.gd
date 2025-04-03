@@ -12,7 +12,7 @@ var time_passed: float = 0.0
 # Variabile pentru textura și cantitate
 var item_texture: Texture
 @onready var grid_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer")
-@onready var player_light = get_node("/root/world/player/PointLight2D")
+@onready var player_light = get_node_or_null("/root/world/player/PointLight2D")
 
 
 
@@ -25,7 +25,7 @@ func _ready():
 
 
 func _on_body_entered(body):
-	if body.name == "player":
+	if body.is_in_group("player"):
 		var inventory = get_parent().find_child("Inv")
 		
 		print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)

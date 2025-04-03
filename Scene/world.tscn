@@ -1131,6 +1131,20 @@ custom_data_layer_0/name = "seed"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_abn3o")
 
+[sub_resource type="Gradient" id="Gradient_sym12"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_leh72"]
+gradient = SubResource("Gradient_sym12")
+fill = 1
+fill_from = Vector2(0.513158, 0.480263)
+fill_to = Vector2(0.904605, 0.141447)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4ynlc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cxkb"]
+size = Vector2(7, 5.71695)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqbvw"]
 bg_color = Color(0.201527, 0.201527, 0.201527, 1)
 corner_radius_top_left = 20
@@ -1149,20 +1163,6 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-
-[sub_resource type="Gradient" id="Gradient_sym12"]
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_leh72"]
-gradient = SubResource("Gradient_sym12")
-fill = 1
-fill_from = Vector2(0.513158, 0.480263)
-fill_to = Vector2(0.904605, 0.141447)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4ynlc"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cxkb"]
-size = Vector2(7, 5.71695)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0l4ak"]
 size = Vector2(25, 16)
@@ -1274,95 +1274,8 @@ position = Vector2(72, 21)
 platform_on_leave = 2
 platform_floor_layers = 0
 
-[node name="directionChangeTimer" type="Timer" parent="gaina"]
-wait_time = 2.0
-
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
 position = Vector2(293, 8)
-
-[node name="Timer" type="Timer" parent="player"]
-wait_time = 0.5
-one_shot = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="player"]
-
-[node name="healthbar" type="ProgressBar" parent="player/CanvasLayer"]
-visible = false
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -345.0
-offset_bottom = 110.0
-grow_horizontal = 0
-size_flags_horizontal = 8
-theme_override_styles/background = SubResource("StyleBoxFlat_iqbvw")
-theme_override_styles/fill = SubResource("StyleBoxFlat_40q2b")
-step = 1.0
-value = 100.0
-
-[node name="healthbar_player" type="TextureProgressBar" parent="player/CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -250.0
-offset_bottom = 110.0
-grow_horizontal = 0
-value = 100.0
-texture_under = ExtResource("14_2xshd")
-texture_over = ExtResource("15_37cqh")
-texture_progress = ExtResource("16_g28i7")
-script = ExtResource("19_gvmqj")
-
-[node name="player_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_player"]
-position = Vector2(151, 55)
-scale = Vector2(0.160991, 0.154976)
-texture = ExtResource("17_1jawh")
-region_enabled = true
-region_rect = Rect2(0, 152, 1120, 680)
-
-[node name="healthbar_enemy" type="TextureProgressBar" parent="player/CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -454.0
-offset_right = -204.0
-offset_bottom = 110.0
-grow_horizontal = 0
-value = 100.0
-texture_under = ExtResource("18_0f6a8")
-texture_over = ExtResource("19_gb0mj")
-texture_progress = ExtResource("20_s7q07")
-
-[node name="vs_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_enemy"]
-position = Vector2(221, 56)
-scale = Vector2(0.0509375, 0.0509375)
-texture = ExtResource("21_sq2bc")
-
-[node name="enemy_icon" type="Sprite2D" parent="player/CanvasLayer/healthbar_enemy"]
-position = Vector2(112, 55.0518)
-scale = Vector2(0.220089, 0.200954)
-region_enabled = true
-region_rect = Rect2(0, 56, 1120, 528)
-
-[node name="Poster" type="TextureRect" parent="player/CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -251.0
-offset_top = 113.0
-offset_right = -5.0
-offset_bottom = 605.0
-grow_horizontal = 0
-size_flags_horizontal = 8
-texture = ExtResource("24_mk8bm")
-expand_mode = 5
-stretch_mode = 6
-
-[node name="Label" type="Label" parent="player/CanvasLayer"]
-offset_top = 80.0
-offset_right = 68.0
-offset_bottom = 108.0
-script = ExtResource("31_704b0")
 
 [node name="copac_original" parent="." instance=ExtResource("8_nd5dy")]
 position = Vector2(-72, -13)
@@ -1488,6 +1401,86 @@ grow_vertical = 0
 
 [node name="Backpack-afis" parent="CanvasLayer" instance=ExtResource("39_a35nf")]
 visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasLayer"]
+
+[node name="healthbar" type="ProgressBar" parent="CanvasLayer/CanvasLayer"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -345.0
+offset_bottom = 110.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+theme_override_styles/background = SubResource("StyleBoxFlat_iqbvw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_40q2b")
+step = 1.0
+value = 100.0
+
+[node name="healthbar_player" type="TextureProgressBar" parent="CanvasLayer/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_bottom = 110.0
+grow_horizontal = 0
+value = 100.0
+texture_under = ExtResource("14_2xshd")
+texture_over = ExtResource("15_37cqh")
+texture_progress = ExtResource("16_g28i7")
+script = ExtResource("19_gvmqj")
+
+[node name="player_icon" type="Sprite2D" parent="CanvasLayer/CanvasLayer/healthbar_player"]
+position = Vector2(151, 55)
+scale = Vector2(0.160991, 0.154976)
+texture = ExtResource("17_1jawh")
+region_enabled = true
+region_rect = Rect2(0, 152, 1120, 680)
+
+[node name="healthbar_enemy" type="TextureProgressBar" parent="CanvasLayer/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -454.0
+offset_right = -204.0
+offset_bottom = 110.0
+grow_horizontal = 0
+value = 100.0
+texture_under = ExtResource("18_0f6a8")
+texture_over = ExtResource("19_gb0mj")
+texture_progress = ExtResource("20_s7q07")
+
+[node name="vs_icon" type="Sprite2D" parent="CanvasLayer/CanvasLayer/healthbar_enemy"]
+position = Vector2(221, 56)
+scale = Vector2(0.0509375, 0.0509375)
+texture = ExtResource("21_sq2bc")
+
+[node name="enemy_icon" type="Sprite2D" parent="CanvasLayer/CanvasLayer/healthbar_enemy"]
+position = Vector2(112, 55.0518)
+scale = Vector2(0.220089, 0.200954)
+region_enabled = true
+region_rect = Rect2(0, 56, 1120, 528)
+
+[node name="Poster" type="TextureRect" parent="CanvasLayer/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -251.0
+offset_top = 113.0
+offset_right = -5.0
+offset_bottom = 605.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+texture = ExtResource("24_mk8bm")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="CanvasLayer/CanvasLayer"]
+offset_top = 80.0
+offset_right = 68.0
+offset_bottom = 108.0
+script = ExtResource("31_704b0")
 
 [node name="panta_deal" type="Area2D" parent="."]
 
@@ -1701,14 +1694,12 @@ ID = "23"
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="TileMap/animatie_sapa" to="TileMap" method="_on_animatie_sapa_timeout"]
 [connection signal="timeout" from="TileMap/umezeala" to="TileMap" method="_on_umezeala_timeout"]
-[connection signal="timeout" from="gaina/directionChangeTimer" to="gaina" method="_on_direction_change_timer_timeout"]
-[connection signal="timeout" from="player/Timer" to="player" method="_on_timer_timeout"]
-[connection signal="mouse_entered" from="player/CanvasLayer/healthbar_player" to="player/CanvasLayer/healthbar_player" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="player/CanvasLayer/healthbar_player" to="player/CanvasLayer/healthbar_player" method="_on_mouse_exited"]
 [connection signal="attacking" from="CanvasLayer/Inv" to="player" method="_on_inv_attacking"]
 [connection signal="plantSeed" from="CanvasLayer/Inv" to="TileMap" method="_on_player_plant_seed"]
 [connection signal="timeout" from="CanvasLayer/Inv/CanvasLayer/Timer" to="CanvasLayer/Inv" method="_on_timer_timeout"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer" to="player" method="_on_area_2d_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/CanvasLayer/healthbar_player" to="CanvasLayer/CanvasLayer/healthbar_player" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/CanvasLayer/healthbar_player" to="CanvasLayer/CanvasLayer/healthbar_player" method="_on_mouse_exited"]
 [connection signal="body_entered" from="panta_deal" to="player" method="_on_body_entered"]
 [connection signal="body_exited" from="panta_deal" to="player" method="_on_body_exited"]

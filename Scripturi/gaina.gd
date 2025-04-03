@@ -20,6 +20,7 @@ var current_target: Node2D = null
 var hrana=0
 @onready var hungry_time: Timer = $hungry_time
 
+
 enum ChicState {
 	Idle,
 	Walk,

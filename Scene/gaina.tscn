@@ -947,9 +947,13 @@ shape = SubResource("RectangleShape2D_cv7me")
 [node name="hungry_time" type="Timer" parent="."]
 wait_time = 10.0
 
+[node name="directionChangeTimer" type="Timer" parent="."]
+wait_time = 2.0
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="hungry" to="." method="_on_reset_hungry_timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="fly_timer" to="." method="_on_fly_timer_timeout"]
 [connection signal="timeout" from="hungry_time" to="." method="_on_hungry_time_timeout"]
+[connection signal="timeout" from="directionChangeTimer" to="." method="_on_direction_change_timer_timeout"]

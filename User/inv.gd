@@ -30,7 +30,8 @@ extends PanelContainer
 #--------------------------noduri-principale--------------------------------------------------------
 var selected_slot: Slot = null  # Slotul selectat
 @onready var tile_map = $"../../TileMap"
-@onready var player = $"../../player"
+#@onready var player = $"../../player"
+@onready var player = get_node_or_null("/root/world/player")
 var timp_ramas=0
 @onready var label: Label = $CanvasLayer/Label
 @onready var timer: Timer = $CanvasLayer/Timer
@@ -101,7 +102,7 @@ func _process(_delta: float) -> void:
 	has_backpack()
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
-	if selected_slot:
+	if selected_slot and is_instance_valid(player):
 		selected_slot.deselect()
 		player.info=""
 		
@@ -130,7 +131,7 @@ func _on_slot_selected(slot: Slot):
 	
 	# Echipează itemul la jucător
 	#var player = get_node("/root/world/player")
-	if player and slot.get_texture() != null:
+	if  slot.get_texture() != null and is_instance_valid(player):
 		player.equip_item(slot.get_texture(), slot.get_nume())
 	
 
@@ -301,7 +302,7 @@ func drop_selected_item():
 		if ID == "0":
 			selected_slot.clear_item()
 		
-		if ID:
+		if ID  and is_instance_valid(player):
 			print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
 			#var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
@@ -358,7 +359,7 @@ func drop_item(ID: String, cantiti: int):
 	
 	# Încarcă scena itemului
 	var item_scene = load("res://User/item.tscn") as PackedScene
-	if item_scene:
+	if item_scene and is_instance_valid(player) :
 		# Instanțiază scena
 		var world_node = get_node("/root/world/")
 		
@@ -387,7 +388,7 @@ func drop_selected_item_1():
 		var ID = selected_slot.get_id()  # Obține ID-ul itemului din slotul selectat
 		if ID == "0":
 			selected_slot.clear_item()
-		if ID:
+		if ID and is_instance_valid(player):
 			print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
 			var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
@@ -570,7 +571,7 @@ func lamp():
 							timer.start()
 							slot_container12.clear_item()
 							
-	if player and not item_23_gasit:
+	if player and not item_23_gasit and is_instance_valid(player_light):
 		$CanvasLayer.visible = false
 		player_light.visible=false
 		player_light.enabled=false

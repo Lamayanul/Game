@@ -5,6 +5,7 @@ extends Area2D
 @onready var timer_respawn = $Timer_respawn
 @onready var inv = $"../CanvasLayer/Inv"
 var player_in_zone = false  
+var index_taiere=0
 #@export var cycles_per_second:float=1.0
 #var hue :float =0.0
 
@@ -42,3 +43,20 @@ func _on_body_entered(body):
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_in_zone = false 
+
+func play_minare_animation():
+	index_taiere += 1
+	print("Index minare: ", index_taiere)
+	var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+	var drop_position = global_position + drop_offset 
+	if index_taiere == 4:
+		if bush_fructe:
+			inv.drop_item_everywhere("8", 3, drop_position)
+		inv.drop_item_everywhere("6", 1, drop_position) 
+		queue_free();
+		index_taiere=0;
+
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("arma"):
+		if inv.selected_slot.get_id()=="2":
+			call_deferred("play_minare_animation")

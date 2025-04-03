@@ -6,8 +6,8 @@ var enemy_attack_cooldown=true
 var enemy_current_attack=false
 var player_alive=true
 var player_current_attack=false
-@onready var healthbar = $CanvasLayer/healthbar
-@onready var healthbar_player = $CanvasLayer/healthbar_player
+@onready var healthbar = get_node("/root/world/CanvasLayer/CanvasLayer/healthbar")
+@onready var healthbar_player =  get_node("/root/world/CanvasLayer/CanvasLayer/healthbar_player")
 var is_attacking = false
 var scut_used=0
 #-----------------------------jump/movement----------------------------------------------------------
@@ -29,9 +29,9 @@ var current_state = "idle"
 @onready var info_label = $"../CanvasLayer/InfoLabel"
 
 @onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
-@onready var color_rect = $"../CanvasLayer/ColorRect"
+@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
 var info:String=""
-@onready var player_icon = $CanvasLayer/healthbar_player/player_icon
+@onready var player_icon = $"../CanvasLayer/CanvasLayer/healthbar_player/player_icon"
 var attack_weapon=0;
 #----------------------------------Enemy-action/stats-------------------------------------------------
 @onready var attack_timer = $attack_timer
@@ -60,6 +60,8 @@ var _tileMap
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 var farming_on=false
 @onready var gaina: CharacterBody2D = $"../gaina"
+@onready var timer: Timer = $Timer
+
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -195,7 +197,7 @@ func disable_collision_for_2_seconds():
 
 	colisiune.disabled = true
 
-	get_node("Timer").start()
+	timer.start()
 
 
 

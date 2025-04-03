@@ -15,7 +15,7 @@ blend_mode = 1
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_32dwq"]
 polygon = PackedVector2Array(-3, -8, 3, -8, 3, -7, 5, -7, 5, -6, 6, -6, 6, -5, 7, -5, 7, -3, 8, -3, 8, -1, 7, -1, 7, 0, 8, 0, 8, 4, 7, 4, 7, 5, 6, 5, 6, 6, 4, 6, 4, 7, -4, 7, -4, 6, -6, 6, -6, 5, -7, 5, -7, 4, -8, 4, -8, 1, -7, 1, -7, 0, -8, 0, -8, -3, -7, -3, -7, -5, -6, -5, -6, -6, -5, -6, -5, -7, -3, -7)
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" groups=["bush"]]
 script = ExtResource("1_j4c84")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -45,6 +45,7 @@ wait_time = 5.0
 material = SubResource("CanvasItemMaterial_h28c4")
 occluder = SubResource("OccluderPolygon2D_32dwq")
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
 [connection signal="timeout" from="Timer_respawn" to="." method="_on_timer_respawn_timeout"]

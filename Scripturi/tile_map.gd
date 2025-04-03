@@ -4,10 +4,10 @@ class_name tilemap
 @onready var grid = $Grid_ogor
 @onready var grid_land = $Grid_land
 var last_direction = Vector2(0, 1)
-@onready var animation_player=get_node("/root/world/player/AnimationPlayer")
+@onready var animation_player=get_node_or_null("/root/world/player/AnimationPlayer")
 @onready var inventory = get_node("/root/world/CanvasLayer/Inv")
 var selected_slot: Slot = null  
-@onready var player = get_node("/root/world/player")
+@onready var player = get_node_or_null("/root/world/player")
 @onready var seminte_grid: Sprite2D = $Seminte
 var drop=1
 var cell
@@ -21,7 +21,7 @@ var placing_gard_mode = false
 var placing_house=false
 @export var gard_tile_id: int = 3  
 @onready var grid_gard = $Grid_gard
-@onready var arma_colisiune= get_node("/root/world/player/arma/arma_colisiune")
+@onready var arma_colisiune= get_node_or_null("/root/world/player/arma/arma_colisiune")
 @onready var grid_house: Sprite2D = $Grid_house
 var house_tiles = [Vector2(0,0), Vector2(0,1), Vector2(0,2),Vector2(1,0),Vector2(1,2),Vector2(2,0),Vector2(2,1),Vector2(2,2),Vector2(4,2),Vector2(3,2)] # Diferite variante de tile
 var roof_tiles=[Vector2(0,0),Vector2(1,0),Vector2(2,0),Vector2(0,1),Vector2(1,1),Vector2(2,1),Vector2(0,2),Vector2(1,2),Vector2(2,2),Vector2(0,3),Vector2(1,3),Vector2(2,3),Vector2(0,4),Vector2(1,4),Vector2(2,4),]
@@ -45,7 +45,7 @@ func _ready():
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
 	watering_ogor()
-	if player and is_instance_valid(player):
+	if is_instance_valid(player) :
 		var player_position = player.global_position
 		var player_direction = player.last_direction.normalized()  # Direcția „în față”
 		var drop_distance = 10  # Ajustează distanța conform nevoilor tale

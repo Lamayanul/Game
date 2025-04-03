@@ -15,15 +15,15 @@ var moveDirection = Vector2.ZERO
 @onready var healthbar = $healthbar
 @onready var animation_player = $AnimationPlayer
 @onready var arma = $arma
-@onready var player = $"../player"
+@onready var player = get_node_or_null("/root/world/player")
 var player_chase=false
 @export var MoveSpeed: float = 20.0
 var lastPosition=Vector2(0,1)
 @onready var detection = $detection
 var is_attacking = false  
 @onready var player_hitbox = get_node("/root/world/player/player_hitbox")
-@onready var enemy_icon = $"../player/CanvasLayer/healthbar_enemy/enemy_icon"
-@onready var healthbar_enemy = $"../player/CanvasLayer/healthbar_enemy"
+@onready var enemy_icon = $"../CanvasLayer/CanvasLayer/healthbar_enemy/enemy_icon"
+@onready var healthbar_enemy = $"../CanvasLayer/CanvasLayer/healthbar_enemy"
 @export var stop_distance: float = 20
 @onready var atack = $atack
 var stare_atac= false
@@ -121,7 +121,7 @@ func _on_color_timeout():
 	animated_sprite_2d.modulate=original_color
 
 func apply_knockback():
-	var direction = (position - get_node("/root/world/player/").position).normalized()
+	var direction = (position - player.position).normalized()
 	velocity = direction * knockback_force
 	move_and_slide()
 
@@ -161,7 +161,7 @@ func _on_arma_area_exited(_area: Area2D) -> void:
 
 
 func _on_detection_body_entered(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player")  and is_instance_valid(enemy_icon):
 		enemy_icon.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/enemy.png")
 		healthbar_enemy.value=health
 		if angry>=3:
@@ -170,7 +170,7 @@ func _on_detection_body_entered(body):
 
 
 func _on_detection_body_exited(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player")  and is_instance_valid(enemy_icon):
 		player_chase=false
 		enemy_icon.texture=null
 		healthbar_enemy.value=0
