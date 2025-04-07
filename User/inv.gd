@@ -3,23 +3,42 @@ extends PanelContainer
 #------------------------------grid-uri--------------------------------------------------------------
 @onready var grid_container = $MarginContainer/GridContainer
 @onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
-@onready var slot_container_5 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
-@onready var slot_container_7 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
-@onready var slot_container_6 = get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+#@onready var slot_container_5 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
+#@onready var slot_container_7 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
+#@onready var slot_container_6 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+#
+#
+#@onready var slot_container_chest = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer")
+#@onready var slot_container_chest_2 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer2")
+#@onready var slot_container_chest_3 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer3")
+#@onready var slot_container_chest_4 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer4")
+#
+#@onready var slot_container_8: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer")
+#@onready var slot_container_9: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer2")
+#
+#
 
 
-@onready var slot_container_chest = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer")
-@onready var slot_container_chest_2 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer2")
-@onready var slot_container_chest_3 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer3")
-@onready var slot_container_chest_4 = get_node("/root/world/Chest/CanvasLayer/GridContainer/SlotContainer4")
+var slot_container_8: Node = null
+var slot_container_9: Node = null
+#@onready var oven = get_node("/root/world/oven")
 
-@onready var slot_container_8: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer")
-@onready var slot_container_9: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer2")
+#@onready var chest = get_node("/root/world/Chest")
+var slot_container_5: Node = null
+var slot_container_6: Node = null
+var slot_container_7: Node = null
 
+var chest: Node = null
+var oven: Node = null
+var pillar: Node =null
 
-@onready var oven = get_node("/root/world/Node2D")
-@onready var chest = get_node("/root/world/Chest")
-@onready var pillar = get_tree().get_nodes_in_group("LightSource")
+var slot_container_chest: Node = null
+var slot_container_chest_2: Node = null
+var slot_container_chest_3: Node = null
+var slot_container_chest_4: Node = null
+
+#@onready var pillar = get_tree().get_nodes_in_group("LightSource")
+
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
@@ -40,9 +59,45 @@ var timp_ramas=0
 @onready var slot_container12: Slot = $CanvasLayer/GridContainer/SlotContainer
 var id=""
 
+
+@export var chest_scene: PackedScene
+@export var oven_scene: PackedScene
+@export var pillar_scene : PackedScene
 #-----------------------------Semnale----------------------------------------------------------------
+
 signal plantSeed
 signal attacking
+
+func instantiate_chest():
+	var world = get_node("/root/world")
+	chest = chest_scene.instantiate()
+	chest.position = Vector2(40, 0)
+	world.add_child.call_deferred(chest)
+
+	# La fel, după ce adaugi în scenă, poți accesa copiii
+	slot_container_chest = chest.get_node("CanvasLayer/GridContainer/SlotContainer")
+	slot_container_chest_2 = chest.get_node("CanvasLayer/GridContainer/SlotContainer2")
+	slot_container_chest_3 = chest.get_node("CanvasLayer/GridContainer/SlotContainer3")
+	slot_container_chest_4 = chest.get_node("CanvasLayer/GridContainer/SlotContainer4")
+	
+func instantiate_oven():
+	oven = oven_scene.instantiate()
+	oven.position = Vector2(200, 200)
+	add_child(oven)
+
+	# Acum că oven e în scenă, poți accesa nodurile din interiorul lui
+	slot_container_5 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
+	slot_container_6 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+	slot_container_7 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
+	
+	
+func instantiate_pillar():
+	var world = get_node("/root/world")
+	pillar = pillar_scene.instantiate()
+	pillar.position = Vector2(300, 30)
+	world.add_child.call_deferred(pillar)
+	slot_container_8= pillar.get_node("CanvasLayer/GridContainer/SlotContainer")
+	slot_container_9 = pillar.get_node("CanvasLayer/GridContainer/SlotContainer2")
 
 #---------------------------------------add_item()-----------------------------------------------------
 func add_item(ID="", item_cantita=1) -> bool:
@@ -173,109 +228,110 @@ func _input(event):
 		select_slot_by_index(2)
 	if Input.is_action_just_pressed("slot_4"):
 		select_slot_by_index(3)
-	if event is InputEventMouseButton and oven.in_zona == true:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			if selected_slot==null:
-				return
-			if selected_slot.get_item() != null:
-				# Obține detaliile itemului din slotul selectat
-				var item_data = selected_slot.get_item()
+	if is_instance_valid(oven):
+		if event is InputEventMouseButton and oven.in_zona == true:
+			if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+				if selected_slot==null:
+					return
+				if selected_slot.get_item() != null:
+					# Obține detaliile itemului din slotul selectat
+					var item_data = selected_slot.get_item()
 
-				# Încearcă să transferi itemul în slotul 6
-				if transfer_item_to_slot(item_data, slot_container_6):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de crafting 6.")
+					# Încearcă să transferi itemul în slotul 6
+					if transfer_item_to_slot(item_data, slot_container_6):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de crafting 6.")
 
-				# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
-				elif transfer_item_to_slot(item_data, slot_container_7):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de crafting 7.")
+					# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+					elif transfer_item_to_slot(item_data, slot_container_7):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de crafting 7.")
 
-				# Dacă niciun slot nu este disponibil, afișează un mesaj
+					# Dacă niciun slot nu este disponibil, afișează un mesaj
+					else:
+						print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
 				else:
-					print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
-			else:
-				print("Nu este niciun item selectat pentru transfer.")
-				
-	if event is InputEventMouseButton and chest.player_in_area == true:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			if selected_slot and selected_slot.get_item() != null:
-				# Obține detaliile itemului din slotul selectat
-				var item_data = selected_slot.get_item()
-
-				# Încearcă să transferi itemul în slotul 6
-				if transfer_item_to_slot(item_data, slot_container_chest):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de chest1.")
-
-				# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
-				elif transfer_item_to_slot(item_data, slot_container_chest_2):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de chest2.")
+					print("Nu este niciun item selectat pentru transfer.")
 					
-				elif transfer_item_to_slot(item_data, slot_container_chest_3):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de chest3.")
-					
-				elif transfer_item_to_slot(item_data, slot_container_chest_4):
-					# Dacă transferul este reușit, curăță itemul din slotul selectat
-					selected_slot.clear_item()
-					plin -= 1
-					print("Item transferat cu succes în slotul de chest4.")
-				# Dacă niciun slot nu este disponibil, afișează un mesaj
+		if event is InputEventMouseButton and chest.player_in_area == true:
+			if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+				if selected_slot and selected_slot.get_item() != null:
+					# Obține detaliile itemului din slotul selectat
+					var item_data = selected_slot.get_item()
+
+					# Încearcă să transferi itemul în slotul 6
+					if transfer_item_to_slot(item_data, slot_container_chest):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de chest1.")
+
+					# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+					elif transfer_item_to_slot(item_data, slot_container_chest_2):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de chest2.")
+						
+					elif transfer_item_to_slot(item_data, slot_container_chest_3):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de chest3.")
+						
+					elif transfer_item_to_slot(item_data, slot_container_chest_4):
+						# Dacă transferul este reușit, curăță itemul din slotul selectat
+						selected_slot.clear_item()
+						plin -= 1
+						print("Item transferat cu succes în slotul de chest4.")
+					# Dacă niciun slot nu este disponibil, afișează un mesaj
+					else:
+						print("Toate sloturile sunt pline de chest.")
+						
 				else:
-					print("Toate sloturile sunt pline de chest.")
-					
-			else:
-				print("Nu este niciun item selectat pentru transfer.")
-	#for p in pillar:
-		#if p.pillar_area:
-			#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-				#if selected_slot and selected_slot.get_item() != null:
-					## Obține detaliile itemului din slotul selectat
-					#var item_data = selected_slot.get_item()
-#
-					## Încearcă să transferi itemul în slotul 6
-					#if transfer_item_to_slot(item_data, slot_container_8):
-						## Dacă transferul este reușit, curăță itemul din slotul selectat
-						#selected_slot.clear_item()
-						#plin -= 1
-						#print("Item transferat cu succes în slotul de chest1.")
-#
-					## Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
-					#elif transfer_item_to_slot(item_data, slot_container_9):
-						## Dacă transferul este reușit, curăță itemul din slotul selectat
-						#selected_slot.clear_item()
-						#plin -= 1
-						#print("Item transferat cu succes în slotul de chest2.")
+					print("Nu este niciun item selectat pentru transfer.")
+		#for p in pillar:
+			#if p.pillar_area:
+				#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+					#if selected_slot and selected_slot.get_item() != null:
+						## Obține detaliile itemului din slotul selectat
+						#var item_data = selected_slot.get_item()
+	#
+						## Încearcă să transferi itemul în slotul 6
+						#if transfer_item_to_slot(item_data, slot_container_8):
+							## Dacă transferul este reușit, curăță itemul din slotul selectat
+							#selected_slot.clear_item()
+							#plin -= 1
+							#print("Item transferat cu succes în slotul de chest1.")
+	#
+						## Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
+						#elif transfer_item_to_slot(item_data, slot_container_9):
+							## Dacă transferul este reușit, curăță itemul din slotul selectat
+							#selected_slot.clear_item()
+							#plin -= 1
+							#print("Item transferat cu succes în slotul de chest2.")
 
 
 # Funcție pentru a transfera un item într-un slot specific
-func transfer_item_to_slot(item_data: Dictionary, slot_container: Node) -> bool:
+func transfer_item_to_slot(item_data: Dictionary, slot_container_aici: Node) -> bool:
 	# Verifică dacă slotul conține deja acest tip de item
 	if typeof(item_data) == TYPE_DICTIONARY and item_data.has("NUMBER"):
-		if slot_container.get_id() == str(item_data["NUMBER"]):
+		if slot_container_aici.get_id() == str(item_data["NUMBER"]):
 			# Adaugă cantitatea la itemul existent
-			slot_container.set_property({
+			slot_container_aici.set_property({
 				"TEXTURE": item_data["TEXTURE"],
-				"CANTITATE": slot_container.get_cantitate() + item_data["CANTITATE"],
+				"CANTITATE": slot_container_aici.get_cantitate() + item_data["CANTITATE"],
 				"NUMBER": item_data["NUMBER"],
 				"NUME": item_data["NUME"]
 			})
 			return true  # Itemul a fost transferat cu succes
-		elif slot_container.get_id() == "0":  # Verifică dacă slotul este gol
+		elif slot_container_aici.get_id() == "0":  # Verifică dacă slotul este gol
 			# Adaugă itemul în slotul gol
-			slot_container.set_property({
+			slot_container_aici.set_property({
 				"TEXTURE": item_data["TEXTURE"],
 				"CANTITATE": item_data["CANTITATE"],
 				"NUMBER": item_data["NUMBER"],
@@ -358,7 +414,7 @@ func drop_item(ID: String, cantiti: int):
 	var item_texture = load(item_texture_path) as Texture
 	
 	# Încarcă scena itemului
-	var item_scene = load("res://User/item.tscn") as PackedScene
+	var item_scene = load("res://User/Item.tscn") as PackedScene
 	if item_scene and is_instance_valid(player) :
 		# Instanțiază scena
 		var world_node = get_node("/root/world/")
@@ -509,7 +565,7 @@ func drop_item_everywhere(ID: String, cantiti: int,location:Vector2):
 	var item_texture = load(item_texture_path) as Texture
 	
 	# Încarcă scena itemului
-	var item_scene = load("res://User/item.tscn") as PackedScene
+	var item_scene = load("res://User/Item.tscn") as PackedScene
 	if item_scene:
 		# Instanțiază scena
 		var world_node = get_node("/root/world/")
@@ -541,15 +597,15 @@ func has_backpack():
 		return  
 
 	# Verificăm dacă rucsacul există în orice slot din inventar
-	var has_backpack = false
+	var has_backpack_1 = false
 	for slot in slots:
 		 # Presupun că ai un array `slots` în inventar
 		if slot is Slot  and slot.get_id() == "18":
 
-			has_backpack = true
+			has_backpack_1 = true
 			break  # Nu mai căutăm, am găsit rucsacul
 	
-	backpack.visible = has_backpack  # Devine invizibil doar dacă e scos complet din inventar
+	backpack.visible = has_backpack_1  # Devine invizibil doar dacă e scos complet din inventar
 
 func lamp():
 	var item_23_gasit = false
@@ -604,6 +660,7 @@ func _on_timer_timeout() -> void:
 
 
 func format_time(seconds: int) -> String:
+	@warning_ignore("integer_division")
 	var minutes = seconds / 60
 	var secs = seconds % 60
 	return str(minutes).pad_zeros(2) + ":" + str(secs).pad_zeros(2)

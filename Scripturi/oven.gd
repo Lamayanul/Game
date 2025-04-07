@@ -1,6 +1,6 @@
 extends CharacterBody2D
 @onready var grid_container: GridContainer = $CanvasLayer/Recipe
-@onready var inv: PanelContainer = $"../CanvasLayer/Inv"
+@onready var inv: PanelContainer = get_node("/root/world/CanvasLayer/Inv")
 var in_zona=false
 
 func _ready():

@@ -22,6 +22,10 @@ DialogueManager="*res://Scene/dialogue_manager.tscn"
 MenuSaveLoad="*res://User/Menu_save_load.tscn"
 Persistence="*res://User/persistence.tscn"
 
+[debug]
+
+gdscript/warnings/unused_signal=0
+
 [global_group]
 
 enemy_hitbox=""
@@ -44,6 +48,12 @@ enemy=""
 bush=""
 rock=""
 copac=""
+recipe=""
+pow_gen=""
+chest=""
+oven=""
+elec_slot=""
+radacina=""
 
 [input]
 
@@ -170,6 +180,11 @@ watering={
 consola={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":96,"key_label":0,"unicode":96,"location":0,"echo":false,"script":null)
+]
+}
+toggle_grid={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":71,"key_label":0,"unicode":103,"location":0,"echo":false,"script":null)
 ]
 }
 

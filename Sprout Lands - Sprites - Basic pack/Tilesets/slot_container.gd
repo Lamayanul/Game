@@ -242,12 +242,12 @@ func increase_cantitate(amount: int):
 	else:
 		label.text = ""
 		
-func add_item(item_id: String, amount: int):
+func add_item(new_item_id: String, amount: int):
 	self.set_property({
-		"TEXTURE": load("res://assets/" + ItemData.get_texture(item_id)),
+		"TEXTURE": load("res://assets/" + ItemData.get_texture(new_item_id)),
 		"CANTITATE": amount,
-		"NUMBER": ItemData.get_number(item_id),
-		"NUME": ItemData.get_nume(item_id)
+		"NUMBER": ItemData.get_number(new_item_id),
+		"NUME": ItemData.get_nume(new_item_id)
 	})
 	self.filled = true
 	

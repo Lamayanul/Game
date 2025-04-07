@@ -9,7 +9,7 @@ size = Vector2(10, 2)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wywxl"]
 size = Vector2(8, 8)
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" groups=["radacina"]]
 position = Vector2(0, -3)
 script = ExtResource("1_52k6p")
 

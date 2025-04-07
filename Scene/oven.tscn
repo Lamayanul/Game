@@ -10,7 +10,7 @@ size = Vector2(28, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gw4hn"]
 size = Vector2(28, 10)
 
-[node name="Node2D" type="CharacterBody2D"]
+[node name="Oven" type="CharacterBody2D" groups=["oven"]]
 scale = Vector2(0.855968, 0.855968)
 script = ExtResource("1_st8hx")
 

@@ -1,9 +1,12 @@
 extends Node2D
 
-@onready var power: Area2D = get_node("/root/world/Power_generator/area")  # Generatorul principal
-@onready var power_interact: Area2D = get_node("/root/world/Power_generator/area_interact") 
-@onready var powg= get_node("/root/world/Power_generator") 
-@onready var pow_area= get_node("/root/world/Power_generator/area_interact") 
+@onready var power: Area2D = null
+@onready var power_interact: Area2D = null
+#@onready var powg= get_node("/root/world/Power_generator") 
+@onready var world = get_node("/root/world")
+var powg=null
+var pill=null
+@onready var pow_area= null 
 
 var connected_areas: Array = []  
 var used_areas: Array = []  
@@ -12,7 +15,12 @@ var lines: Array = []
 var aprins=false
 
 func _ready() -> void:
-	pass
+	powg = Persistence.power_generator
+	#if Persistence.pillar == null:
+		#Persistence.pillar = load("res://Scene/electricity_pillar.tscn").instantiate()
+		#pill=Persistence.pillar
+		#world.add_child.call_deferred(Persistence.pillar)
+	#print("PILON :",pill)
 
 
 
@@ -29,6 +37,7 @@ func update_connections() -> void:
 		var area_node = pillar.get_node("area")  # Accesează nodul Area2D asociat fiecărui LightSource
 		if area_node and pow_area.overlaps_area(area_node):  # Verifică suprapunerea între pow_area și area_node
 			pillar.conect = true  # Setează conectarea pentru pilonul respectiv
+
 		else:
 			pillar.conect = false  # Asigură-te că pilonii neconectați nu sunt marcați
 
@@ -45,10 +54,19 @@ func update_connections() -> void:
 
 
 func _process(_delta: float) -> void:
-
-	if powg.legat == true and connected_areas.is_empty():
-		update_connections()
-	update_curves()
+	if powg == null and Persistence.power_generator != null:
+		powg = Persistence.power_generator
+		power = powg.get_node("area")
+		pow_area = powg.get_node("area_interact")
+		print("Generator conectat:", powg)
+	
+		
+	if powg == null and Persistence.power_generator != null:
+		powg = Persistence.power_generator
+	if powg:
+		if powg.legat == true and connected_areas.is_empty():
+			update_connections()
+		update_curves()
 
 	
 	

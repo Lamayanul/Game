@@ -20,7 +20,7 @@ func _ready() -> void:
 	progress_bar.min_value = 0  # Minimul valorii (0%)
 	progress_bar.max_value = fuel_capacity
 	progress_bar.value = 0  # Inițializarea valorii la 0
-
+	
 func _process(_delta: float) -> void:
 	if open_fuel:
 		canvas_layer.visible = true
@@ -43,7 +43,7 @@ func add_fuel() -> void:
 		if cantitate > 0:  # Verificăm dacă există combustibil
 			print("În slot sunt " + str(cantitate) + " bucăți")
 			timp_ramas += cantitate * 60  # Adaugă timp în funcție de cantitate
-
+			@warning_ignore("integer_division")
 			# Configurează Timerul să ticăie la fiecare secundă
 			progress_bar.value=timp_ramas/60
 			timer.wait_time = 1
@@ -55,6 +55,7 @@ func _on_timer_timeout() -> void:
 	if timp_ramas > 0:
 		timp_ramas -= 1  # Scade o secundă din timpul rămas
 		label_2.text = format_time(timp_ramas)  # Actualizează eticheta
+		@warning_ignore("integer_division")
 		progress_bar.value = timp_ramas/60
 		# Decrementăm cantitatea din slot la fiecare minut consumat
 		if timp_ramas % 60 == 0:
@@ -72,6 +73,7 @@ func _on_timer_timeout() -> void:
 		print("Timpul a expirat!")
 
 func format_time(seconds: int) -> String:
+	@warning_ignore("integer_division")
 	var minutes = seconds / 60
 	var secs = seconds % 60
 	return str(minutes).pad_zeros(2) + ":" + str(secs).pad_zeros(2)

@@ -24,7 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://fto46ffcpmp4" path="res://Sprout Lands - Sprites - Basic pack/Objects/gaina_food.png" id="10_y6ae8"]
 [ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="12_na5if"]
 [ext_resource type="Texture2D" uid="uid://bfhgalegwegxb" path="res://Sprout Lands - Sprites - Basic pack/Objects/grid_selector_land.png" id="13_0qlre"]
-[ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/item.tscn" id="13_6ft7m"]
+[ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/Item.tscn" id="13_6ft7m"]
 [ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="13_6781w"]
 [ext_resource type="Script" path="res://Scripturi/hand.gd" id="14_1eu7x"]
 [ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="14_2xshd"]
@@ -1623,7 +1623,7 @@ position = Vector2(188, -50)
 ID = "6"
 item_cantitate = 50
 
-[node name="Node2D" parent="." instance=ExtResource("49_3esg5")]
+[node name="oven" parent="." instance=ExtResource("49_3esg5")]
 position = Vector2(364, -64)
 
 [node name="Item15" parent="." instance=ExtResource("13_6ft7m")]
@@ -1689,6 +1689,12 @@ position = Vector2(235, -37)
 ID = "23"
 
 [node name="Node2D4" parent="." instance=ExtResource("66_c48fp")]
+
+[node name="CharacterBody2D2" parent="." instance=ExtResource("7_f17pw")]
+position = Vector2(155, 35)
+
+[node name="Chest2" parent="." instance=ExtResource("50_705pd")]
+position = Vector2(120, 41)
 
 [connection signal="body_entered" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]

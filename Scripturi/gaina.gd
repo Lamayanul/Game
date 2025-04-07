@@ -19,6 +19,7 @@ var targets: Array = []
 var current_target: Node2D = null
 var hrana=0
 @onready var hungry_time: Timer = $hungry_time
+@onready var direction_change_timer: Timer = $directionChangeTimer
 
 
 enum ChicState {
@@ -32,12 +33,11 @@ enum ChicState {
 func _ready():
 	call_deferred("seeker_setup")
 	animatedSprite = $AnimatedSprite2D
-	$directionChangeTimer.start()
-	select_new_direction()
-	pick_new_state()
 	timer.start()
 	fly_anime.hide()
-	
+	direction_change_timer.start()
+	select_new_direction()
+	pick_new_state()
 
 
 func _physics_process(_delta):
@@ -71,7 +71,7 @@ func _physics_process(_delta):
 
 func select_closest_target():
 	# 🔹 Elimină țintele invalide
-	targets = targets.filter(func(target): return is_instance_valid(target))
+	targets = targets.filter(func(target_1): return is_instance_valid(target_1))
 	if targets.is_empty():
 		current_target = null
 		return
@@ -79,11 +79,11 @@ func select_closest_target():
 	var closest_target = null
 	var min_distance = INF  
 
-	for target in targets:
-		var distance = global_position.distance_to(target.global_position)
+	for targeta in targets:
+		var distance = global_position.distance_to(targeta.global_position)
 		if distance < min_distance:
 			min_distance = distance
-			closest_target = target
+			closest_target = targeta
 	
 	current_target = closest_target
 	
@@ -126,6 +126,8 @@ func seeker_setup():
 func _on_direction_change_timer_timeout():
 	select_new_direction()
 	pick_new_state()
+	direction_change_timer.wait_time = randi_range(2, 3)  # Setează timpul de așteptare aleatoriu
+	direction_change_timer.start()  # Pornește timerul
 
 func select_new_direction():
 	var random = RandomNumberGenerator.new()
@@ -156,14 +158,18 @@ func _on_reset_hungry_timer_timeout() -> void:
 func stop_chicken() -> void:
 	velocity = Vector2.ZERO  # Oprește mișcarea
 	currentState = ChicState.Idle  # Resetează starea # Oprește al doilea timer
-	$directionChangeTimer.stop()  # Oprește schimbarea direcției
+	direction_change_timer.stop()  # Oprește schimbarea direcției
 	animatedSprite.hide()  # Ascunde sprite-ul
 	
 func start_chicken()->void:
-	$directionChangeTimer.start()  # Oprește schimbarea direcției
-	currentState = ChicState.Idle
-	animatedSprite.show() 
+	if direction_change_timer.is_inside_tree():
+		direction_change_timer.start()
+		currentState = ChicState.Idle
+		animatedSprite.show() 
+	else:
+		print("Timerul nu este în scenă încă!")
 
+ 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

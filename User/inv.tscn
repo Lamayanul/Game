@@ -1,14 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://cl0ym50w3lybq"]
+[gd_scene load_steps=8 format=3 uid="uid://cl0ym50w3lybq"]
 
 [ext_resource type="Script" path="res://User/inv.gd" id="1_ic7fr"]
 [ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="1_vr0hg"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_f0a3l"]
+[ext_resource type="PackedScene" uid="uid://btlog1vd6ddq3" path="res://Scene/chest.tscn" id="2_lg34p"]
+[ext_resource type="PackedScene" uid="uid://tbe5e0cl8umt" path="res://Scene/oven.tscn" id="3_6coj1"]
+[ext_resource type="PackedScene" uid="uid://oole82yty3pu" path="res://Scene/electricity_pillar.tscn" id="4_ib4yg"]
 [ext_resource type="Texture2D" uid="uid://g2nknj28mrgx" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_select.png" id="4_kb5l3"]
 
 [node name="Inv" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_ic7fr")
+chest_scene = ExtResource("2_lg34p")
+oven_scene = ExtResource("3_6coj1")
+pillar_scene = ExtResource("4_ib4yg")
 
 [node name="Back" type="NinePatchRect" parent="."]
 layout_mode = 2

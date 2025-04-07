@@ -15,7 +15,7 @@ var _staticbody : StaticBody2D
 var _playerSprite : CharacterBody2D
 var index_taiere = 0
 var is_cutting = true
-var fructe = false
+@export var fructe = false
 var is_resetting = false
 @export var player_path : NodePath
 func _ready():
@@ -27,7 +27,9 @@ func _ready():
 
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	connect("body_exited", Callable(self, "_on_body_exited"))
-
+	
+	if fructe:
+		animation_player.play("fructe")
 func _on_body_entered(body: Node):
 	if body.is_in_group("player") or body.is_in_group("gaina"):
 		if _staticbody:

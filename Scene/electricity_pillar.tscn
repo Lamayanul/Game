@@ -217,11 +217,11 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 
-[node name="SlotContainer" parent="CanvasLayer/GridContainer" instance=ExtResource("4_q4gob")]
+[node name="SlotContainer" parent="CanvasLayer/GridContainer" groups=["elec_slot"] instance=ExtResource("4_q4gob")]
 layout_mode = 2
 slot_type = "no_inv"
 
-[node name="SlotContainer2" parent="CanvasLayer/GridContainer" instance=ExtResource("4_q4gob")]
+[node name="SlotContainer2" parent="CanvasLayer/GridContainer" groups=["elec_slot"] instance=ExtResource("4_q4gob")]
 layout_mode = 2
 slot_type = "no_inv"
 

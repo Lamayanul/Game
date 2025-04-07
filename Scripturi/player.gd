@@ -44,7 +44,7 @@ var colisiune
 
 
 #-------------------------------------Player-stats----------------------------------------------
-var Speed = 50
+@export var speed: int= 50
 @export var health=100
 @onready var scut: Area2D =$StaticBody2D/Scut
 @onready var scut_sprite: Sprite2D =$StaticBody2D/Scut/Sprite2D
@@ -59,7 +59,6 @@ var _tileMap
 @onready var inv: PanelContainer = $"../CanvasLayer/Inv"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 var farming_on=false
-@onready var gaina: CharacterBody2D = $"../gaina"
 @onready var timer: Timer = $Timer
 
 
@@ -107,7 +106,7 @@ func _physics_process(delta):
 		jump()
 
 	if is_jumping:
-		position += jumpDirection * Speed  * delta
+		position += jumpDirection * speed  * delta
 	else:
 		position += velocity * delta
 		
@@ -145,7 +144,7 @@ func handle_movement():
 
 	
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * Speed
+		velocity = velocity.normalized() * speed
 		if velocity.x != 0:
 			if velocity.x < 0:
 				animation_player.play("walk-left")
@@ -214,11 +213,11 @@ func _on_area_2d_body_exited(body):
 		camera.zoom=Vector2(4,4)
 
 func _on_body_entered(_body):
-	Speed = 25
+	speed = 25
 
 
 func _on_body_exited(_body):
-	Speed =50
+	speed =50
 	
 	
 
@@ -389,6 +388,7 @@ func _on_arma_area_entered(area):
 		enemy.player_inattack_range=true
 		enemy.player_current_attack=true
 		enemy.deal_with_damage()
+		return
 	else:
 		print("nu este enemy_hitbox")
 		
@@ -614,10 +614,12 @@ func spawn_items_around_player(_ID):
 			# 🔹 Plasează obiectul la poziția finală
 			item_instance.position = player_position + random_offset
 			get_parent().add_child(item_instance)  # Adaugă în scenă
-			gaina.targets.append(item_instance)
-			print("Instanțiat obiect la:", item_instance.position)
-			gaina.target=item_instance
-			gaina.seeker_setup()
-			gaina.select_closest_target()
+			
+			for gaina in get_tree().get_nodes_in_group("gaina"):
+				gaina.targets.append(item_instance)
+				gaina.target = item_instance
+				gaina.seeker_setup()
+				gaina.select_closest_target()
+
 	# 🔹 Scade cantitatea doar după ce toate obiectele au fost plasate
 	inv.selected_slot.decrease_cantitate(1)

@@ -14,21 +14,23 @@ var con: Array = []
 @onready var slot_container_2: Slot = $CanvasLayer/GridContainer/SlotContainer2
 var pillar_area=false
 var generator_active = false 
-@onready var pow_area= get_node("/root/world/Power_generator/area_interact") 
+#@onready var pow_area= get_node("/root/world/Power_generator/area_interact") 
 var pil_con=false
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 
 @export var conect:bool=false
-@onready var powg = get_node("/root/world/Power_generator")
-@onready var power: Area2D = get_node("/root/world/Power_generator/area")
+var powg = null
+
+#@onready var power: Area2D = get_node("/root/world/Power_generator/area")
 var buton: bool:
 	get:
 		return powg.generator_on
 
 func _ready() -> void:
+	powg = Persistence.power_generator
 	await get_tree().process_frame
 	await get_tree().process_frame
-
+	
 	con = power_node_con.connected_areas.duplicate()
 	
 
@@ -39,6 +41,8 @@ func _ready() -> void:
 	#point_light_2d_2.enabled = false
 
 func _process(_delta: float) -> void:
+	if powg == null and Persistence.power_generator != null:
+		powg = Persistence.power_generator
 	#enable()
 	BEC()
 	update_connections()
@@ -70,42 +74,49 @@ func _process(_delta: float) -> void:
 
 func BEC():
 	var power_node_area = get_tree().root.get_node_or_null("world/Node2D3")
+
 	for pillar in get_tree().get_nodes_in_group("pillar"):
+
 		if pillar in power_node_area.connected_areas:
-			var power_node = get_tree().root.get_node_or_null("world/Power_generator")
-			var timer = power_node.get_node_or_null("Timer")
-			# Verificăm slot_container
-			if slot_container.get_id() == "21" and not timer.is_stopped() and buton and conect:
-				$area/PointLight2D.enabled = true
-				$area/PointLight2D.color = Color(0, 1, 0)  # Roșu pentru ID 21
-			elif slot_container.get_id() == "20" and not timer.is_stopped() and buton and conect:
-				$area/PointLight2D.enabled = true
-				$area/PointLight2D.color = Color(1, 0, 0)  # Verde pentru ID 20
-			elif slot_container.get_id() == "19" and not timer.is_stopped() and buton and conect:
-				$area/PointLight2D.enabled = true
-				$area/PointLight2D.color = Color(0, 0, 1)  # Albastru pentru ID 19
-				#if slot_container.cantitate>1 and inv.plin!=4:
-					#inv.add_item("19",slot_container.cantitate-1) ###
-					#slot_container.cantitate=1                    ###
-				#elif slot_container.cantitate>1 and inv.plin==4:
-					#inv.drop_item("19",slot_container.cantitate-1)
-					#slot_container.cantitate=1
+
+			var power_node = get_tree().get_nodes_in_group("pow_gen")
+			for node in power_node:
+
+				var timer = node.get_node("Timer")
+				print("date::::::: ", timer.time_left, conect)
+				# Verificăm slot_container
+				if slot_container.get_id() == "21" and not timer.is_stopped() and buton and conect:
+					$area/PointLight2D.enabled = true
+					$area/PointLight2D.color = Color(0, 1, 0) 
 					
-			else:
-				$area/PointLight2D.enabled = false
-			
-			# Verificăm slot_container_2
-			if slot_container_2.get_id() == "21" and not timer.is_stopped() and buton and conect:
-				$area/PointLight2D2.enabled = true
-				$area/PointLight2D2.color = Color(0, 1, 0)  # Roșu pentru ID 21
-			elif slot_container_2.get_id() == "20" and not timer.is_stopped()  and buton and conect:
-				$area/PointLight2D2.enabled = true
-				$area/PointLight2D2.color = Color(1, 0, 0)  # Verde pentru ID 20
-			elif slot_container_2.get_id() == "19" and not timer.is_stopped() and buton and conect:
-				$area/PointLight2D2.enabled = true
-				$area/PointLight2D2.color = Color(0, 0, 1)  # Albastru pentru ID 19
-			else:
-				$area/PointLight2D2.enabled = false
+				elif slot_container.get_id() == "20" and not timer.is_stopped() and buton and conect:
+					$area/PointLight2D.enabled = true
+					$area/PointLight2D.color = Color(1, 0, 0)  # Verde pentru ID 20
+				elif slot_container.get_id() == "19" and not timer.is_stopped() and buton and conect:
+					$area/PointLight2D.enabled = true
+					$area/PointLight2D.color = Color(0, 0, 1)  # Albastru pentru ID 19
+					#if slot_container.cantitate>1 and inv.plin!=4:
+						#inv.add_item("19",slot_container.cantitate-1) ###
+						#slot_container.cantitate=1                    ###
+					#elif slot_container.cantitate>1 and inv.plin==4:
+						#inv.drop_item("19",slot_container.cantitate-1)
+						#slot_container.cantitate=1
+					print("cinci")
+				else:
+					$area/PointLight2D.enabled = false
+				
+				# Verificăm slot_container_2
+				if slot_container_2.get_id() == "21" and not timer.is_stopped() and buton and conect:
+					$area/PointLight2D2.enabled = true
+					$area/PointLight2D2.color = Color(0, 1, 0)  # Roșu pentru ID 21
+				elif slot_container_2.get_id() == "20" and not timer.is_stopped()  and buton and conect:
+					$area/PointLight2D2.enabled = true
+					$area/PointLight2D2.color = Color(1, 0, 0)  # Verde pentru ID 20
+				elif slot_container_2.get_id() == "19" and not timer.is_stopped() and buton and conect:
+					$area/PointLight2D2.enabled = true
+					$area/PointLight2D2.color = Color(0, 0, 1)  # Albastru pentru ID 19
+				else:
+					$area/PointLight2D2.enabled = false
 
 
 

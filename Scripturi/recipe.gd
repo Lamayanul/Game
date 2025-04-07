@@ -3,7 +3,7 @@ extends GridContainer
 @onready var slot_container_2: Slot = $HBoxContainer/SlotContainer2
 @onready var slot_container_3: Slot = $HBoxContainer/SlotContainer5
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
-@onready var textrect =get_node("/root/world/Node2D/CanvasLayer/Recipe/HBoxContainer/SlotContainer5/TextureHolder/TextureRect3")
+@onready var textrect =get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer5/TextureHolder/TextureRect3")
 
 
 
@@ -31,8 +31,10 @@ func _process(_delta: float) -> void:
 			print("Preview-ul pentru", recipe["result"]["NUME"], "este afișat în slotul 3")
 			return  # Ieși din funcție după ce ai setat preview-ul
 	# Dacă ingredientele nu sunt suficiente, ascunde preview-ul
-	textrect.texture = null
-	textrect.modulate = Color(1, 1, 1, 0)  # Ascunde preview-ul dacă nu există suficiente ingrediente
+	
+	if is_instance_valid(textrect):
+		textrect.texture = null
+		textrect.modulate = Color(1, 1, 1, 0)  # Ascunde preview-ul dacă nu există suficiente ingrediente
 
 
 var recipes = {

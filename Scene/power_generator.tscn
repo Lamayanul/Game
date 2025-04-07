@@ -16,7 +16,7 @@ bg_color = Color(0.972549, 0, 0.12549, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_lp3bv"]
 radius = 137.0
 
-[node name="StaticBody2D" type="StaticBody2D"]
+[node name="StaticBody2D" type="StaticBody2D" groups=["pow_gen"]]
 script = ExtResource("1_qtg7l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
