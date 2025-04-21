@@ -198,11 +198,11 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ggani"]
 _data = {
-"0": SubResource("Animation_4cqxk"),
-"1": SubResource("Animation_cfs3y"),
-"2": SubResource("Animation_22ahw"),
-"3": SubResource("Animation_b8vtv"),
-"RESET": SubResource("Animation_g3tcj")
+&"0": SubResource("Animation_4cqxk"),
+&"1": SubResource("Animation_cfs3y"),
+&"2": SubResource("Animation_22ahw"),
+&"3": SubResource("Animation_b8vtv"),
+&"RESET": SubResource("Animation_g3tcj")
 }
 
 [node name="Grau" instance=ExtResource("1_4ulap")]

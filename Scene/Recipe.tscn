@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://djcerbpr1l45f"]
 
-[ext_resource type="Script" path="res://Scripturi/recipe.gd" id="1_mxfqi"]
+[ext_resource type="Script" uid="uid://d1e0hl4bk06j2" path="res://Scripturi/recipe.gd" id="1_mxfqi"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_u6eyl"]
 
 [node name="Recipe" type="GridContainer"]

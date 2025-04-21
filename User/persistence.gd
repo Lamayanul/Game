@@ -5,12 +5,19 @@ extends Node2D
 @onready var world = get_node("/root/world") 
 var scor = 0
 @onready var tile_map = get_node("/root/world/TileMap")
-@onready var enemy = get_tree().get_nodes_in_group("enemy")
+@onready var enemies = get_tree().get_nodes_in_group("enemy")
 @onready var panel = get_node("/root/world/CanvasLayer/PanelContainer")
 @onready var ovens = get_tree().get_nodes_in_group("oven")
 @onready var elec = get_tree().get_nodes_in_group("LightSource")
+@onready var barca = get_tree().get_nodes_in_group("barca")
+@onready var tile = get_node("/root/world/TileMap")
+@onready var texture_rect_menu = get_tree().get_nodes_in_group("player_image")
 
-var power_generator=null
+
+var textura: ImageTexture =null 
+var saved_ogor_tiles: Array=[]
+var generator_data: Dictionary = {}
+#var power_generators = []
 #var pillar=null
 func save():
 	var save_data = SaveData.new()
@@ -37,6 +44,28 @@ func save():
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
+
+	save_data.saved_ogor_tiles=saved_ogor_tiles
+	print("tilelelelele",save_data.saved_ogor_tiles)
+
+	#var save_tilemap = {}
+#
+	#for layer_node in tile.get_children():
+		#if layer_node is TileMapLayer:
+			#var layer_data = []
+			#for coord in layer_node.get_used_cells():  # presupunem o singură layer index per TileMap
+				#var tile_id = layer_node.get_cell_source_id( coord)
+				#var atlas_coords = layer_node.get_cell_atlas_coords( coord)
+				#
+				#var tile_info = {
+					#"coord": coord,
+					#"tile_id": tile_id,
+					#"atlas_coords": atlas_coords
+				#}
+				#layer_data.append(tile_info)
+			#
+			## Folosim numele nodului ca identificator de layer
+			#save_data.save_tilemap[layer_node.name] = layer_data
 
 
 
@@ -87,7 +116,13 @@ func save():
 
 
 
-
+	if textura:
+		var image = textura.get_image()
+		var path = "user://Saves/avatar_" + str(Time.get_unix_time_from_system()) + ".png"
+		image.save_png(path)
+		save_data.textura=textura
+		save_data.textura_path = path
+		print("textura la save: ",textura)
 
 
 
@@ -154,6 +189,7 @@ func save():
 
 
 
+
 #----------------------------------------------SAVE PLAYER----------------------------------------------------------------------------------
 	
 	var players = get_tree().get_nodes_in_group("player")
@@ -161,6 +197,7 @@ func save():
 	"health":0,
 	"position": Vector2.ZERO,
 	"speed":50,
+	#"light_visible": false
 	}
 
 	if players.size() > 0:  # Verificăm dacă există un player
@@ -169,6 +206,7 @@ func save():
 		"position": player.position,
 		"health":player.health,
 		"speed":player.speed,
+		#"light_visible": player.light.visible
 		}
 	save_data.player_data = player_data
 
@@ -198,12 +236,11 @@ func save():
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
-
 	var generatori = get_tree().get_nodes_in_group("pow_gen")
 	var generator_data = {}
 
 	for generator in generatori:
-		var name = generator.name
+		var nname = "gen_" + str(generator.get_instance_id())  # ID unic aici
 		var slot = generator.get_node_or_null("CanvasLayer/SlotContainer")
 		var slot_data = {}
 
@@ -215,7 +252,7 @@ func save():
 				"TEXTURE": ItemData.get_texture(slot.get_id())
 			}
 
-		generator_data[name] = {
+		generator_data[nname] = {
 			"position": generator.position,
 			"progress_bar": generator.progress_bar.value,
 			"timp_ramas": generator.timp_ramas,
@@ -232,12 +269,20 @@ func save():
 
 
 
+
 #----------------------------------------------SAVE ENEMY------------------------------------------------------------------------------------
-	var enemies = get_tree().get_nodes_in_group("enemy")
-	if enemies.size() > 0:  
-		save_data.enemy_position = enemies[0].position
-		print(enemies[0].position)
-		
+
+	var enemy_data = []
+
+	for e in enemies:
+		if is_instance_valid(e):
+			enemy_data.append({
+			"position": e.position,
+			"health": e.health,
+			"Speed": e.Speed
+			})
+
+	save_data["enemy_data"] = enemy_data
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -264,6 +309,26 @@ func save():
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+
+	var boats = get_tree().get_nodes_in_group("barca")
+	var barca_data = {
+	}
+
+	for barca in boats:
+		barca_data[barca.name] = {
+		"position": barca.position,
+		"is_anchored":barca.is_anchored,
+		"ancorare":barca.ancorare,
+		"miscare":barca.miscare,
+		"random_move_active":barca.random_move_active,
+		"player_in_proximity":barca.player_in_proximity,
+		"change_direction_timer":barca.change_direction_timer
+
+		}
+	
+	save_data.barca_data = barca_data
 
 
 
@@ -448,10 +513,8 @@ func load_data(data : SaveData):
 		new_player.health = data["player_data"]["health"]
 		print("player_data =", data.get("player_data"))
 		new_player.speed = data["player_data"]["speed"]
-
+		#new_player.light.visible=data["player_data"]["light"]
 		print("NEW HEALTH: ",new_player.health)
-		for enem in enemy:
-			enem.player=new_player
 		tile_map.player=new_player
 		inv.player = new_player
 		new_player.add_to_group("player")
@@ -471,6 +534,47 @@ func load_data(data : SaveData):
 
 
 
+
+	for entry in data.saved_ogor_tiles:
+		print("tilemap",entry)
+		var pos = entry["pos"]
+		var tile = entry["tile"]
+		get_node("/root/world/TileMap/ogor").set_cell(pos, 2, tile)
+
+
+
+
+	#for layer_name in data.save_tilemap.keys():
+			#var layer_node = get_node("/root/world/TileMap").get_node_or_null(layer_name)
+			#if layer_node and layer_node is TileMapLayer:
+				#layer_node.clear()  # golim layerul înainte de încărcare
+				#
+				#for tile_info in data.save_tilemap[layer_name]:
+					#var coord = tile_info["coord"]
+					#var tile_id = tile_info["tile_id"]
+					#var atlas_coords = tile_info["atlas_coords"]
+					#
+					#layer_node.set_cell(0, coord, tile_id, atlas_coords)
+
+
+
+
+
+
+
+
+	# Șterge vechii inamici
+	for e in get_tree().get_nodes_in_group("enemy"):
+		e.queue_free()
+
+	# Verificăm dacă există enemy_data în salvare
+	if "enemy_data" in data:
+		for enemy_data in data["enemy_data"]:
+			var new_enemy = preload("res://Scene/enemy.tscn").instantiate()
+			new_enemy.position = enemy_data["position"]
+			new_enemy.health = enemy_data["health"]
+			new_enemy.Speed = enemy_data["Speed"]
+			world.add_child(new_enemy)
 
 
 
@@ -550,12 +654,30 @@ func load_data(data : SaveData):
 
 #----------------------------------------------LOAD ENEMY----------------------------------------------------------------------------------
 
-	var enemies = get_tree().get_nodes_in_group("enemy")
-	if enemies.size() > 0:  
-		enemies[0].position = data.enemy_position
-		print(enemies[0].position)
+	for e in get_tree().get_nodes_in_group("enemy"):
+		e.queue_free()
+
+	for enemy_data in data["enemy_data"]:
+		var new_enemy = preload("res://Scene/enemy.tscn").instantiate()
+		new_enemy.position = enemy_data["position"]
+		new_enemy.health = enemy_data["health"]
+		new_enemy.Speed = enemy_data["Speed"]
+		world.add_child(new_enemy)
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	textura = data.textura
+	if textura and data.textura_path != "":
+		var image = Image.new()
+		var error = image.load(data.textura_path)
+		if error == OK:
+			for txt in texture_rect_menu:
+				textura = ImageTexture.create_from_image(image)
+				txt.texture = textura
+				print("Textura reconstruită din cale.")
+		else:
+			print("Eroare la reconstrucția texturii.")
 
 
 
@@ -659,35 +781,46 @@ func load_data(data : SaveData):
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
-	var generatori = get_tree().get_nodes_in_group("pow_gen")
-	for g in generatori:
-		g.queue_free()
-	for generator in get_tree().get_nodes_in_group("pow_gen"):
-		if generator.name in data.generator_things:
-			var info = data.generator_things[generator.name]
 
-			generator.position = info["position"]
-			generator.progress_bar.value = info["progress_bar"]
-			generator.timp_ramas = info["timp_ramas"]
-			generator.generator_on = info["generator_on"]
-			generator.legat = info["legat"]
-			#Persistence.power_generator=generator
-			var slot_data = info.get("slot", {})
-			var slot = generator.get_node_or_null("CanvasLayer/SlotContainer")
-			if slot and slot is Slot and slot_data:
-				var texture_path = "res://assets/" + slot_data["TEXTURE"]
-				var texture=null
-				if ResourceLoader.exists(texture_path): 
-					texture = load(texture_path)
-				if texture == null:
-					print("⚠️ Textura lipsă pentru:", slot_data.get("TEXTURE", ""))
 
-				slot.set_property({
-					"TEXTURE": texture,
-					"CANTITATE": slot_data["CANTITATE"],
-					"NUMBER": int(slot_data["ID"]),
-					"NUME": slot_data["NUME"]
-				})
+
+	for child in get_tree().get_nodes_in_group("pow_gen"):
+		child.queue_free()
+		
+	for namee in data.generator_things.keys():
+		print("11111111111111111111111111111111111111111111111111",data.generator_things )
+		var info = data.generator_things[namee]
+		var new_gen = load("res://Scene/power_generator.tscn").instantiate()
+		new_gen.namee = namee
+		print("🔁 Loaded generator:", new_gen.namee)
+		new_gen.position = info["position"]
+		if is_instance_valid(new_gen.progress_bar):
+			new_gen.progress_bar.value = info["progress_bar"]
+		new_gen.timp_ramas = info["timp_ramas"]
+		new_gen.generator_on = info["generator_on"]
+		new_gen.legat = info["legat"]
+		world.add_child(new_gen)
+		
+		for pillar in get_tree().get_nodes_in_group("LightSource"):
+			if pillar.has_method("assign_closest_generator"):
+				pillar.assign_closest_generator()
+				
+		# slot setup (cum aveai tu deja)
+		var slot = new_gen.get_node("CanvasLayer/SlotContainer")
+		if slot and info.has("slot"):
+			var texture_path = "res://assets/" + info["slot"]["TEXTURE"]
+			var texture = null
+			if ResourceLoader.exists(texture_path): 
+				texture = load(texture_path)
+			slot.set_property({
+				"TEXTURE": texture,
+				"CANTITATE": info["slot"]["CANTITATE"],
+				"NUMBER": int(info["slot"]["ID"]),
+				"NUME": info["slot"]["NUME"]
+			})
+
+		new_gen.add_to_group("pow_gen")
+		
 
 
 
@@ -865,6 +998,31 @@ func load_data(data : SaveData):
 
 
 
+	var barci = get_tree().get_nodes_in_group("barca")
+	for c in barci:
+		c.queue_free()
+
+	for barca_name in data["barca_data"].keys(): 
+		var boat_data = data["barca_data"][barca_name] 
+		var new_boat = preload("res://Scene/barca.tscn").instantiate()
+		new_boat.position = boat_data["position"] 
+		new_boat.is_anchored=boat_data["is_anchored"]
+		print("boat",new_boat.is_anchored)
+		
+		new_boat.miscare=boat_data["miscare"]
+		new_boat.random_move_active=boat_data["random_move_active"]
+		new_boat.player_in_proximity=boat_data["player_in_proximity"]
+			
+		
+
+
+		world.add_child(new_boat)
+
+
+
+
+
+
 
 #---------------------------------------LOAD RADACINA------------------------------------------------------------------------------------------------------
 
@@ -956,6 +1114,7 @@ func get_save_data():
 	"health":0,
 	"position": Vector2.ZERO,
 	"speed":50,
+	#"light_visible": false
 	}
 
 	if players.size() > 0:  # Verificăm dacă există un player
@@ -964,8 +1123,8 @@ func get_save_data():
 		"position": player.position,
 		"health":player.health,
 		"speed":player.speed,
+		#"light_visible": player.light.visible
 		}
-
 	save_data.player_data = player_data
 	
 #--------------------------------------------------------------------------------------------------------------------------------------------
@@ -1189,10 +1348,10 @@ func get_save_data():
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 	var generatori = get_tree().get_nodes_in_group("pow_gen")
-	var generator_data = {}
+	
 
 	for generator in generatori:
-		var name = generator.name
+		var namee = "gen_" + str(generator.get_instance_id())  # ID unic aici
 		var slot = generator.get_node_or_null("CanvasLayer/SlotContainer")
 		var slot_data = {}
 
@@ -1204,7 +1363,7 @@ func get_save_data():
 				"TEXTURE": ItemData.get_texture(slot.get_id())
 			}
 
-		generator_data[name] = {
+		generator_data[namee] = {
 			"position": generator.position,
 			"progress_bar": generator.progress_bar.value,
 			"timp_ramas": generator.timp_ramas,
@@ -1280,7 +1439,24 @@ func get_save_data():
 
 
 
+	var boats = get_tree().get_nodes_in_group("barca")
+	var barca_data = {
+	}
 
+	for barca in boats:
+		barca_data[barca.name] = {
+		"position": barca.position,
+		"is_anchored":barca.is_anchored,
+		"ancorare":barca.ancorare,
+		"miscare":barca.miscare,
+		"random_move_active":barca.random_move_active,
+		"player_in_proximity":barca.player_in_proximity,
+		"change_direction_timer":barca.change_direction_timer
+
+		}
+	
+	save_data.barca_data = barca_data
+	
 
 
 #----------------------------------------------SAVE RADACINI----------------------------------------------------------------------------------
@@ -1294,6 +1470,51 @@ func get_save_data():
 			}
 	save_data.radacina_data = radacina_data
 
+
+
+
+	var enemy_data = []
+
+	for e in enemies:
+		enemy_data.append({
+			"position": e.position,
+			"health": e.health,
+			"Speed": e.Speed
+		})
+
+	save_data["enemy_data"] = enemy_data
+	
+	
+	
+	save_data.saved_ogor_tiles=saved_ogor_tiles
+	
+	#var save_tilemap = {}
+#
+	#for layer_node in tile.get_children():
+		#if layer_node is TileMap:
+			#var layer_data = []
+			#for coord in layer_node.get_used_cells(0):  # presupunem o singură layer index per TileMap
+				#var tile_id = layer_node.get_cell_source_id(0, coord)
+				#var atlas_coords = layer_node.get_cell_atlas_coords(0, coord)
+				#
+				#var tile_info = {
+					#"coord": coord,
+					#"tile_id": tile_id,
+					#"atlas_coords": atlas_coords
+				#}
+				#layer_data.append(tile_info)
+			#
+			## Folosim numele nodului ca identificator de layer
+			#save_data.save_tilemap[layer_node.name] = layer_data
+			
+			
+	if textura:
+		var image = textura.get_image()
+		var path = "user://Saves/avatar_" + str(Time.get_unix_time_from_system()) + ".png"
+		image.save_png(path)
+		save_data.textura=textura
+		save_data.textura_path = path
+		print("textura la save: ",textura)
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
 

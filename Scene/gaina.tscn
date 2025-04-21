@@ -1,6 +1,6 @@
 [gd_scene load_steps=43 format=3 uid="uid://6m8ei4lxodxm"]
 
-[ext_resource type="Script" path="res://Scripturi/gaina.gd" id="1_cyn6q"]
+[ext_resource type="Script" uid="uid://bk786djg7vhls" path="res://Scripturi/gaina.gd" id="1_cyn6q"]
 [ext_resource type="Texture2D" uid="uid://bykk211tg8ws" path="res://Sprout Lands - Sprites - Basic pack/Characters/Free Chicken Sprites.png" id="1_o4p8k"]
 [ext_resource type="Texture2D" uid="uid://m6btpenak5c7" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Animals/Chicken/chicken default.png" id="2_7d7ta"]
 
@@ -870,13 +870,13 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0a3r8"]
 _data = {
-"eat-long": SubResource("Animation_b33sx"),
-"eat-short": SubResource("Animation_e5cew"),
-"fly-dr": SubResource("Animation_qaeh5"),
-"fly-dr-1": SubResource("Animation_uy44f"),
-"fly-st": SubResource("Animation_sntpu"),
-"idle": SubResource("Animation_sb0qc"),
-"walk": SubResource("Animation_syshl")
+&"eat-long": SubResource("Animation_b33sx"),
+&"eat-short": SubResource("Animation_e5cew"),
+&"fly-dr": SubResource("Animation_qaeh5"),
+&"fly-dr-1": SubResource("Animation_uy44f"),
+&"fly-st": SubResource("Animation_sntpu"),
+&"idle": SubResource("Animation_sb0qc"),
+&"walk": SubResource("Animation_syshl")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5crw"]

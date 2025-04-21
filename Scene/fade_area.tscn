@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bpjsxu52b667r"]
 
-[ext_resource type="Script" path="res://Scripturi/fade_area.gd" id="1_2r6yu"]
+[ext_resource type="Script" uid="uid://biur5prrmbxef" path="res://Scripturi/fade_area.gd" id="1_2r6yu"]
 [ext_resource type="Texture2D" uid="uid://cgimyfwa64h2u" path="res://Sprout Lands - Sprites - Basic pack/Objects/Basic_Grass_Biom_things.png" id="1_hpydn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8fhkd"]

@@ -24,25 +24,43 @@ var powg = null
 #@onready var power: Area2D = get_node("/root/world/Power_generator/area")
 var buton: bool:
 	get:
-		return powg.generator_on
+		return is_instance_valid(powg) and powg.generator_on
+
 
 func _ready() -> void:
-	powg = Persistence.power_generator
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var world = get_node("/root/world")
+	if world and world.has_method("mark_dirty"):
+		world.mark_dirty()
+
 	await get_tree().process_frame
 	await get_tree().process_frame
 	
-	con = power_node_con.connected_areas.duplicate()
+	
+	assign_closest_generator()
+
+func assign_closest_generator():
+	var closest = null
+	var min_dist = INF
+	for gen in get_tree().get_nodes_in_group("pow_gen"):
+		print("gggggggggggggggggggg",gen)
+		var dist = global_position.distance_to(gen.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			closest = gen
+	powg = closest
+	if powg:
+		print("🔌 Pilon conectat la generator:", powg.name)
+	update_connections()
 	
 
-	update_connections()
-	#animated_sprite_2d_2.play("null")
-	#animated_sprite_2d.play("null")
-	#point_light_2d.enabled = false
-	#point_light_2d_2.enabled = false
 
 func _process(_delta: float) -> void:
-	if powg == null and Persistence.power_generator != null:
-		powg = Persistence.power_generator
+	if powg == null or not is_instance_valid(powg):
+		assign_closest_generator()
+	var powg = self  # fiecare generator se referă la el însuși
+	#print("daadadadadadaddadadadadad",powg )
 	#enable()
 	BEC()
 	update_connections()
@@ -83,16 +101,16 @@ func BEC():
 			for node in power_node:
 
 				var timer = node.get_node("Timer")
-				print("date::::::: ", timer.time_left, conect)
+
 				# Verificăm slot_container
-				if slot_container.get_id() == "21" and not timer.is_stopped() and buton and conect:
+				if slot_container.get_id() == "21" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_onn and conect:
 					$area/PointLight2D.enabled = true
 					$area/PointLight2D.color = Color(0, 1, 0) 
 					
-				elif slot_container.get_id() == "20" and not timer.is_stopped() and buton and conect:
+				elif slot_container.get_id() == "20" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
 					$area/PointLight2D.enabled = true
 					$area/PointLight2D.color = Color(1, 0, 0)  # Verde pentru ID 20
-				elif slot_container.get_id() == "19" and not timer.is_stopped() and buton and conect:
+				elif slot_container.get_id() == "19" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
 					$area/PointLight2D.enabled = true
 					$area/PointLight2D.color = Color(0, 0, 1)  # Albastru pentru ID 19
 					#if slot_container.cantitate>1 and inv.plin!=4:
@@ -101,7 +119,7 @@ func BEC():
 					#elif slot_container.cantitate>1 and inv.plin==4:
 						#inv.drop_item("19",slot_container.cantitate-1)
 						#slot_container.cantitate=1
-					print("cinci")
+
 				else:
 					$area/PointLight2D.enabled = false
 				

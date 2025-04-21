@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjdoruthjm008"]
 
-[ext_resource type="Script" path="res://Scripturi/pod_simplu.gd" id="1_07fct"]
+[ext_resource type="Script" uid="uid://bqeaw6rf3f5ri" path="res://Scripturi/pod_simplu.gd" id="1_07fct"]
 [ext_resource type="Texture2D" uid="uid://cefkppc2ss76i" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Tilesets/Building parts/pod_simplu.png" id="1_ek87s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_33e53"]

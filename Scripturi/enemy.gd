@@ -15,13 +15,13 @@ var moveDirection = Vector2.ZERO
 @onready var healthbar = $healthbar
 @onready var animation_player = $AnimationPlayer
 @onready var arma = $arma
-@onready var player = get_node_or_null("/root/world/player")
+var player = null
 var player_chase=false
 @export var MoveSpeed: float = 20.0
 var lastPosition=Vector2(0,1)
 @onready var detection = $detection
 var is_attacking = false  
-@onready var player_hitbox = get_node("/root/world/player/player_hitbox")
+@onready var player_hitbox =null
 @onready var enemy_icon = $"../CanvasLayer/CanvasLayer/healthbar_enemy/enemy_icon"
 @onready var healthbar_enemy = $"../CanvasLayer/CanvasLayer/healthbar_enemy"
 @export var stop_distance: float = 20
@@ -31,6 +31,12 @@ var stare_atac= false
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 var already_hit = false 
 var is_fleeing = false 
+@onready var hitboxex = get_tree().get_nodes_in_group("player_hitbox")
+@onready var text_rich_name = $CanvasLayer/Control.get_node("ai_name")
+@onready var namae  = "MeowSky"
+
+@onready var image = $CanvasLayer/Control.get_node("PanelContainer/VBoxContainer/HBoxContainer/TextureRect")
+
 
 var happy=0;
 var angry=0;
@@ -40,14 +46,19 @@ var dictator=0;
 
 
 func _ready():
+	var players = get_tree().get_nodes_in_group("player")
+	for play in players:
+		player = play
 	healthbar_enemy.value=0
 	$ChangeDirection.start()
 	add_to_group("enemy_hitbox")
 	#select_new_direction()
 	arma.visible=false
 	$arma/colisiune.disabled=true
-
-
+	for player_h in hitboxex:
+		player_hitbox=player_h
+	image.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/enemy.png")
+	text_rich_name.text=namae
 
 
 func _physics_process(_delta):

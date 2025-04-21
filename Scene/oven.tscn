@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://tbe5e0cl8umt"]
 
 [ext_resource type="Texture2D" uid="uid://5aaihd4t7uph" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/oven.png" id="1_7rmdf"]
-[ext_resource type="Script" path="res://Scripturi/oven.gd" id="1_st8hx"]
+[ext_resource type="Script" uid="uid://c2jo2jx6bp3tl" path="res://Scripturi/oven.gd" id="1_st8hx"]
 [ext_resource type="PackedScene" uid="uid://djcerbpr1l45f" path="res://Scene/Recipe.tscn" id="3_a0e0w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ir1bc"]

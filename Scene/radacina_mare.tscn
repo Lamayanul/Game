@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxhpbnyxkgt2p"]
 
 [ext_resource type="Texture2D" uid="uid://dhh7mevcyjfvj" path="res://Sprout Lands - Sprites - Basic pack/Objects/radacina-mare.png" id="1_6iin3"]
-[ext_resource type="Script" path="res://Scripturi/radacina_mare.gd" id="1_52k6p"]
+[ext_resource type="Script" uid="uid://bl6r76r01rtok" path="res://Scripturi/radacina_mare.gd" id="1_52k6p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xjn73"]
 size = Vector2(10, 2)

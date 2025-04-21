@@ -31,6 +31,7 @@ var slot_container_7: Node = null
 var chest: Node = null
 var oven: Node = null
 var pillar: Node =null
+var gen:Node = null
 
 var slot_container_chest: Node = null
 var slot_container_chest_2: Node = null
@@ -54,15 +55,16 @@ var selected_slot: Slot = null  # Slotul selectat
 var timp_ramas=0
 @onready var label: Label = $CanvasLayer/Label
 @onready var timer: Timer = $CanvasLayer/Timer
-@onready var player_light = get_node("/root/world/player/PointLight2D")
+@onready var player_light = get_node_or_null("/root/world/player/PointLight2D")
 @onready var light: PointLight2D = $PointLight2D
 @onready var slot_container12: Slot = $CanvasLayer/GridContainer/SlotContainer
 var id=""
 
-
+var index=0
 @export var chest_scene: PackedScene
 @export var oven_scene: PackedScene
 @export var pillar_scene : PackedScene
+@export var gen_scene: PackedScene
 #-----------------------------Semnale----------------------------------------------------------------
 
 signal plantSeed
@@ -94,10 +96,20 @@ func instantiate_oven():
 func instantiate_pillar():
 	var world = get_node("/root/world")
 	pillar = pillar_scene.instantiate()
-	pillar.position = Vector2(300, 30)
+	pillar.position = Vector2(280, 50)+Vector2(index+5,index)
+	index-=5
 	world.add_child.call_deferred(pillar)
 	slot_container_8= pillar.get_node("CanvasLayer/GridContainer/SlotContainer")
 	slot_container_9 = pillar.get_node("CanvasLayer/GridContainer/SlotContainer2")
+
+
+func instantiate_generator():
+	var world = get_node("/root/world")
+	gen = gen_scene.instantiate()
+	gen.position = Vector2(300, 30)+Vector2(0,index)
+	index-=40
+	world.add_child.call_deferred(gen)
+
 
 #---------------------------------------add_item()-----------------------------------------------------
 func add_item(ID="", item_cantita=1) -> bool:

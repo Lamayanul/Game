@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://wce5a7wkc8oc"]
 
-[ext_resource type="Script" path="res://Scripturi/barca.gd" id="1_01ybg"]
+[ext_resource type="Script" uid="uid://l82a5dgg7b6q" path="res://Scripturi/barca.gd" id="1_01ybg"]
 [ext_resource type="Texture2D" uid="uid://b2mr4b5nkasqr" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Objects/Boats.png" id="1_40io2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xms1a"]
@@ -200,7 +200,7 @@ tracks/8/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_rhkak"]
-resource_name = "idle-dez"
+resource_name = "idle_dez"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -399,10 +399,10 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nxiv0"]
 _data = {
-"RESET": SubResource("Animation_t2nxh"),
-"idle": SubResource("Animation_bhg2x"),
-"idle-dez": SubResource("Animation_rhkak"),
-"sail": SubResource("Animation_xjw6s")
+&"RESET": SubResource("Animation_t2nxh"),
+&"idle": SubResource("Animation_bhg2x"),
+&"idle_dez": SubResource("Animation_rhkak"),
+&"sail": SubResource("Animation_xjw6s")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rn5la"]
@@ -411,7 +411,7 @@ size = Vector2(62, 35)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8pog4"]
 size = Vector2(20, 7.5)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["barca"]]
 z_index = -1
 y_sort_enabled = true
 collision_layer = 3
@@ -432,8 +432,8 @@ position = Vector2(-5, 16)
 shape = SubResource("RectangleShape2D_xms1a")
 
 [node name="stanga" type="CollisionPolygon2D" parent="."]
-position = Vector2(-1, -1)
-polygon = PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -13, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6)
+position = Vector2(-2, -1)
+polygon = PackedVector2Array(-18, 9, -18, 13, -15, 20, -16, 14, -17, 9, -15, 8, -12, 8, 8, 8, 8, 15, -15, 15, -16, 14, -15, 20, 8, 20, 10, 15, 9, 7, 8, 5, -12, 5, -13, 6, -15, 6)
 
 [node name="dreapta" type="CollisionPolygon2D" parent="."]
 position = Vector2(-6, -1)
@@ -451,7 +451,7 @@ animation = &"idle_dez"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_nxiv0")
+&"": SubResource("AnimationLibrary_nxiv0")
 }
 
 [node name="ancorare" type="Timer" parent="."]
@@ -475,6 +475,13 @@ shape = SubResource("RectangleShape2D_8pog4")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(-4, 14.5)
 scale = Vector2(3.1, 1.75)
+
+[node name="camera_boat" type="Camera2D" parent="."]
+zoom = Vector2(4, 4)
+limit_smoothed = true
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_target_reached"]

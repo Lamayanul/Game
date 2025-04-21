@@ -35,6 +35,8 @@ var placing_podea=false
 var placing_roof=false
 @onready var fantana_bar = get_node("/root/world/Fantana/CanvasLayer/ProgressBar")
 
+
+
 #-------------------------------_ready--------------------------------------------------------------------------
 func _ready():
 	grid_land.visible=false
@@ -295,7 +297,10 @@ func replace_land_with_ogor(grid_cell: Vector2):
 		var selected_tile = ogor_tile_tiles[ogor_tile_index]
 		$ogor.set_cell( grid_cell, 2, selected_tile)  
 		print( "Ogor tile modificat la varianta:", selected_tile, "la:", grid_cell)
-		
+		Persistence.saved_ogor_tiles.append({
+			"pos": grid_cell,
+			"tile": selected_tile
+		})
 
 func watering_ogor():
 	var cellLocalCoord=local_to_map(grid.position)

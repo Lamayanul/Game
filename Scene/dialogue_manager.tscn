@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://chpck0ios2as5"]
 
-[ext_resource type="Script" path="res://Scripturi/dialogue_manager.gd" id="1_6p21p"]
+[ext_resource type="Script" uid="uid://2i6pgmj8xmhf" path="res://Scripturi/dialogue_manager.gd" id="1_6p21p"]
 [ext_resource type="PackedScene" uid="uid://ceh5kkub4k6hx" path="res://Scene/next_dialogue.tscn" id="2_sd6cr"]
 
 [node name="DialogueManager" type="Node2D"]

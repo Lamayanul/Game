@@ -5,9 +5,9 @@ var movement = 10
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var sprite_2d = $Sprite2D
 var map_ready = false
-@onready var animation_player = $AnimationPlayer
+@onready var animation_player = get_node("AnimationPlayer")
 @onready var ancorare = $ancorare
-@onready var player = $"../player"
+@onready var player = null
 var is_anchored = false  
 var player_in_proximity = false  
 @onready var area_ancorare = $"area-ancorare"
@@ -21,18 +21,26 @@ var player_near_boat=false
 var moveDirectionHandlerBoat=Vector2.ZERO
 @onready var camera_boat: Camera2D = $camera_boat
 @onready var visible_on_screen_notifier_2d: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
-
+var valid=false
 #-----------------------------------ready----------------------------------------------------
 
 func _ready():
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var players = get_tree().get_nodes_in_group("player")
+	for play in players:
+		player = play
 	NavigationServer2D.connect("map_changed", Callable(self, "_on_map_changed"))
 	call_deferred("seeker_setup")
-	is_anchored=true
-	change_direction_timer.stop()
-	player_in_boat=false
+	setup_initial_animation()
 
-
-	
+func setup_initial_animation():
+	if is_anchored:
+		change_direction_timer.stop()
+		animated_sprite_2d.play("idle")
+	else:
+		animated_sprite_2d.play("idle_dez")
+		change_direction_timer.start()
 
 #----------------------------urmarire----------------------------------------------------------
 func seeker_setup():
@@ -43,10 +51,12 @@ func seeker_setup():
 
 #---------------------------miscare barca + animatii--------------------------------------------
 func _physics_process(_delta):
+
 	if player_in_proximity and Input.is_action_just_pressed("ancorare"):
 		if not is_anchored:
 			# Barca este ancorată
 			is_anchored = true 
+			miscare=false
 			velocity = Vector2.ZERO 
 			random_move_active = false
 			ancorare.stop() 
@@ -58,11 +68,13 @@ func _physics_process(_delta):
 			# Dezancorăm barca
 			is_anchored = false
 			random_move_active = true  
+			miscare=true
 			velocity = Vector2.ZERO
 			ancorare.start() 
-			animation_player.play("idle-dez") 
+			#animation_player.play("idle_dez") 
+			valid=true
 			print("Barca a fost dezancorată")
-			miscare=false
+
 	
 	if player_near_boat and Input.is_action_just_pressed("barca") and is_anchored==false:
 		
@@ -85,9 +97,11 @@ func _physics_process(_delta):
 	if is_anchored:
 		animation_player.play("idle") 
 		return  
+		
+
+	if valid:
+		animation_player.play("idle_dez")
 	
-
-
 		
 	if not random_move_active:
 		return
@@ -110,7 +124,7 @@ func _physics_process(_delta):
 	# Verificăm dacă navigația s-a terminat
 	if navigation_agent_2d.is_navigation_finished() and not player_in_boat:
 		if not is_anchored:
-			animation_player.play("idle-dez")  
+			animation_player.play("idle_dez")  
 			return
 
 	# Calculăm direcția și mișcarea
@@ -232,7 +246,7 @@ func _on_in_boat_body_entered(body):
 	if body.is_in_group("player"):
 		player_near_boat=true
 		player.is_jumping=false
-		player.Speed=10
+		player.speed=10
 		
 
 
@@ -241,7 +255,7 @@ func _on_in_boat_body_exited(body):
 	if body.is_in_group("player"):
 		player_near_boat=false
 		player.is_jumping=true
-		player.Speed=50
+		player.speed=50
 		
 	
 

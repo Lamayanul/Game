@@ -1,7 +1,7 @@
 [gd_scene load_steps=59 format=3 uid="uid://ctwf7ap4dypop"]
 
 [ext_resource type="Texture2D" uid="uid://bupib3goste4i" path="res://Sprout Lands - Sprites - Basic pack/Objects/nest.png" id="1_bviby"]
-[ext_resource type="Script" path="res://Scripturi/nest.gd" id="1_jchlo"]
+[ext_resource type="Script" uid="uid://dd2lik2d5n64p" path="res://Scripturi/nest.gd" id="1_jchlo"]
 [ext_resource type="Texture2D" uid="uid://m6btpenak5c7" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Animals/Chicken/chicken default.png" id="3_bmh5v"]
 [ext_resource type="Texture2D" uid="uid://b1ugn6q8mt2uh" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Animals/Chicken_Egg/Egg_Spritesheet.png" id="4_r6oxd"]
 [ext_resource type="Texture2D" uid="uid://bfu6s4577jgu5" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Animals/Chicken_Baby/Chicken_Baby.png" id="5_46ykr"]
@@ -708,13 +708,13 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n7x8x"]
 _data = {
-"RESET": SubResource("Animation_4v1yj"),
-"clocit": SubResource("Animation_iggfa"),
-"eclozare": SubResource("Animation_v77m5"),
-"idle": SubResource("Animation_62o2a"),
-"mt": SubResource("Animation_36i36"),
-"ou": SubResource("Animation_k1cwd"),
-"ou_move": SubResource("Animation_er82f")
+&"RESET": SubResource("Animation_4v1yj"),
+&"clocit": SubResource("Animation_iggfa"),
+&"eclozare": SubResource("Animation_v77m5"),
+&"idle": SubResource("Animation_62o2a"),
+&"mt": SubResource("Animation_36i36"),
+&"ou": SubResource("Animation_k1cwd"),
+&"ou_move": SubResource("Animation_er82f")
 }
 
 [node name="StaticBody2D" type="StaticBody2D"]

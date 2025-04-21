@@ -4,12 +4,20 @@ var count:int:
 	set(value):
 		count=value
 
+
+var needs_update := false
+
+func mark_dirty() -> void:
+	await get_tree().process_frame
+	needs_update = true
+	
 func _input(event):
 	if event is InputEventKey:
 		if event.pressed and event.keycode==KEY_ENTER:
-			count+=5
+			inv.instantiate_pillar()
+		
 	if Input.is_action_just_pressed("toggle_grid"):
-		inv.instantiate_pillar()
+		inv.instantiate_generator()
 
 func save_data():
 	Persistence.scor=count

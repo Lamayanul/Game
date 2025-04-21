@@ -1,0 +1,113 @@
+[gd_scene load_steps=8 format=3 uid="uid://dflmh17flfbbs"]
+
+[ext_resource type="Script" uid="uid://c1h2sv7o3ca3a" path="res://Scripturi/ai_dialog.gd" id="1_0mh6t"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_m1yh6"]
+
+[sub_resource type="NobodyWhoSampler" id="NobodyWhoSampler_wan6g"]
+
+[sub_resource type="Theme" id="Theme_fx27d"]
+default_font_size = 20
+
+[sub_resource type="Theme" id="Theme_m1yh6"]
+default_font_size = 20
+
+[sub_resource type="Theme" id="Theme_swaa8"]
+default_font_size = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1yh6"]
+bg_color = Color(0, 0, 0, 0.262745)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0mh6t")
+
+[node name="NobodyWhoModel" type="NobodyWhoModel" parent="."]
+model_path = "gemma-2-2b-it-Q4_K_M.gguf"
+
+[node name="Sofia" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
+model_node = NodePath("../NobodyWhoModel")
+sampler = SubResource("NobodyWhoSampler_wan6g")
+system_prompt = "You are a person named Sofia, who's only goal is that you want flowers"
+
+[node name="Miner" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
+model_node = NodePath("../NobodyWhoModel")
+sampler = SubResource("NobodyWhoSampler_wan6g")
+system_prompt = "You are a old coal miner who wants to tell horror stories about the good ol' days in the mine"
+
+[node name="Narrator" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
+model_node = NodePath("../NobodyWhoModel")
+sampler = SubResource("NobodyWhoSampler_wan6g")
+system_prompt = "You see all, you know all, you understand all. You are the Narrator"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.098
+anchor_top = 0.997
+anchor_right = 0.926
+anchor_bottom = 0.998
+offset_left = 0.103996
+offset_top = -303.056
+offset_right = 0.247925
+offset_bottom = 0.295959
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_m1yh6")
+expand_mode = 2
+flip_h = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(700, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = SubResource("Theme_fx27d")
+bbcode_enabled = true
+text = "[center]"
+
+[node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 50)
+layout_mode = 2
+theme = SubResource("Theme_m1yh6")
+placeholder_text = "   Type text"
+
+[node name="EmbeddingModel" type="NobodyWhoModel" parent="."]
+model_path = "user-bge-m3-q8_0.gguf"
+
+[node name="NobodyWhoEmbedding" type="NobodyWhoEmbedding" parent="." node_paths=PackedStringArray("model_node")]
+model_node = NodePath("../EmbeddingModel")
+
+[node name="ai_name" type="RichTextLabel" parent="."]
+layout_mode = 2
+anchor_left = 0.098
+anchor_top = 1.0
+anchor_right = 0.926
+anchor_bottom = 1.0
+offset_left = 0.103996
+offset_top = -340.0
+offset_right = 0.247925
+offset_bottom = -305.0
+theme = SubResource("Theme_swaa8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_m1yh6")
+bbcode_enabled = true
+text = "[indent]
+"
+fit_content = true
+
+[connection signal="response_finished" from="Sofia" to="." method="_on_nobody_who_chat_response_finished"]
+[connection signal="response_updated" from="Sofia" to="." method="_on_nobody_who_chat_response_updated"]
+[connection signal="response_finished" from="Miner" to="." method="_on_nobody_who_chat_response_finished"]
+[connection signal="response_updated" from="Miner" to="." method="_on_nobody_who_chat_response_updated"]
+[connection signal="response_finished" from="Narrator" to="." method="_on_nobody_who_chat_response_finished"]
+[connection signal="response_updated" from="Narrator" to="." method="_on_nobody_who_chat_response_updated"]

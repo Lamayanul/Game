@@ -37,10 +37,9 @@ var attack_weapon=0;
 @onready var attack_timer = $attack_timer
 @onready var arma =$arma
 @onready var arma_colisiune = $arma/arma_colisiune
-@onready var enemy = $"../enemy"
-@onready var camera_enemy = $"../enemy/camera_enemy"
+var camera_enemy = null
 var colisiune
-@onready var camera_boat: Camera2D = $"../boat/camera_boat"
+#@onready var camera_boat: Camera2D = $"../boat/camera_boat"
 
 
 #-------------------------------------Player-stats----------------------------------------------
@@ -58,12 +57,14 @@ var tile_map
 var _tileMap
 @onready var inv: PanelContainer = $"../CanvasLayer/Inv"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
-var farming_on=false
+@onready var farming_on=false
 @onready var timer: Timer = $Timer
-
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
+	await get_tree().process_frame 
+	await get_tree().process_frame 
+	call_deferred("_init_enemy_list")
 	tile_map = get_tree().current_scene.get_node("TileMap")
 	_tileMap = get_node("/root/world/TileMap")
 	colisiune = get_node("colisiune")
@@ -82,6 +83,11 @@ func _ready():
 
 
 
+func _init_enemy_list():
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	for enemy in enemies:
+		camera_enemy=enemy.get_node("camera_enemy")
+	print("inamici: ",enemies)  # Ar trebui acum să fie lista corectă
 
 
 #------------------------------_physics_process()------------------------------------------------------
@@ -385,6 +391,7 @@ func _on_arma_area_entered(area):
 		audio_stream_player_2d.play()
 		return
 	if area.is_in_group("enemy_hitbox"):
+		var enemy = area.get_parent()
 		enemy.player_inattack_range=true
 		enemy.player_current_attack=true
 		enemy.deal_with_damage()
@@ -435,9 +442,11 @@ func deal_with_damage1():
 		enemy_current_attack = false
 
 func apply_knockback():
-	var direction = (position - get_node("/root/world/enemy/").position).normalized()
-	velocity = direction * knockback_force
-	move_and_slide()
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	for enemy in enemies:
+		var direction = (position - enemy.position).normalized()
+		velocity = direction * knockback_force
+		move_and_slide()
 
 func apply_damage_with_shield(base_damage: float) -> float:
 	var damage_taken = base_damage  # Daunele inițiale

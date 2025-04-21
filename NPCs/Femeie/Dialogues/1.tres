@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Dialogue" load_steps=5 format=3 uid="uid://b2pricfqbcnsl"]
 
-[ext_resource type="Script" path="res://Scripturi/Dialogue.gd" id="1_lbgxt"]
+[ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_lbgxt"]
 [ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_erup6"]
 [ext_resource type="Resource" uid="uid://c3idn6vlnqbuq" path="res://NPCs/Femeie/Dialogues/ok.tres" id="2_mnohq"]
 [ext_resource type="Resource" uid="uid://b7f7g1n7qsove" path="res://NPCs/Femeie/Dialogues/pa.tres" id="3_makn0"]

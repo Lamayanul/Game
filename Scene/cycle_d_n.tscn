@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://w6fwtl6c02v6"]
 
-[ext_resource type="Script" path="res://Scripturi/cycle_d_n.gd" id="1_bafg7"]
+[ext_resource type="Script" uid="uid://dvics5l1ig8nh" path="res://Scripturi/cycle_d_n.gd" id="1_bafg7"]
 
 [sub_resource type="Animation" id="Animation_ha5kb"]
 resource_name = "Day&Night"
@@ -56,8 +56,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sgsxb"]
 _data = {
-"Day&Night": SubResource("Animation_ha5kb"),
-"RESET": SubResource("Animation_u3ruq")
+&"Day&Night": SubResource("Animation_ha5kb"),
+&"RESET": SubResource("Animation_u3ruq")
 }
 
 [node name="Cycle_d_n" type="Node2D"]

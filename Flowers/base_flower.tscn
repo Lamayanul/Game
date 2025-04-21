@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cucoj8rt2ec6f"]
 
-[ext_resource type="Script" path="res://Flowers/base_flower.gd" id="1_tw3vh"]
+[ext_resource type="Script" uid="uid://bnfpjbygixerj" path="res://Flowers/base_flower.gd" id="1_tw3vh"]
 
 [node name="BaseFlower" type="Node2D"]
 script = ExtResource("1_tw3vh")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://fqem8yfrgqsl"]
 
 [ext_resource type="Texture2D" uid="uid://bfu6s4577jgu5" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Animals/Chicken_Baby/Chicken_Baby.png" id="1_7d8jv"]
-[ext_resource type="Script" path="res://Scripturi/chick.gd" id="1_gckhw"]
+[ext_resource type="Script" uid="uid://0eq06to75lws" path="res://Scripturi/chick.gd" id="1_gckhw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2ajtw"]
 atlas = ExtResource("1_7d8jv")

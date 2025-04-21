@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dq2rmlosx43ut"]
 
-[ext_resource type="Script" path="res://Scripturi/power_generator.gd" id="1_qtg7l"]
+[ext_resource type="Script" uid="uid://d1kjplo5gts7n" path="res://Scripturi/power_generator.gd" id="1_qtg7l"]
 [ext_resource type="Texture2D" uid="uid://ba2nv6gucowxv" path="res://Sprout Lands - Sprites - Basic pack/Objects/power_gen.png" id="1_xoksc"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_fyji2"]
 

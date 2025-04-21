@@ -1,12 +1,13 @@
-[gd_scene load_steps=124 format=3 uid="uid://dn1osqamgorag"]
+[gd_scene load_steps=125 format=3 uid="uid://dn1osqamgorag"]
 
-[ext_resource type="Script" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
+[ext_resource type="Script" uid="uid://bkb65y1vnypn5" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
 [ext_resource type="Texture2D" uid="uid://b4otyj2854hm1" path="res://Base Character - Premium/basic/death.png" id="1_inn2y"]
 [ext_resource type="Texture2D" uid="uid://c7y4nlm26ofww" path="res://Base Character - Premium/basic/idle.png" id="2_423kg"]
 [ext_resource type="Texture2D" uid="uid://dgxx50eriayau" path="res://Base Character - Premium/attack/sword.png" id="2_a767a"]
 [ext_resource type="AudioStream" uid="uid://djsovd73q0vq" path="res://Sound/sword_meet.wav" id="2_tn1ve"]
 [ext_resource type="Texture2D" uid="uid://c3skfildne1id" path="res://Base Character - Premium/basic/walk.png" id="3_1hsc2"]
 [ext_resource type="Texture2D" uid="uid://huvx4f8x78sp" path="res://Base Character - Premium/basic/run.png" id="5_7tyfx"]
+[ext_resource type="PackedScene" uid="uid://dflmh17flfbbs" path="res://Scene/ai_dialog.tscn" id="8_0qcj2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6p5mf"]
 size = Vector2(7, 2)
@@ -1384,15 +1385,15 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h6wi7"]
 _data = {
-"RESET": SubResource("Animation_v1oxp"),
-"attack-down": SubResource("Animation_7ymt1"),
-"attack-left": SubResource("Animation_jnt1r"),
-"attack-right": SubResource("Animation_hw77a"),
-"attack-up": SubResource("Animation_5f7a0"),
-"run-down": SubResource("Animation_tnyqr"),
-"run-left": SubResource("Animation_8g2uj"),
-"run-right": SubResource("Animation_286lk"),
-"run-up": SubResource("Animation_u0p57")
+&"RESET": SubResource("Animation_v1oxp"),
+&"attack-down": SubResource("Animation_7ymt1"),
+&"attack-left": SubResource("Animation_jnt1r"),
+&"attack-right": SubResource("Animation_hw77a"),
+&"attack-up": SubResource("Animation_5f7a0"),
+&"run-down": SubResource("Animation_tnyqr"),
+&"run-left": SubResource("Animation_8g2uj"),
+&"run-right": SubResource("Animation_286lk"),
+&"run-up": SubResource("Animation_u0p57")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wv2m2"]
@@ -1453,7 +1454,7 @@ offset = Vector2(0, 2)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_h6wi7")
+&"": SubResource("AnimationLibrary_h6wi7")
 }
 speed_scale = 2.0
 
@@ -1492,6 +1493,18 @@ wait_time = 0.5
 
 [node name="doge" type="Timer" parent="."]
 wait_time = 1.5
+
+[node name="camera_enemy" type="Camera2D" parent="."]
+position = Vector2(-1, -1)
+zoom = Vector2(4, 4)
+limit_smoothed = true
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("8_0qcj2")]
 
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
 [connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]

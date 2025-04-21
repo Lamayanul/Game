@@ -1,7 +1,7 @@
-[gd_scene load_steps=130 format=4 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=128 format=4 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
-[ext_resource type="Script" path="res://Scripturi/world.gd" id="1_u4a8w"]
+[ext_resource type="Script" uid="uid://cpm0capnnw8mj" path="res://Scripturi/world.gd" id="1_u4a8w"]
 [ext_resource type="Texture2D" uid="uid://w5kqc7jai5mj" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Hills.png" id="2_kqx3e"]
 [ext_resource type="Texture2D" uid="uid://cqw5jm6p7fsg7" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Tilled_Dirt.png" id="3_7thme"]
 [ext_resource type="Texture2D" uid="uid://b20tu5sx5bxjw" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass-casa.png" id="3_ivgl2"]
@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://def8fyw03nhf6" path="res://Scene/player.tscn" id="6_5tioc"]
 [ext_resource type="Texture2D" uid="uid://osnjrhsxlqae" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Tilesets/Building parts/Fences_1.png" id="6_f4kjk"]
 [ext_resource type="Texture2D" uid="uid://rjhf8l3gcsum" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Fences.png" id="6_j8u8j"]
-[ext_resource type="Script" path="res://Scripturi/tile_map.gd" id="7_bw6kc"]
+[ext_resource type="Script" uid="uid://bqpccf8ulbf0t" path="res://Scripturi/tile_map.gd" id="7_bw6kc"]
 [ext_resource type="PackedScene" uid="uid://6m8ei4lxodxm" path="res://Scene/gaina.tscn" id="7_f17pw"]
 [ext_resource type="Texture2D" uid="uid://csj4nqdn7ta1w" path="res://Sprout Lands - Sprites - Basic pack/Objects/Basic_Furniture.png" id="7_htuen"]
 [ext_resource type="Texture2D" uid="uid://tmbgeein3ys5" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Tilesets/Building parts/door animation sprites.png" id="8_7tl2w"]
@@ -26,7 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bfhgalegwegxb" path="res://Sprout Lands - Sprites - Basic pack/Objects/grid_selector_land.png" id="13_0qlre"]
 [ext_resource type="PackedScene" uid="uid://7seyno1cclqg" path="res://User/Item.tscn" id="13_6ft7m"]
 [ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="13_6781w"]
-[ext_resource type="Script" path="res://Scripturi/hand.gd" id="14_1eu7x"]
+[ext_resource type="Script" uid="uid://djijfnfjiqdkv" path="res://Scripturi/hand.gd" id="14_1eu7x"]
 [ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="14_2xshd"]
 [ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="15_37cqh"]
 [ext_resource type="PackedScene" uid="uid://dn1osqamgorag" path="res://Scene/enemy.tscn" id="16_bmbsw"]
@@ -35,17 +35,17 @@
 [ext_resource type="Texture2D" uid="uid://b4vhtfygj1b01" path="res://Sprout Lands - Sprites - Basic pack/Objects/Default_A_slender_man_with_pale_white_skin_and_sparkling_black_3_ade6ffc6-635a-4a0b-88db-1cc946d37965_0.png" id="17_1jawh"]
 [ext_resource type="Texture2D" uid="uid://e3jqsek4cshc" path="res://Sprout Lands - Sprites - Basic pack/Objects/under-2.png" id="18_0f6a8"]
 [ext_resource type="Texture2D" uid="uid://d02ev55og5vnx" path="res://Sprout Lands - Sprites - Basic pack/Objects/border-e.png" id="19_gb0mj"]
-[ext_resource type="Script" path="res://Scripturi/healthbar_player.gd" id="19_gvmqj"]
+[ext_resource type="Script" uid="uid://cbjk832olhfl8" path="res://Scripturi/healthbar_player.gd" id="19_gvmqj"]
 [ext_resource type="Texture2D" uid="uid://bh3wt21xqow16" path="res://Sprout Lands - Sprites - Basic pack/Objects/grid_selector_house.png" id="20_qt17n"]
 [ext_resource type="Texture2D" uid="uid://dhbxoe4r8xpn0" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill-e.png" id="20_s7q07"]
-[ext_resource type="Script" path="res://Scripturi/hide.gd" id="21_is0hl"]
+[ext_resource type="Script" uid="uid://ork0gg7bjvu3" path="res://Scripturi/hide.gd" id="21_is0hl"]
 [ext_resource type="Texture2D" uid="uid://c4lliews52urs" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/roof.png" id="21_k0o5l"]
 [ext_resource type="Texture2D" uid="uid://c4g7to0xl2luq" path="res://Sprout Lands - Sprites - Basic pack/Objects/red-white-v-is-word-v.png" id="21_sq2bc"]
 [ext_resource type="Texture2D" uid="uid://bmlpmr4k3olg5" path="res://Sprout Lands - Sprites - Basic pack/Objects/grid_selector_grau.png" id="24_6nb5a"]
 [ext_resource type="Texture2D" uid="uid://k53p4qddpl6h" path="res://Sprout Lands - Sprites - Basic pack/Objects/pla.jpg" id="24_mk8bm"]
-[ext_resource type="Script" path="res://Scripturi/arie_usa.gd" id="24_xpt4l"]
+[ext_resource type="Script" uid="uid://dic7lwiosb75f" path="res://Scripturi/arie_usa.gd" id="24_xpt4l"]
 [ext_resource type="PackedScene" uid="uid://dw47dvtt86u5e" path="res://Scene/npc.tscn" id="25_i1c00"]
-[ext_resource type="Script" path="res://Scripturi/FPS.gd" id="31_704b0"]
+[ext_resource type="Script" uid="uid://ca78fmw7555vm" path="res://Scripturi/FPS.gd" id="31_704b0"]
 [ext_resource type="PackedScene" uid="uid://wce5a7wkc8oc" path="res://Scene/barca.tscn" id="34_cermi"]
 [ext_resource type="PackedScene" uid="uid://cf23cht88wint" path="res://Scene/copac.tscn" id="34_nbs6s"]
 [ext_resource type="PackedScene" uid="uid://dy736vf2x46vm" path="res://Scene/bush.tscn" id="36_bvnp4"]
@@ -60,9 +60,7 @@
 [ext_resource type="PackedScene" uid="uid://btlog1vd6ddq3" path="res://Scene/chest.tscn" id="50_705pd"]
 [ext_resource type="PackedScene" uid="uid://ctwf7ap4dypop" path="res://Scene/nest.tscn" id="51_rwts5"]
 [ext_resource type="PackedScene" uid="uid://cjdoruthjm008" path="res://Scene/pod_simplu.tscn" id="52_i5agc"]
-[ext_resource type="Script" path="res://Scripturi/Pooling.gd" id="57_a7t4e"]
-[ext_resource type="PackedScene" uid="uid://dq2rmlosx43ut" path="res://Scene/power_generator.tscn" id="58_n1vje"]
-[ext_resource type="PackedScene" uid="uid://oole82yty3pu" path="res://Scene/electricity_pillar.tscn" id="59_5jree"]
+[ext_resource type="Script" uid="uid://cho4mvxge8prk" path="res://Scripturi/Pooling.gd" id="57_a7t4e"]
 [ext_resource type="PackedScene" uid="uid://b6i200oqdrag8" path="res://Scene/node_2d.tscn" id="60_ysm1r"]
 [ext_resource type="PackedScene" uid="uid://41es4cnv0ngx" path="res://Scene/fantana.tscn" id="64_hgh7u"]
 [ext_resource type="PackedScene" uid="uid://bihjhov6jgvoy" path="res://User/consola.tscn" id="66_c48fp"]
@@ -883,7 +881,7 @@ texture = ExtResource("8_qrgc1")
 0:0/0 = 0
 0:0/0/y_sort_origin = 20
 0:0/0/terrain_set = 3
-0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_or267")
+0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_or267")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(3, 2, 8, 2, 8, 8, 3, 8)
 0:0/0/terrains_peering_bit/right_side = 0
 0:0/0/terrains_peering_bit/bottom_side = 0
@@ -891,7 +889,7 @@ texture = ExtResource("8_qrgc1")
 1:0/0 = 0
 1:0/0/y_sort_origin = -20
 1:0/0/terrain_set = 3
-1:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_krolc")
+1:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_krolc")
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 2, 8, 2, 8, 8, -8, 8)
 1:0/0/terrains_peering_bit/right_side = 0
 1:0/0/terrains_peering_bit/left_side = 0
@@ -899,7 +897,7 @@ texture = ExtResource("8_qrgc1")
 2:0/0 = 0
 2:0/0/y_sort_origin = 20
 2:0/0/terrain_set = 3
-2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_6wnt3")
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_6wnt3")
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 2, -3, 2, -3, 8, -8, 8)
 2:0/0/terrains_peering_bit/bottom_side = 0
 2:0/0/terrains_peering_bit/left_side = 0
@@ -914,7 +912,7 @@ texture = ExtResource("8_qrgc1")
 0:1/0 = 0
 0:1/0/y_sort_origin = 20
 0:1/0/terrain_set = 3
-0:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_y124f")
+0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_y124f")
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(3, -8, 8, -8, 8, 8, 3, 8)
 0:1/0/terrains_peering_bit/bottom_side = 0
 0:1/0/terrains_peering_bit/top_side = 0
@@ -922,7 +920,7 @@ texture = ExtResource("8_qrgc1")
 2:1/0 = 0
 2:1/0/y_sort_origin = 20
 2:1/0/terrain_set = 3
-2:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_wfkvm")
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_wfkvm")
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-3, -8, -8, -8, -8, 8, -3, 8)
 2:1/0/terrains_peering_bit/bottom_side = 0
 2:1/0/terrains_peering_bit/top_side = 0
@@ -930,25 +928,25 @@ texture = ExtResource("8_qrgc1")
 3:1/0 = 0
 1:2/0 = 0
 1:2/0/terrain_set = 3
-1:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_6v713")
+1:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_6v713")
 1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 2, 8, 2, 8, 8, -8, 8)
 1:2/0/terrains_peering_bit/right_side = 0
 1:2/0/terrains_peering_bit/left_side = 0
 1:2/0/custom_data_7 = true
 2:2/0 = 0
 2:2/0/terrain_set = 3
-2:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_qoklr")
+2:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_qoklr")
 2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -3, -8, -3, 8, -8, 8)
 2:2/0/terrains_peering_bit/left_side = 0
 2:2/0/terrains_peering_bit/top_side = 0
 2:2/0/custom_data_7 = true
 3:2/0 = 0
-3:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_obn7l")
+3:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_obn7l")
 3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 2, 3, 2, 3, 5, -3, 5, -3, 2, -8, 2, -8, 8, 8, 8)
 3:2/0/custom_data_7 = true
 0:2/0 = 0
 0:2/0/terrain_set = 3
-0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_vqvjo")
+0:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_vqvjo")
 0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, 3, -8, 3, 8, 8, 8)
 0:2/0/terrains_peering_bit/right_side = 0
 0:2/0/terrains_peering_bit/top_side = 0
@@ -1118,9 +1116,6 @@ sources/13 = SubResource("TileSetAtlasSource_rg6fl")
 sources/14 = SubResource("TileSetAtlasSource_28jq7")
 sources/15 = SubResource("TileSetAtlasSource_qiscx")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7fe0x"]
-size = Vector2(18.9975, 15.0613)
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_abn3o"]
 texture = ExtResource("10_y6ae8")
 0:0/0 = 0
@@ -1130,6 +1125,9 @@ texture = ExtResource("10_y6ae8")
 custom_data_layer_0/name = "seed"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_abn3o")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7fe0x"]
+size = Vector2(18.9975, 15.0613)
 
 [sub_resource type="Gradient" id="Gradient_sym12"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -1193,30 +1191,6 @@ tile_set = SubResource("TileSet_662sb")
 format = 2
 script = ExtResource("7_bw6kc")
 
-[node name="Grid_ogor" type="Sprite2D" parent="TileMap"]
-position = Vector2(-80, 64)
-texture = ExtResource("8_io2gt")
-
-[node name="sus_pe_deal" type="Area2D" parent="TileMap"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/sus_pe_deal"]
-position = Vector2(-176, -50.25)
-rotation = -3.14159
-scale = Vector2(3.15831, -3.02098)
-shape = SubResource("RectangleShape2D_7fe0x")
-
-[node name="Grid_land" type="Sprite2D" parent="TileMap"]
-texture = ExtResource("13_0qlre")
-
-[node name="animatie_sapa" type="Timer" parent="TileMap"]
-
-[node name="Grid_gard" type="Sprite2D" parent="TileMap"]
-position = Vector2(125, -8)
-texture = ExtResource("16_lcjs2")
-
-[node name="Grid_house" type="Sprite2D" parent="TileMap"]
-texture = ExtResource("20_qt17n")
-
 [node name="water" type="TileMapLayer" parent="TileMap" groups=["layer"]]
 light_mask = 0
 z_index = -2
@@ -1262,6 +1236,30 @@ use_parent_material = true
 position = Vector2(0, -1)
 tile_set = SubResource("TileSet_662sb")
 
+[node name="Grid_ogor" type="Sprite2D" parent="TileMap"]
+position = Vector2(-80, 64)
+texture = ExtResource("8_io2gt")
+
+[node name="sus_pe_deal" type="Area2D" parent="TileMap"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/sus_pe_deal"]
+position = Vector2(-176, -50.25)
+rotation = -3.14159
+scale = Vector2(3.15831, -3.02098)
+shape = SubResource("RectangleShape2D_7fe0x")
+
+[node name="Grid_land" type="Sprite2D" parent="TileMap"]
+texture = ExtResource("13_0qlre")
+
+[node name="animatie_sapa" type="Timer" parent="TileMap"]
+
+[node name="Grid_gard" type="Sprite2D" parent="TileMap"]
+position = Vector2(125, -8)
+texture = ExtResource("16_lcjs2")
+
+[node name="Grid_house" type="Sprite2D" parent="TileMap"]
+texture = ExtResource("20_qt17n")
+
 [node name="umezeala" type="Timer" parent="TileMap"]
 wait_time = 5.0
 
@@ -1275,7 +1273,7 @@ platform_on_leave = 2
 platform_floor_layers = 0
 
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
-position = Vector2(293, 8)
+position = Vector2(264, -23)
 
 [node name="copac_original" parent="." instance=ExtResource("8_nd5dy")]
 position = Vector2(-72, -13)
@@ -1301,31 +1299,32 @@ visible = false
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Inv/CanvasLayer"]
 anchors_preset = -1
-anchor_left = 0.964
-anchor_top = 0.571
-anchor_right = 0.964
-anchor_bottom = 0.571
-offset_left = -64.5281
-offset_top = -32.008
-offset_right = -0.528076
-offset_bottom = 31.992
+anchor_left = 0.063
+anchor_top = 0.917
+anchor_right = 0.063
+anchor_bottom = 0.917
+offset_left = 0.423996
+offset_top = -35.2161
+offset_right = 64.424
+offset_bottom = 28.7839
 grow_horizontal = 0
 grow_vertical = 2
 
 [node name="SlotContainer" parent="CanvasLayer/Inv/CanvasLayer/GridContainer" instance=ExtResource("40_phuxj")]
 layout_mode = 2
+size_flags_vertical = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Inv/CanvasLayer"]
 unique_name_in_owner = true
 anchors_preset = -1
-anchor_left = 0.944
-anchor_top = 0.482
-anchor_right = 0.944
-anchor_bottom = 0.482
-offset_left = -39.488
-offset_top = -11.336
-offset_right = 0.511963
-offset_bottom = 11.664
+anchor_left = 0.074
+anchor_top = 0.836
+anchor_right = 0.074
+anchor_bottom = 0.836
+offset_left = -0.248001
+offset_top = -18.728
+offset_right = 39.752
+offset_bottom = 4.27197
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1533,14 +1532,6 @@ ID = "9"
 position = Vector2(99, 80)
 collision_layer = 3
 
-[node name="camera_enemy" type="Camera2D" parent="enemy"]
-position = Vector2(-1, -1)
-zoom = Vector2(4, 4)
-limit_smoothed = true
-position_smoothing_enabled = true
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-
 [node name="hide" type="Area2D" parent="."]
 script = ExtResource("21_is0hl")
 
@@ -1579,14 +1570,6 @@ platform_floor_layers = 0
 position = Vector2(162, 206)
 platform_floor_layers = 1
 platform_wall_layers = 1
-
-[node name="camera_boat" type="Camera2D" parent="boat"]
-position = Vector2(-7, 10)
-zoom = Vector2(4, 4)
-limit_smoothed = true
-position_smoothing_enabled = true
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
 
 [node name="copac_nou" parent="." instance=ExtResource("34_nbs6s")]
 
@@ -1652,19 +1635,7 @@ scale = Vector2(1.59167, 1.59167)
 position = Vector2(270, -36)
 script = ExtResource("57_a7t4e")
 
-[node name="Power_generator" parent="." instance=ExtResource("58_n1vje")]
-position = Vector2(335, 12)
-
-[node name="Electricity_pillar" parent="." instance=ExtResource("59_5jree")]
-position = Vector2(282, -10)
-
 [node name="Node2D3" parent="." instance=ExtResource("60_ysm1r")]
-
-[node name="Electricity_pillar2" parent="." instance=ExtResource("59_5jree")]
-position = Vector2(258, 47)
-
-[node name="Electricity_pillar3" parent="." instance=ExtResource("59_5jree")]
-position = Vector2(183, 50)
 
 [node name="Item17" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(146, -67)
@@ -1695,6 +1666,9 @@ position = Vector2(155, 35)
 
 [node name="Chest2" parent="." instance=ExtResource("50_705pd")]
 position = Vector2(120, 41)
+
+[node name="CharacterBody2D3" parent="." instance=ExtResource("16_bmbsw")]
+position = Vector2(181, 73)
 
 [connection signal="body_entered" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="TileMap/sus_pe_deal" to="player" method="_on_area_2d_body_exited"]

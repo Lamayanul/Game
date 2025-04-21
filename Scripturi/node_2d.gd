@@ -1,49 +1,43 @@
 extends Node2D
 
-@onready var power: Area2D = null
-@onready var power_interact: Area2D = null
-#@onready var powg= get_node("/root/world/Power_generator") 
 @onready var world = get_node("/root/world")
-var powg=null
-var pill=null
-@onready var pow_area= null 
 
 var connected_areas: Array = []  
 var used_areas: Array = []  
 var control_point_offset = Vector2(0, 30)  
 var lines: Array = []  
-var aprins=false
+var generators: Array = []
+var pillars: Array =[]
 
 func _ready() -> void:
-	powg = Persistence.power_generator
-	#if Persistence.pillar == null:
-		#Persistence.pillar = load("res://Scene/electricity_pillar.tscn").instantiate()
-		#pill=Persistence.pillar
-		#world.add_child.call_deferred(Persistence.pillar)
-	#print("PILON :",pill)
+	update_generators()
 
-
+func update_generators() -> void:
+	generators = get_tree().get_nodes_in_group("pow_gen")
+	pillars= get_tree().get_nodes_in_group("LightSource")
+	#print("powerrrrrr",generators)
 
 func update_connections() -> void:
-	connected_areas.clear()  
-
-	for node in get_tree().get_nodes_in_group("pillar"):
-		if node is Area2D and node != power:
-			if pow_area.overlaps_area(node):
-				
-				connected_areas.append(node)
-	var electric_pillars = get_tree().get_nodes_in_group("LightSource")
-	for pillar in electric_pillars:
-		var area_node = pillar.get_node("area")  # Accesează nodul Area2D asociat fiecărui LightSource
-		if area_node and pow_area.overlaps_area(area_node):  # Verifică suprapunerea între pow_area și area_node
-			pillar.conect = true  # Setează conectarea pentru pilonul respectiv
-
-		else:
-			pillar.conect = false  # Asigură-te că pilonii neconectați nu sunt marcați
-
-
-
+	connected_areas.clear()
 	lines.clear()
+	used_areas.clear()
+
+	update_generators()
+	
+	for gen in generators:
+		var gen_area = gen.get_node("area_interact")
+		
+		for node in get_tree().get_nodes_in_group("pillar"):
+			if node is Area2D and gen_area.overlaps_area(node):
+				connected_areas.append(node)
+
+		for pillar in get_tree().get_nodes_in_group("LightSource"):
+			var area_node = pillar.get_node("area")
+			if area_node and gen_area.overlaps_area(area_node) and gen.legat:
+				pillar.conect = true
+			else:
+				pillar.conect = false
+
 	for area in connected_areas:
 		var line = Line2D.new()
 		line.width = 0.5
@@ -53,48 +47,41 @@ func update_connections() -> void:
 		lines.append(line)
 
 
+	
 func _process(_delta: float) -> void:
-	if powg == null and Persistence.power_generator != null:
-		powg = Persistence.power_generator
-		power = powg.get_node("area")
-		pow_area = powg.get_node("area_interact")
-		print("Generator conectat:", powg)
-	
-		
-	if powg == null and Persistence.power_generator != null:
-		powg = Persistence.power_generator
-	if powg:
-		if powg.legat == true and connected_areas.is_empty():
-			update_connections()
-		update_curves()
+	if world.needs_update:
+		update_connections()
+		world.needs_update = false
+	update_curves()
 
-	
-	
 func update_curves() -> void:
-
 	for i in range(connected_areas.size()):
 		var area_2d = connected_areas[i]
 		var line_2d = lines[i]
 
 
-		if used_areas.has(area_2d):
-			continue
-
 		if area_2d != null:
-			draw_bezier_curve(line_2d, power.global_position, area_2d.global_position)
-			used_areas.append(area_2d) 
+			var closest_gen = get_closest_generator(area_2d.global_position)
+			if closest_gen and closest_gen.has_node("area"):
+				draw_bezier_curve(line_2d, closest_gen.get_node("area").global_position, area_2d.global_position)
 
 		else:
 			line_2d.clear_points()
 
+func get_closest_generator(pos: Vector2) -> Node:
+	var closest_gen = null
+	var min_dist = INF
+	for gen in generators:
+		var gen_pos = gen.global_position
+		var dist = pos.distance_to(gen_pos)
+		if dist < min_dist:
+			min_dist = dist
+			closest_gen = gen
+	return closest_gen
+
 func draw_bezier_curve(line: Line2D, start_point: Vector2, end_point: Vector2) -> void:
-
 	line.clear_points()
-
-
 	var control_point = (start_point + end_point) / 2 + control_point_offset
-
-
 	var steps = 50
 	for i in range(steps + 1):
 		var t = i / float(steps)

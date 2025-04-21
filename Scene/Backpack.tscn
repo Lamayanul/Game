@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://mreu61r04yym"]
 
-[ext_resource type="Script" path="res://Scripturi/backpack.gd" id="1_es410"]
+[ext_resource type="Script" uid="uid://bdn574cn30enm" path="res://Scripturi/backpack.gd" id="1_es410"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_psqus"]
 
 [node name="Backpack_afis" type="CanvasLayer"]

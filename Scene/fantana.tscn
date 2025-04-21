@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://41es4cnv0ngx"]
 
-[ext_resource type="Script" path="res://Scripturi/fantana.gd" id="1_oaiwi"]
+[ext_resource type="Script" uid="uid://d042fxpjv1ujv" path="res://Scripturi/fantana.gd" id="1_oaiwi"]
 [ext_resource type="Texture2D" uid="uid://tm35146pbj52" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/Objects/Water well.png" id="2_0a3wk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ab684"]

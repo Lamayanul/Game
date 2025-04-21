@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ce7vjuj8ei7os"]
 
-[ext_resource type="Script" path="res://Scripturi/piatra.gd" id="1_6p1qi"]
+[ext_resource type="Script" uid="uid://dp08chugltwlh" path="res://Scripturi/piatra.gd" id="1_6p1qi"]
 [ext_resource type="Texture2D" uid="uid://cxixw6lvbapua" path="res://Sprout Lands - Sprites - Basic pack/Objects/piatra.png" id="1_owdcd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wcxj4"]

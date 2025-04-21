@@ -1,7 +1,7 @@
 [gd_scene load_steps=277 format=3 uid="uid://def8fyw03nhf6"]
 
 [ext_resource type="Texture2D" uid="uid://du8pusfbqst35" path="res://Base Character - Free/idle.png" id="1_3sdfn"]
-[ext_resource type="Script" path="res://Scripturi/player.gd" id="1_cqeva"]
+[ext_resource type="Script" uid="uid://b04sadlh7lvp8" path="res://Scripturi/player.gd" id="1_cqeva"]
 [ext_resource type="Texture2D" uid="uid://d2sj08k7m1oud" path="res://Base Character - Premium/attack/spear.png" id="2_ajftd"]
 [ext_resource type="Texture2D" uid="uid://b4rgkfild5eqb" path="res://Base Character - Free/walk.png" id="2_tsyvp"]
 [ext_resource type="AudioStream" uid="uid://djsovd73q0vq" path="res://Sound/sword_meet.wav" id="2_uklu6"]
@@ -3958,47 +3958,47 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wiib8"]
 _data = {
-"RESET": SubResource("Animation_7hy8y"),
-"atack-down": SubResource("Animation_sy7l8"),
-"atack-left": SubResource("Animation_a2ogp"),
-"atack-right": SubResource("Animation_kxrjb"),
-"atack-up": SubResource("Animation_4rfnv"),
-"axe-down": SubResource("Animation_2dvsj"),
-"axe-left": SubResource("Animation_xs8q2"),
-"axe-right": SubResource("Animation_cvf2n"),
-"axe-up": SubResource("Animation_8vhmr"),
-"food-down": SubResource("Animation_63ow4"),
-"food-left": SubResource("Animation_klynq"),
-"food-right": SubResource("Animation_trkkb"),
-"food-up": SubResource("Animation_osknl"),
-"hoe-down": SubResource("Animation_5p0fq"),
-"hoe-left": SubResource("Animation_3h8f2"),
-"hoe-right": SubResource("Animation_f0cmf"),
-"hoe-up": SubResource("Animation_u2qco"),
-"idle-down": SubResource("Animation_pifi5"),
-"idle-left": SubResource("Animation_ksryf"),
-"idle-right": SubResource("Animation_hf3gw"),
-"idle-up": SubResource("Animation_n8egr"),
-"jump-down": SubResource("Animation_v0tye"),
-"jump-left": SubResource("Animation_wxmlb"),
-"jump-right": SubResource("Animation_xe7kk"),
-"jump-up": SubResource("Animation_608c5"),
-"pickaxe-down": SubResource("Animation_6m0pp"),
-"pickaxe-left": SubResource("Animation_5hcdw"),
-"pickaxe-right": SubResource("Animation_inq0b"),
-"pickaxe-up": SubResource("Animation_n5b70"),
-"shield-down": SubResource("Animation_j3x3c"),
-"shield-left": SubResource("Animation_5n6u2"),
-"shield-right": SubResource("Animation_sxae6"),
-"shield-up": SubResource("Animation_bmfg0"),
-"walk-down": SubResource("Animation_s2iel"),
-"walk-left": SubResource("Animation_x6crb"),
-"walk-right": SubResource("Animation_tcvwg"),
-"walk-up": SubResource("Animation_3nv48"),
-"water-down": SubResource("Animation_e2hrv"),
-"water-left": SubResource("Animation_gbycf"),
-"water-right": SubResource("Animation_mwfb3"),
-"water-up": SubResource("Animation_1y7ew")
+&"RESET": SubResource("Animation_7hy8y"),
+&"atack-down": SubResource("Animation_sy7l8"),
+&"atack-left": SubResource("Animation_a2ogp"),
+&"atack-right": SubResource("Animation_kxrjb"),
+&"atack-up": SubResource("Animation_4rfnv"),
+&"axe-down": SubResource("Animation_2dvsj"),
+&"axe-left": SubResource("Animation_xs8q2"),
+&"axe-right": SubResource("Animation_cvf2n"),
+&"axe-up": SubResource("Animation_8vhmr"),
+&"food-down": SubResource("Animation_63ow4"),
+&"food-left": SubResource("Animation_klynq"),
+&"food-right": SubResource("Animation_trkkb"),
+&"food-up": SubResource("Animation_osknl"),
+&"hoe-down": SubResource("Animation_5p0fq"),
+&"hoe-left": SubResource("Animation_3h8f2"),
+&"hoe-right": SubResource("Animation_f0cmf"),
+&"hoe-up": SubResource("Animation_u2qco"),
+&"idle-down": SubResource("Animation_pifi5"),
+&"idle-left": SubResource("Animation_ksryf"),
+&"idle-right": SubResource("Animation_hf3gw"),
+&"idle-up": SubResource("Animation_n8egr"),
+&"jump-down": SubResource("Animation_v0tye"),
+&"jump-left": SubResource("Animation_wxmlb"),
+&"jump-right": SubResource("Animation_xe7kk"),
+&"jump-up": SubResource("Animation_608c5"),
+&"pickaxe-down": SubResource("Animation_6m0pp"),
+&"pickaxe-left": SubResource("Animation_5hcdw"),
+&"pickaxe-right": SubResource("Animation_inq0b"),
+&"pickaxe-up": SubResource("Animation_n5b70"),
+&"shield-down": SubResource("Animation_j3x3c"),
+&"shield-left": SubResource("Animation_5n6u2"),
+&"shield-right": SubResource("Animation_sxae6"),
+&"shield-up": SubResource("Animation_bmfg0"),
+&"walk-down": SubResource("Animation_s2iel"),
+&"walk-left": SubResource("Animation_x6crb"),
+&"walk-right": SubResource("Animation_tcvwg"),
+&"walk-up": SubResource("Animation_3nv48"),
+&"water-down": SubResource("Animation_e2hrv"),
+&"water-left": SubResource("Animation_gbycf"),
+&"water-right": SubResource("Animation_mwfb3"),
+&"water-up": SubResource("Animation_1y7ew")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ftj"]
@@ -4057,7 +4057,7 @@ animation = &"atack-right"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_wiib8")
+&"": SubResource("AnimationLibrary_wiib8")
 }
 
 [node name="player_hitbox" type="Area2D" parent="." groups=["player_hitbox"]]

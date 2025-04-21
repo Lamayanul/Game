@@ -16,6 +16,19 @@ var timp_ramas: int = 0  # Timpul total rămas în secunde
 
 
 func _ready() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var world = get_node("/root/world")
+	if world and world.has_method("mark_dirty"):
+		world.mark_dirty()
+
+	for gen in get_tree().get_nodes_in_group("pow_gen"):
+		#print("Pers powwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww:", Persistence.power_generators)
+		var info = gen.get(name)
+		if info != null:
+			progress_bar.value = info["progress_bar"]
+			timp_ramas = true
+			legat = true
 	canvas_layer.visible = false
 	progress_bar.min_value = 0  # Minimul valorii (0%)
 	progress_bar.max_value = fuel_capacity
