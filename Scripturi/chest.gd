@@ -51,9 +51,9 @@ func _on_area_2d_body_exited(body: CharacterBody2D) -> void:
 		player_in_area = false
 		canvas_layer.hide()
 
-func _process(_delta: float) -> void:
+func _input(_event):
 	if player_in_area and Input.is_action_just_pressed("interact"):
-		if not is_open:  # Deschide ușa
+		if not is_open: 
 			animation_player.play("open")
 			is_open=true
 			if is_open and player_in_area:
@@ -85,7 +85,7 @@ func generate_items_chest():
 	var items_dict = json_data  # Modificăm aceasta pentru a lucra direct cu datele JSON
 
 	# Verifică structura JSON-ului
-	print("Structura JSON-ului:", items_dict)
+	#print("Structura JSON-ului:", items_dict)
 
 	# Randomizează numărul de sloturi care primesc iteme
 	var rng = RandomNumberGenerator.new()
@@ -147,7 +147,7 @@ func generate_items_chest():
 			"NUME": item_data["nume"]
 		})
 
-		print("Generat:", item_data["nume"], "Cantitate:", random_quantity, "în slot.")
+		#print("Generat:", item_data["nume"], "Cantitate:", random_quantity, "în slot.")
 		
 #func _input(event: InputEvent) -> void:
 	## Verifică dacă evenimentul este un click dreapta

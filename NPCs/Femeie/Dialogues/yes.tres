@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=3 format=3 uid="uid://e0wkyf60ml2i"]
+
+[ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_8tgc4"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="3_gw26i"]
+
+[resource]
+script = ExtResource("1_8tgc4")
+texture = ExtResource("3_gw26i")
+name = "Femeie"
+dialogue = "Multumesc!"
+path_option = "yes"
+options = Array[ExtResource("1_8tgc4")]([])
+metadata/_custom_type_script = "uid://b7g3m2d05171i"

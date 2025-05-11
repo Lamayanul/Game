@@ -25,6 +25,14 @@ func _ready():
 
 
 func _on_body_entered(body):
+	
+	if QuestManager.quest and QuestManager.quest.objectives == "Fetch":
+		if ID == QuestManager.quest.required_item_id:
+			print("✔️ Itemul necesar pentru quest a fost colectat:", ID)
+			QuestManager.next_quest()
+			queue_free()
+			return
+	
 	if body.is_in_group("player"):
 		var inventory = get_parent().find_child("Inv")
 		

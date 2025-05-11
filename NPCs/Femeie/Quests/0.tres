@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=3 format=3 uid="uid://baueuenjjun5k"]
+
+[ext_resource type="Resource" uid="uid://pfawa5wwqrm0" path="res://NPCs/Femeie/Dialogues/3.tres" id="1_68fmr"]
+[ext_resource type="Script" uid="uid://c7v575msltdv2" path="res://Scripturi/Quest.gd" id="1_fkam4"]
+
+[resource]
+script = ExtResource("1_fkam4")
+title = "Woman food"
+description = "Bring Woman Food"
+required_item_id = "3"
+objectives = "Fetch"
+object = "Rocks"
+status = ""
+next_questline = ExtResource("1_68fmr")
+metadata/_custom_type_script = "uid://c7v575msltdv2"

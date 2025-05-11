@@ -896,7 +896,7 @@ script = ExtResource("1_cyn6q")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0a3r8")
+&"": SubResource("AnimationLibrary_0a3r8")
 }
 speed_scale = 1.5
 movie_quit_on_finish = true

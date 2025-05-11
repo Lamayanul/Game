@@ -33,6 +33,7 @@ position = Vector2(0, 7.5)
 shape = SubResource("RectangleShape2D_nelsw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="SlotContainer" parent="CanvasLayer" instance=ExtResource("3_fyji2")]
 anchors_preset = 8

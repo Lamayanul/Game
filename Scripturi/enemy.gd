@@ -15,7 +15,7 @@ var moveDirection = Vector2.ZERO
 @onready var healthbar = $healthbar
 @onready var animation_player = $AnimationPlayer
 @onready var arma = $arma
-var player = null
+
 var player_chase=false
 @export var MoveSpeed: float = 20.0
 var lastPosition=Vector2(0,1)
@@ -31,12 +31,22 @@ var stare_atac= false
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 var already_hit = false 
 var is_fleeing = false 
+var player_in_zone =false
 @onready var hitboxex = get_tree().get_nodes_in_group("player_hitbox")
-@onready var text_rich_name = $CanvasLayer/Control.get_node("ai_name")
-@onready var namae  = "MeowSky"
+@onready var text_rich_name = $CanvasLayer/Control2/ai_name
+@export var scene_path: String = "res://Scene/enemy.tscn"
 
-@onready var image = $CanvasLayer/Control.get_node("PanelContainer/VBoxContainer/HBoxContainer/TextureRect")
 
+@export var ai_personality: String = "You are a white hair boy who like to girls"
+
+var possible_names = ["MeowSky", "Clawzor", "Grumpy", "ShadowFang", "Bitey", "Mr. Whiskers", "RageCat", "Snarlz"]
+@onready var namae  = ""
+
+@onready var image = $CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer/TextureRect
+
+@onready var aiText: RichTextLabel = $CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer/RichTextLabel
+@onready var textEdit: TextEdit = $CanvasLayer/Control2/PanelContainer/VBoxContainer/TextEdit
+var deplasare=false
 
 var happy=0;
 var angry=0;
@@ -46,9 +56,6 @@ var dictator=0;
 
 
 func _ready():
-	var players = get_tree().get_nodes_in_group("player")
-	for play in players:
-		player = play
 	healthbar_enemy.value=0
 	$ChangeDirection.start()
 	add_to_group("enemy_hitbox")
@@ -57,11 +64,24 @@ func _ready():
 	$arma/colisiune.disabled=true
 	for player_h in hitboxex:
 		player_hitbox=player_h
-	image.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/enemy.png")
-	text_rich_name.text=namae
+	image.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/variant.jpeg")
+	namae = possible_names.pick_random()
+	text_rich_name.text = namae
+
+
+func get_player():
+	return get_tree().get_first_node_in_group("player")
+
+
+
 
 
 func _physics_process(_delta):
+	if deplasare:
+		velocity=Vector2.ZERO
+		animated_sprite_2d.play("idle")
+		return 
+		
 	if is_fleeing:
 		move_and_slide()
 		return  
@@ -105,8 +125,8 @@ func deal_with_damage():
 	if(player_inattack_range and player_current_attack==true):
 		if can_take_damage==true:
 			angry+=1
-			print(angry)
-			health-=player.attack_weapon
+			#print(angry)
+			health -= get_player().attack_weapon
 			healthbar.value=health
 			healthbar_enemy.value=health
 			$healthbar.visible=true
@@ -116,7 +136,7 @@ func deal_with_damage():
 			take_damage.start()
 			color.start()
 			apply_knockback()
-			print("enemy health: ",health)
+			#print("enemy health: ",health)
 			animated_sprite_2d.modulate=Color("red")
 			if health<=0:
 				self.queue_free()
@@ -132,7 +152,7 @@ func _on_color_timeout():
 	animated_sprite_2d.modulate=original_color
 
 func apply_knockback():
-	var direction = (position - player.position).normalized()
+	var direction = (position - get_player().position).normalized()
 	velocity = direction * knockback_force
 	move_and_slide()
 
@@ -142,29 +162,29 @@ func _on_change_direction_timeout():
 	
 
 func _on_arma_area_entered(area):
-	print("Aria detectată:", area.name)
+	#print("Aria detectată:", area.name)
 	if already_hit:
 		return
 		 
 	if area.is_in_group("arma"):
-		print("Se activează arma, se redă sunetul.")
+		#print("Se activează arma, se redă sunetul.")
 		audio_stream_player_2d.play()
 		already_hit = true  
 		return  # Oprește funcția aici, fără a verifica celelalte condiții.5
 
 	elif area.is_in_group("scut"):
-		print("Scut detectat!")
-		player.enemy_inattack_range = true
-		player.enemy_current_attack = true
-		player.deal_with_damage()
+		#print("Scut detectat!")
+		get_player().enemy_inattack_range = true
+		get_player().enemy_current_attack = true
+		get_player().deal_with_damage()
 		already_hit = true  
 		return
 
 	elif area.is_in_group("player_hitbox"):
-		print("Jucător lovit!")
-		player.enemy_inattack_range = true
-		player.enemy_current_attack = true
-		player.deal_with_damage1()
+		#print("Jucător lovit!")
+		get_player().enemy_inattack_range = true
+		get_player().enemy_current_attack = true
+		get_player().deal_with_damage1()
 
 func _on_arma_area_exited(_area: Area2D) -> void:
 	await get_tree().process_frame
@@ -187,10 +207,20 @@ func _on_detection_body_exited(body):
 		healthbar_enemy.value=0
 		movement()
 
+
+
 func _on_atack_zone_area_entered(area):
+	if area.is_in_group("player_hitbox"):
+		player_in_zone =true
+		GameState.current_ai_npc = self
+		print("plin: ",GameState.current_ai_npc)
+		
+
+		
+		
 	if area.is_in_group("player_hitbox") and not is_attacking and not is_fleeing and angry >= 3:
 		# Determină direcția către jucător
-		var direction_to_player = (player.position - position).normalized()
+		var direction_to_player = (get_player().position - position).normalized()
 		
 		# Setează animația de atac în direcția jucătorului
 		if abs(direction_to_player.x) > abs(direction_to_player.y):
@@ -218,12 +248,12 @@ func _on_atack_timeout():
 
 
 func initiate_doge():
-	if not player:
+	if not get_player():
 		return
 	$ChangeDirection.stop()
 	is_fleeing = true 
 	# Direcția opusă față de jucător
-	var direction_away = (position - player.position).normalized()
+	var direction_away = (position - get_player().position).normalized()
 	
 	var dodge_speed = MoveSpeed * 2
 	
@@ -249,3 +279,44 @@ func _on_doge_timeout():
 	is_attacking = false
 	$ChangeDirection.start()
 	select_new_direction()
+
+#func _input(_event:InputEvent):
+	#if Input.is_action_just_pressed("ai_interact") and player_in_zone:
+		#GameState.current_ai_npc = self
+		#$CanvasLayer.visible = not $CanvasLayer.visible
+
+
+
+func _on_atack_zone_area_exited(area):
+	if area.is_in_group("player_hitbox"):
+		player_in_zone =false
+		$CanvasLayer.visible = false
+		if GameState.current_ai_npc == self:
+			GameState.current_ai_npc = null
+		print("gol: ",GameState.current_ai_npc)
+
+func send_text_to_ai():
+	if textEdit.text.strip_edges() == "":
+		return
+
+	textEdit.editable = false
+	var full_prompt = ai_personality + "\nPlayer: " + textEdit.text
+	GameState.global_ai_chat.say(full_prompt)
+	
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("ai_interact") and player_in_zone:
+		$CanvasLayer.visible = not $CanvasLayer.visible
+		
+		if $CanvasLayer.visible:
+			get_player().can_move = false  
+			deplasare=true
+		else:
+			deplasare=false
+			get_player().can_move = true
+			$CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer/RichTextLabel.text=""
+			
+
+	if event.is_action("ui_text_newline") and player_in_zone and $CanvasLayer.visible:
+		send_text_to_ai()
+	

@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://ddlu4w23yiv1r"]
+[gd_scene load_steps=3 format=3 uid="uid://ddlu4w23yiv1r"]
 
 [ext_resource type="Script" uid="uid://8p4mn7dcccxy" path="res://User/persistence.gd" id="1_d86uu"]
+[ext_resource type="PackedScene" uid="uid://kx8bnw0weudl" path="res://Scene/loading.tscn" id="2_0lj8i"]
 
 [node name="Persistence" type="Node2D"]
 script = ExtResource("1_d86uu")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 3
+visible = false
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("2_0lj8i")]
+offset_right = 5.0
+offset_bottom = 5.0

@@ -5,4 +5,5 @@ extends CharacterBody2D
 
 func interact():
 	DialogueManager.dialogue=dialogue
+	DialogueManager.current_speaker= self
 	DialogueManager.show_dialogue()

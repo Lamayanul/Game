@@ -38,6 +38,13 @@ class_name SaveData
 
 @export var save_tilemap: Dictionary = {
 }
+
+@export var cicli: Dictionary={
+
+}
+@export var data: String=""
+@export var ora: String =""
+@export var image_bytes: PackedByteArray
 @export var textura_path: String = ""
 @export var textura:ImageTexture = null
 @export var saved_ogor_tiles: Array=[]

@@ -60,7 +60,7 @@ _data = {
 &"RESET": SubResource("Animation_u3ruq")
 }
 
-[node name="Cycle_d_n" type="Node2D"]
+[node name="Cycle_d_n" type="Node2D" groups=["cycle"]]
 script = ExtResource("1_bafg7")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -147,7 +147,7 @@ clear_button_enabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_sgsxb")
+&"": SubResource("AnimationLibrary_sgsxb")
 }
 autoplay = "Day&Night"
 speed_scale = 0.2

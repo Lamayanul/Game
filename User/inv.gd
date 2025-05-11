@@ -43,9 +43,9 @@ var slot_container_chest_4: Node = null
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
-@onready var info_label = $"../InfoLabel"
-@onready var hand_sprite = $"../PanelContainer/Sprite2D/item_mana/sprite"
-@onready var color_rect = $"../ColorRect"
+@onready var info_label = $"../PanelContainer".get_node("InfoLabel")
+@onready var hand_sprite = $"../PanelContainer".get_node("sprite")
+#@onready var color_rect = $"../ColorRect"
 
 #--------------------------noduri-principale--------------------------------------------------------
 var selected_slot: Slot = null  # Slotul selectat
@@ -53,11 +53,11 @@ var selected_slot: Slot = null  # Slotul selectat
 #@onready var player = $"../../player"
 @onready var player = get_node_or_null("/root/world/player")
 var timp_ramas=0
-@onready var label: Label = $CanvasLayer/Label
-@onready var timer: Timer = $CanvasLayer/Timer
+@onready var label: Label = get_node("/root/world/CanvasLayer/Felinar/Label")
+@onready var timer: Timer = $Timer
 @onready var player_light = get_node_or_null("/root/world/player/PointLight2D")
-@onready var light: PointLight2D = $PointLight2D
-@onready var slot_container12: Slot = $CanvasLayer/GridContainer/SlotContainer
+#@onready var light: PointLight2D = $PointLight2D
+@onready var slot_container12: Slot = get_node("/root/world/CanvasLayer/Felinar/SlotContainer")
 var id=""
 
 var index=0
@@ -113,21 +113,22 @@ func instantiate_generator():
 
 #---------------------------------------add_item()-----------------------------------------------------
 func add_item(ID="", item_cantita=1) -> bool:
+	
 	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
 	var item_nume = ItemData.get_nume(ID)
 	var item_number = ItemData.get_number(ID)
 	var item_cantitate = item_cantita
 	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume}
 
-	print("Încerc să adaug item ID:", ID, " Cantitate:", item_cantitate)
+	#print("Încerc să adaug item ID:", ID, " Cantitate:", item_cantitate)
 
 	# 1. Încearcă să stivuiască itemul dacă există deja în inventar
 	for i in range(grid_container.get_child_count()):
 		var child = grid_container.get_child(i)
 		if child is Slot:
-			print("Slot", i, " - ID:", child.get_id(), " Filled:", child.filled)
+			#print("Slot", i, " - ID:", child.get_id(), " Filled:", child.filled)
 			if child.filled and child.get_id() == ID:
-				print("Item găsit în slot", i, ". Stivuiesc...")
+				#print("Item găsit în slot", i, ". Stivuiesc...")
 				child.cantitate += item_cantitate
 				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume})
 				return true  # A reușit să adauge obiectul, returnează `true`
@@ -136,16 +137,16 @@ func add_item(ID="", item_cantita=1) -> bool:
 	for i in range(grid_container.get_child_count()):
 		var child = grid_container.get_child(i)
 		if child is Slot:
-			print("Verific slot gol:", i, " - Filled:", child.filled)
+			#print("Verific slot gol:", i, " - Filled:", child.filled)
 			if not child.filled:
-				print("Am găsit slot gol la", i, ". Adaug itemul.")
+				#print("Am găsit slot gol la", i, ". Adaug itemul.")
 				child.set_property(item_data)
 				child.filled = true
 				plin += 1
 				return true  # A reușit să adauge obiectul, returnează `true`
 
 	# 3. Dacă inventarul este plin și nu există sloturi libere
-	print("Inventarul este plin! Nu pot adăuga itemul.")
+	#print("Inventarul este plin! Nu pot adăuga itemul.")
 	return false  # Nu a reușit să adauge obiectul
 
 
@@ -162,7 +163,7 @@ func _ready():
 		if first_slot is Slot:
 			_on_slot_selected(first_slot)
 	slots = [slot_container, slot_container_2, slot_container_3, slot_container_4]
-	print("Slots list:", slots)  # Verifică dacă toate sunt valide
+	#print("Slots list:", slots)  # Verifică dacă toate sunt valide
 	
 func _process(_delta: float) -> void:
 	lamp()
@@ -178,7 +179,7 @@ func _on_slot_selected(slot: Slot):
 
 	hand_sprite.texture = null
 	info_label.clear()
-	color_rect.visible = false
+	#color_rect.visible = false
 	info_label.visible = false
 	
 	
@@ -191,7 +192,7 @@ func _on_slot_selected(slot: Slot):
 		
 		info_label.text = "[center]ITEM: " + slot.get_nume() + "[/center]"
 		info_label.visible = false
-		color_rect.visible = false
+		#color_rect.visible = false
 
 	# Actualizează poziția selectorului
 	update_selector_position(slot)
@@ -254,20 +255,20 @@ func _input(event):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de crafting 6.")
+						#print("Item transferat cu succes în slotul de crafting 6.")
 
 					# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
 					elif transfer_item_to_slot(item_data, slot_container_7):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de crafting 7.")
+						#print("Item transferat cu succes în slotul de crafting 7.")
 
 					# Dacă niciun slot nu este disponibil, afișează un mesaj
-					else:
-						print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
-				else:
-					print("Nu este niciun item selectat pentru transfer.")
+					#else:
+						#print("Ambele sloturi de crafting sunt deja pline. Nu mai există locuri libere.")
+				#else:
+					#print("Nu este niciun item selectat pentru transfer.")
 					
 		if event is InputEventMouseButton and chest.player_in_area == true:
 			if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -280,32 +281,32 @@ func _input(event):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de chest1.")
+						#print("Item transferat cu succes în slotul de chest1.")
 
 					# Dacă transferul în slotul 6 a eșuat, încearcă în slotul 7
 					elif transfer_item_to_slot(item_data, slot_container_chest_2):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de chest2.")
+						#print("Item transferat cu succes în slotul de chest2.")
 						
 					elif transfer_item_to_slot(item_data, slot_container_chest_3):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de chest3.")
+						#print("Item transferat cu succes în slotul de chest3.")
 						
 					elif transfer_item_to_slot(item_data, slot_container_chest_4):
 						# Dacă transferul este reușit, curăță itemul din slotul selectat
 						selected_slot.clear_item()
 						plin -= 1
-						print("Item transferat cu succes în slotul de chest4.")
+						#print("Item transferat cu succes în slotul de chest4.")
 					# Dacă niciun slot nu este disponibil, afișează un mesaj
-					else:
-						print("Toate sloturile sunt pline de chest.")
-						
-				else:
-					print("Nu este niciun item selectat pentru transfer.")
+					#else:
+						#print("Toate sloturile sunt pline de chest.")
+						#
+				#else:
+					#print("Nu este niciun item selectat pentru transfer.")
 		#for p in pillar:
 			#if p.pillar_area:
 				#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -356,22 +357,22 @@ func transfer_item_to_slot(item_data: Dictionary, slot_container_aici: Node) -> 
 
 
 #-----------------------------------select_slot_by_index------------------------------------------------
-func select_slot_by_index(index: int):
-	if index >= 0 and index < grid_container.get_child_count():
-		var slot = grid_container.get_child(index)
+func select_slot_by_index(indexx: int):
+	if indexx >= 0 and indexx < grid_container.get_child_count():
+		var slot = grid_container.get_child(indexx)
 		if slot is Slot:
 			_on_slot_selected(slot)
 
 #---------------------------------drop-item-selected-----------------------------------------------------
 func drop_selected_item():
-	print("Funcția drop_selected_item a fost apelată")
+	#print("Funcția drop_selected_item a fost apelată")
 	if selected_slot:
 		var ID = selected_slot.get_id()  # Obține ID-ul itemului din slotul selectat
 		if ID == "0":
 			selected_slot.clear_item()
 		
 		if ID  and is_instance_valid(player):
-			print("ID-ul itemului este: ", ID)
+			#print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
 			#var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
 			#var player = get_node("/root/world/player")
@@ -395,16 +396,16 @@ func drop_selected_item():
 			selected_slot = null  # Deselectează slotul după drop
 		
 			update_inventory_status()
-			print(plin)
+			#print(plin)
 			
 			player.inequip_item()
 			info_label.text=""
 			
 			
-		else:
-			print("ID-ul itemului nu a fost găsit în slotul selectat.")
-	else:
-		print("Niciun slot nu este selectat")
+		#else:
+			#print("ID-ul itemului nu a fost găsit în slotul selectat.")
+	#else:
+		#print("Niciun slot nu este selectat")
 		
 func update_inventory_status():
 	plin = 0
@@ -451,13 +452,13 @@ func drop_item(ID: String, cantiti: int):
 	
 #-----------------------------------drop-pt-cate-un-item----------------------------------------------
 func drop_selected_item_1():
-	print("Funcția drop_selected_item_1 a fost apelată")
+	#print("Funcția drop_selected_item_1 a fost apelată")
 	if selected_slot:
 		var ID = selected_slot.get_id()  # Obține ID-ul itemului din slotul selectat
 		if ID == "0":
 			selected_slot.clear_item()
 		if ID and is_instance_valid(player):
-			print("ID-ul itemului este: ", ID)
+			#print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
 			var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
 			# Obține poziția mouse-ului în coordonate globale
@@ -483,10 +484,10 @@ func drop_selected_item_1():
 			drop_item(ID , cantitate_de_drop)
 			#player.inequip_item() 
 			update_inventory_status()
-		else:
-			print("ID-ul itemului nu a fost găsit în slotul selectat.")
-	else:
-		print("Niciun slot nu este selectat")
+		#else:
+			#print("ID-ul itemului nu a fost găsit în slotul selectat.")
+	#else:
+		#print("Niciun slot nu este selectat")
 
 
 #----------------------------------apelare-plantare()-------------------------------------------------
@@ -538,7 +539,7 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 func eat():
 	# Verificăm dacă există un slot selectat
 	if selected_slot == null:
-		print("Nu ai selectat nimic în inventar!")
+		#print("Nu ai selectat nimic în inventar!")
 		return
 	
 	var slot = selected_slot  # Slotul selectat
@@ -558,12 +559,12 @@ func eat():
 				slot.deselect()  # Deselectăm slotul după ce itemul a fost consumat
 				plin -= 1  # Reducem numărul de sloturi pline din inventar
 				player.inequip_item()  # Scoatem itemul din echipare dacă era echipat
-				print("Ai mâncat un item, viața ta a crescut.")
+				#print("Ai mâncat un item, viața ta a crescut.")
 			return
-	else:
-		print("Slotul selectat nu conține mâncare!")
-
-	print("Nu ai mâncare în inventar!")
+	#else:
+		#print("Slotul selectat nu conține mâncare!")
+#
+	#print("Nu ai mâncare în inventar!")
 
 
 
@@ -605,7 +606,7 @@ func has_shield() -> bool:
 func has_backpack():
 	var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
 	if not backpack:  
-		print("EROARE: Nodul 'Backpack-afis' nu a fost găsit!")
+		#print("EROARE: Nodul 'Backpack-afis' nu a fost găsit!")
 		return  
 
 	# Verificăm dacă rucsacul există în orice slot din inventar
@@ -629,7 +630,7 @@ func lamp():
 				if slot.get_id() == "23":
 					id=slot.get_id()
 					item_23_gasit = true
-					$CanvasLayer.visible = true
+					$"../Felinar".visible = true
 					lumina_pe_player()
 					if slot_container12.get_id()=="7":
 						var cantitate= slot_container12.get_cantitate()
@@ -640,7 +641,7 @@ func lamp():
 							slot_container12.clear_item()
 							
 	if player and not item_23_gasit and is_instance_valid(player_light):
-		$CanvasLayer.visible = false
+		$"../Felinar".visible = false
 		player_light.visible=false
 		player_light.enabled=false
 
@@ -659,15 +660,15 @@ func _on_timer_timeout() -> void:
 			var cantitate = slot_container12.get_cantitate()
 			if cantitate > 0:
 				slot_container12.set_cantitate(cantitate - 1)  # 🔥 Consumă combustibil
-				print("Cantitatea rămasă: " + str(cantitate - 1))
+				#print("Cantitatea rămasă: " + str(cantitate - 1))
 
 			if cantitate - 1 <= 0:
 				print("Combustibilul s-a epuizat!")
 			
 	else:
-		light.enabled=false
+		#light.enabled=false
 		timer.stop()
-		print("Timpul a expirat!")
+		#print("Timpul a expirat!")
 		
 
 

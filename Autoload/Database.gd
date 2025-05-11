@@ -6,9 +6,9 @@ func _ready():
  var file=FileAccess.open("res://Autoload/Database.json",FileAccess.READ)
  content=JSON.parse_string(file.get_as_text())
  file.close()
- print("Content:", content)
- for key in content.keys():
-  print("Key:", key, "Value:", content[key])
+ #print("Content:", content)
+ #for key in content.keys():
+  #print("Key:", key, "Value:", content[key])
 
 
 func get_texture(ID="0"):

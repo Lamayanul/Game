@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=3 uid="uid://bvx4h074stip4"]
+
+[ext_resource type="Script" uid="uid://bmlp54iyeyen4" path="res://Scripturi/skill_scroll.gd" id="1_2fkws"]
+[ext_resource type="PackedScene" uid="uid://ucxmlnyme6rl" path="res://Scene/skill_button.tscn" id="1_87dj2"]
+[ext_resource type="Texture2D" uid="uid://cvrtspljemg63" path="res://Skills/Necromancer_Free/Necromancer_1.png" id="2_0e74u"]
+[ext_resource type="Texture2D" uid="uid://blmiuiachaeaw" path="res://Skills/Necromancer_Free/Necromancer_5.png" id="3_2fkws"]
+[ext_resource type="Texture2D" uid="uid://clwjvx76leu41" path="res://Skills/Necromancer_Free/Necromancer_16.png" id="4_hq2u4"]
+[ext_resource type="Texture2D" uid="uid://dib3j62k4q4k8" path="res://Skills/Necromancer_Free/Necromancer_24.png" id="5_6r2ji"]
+
+[sub_resource type="Gradient" id="Gradient_2fkws"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hq2u4"]
+gradient = SubResource("Gradient_2fkws")
+fill_from = Vector2(0, 1)
+
+[node name="SkillTree" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.788235)
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hq2u4")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="Panel" type="Control" parent="ScrollContainer"]
+custom_minimum_size = Vector2(3000, 2000)
+layout_mode = 2
+script = ExtResource("1_2fkws")
+
+[node name="SkillButton" parent="ScrollContainer/Panel" instance=ExtResource("1_87dj2")]
+layout_mode = 2
+anchor_left = 0.049
+anchor_top = 0.107
+anchor_right = 0.049
+anchor_bottom = 0.107
+offset_left = -75.0
+offset_top = -150.0
+offset_right = 74.0
+offset_bottom = -1.52588e-05
+
+[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton" instance=ExtResource("1_87dj2")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.007
+anchor_top = 1.0
+anchor_right = 2.007
+anchor_bottom = 1.0
+offset_left = -75.043
+offset_top = -150.0
+offset_right = 74.957
+offset_bottom = 0.0
+disabled = true
+texture_normal = ExtResource("2_0e74u")
+
+[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton" instance=ExtResource("1_87dj2")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.007
+anchor_top = 2.12
+anchor_right = 2.007
+anchor_bottom = 2.12
+offset_left = -75.043
+offset_top = -150.0
+offset_right = 74.957
+offset_bottom = -3.05176e-05
+disabled = true
+texture_normal = ExtResource("3_2fkws")
+
+[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton/SkillButton2" instance=ExtResource("1_87dj2")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.94
+anchor_top = 1.0
+anchor_right = 1.94
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -150.0
+offset_right = 75.0
+offset_bottom = 0.0
+disabled = true
+texture_normal = ExtResource("4_hq2u4")
+
+[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton/SkillButton2" instance=ExtResource("1_87dj2")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.94
+anchor_top = 2.12
+anchor_right = 1.94
+anchor_bottom = 2.12
+offset_left = -75.0
+offset_top = -150.0
+offset_right = 75.0
+offset_bottom = -3.05176e-05
+disabled = true
+texture_normal = ExtResource("5_6r2ji")

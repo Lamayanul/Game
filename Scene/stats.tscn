@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhmp4qpn3k32p"]
+
+[ext_resource type="FontFile" uid="uid://bccepm8el4ayu" path="res://Fonts/at01.ttf" id="1_klnsx"]
+
+[sub_resource type="Theme" id="Theme_2nqpn"]
+default_font = ExtResource("1_klnsx")
+default_font_size = 50
+
+[sub_resource type="Theme" id="Theme_klnsx"]
+default_font = ExtResource("1_klnsx")
+default_font_size = 50
+
+[node name="Stats" type="GridContainer"]
+clip_contents = true
+offset_right = 268.0
+offset_bottom = 41.0
+columns = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Denumire" type="RichTextLabel" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+theme = SubResource("Theme_2nqpn")
+bbcode_enabled = true
+text = "[center]Health"
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Valoare" type="RichTextLabel" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+theme = SubResource("Theme_klnsx")
+bbcode_enabled = true
+text = "[center]100"
+fit_content = true

@@ -59,7 +59,8 @@ func assign_closest_generator():
 func _process(_delta: float) -> void:
 	if powg == null or not is_instance_valid(powg):
 		assign_closest_generator()
-	var powg = self  # fiecare generator se referă la el însuși
+	#var powg = self  # fiecare generator se referă la el însuși
+	
 	#print("daadadadadadaddadadadadad",powg )
 	#enable()
 	BEC()
@@ -103,7 +104,7 @@ func BEC():
 				var timer = node.get_node("Timer")
 
 				# Verificăm slot_container
-				if slot_container.get_id() == "21" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_onn and conect:
+				if slot_container.get_id() == "21" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
 					$area/PointLight2D.enabled = true
 					$area/PointLight2D.color = Color(0, 1, 0) 
 					

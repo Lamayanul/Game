@@ -27,9 +27,20 @@ func load_data():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	auto_detect_refresh_rate()
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+	
+func auto_detect_refresh_rate():
+	await get_tree().create_timer(2.0).timeout  # așteaptă câteva secunde
+	var fps = Engine.get_frames_per_second()
+	if fps <= 62:
+		Engine.max_fps = 60
+	elif fps <= 102:
+		Engine.max_fps = 100
+	else:
+		Engine.max_fps = 144

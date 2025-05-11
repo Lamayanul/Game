@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbnw8o7707lvx"]
+
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_me2di"]
+
+[node name="felinar" type="GridContainer"]
+anchors_preset = -1
+anchor_right = 0.056
+anchor_bottom = 0.14
+offset_right = -24.512
+offset_bottom = -50.72
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotContainer" parent="." instance=ExtResource("1_me2di")]
+layout_mode = 2

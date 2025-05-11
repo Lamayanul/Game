@@ -5,6 +5,7 @@ class_name Slot
   # Asigură-te că accesezi corect TextureRect
 @onready var label = %Label
 @export var is_selected: bool = false
+
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
@@ -113,7 +114,7 @@ func _drop_data(_pos, data):
 		return  # Asigură-te că datele droppate provin dintr-un slot valid
 
 	if self == data:
-		print("Itemul este deja în acest slot. Nu se face nicio acțiune.")
+		#print("Itemul este deja în acest slot. Nu se face nicio acțiune.")
 		return  # Nu facem nimic dacă sloturile sunt identice
 
 	var source_property = data.property  # Proprietatea itemului din slotul sursă
@@ -122,18 +123,18 @@ func _drop_data(_pos, data):
 	if source_property != null and target_property.has("NUMBER") and target_property.has("CANTITATE") and target_property["NUMBER"] == 0 and target_property["CANTITATE"] == 0:
 
 		# Mutăm itemul într-un slot gol
-		print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		#print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		set_property(source_property)
 		data.clear_item()
 
 		# Ajustează `inv.plin` în funcție de tipurile de sloturi
 		if data.slot_type == "inventory" and self.slot_type == "no_inv":
 			inv.plin -= 1  # Mutare din inventar în no_inv
-			print("Mutat1 din inventar în no_inv. Inv plin:", inv.plin)
+			#print("Mutat1 din inventar în no_inv. Inv plin:", inv.plin)
 			
 		elif data.slot_type == "no_inv" and self.slot_type == "inventory":
 			inv.plin += 1  # Mutare din no_inv în inventar
-			print("Mutat1 din no_inv în inventar. Inv plin:", inv.plin)
+			#print("Mutat1 din no_inv în inventar. Inv plin:", inv.plin)
 	
 
 	elif source_property != null and target_property != null:
@@ -142,7 +143,7 @@ func _drop_data(_pos, data):
 			target_property["CANTITATE"] += source_property["CANTITATE"]
 			data.clear_item()
 			set_property(target_property)
-			print("Cantitățile au fost combinate.")
+			#print("Cantitățile au fost combinate.")
 		else:
 			# Schimbăm itemele între sloturile inventory și no_inv
 			# Verificăm că tipurile de sloturi sunt diferite (inventory și no_inv)
@@ -160,8 +161,8 @@ func _drop_data(_pos, data):
 			data.set_property(temp)
 			print("Itemele au fost schimbate între sloturi.")
 
-	else:
-		print("Nu s-a putut face drop-ul.")
+	#else:
+		#print("Nu s-a putut face drop-ul.")
 
 	
 	

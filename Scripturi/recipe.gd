@@ -28,7 +28,7 @@ func _process(_delta: float) -> void:
 			# Afișează preview-ul pentru itemul ce urmează să fie craftat
 			textrect.texture = recipe["result"]["TEXTURE"]  # Setează textura itemului
 			textrect.modulate = Color(1, 1, 1, 0.5)  # Setează opacitatea la jumătate
-			print("Preview-ul pentru", recipe["result"]["NUME"], "este afișat în slotul 3")
+			#print("Preview-ul pentru", recipe["result"]["NUME"], "este afișat în slotul 3")
 			return  # Ieși din funcție după ce ai setat preview-ul
 	# Dacă ingredientele nu sunt suficiente, ascunde preview-ul
 	

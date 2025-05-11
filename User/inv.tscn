@@ -10,8 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://dq2rmlosx43ut" path="res://Scene/power_generator.tscn" id="5_0tvww"]
 
 [node name="Inv" type="PanelContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = -1
+anchor_right = 0.252
+anchor_bottom = 0.133
+offset_right = -0.304016
+offset_bottom = -0.183998
 script = ExtResource("1_ic7fr")
 chest_scene = ExtResource("2_lg34p")
 oven_scene = ExtResource("3_6coj1")
@@ -55,3 +58,5 @@ mouse_filter = 2
 texture = ExtResource("4_kb5l3")
 expand_mode = 1
 stretch_mode = 4
+
+[node name="Timer" type="Timer" parent="."]

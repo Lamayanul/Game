@@ -2,21 +2,28 @@ extends Node2D
 
 
 @export var next_button:PackedScene
+@export var quest_button: PackedScene
 
 var dialogue:Dialogue:
 	set(value):
 		dialogue=value
+		
+		if current_speaker:
+			current_speaker.dialogue=value
 		
 		%Icon.texture=value.texture
 		%Name.text=value.name
 		%Dialogue.text=value.dialogue
 		
 		reset_options()
+		if value.quest:
+			add_quest(value.quest)
 		add_buttons(value.options)
 
 		await get_tree().create_timer(0,5).timeout
 		%Options.show()
 		
+var current_speaker = null
 #func _ready():
 	#dialogue=load("res://NPCs/Femeie/Dialogues/0.tres")
 
@@ -38,3 +45,10 @@ func hide_dialogue():
 
 func show_dialogue():
 	%UI.show()
+	
+func add_quest(quest):
+	if QuestManager.quest == quest:
+		return
+	var button = quest_button.instantiate()
+	button.quest = quest
+	%Options.add_child(button)

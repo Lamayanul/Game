@@ -25,11 +25,11 @@ var current_state = "idle"
 @onready var animatedSprite2D = $AnimatedSprite2D
 
 #-------------------------------------Info-hand-sprite------------------------------------------
-@onready var hand_sprite = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite"
-@onready var info_label = $"../CanvasLayer/InfoLabel"
+@onready var hand_sprite = $"../CanvasLayer/PanelContainer".get_node("sprite")
+@onready var info_label = $"../CanvasLayer/PanelContainer".get_node("InfoLabel")
 
-@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
-@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
+#@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
+#@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
 var info:String=""
 @onready var player_icon = $"../CanvasLayer/CanvasLayer/healthbar_player/player_icon"
 var attack_weapon=0;
@@ -59,6 +59,7 @@ var _tileMap
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 @onready var farming_on=false
 @onready var timer: Timer = $Timer
+var can_move = true
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -69,8 +70,8 @@ func _ready():
 	_tileMap = get_node("/root/world/TileMap")
 	colisiune = get_node("colisiune")
 	add_to_group("player")
-	color_rect.color = Color(0, 0, 0, 0.5)  # Negru cu 50% transparență
-	color_rect.visible=false
+	#color_rect.color = Color(0, 0, 0, 0.5)  # Negru cu 50% transparență
+	#color_rect.visible=false
 	arma_colisiune.disabled=true
 	healthbar.value=health
 	add_to_group("player_hitbox")
@@ -92,7 +93,10 @@ func _init_enemy_list():
 
 #------------------------------_physics_process()------------------------------------------------------
 func _physics_process(delta):
-	
+	if not can_move:
+		velocity = Vector2.ZERO
+		return  # dacă nu ai voie să te miști, ieși imediat
+		
 	if health<=0:
 		health=0
 		player_alive=false
@@ -236,7 +240,7 @@ func equip_item(item_texture: Texture, item_nume : String):
 		print("Texture set successfully")
 		hand_sprite.texture = item_texture
 		hand_sprite.visible = true
-		hand_sprite.scale=Vector2(0.5,0.5)
+		hand_sprite.scale=Vector2(9,9)
 		info = "[center]ITEM : "  +item_nume+"[/center]"
 		
 	else:
@@ -255,18 +259,18 @@ func inequip_item():
 	info = "" 
 	info_label.text = ""
 
-func _on_area_2d_mouse_entered():
-	info_label.visible=true
-	color_rect.visible=true
-	info_label.text=info
-	print("intrare")
-	
-
-func _on_area_2d_mouse_exited():
-	info_label.visible=false
-	info_label.text=""
-	color_rect.visible=false
-	print("iesire")
+#func _on_area_2d_mouse_entered():
+	#info_label.visible=true
+	#color_rect.visible=true
+	#info_label.text=info
+	#print("intrare")
+	#
+#
+#func _on_area_2d_mouse_exited():
+	#info_label.visible=false
+	#info_label.text=""
+	#color_rect.visible=false
+	#print("iesire")
 
 	
 	
@@ -632,3 +636,18 @@ func spawn_items_around_player(_ID):
 
 	# 🔹 Scade cantitatea doar după ce toate obiectele au fost plasate
 	inv.selected_slot.decrease_cantitate(1)
+
+func suicide():
+	self.queue_free()
+
+
+func _on_panel_container_mouse_entered() -> void:
+	info_label.visible=true
+	info_label.text=info
+	print("intrare")
+
+
+func _on_panel_container_mouse_exited() -> void:
+	info_label.visible=false
+	info_label.text=""
+	print("iesire")

@@ -22,6 +22,7 @@ var hrana=0
 @onready var direction_change_timer: Timer = $directionChangeTimer
 
 
+
 enum ChicState {
 	Idle,
 	Walk,

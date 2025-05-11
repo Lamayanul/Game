@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dflmh17flfbbs"]
 
 [ext_resource type="Script" uid="uid://c1h2sv7o3ca3a" path="res://Scripturi/ai_dialog.gd" id="1_0mh6t"]
-[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_m1yh6"]
+[ext_resource type="Texture2D" uid="uid://bnnalxw03hwf1" path="res://Sprout Lands - Sprites - Basic pack/Objects/variant.jpeg" id="2_m1yh6"]
 
 [sub_resource type="NobodyWhoSampler" id="NobodyWhoSampler_wan6g"]
 
@@ -29,20 +29,23 @@ script = ExtResource("1_0mh6t")
 [node name="NobodyWhoModel" type="NobodyWhoModel" parent="."]
 model_path = "gemma-2-2b-it-Q4_K_M.gguf"
 
-[node name="Sofia" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
+[node name="Sofia" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node") groups=["ai_chats"]]
 model_node = NodePath("../NobodyWhoModel")
 sampler = SubResource("NobodyWhoSampler_wan6g")
 system_prompt = "You are a person named Sofia, who's only goal is that you want flowers"
+context_length = 496
 
-[node name="Miner" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
+[node name="Miner" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node") groups=["ai_chats"]]
 model_node = NodePath("../NobodyWhoModel")
 sampler = SubResource("NobodyWhoSampler_wan6g")
 system_prompt = "You are a old coal miner who wants to tell horror stories about the good ol' days in the mine"
+context_length = 496
 
 [node name="Narrator" type="NobodyWhoChat" parent="." node_paths=PackedStringArray("model_node")]
 model_node = NodePath("../NobodyWhoModel")
 sampler = SubResource("NobodyWhoSampler_wan6g")
 system_prompt = "You see all, you know all, you understand all. You are the Narrator"
+context_length = 496
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -66,7 +69,6 @@ layout_mode = 2
 layout_mode = 2
 texture = ExtResource("2_m1yh6")
 expand_mode = 2
-flip_h = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(700, 250)

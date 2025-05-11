@@ -9,32 +9,31 @@ script = ExtResource("1_f661b")
 visible = false
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 2
-anchor_top = 1.0
+anchors_preset = -1
+anchor_top = 0.478
+anchor_right = 1.002
 anchor_bottom = 1.0
-offset_top = -338.0
-offset_right = 1154.0
+offset_top = 0.255981
+offset_right = -0.304077
 grow_vertical = 0
 
 [node name="LineEdit" type="LineEdit" parent="CanvasLayer/Panel"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.046
-anchor_bottom = 0.046
-offset_top = -15.548
-offset_right = 1153.0
-offset_bottom = 15.452
+anchor_right = 1.0
+anchor_bottom = 0.092
+offset_right = -1.0
+offset_bottom = -0.0960026
 placeholder_text = "Consola:"
 metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.55
-anchor_right = 0.002
-anchor_bottom = 0.55
+anchor_top = 0.101
+anchor_right = 0.999
+anchor_bottom = 1.0
 offset_left = 2.0
-offset_top = -151.9
-offset_right = 1150.69
-offset_bottom = 152.1
+offset_top = -0.137974
+offset_right = 0.151978

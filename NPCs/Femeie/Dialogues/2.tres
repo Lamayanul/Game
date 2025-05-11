@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=4 format=3 uid="uid://pii4y73mad33"]
+
+[ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_ek4gl"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_f2bde"]
+[ext_resource type="Resource" uid="uid://baueuenjjun5k" path="res://NPCs/Femeie/Quests/0.tres" id="2_r5sqo"]
+
+[resource]
+script = ExtResource("1_ek4gl")
+texture = ExtResource("2_f2bde")
+name = "Femeie"
+dialogue = "I want food"
+path_option = "What do you want to eat?"
+options = Array[ExtResource("1_ek4gl")]([])
+quest = ExtResource("2_r5sqo")
+metadata/_custom_type_script = "uid://b7g3m2d05171i"

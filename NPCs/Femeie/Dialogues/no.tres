@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=3 format=3 uid="uid://bou5dgo32uog7"]
+
+[ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_1lwhm"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_lqcid"]
+
+[resource]
+script = ExtResource("1_1lwhm")
+texture = ExtResource("2_lqcid")
+name = ""
+dialogue = ""
+path_option = "no"
+options = Array[ExtResource("1_1lwhm")]([])
+metadata/_custom_type_script = "uid://b7g3m2d05171i"

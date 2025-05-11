@@ -2,15 +2,18 @@
 
 [ext_resource type="Script" uid="uid://dtfnwo3ja1a5c" path="res://User/save_slot.gd" id="1_0te8j"]
 
-[node name="SaveSlot" type="Panel"]
+[node name="SaveSlot" type="Panel" groups=["save_slot"]]
 custom_minimum_size = Vector2(320, 120)
-offset_right = 320.0
-offset_bottom = 120.0
+anchors_preset = -1
+anchor_right = 1.062
+anchor_bottom = 0.185
+offset_right = -903.424
+offset_bottom = 0.119995
 script = ExtResource("1_0te8j")
 
 [node name="Line2D" type="Line2D" parent="."]
-position = Vector2(2.04878, 0)
-scale = Vector2(2.5122, 1)
+position = Vector2(7.1219, 0)
+scale = Vector2(3.78049, 1)
 points = PackedVector2Array(320, 0, 320, 120, 0, 120, 0, 0)
 closed = true
 width = 4.0
@@ -30,6 +33,26 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
+
+[node name="data" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 3.85
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 88.0
+offset_right = -1136.0
+offset_bottom = -9.0
+
+[node name="ora" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 3.825
+anchor_bottom = 1.0
+offset_left = 1136.0
+offset_top = 88.0
+offset_right = -48.0001
+offset_bottom = -9.0
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

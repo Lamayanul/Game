@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq865rkdcos1b"]
+
+[ext_resource type="Texture2D" uid="uid://cwca42gpup2fp" path="res://Sprout Lands - Sprites - Basic pack/Objects/hand1.png" id="1_715ml"]
+[ext_resource type="Script" uid="uid://djijfnfjiqdkv" path="res://Scripturi/hand.gd" id="2_4h5jc"]
+
+[sub_resource type="Theme" id="Theme_715ml"]
+default_font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_715ml"]
+bg_color = Color(0, 0, 0, 0.333333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4p81"]
+size = Vector2(7, 5.71695)
+
+[node name="PanelContainer" type="VBoxContainer"]
+clip_contents = true
+anchors_preset = -1
+anchor_top = 0.046
+anchor_right = 0.26
+anchor_bottom = 0.522
+offset_top = -29.808
+offset_right = 0.47995
+offset_bottom = -4.25604
+alignment = 2
+
+[node name="InfoLabel" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_715ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_715ml")
+bbcode_enabled = true
+text = "[center]"
+fit_content = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_715ml")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="sprite" type="Sprite2D" parent="."]
+position = Vector2(150, 226)
+scale = Vector2(8.087, 9)
+offset = Vector2(0, 18.635)
+script = ExtResource("2_4h5jc")
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="sprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sprite/Area2D"]
+position = Vector2(0, 0.0058382)
+shape = SubResource("RectangleShape2D_o4p81")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2

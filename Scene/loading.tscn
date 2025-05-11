@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://kx8bnw0weudl"]
+
+[ext_resource type="Script" uid="uid://cj0ewqfhbgx34" path="res://Scripturi/loading.gd" id="1_ctcb4"]
+[ext_resource type="Texture2D" uid="uid://bb6stbvr3rsxe" path="res://User/Loading/batran.png" id="1_gd2am"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ctcb4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("1_gd2am")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23
+anchor_top = 0.818
+anchor_right = 0.765
+anchor_bottom = 0.86
+offset_left = 0.0400085
+offset_top = -0.0640259
+offset_right = -0.280029
+offset_bottom = -0.280029
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.5
+offset_top = -11.5
+offset_right = 29.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Loading..."

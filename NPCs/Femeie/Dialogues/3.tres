@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Dialogue" load_steps=5 format=3 uid="uid://pfawa5wwqrm0"]
+
+[ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_6xwov"]
+[ext_resource type="Texture2D" uid="uid://ds7di32kou2ro" path="res://Tiny Wonder Farm Free/characters/main character/portrait female.png" id="2_2aoqp"]
+[ext_resource type="Resource" uid="uid://e0wkyf60ml2i" path="res://NPCs/Femeie/Dialogues/yes.tres" id="2_iun54"]
+[ext_resource type="Resource" uid="uid://bou5dgo32uog7" path="res://NPCs/Femeie/Dialogues/no.tres" id="3_r52vg"]
+
+[resource]
+script = ExtResource("1_6xwov")
+texture = ExtResource("2_2aoqp")
+name = "Femeie"
+dialogue = "Ai adus mancare?"
+path_option = ""
+options = Array[ExtResource("1_6xwov")]([ExtResource("2_iun54"), ExtResource("3_r52vg")])
+metadata/_custom_type_script = "uid://b7g3m2d05171i"

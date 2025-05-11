@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7bw8386eorv8"]
+
+[ext_resource type="Script" uid="uid://d33inh1dca2et" path="res://Scripturi/quest_button.gd" id="1_4asoq"]
+
+[node name="Button" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_4asoq")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

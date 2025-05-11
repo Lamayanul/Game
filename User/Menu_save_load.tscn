@@ -1,6 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5s4pub7glhjy"]
+[gd_scene load_steps=10 format=3 uid="uid://b5s4pub7glhjy"]
 
 [ext_resource type="Script" uid="uid://bav1fxu4d18cd" path="res://User/menu_save_load.gd" id="1_kn8vx"]
+[ext_resource type="Texture2D" uid="uid://bnnl78w0vlwf1" path="res://Sprout Lands - Sprites - Basic pack/Objects/clouds.jpeg" id="2_uuvnn"]
+[ext_resource type="Script" uid="uid://ch4rflesgkcxv" path="res://Scripturi/stats_ui.gd" id="3_op81h"]
+[ext_resource type="PackedScene" uid="uid://bvx4h074stip4" path="res://Scene/skill_tree.tscn" id="4_op81h"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="4_u6r4n"]
 
 [sub_resource type="FontFile" id="FontFile_viii8"]
 cache/0/16/0/ascent = 0.0
@@ -31,11 +35,15 @@ default_font_size = 25
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viii8"]
 bg_color = Color(0, 0, 0, 0.470588)
 
+[sub_resource type="Theme" id="Theme_viii8"]
+default_font_size = 25
+
 [node name="CanvasLayer" type="CanvasLayer"]
 layer = 2
 script = ExtResource("1_kn8vx")
 
 [node name="SaveLoadPanel" type="Panel" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,15 +52,15 @@ grow_vertical = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SaveLoadPanel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -403.0
-offset_top = -255.0
-offset_right = 403.0
-offset_bottom = 255.0
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.221
+anchor_right = 0.832
+anchor_bottom = 0.87
+offset_left = -0.424011
+offset_top = -0.208008
+offset_right = 0.536011
+offset_bottom = 0.239929
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -134,16 +142,31 @@ text = "Overwrite
 layout_mode = 2
 text = "Delete"
 
-[node name="Option" type="VBoxContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 anchors_preset = -1
-anchor_left = 0.44
-anchor_top = 0.5
-anchor_right = 0.44
-anchor_bottom = 0.5
-offset_left = -291.88
-offset_top = -55.0
-offset_right = -208.88
-offset_bottom = 55.0
+anchor_left = 0.006
+anchor_top = 0.026
+anchor_right = 0.452
+anchor_bottom = 0.968
+offset_left = -1.912
+offset_top = 0.152
+offset_right = 0.295959
+offset_bottom = -0.264038
+texture = ExtResource("2_uuvnn")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Option" type="VBoxContainer" parent="." groups=["option"]]
+anchors_preset = -1
+anchor_left = 0.216
+anchor_top = 0.7
+anchor_right = 0.216
+anchor_bottom = 0.7
+offset_left = -243.832
+offset_top = -436.6
+offset_right = 272.168
+offset_bottom = 175.4
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -177,8 +200,121 @@ layout_mode = 2
 theme = SubResource("Theme_83bh1")
 theme_override_styles/normal = SubResource("StyleBoxFlat_viii8")
 bbcode_enabled = true
-text = "Nume player"
+text = "[center]Sun_Smile_(╯‵□′)╯︵┻━┻"
 fit_content = true
+
+[node name="Buttons" type="HBoxContainer" parent="Option"]
+layout_mode = 2
+
+[node name="Skills" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Skills"
+clip_text = true
+
+[node name="Inventory" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Inventory"
+clip_text = true
+
+[node name="Button3" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+
+[node name="Settings" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "Settings"
+clip_text = true
+
+[node name="info" type="Panel" parent="." groups=["option"]]
+anchors_preset = -1
+anchor_left = 0.459
+anchor_top = 0.026
+anchor_right = 1.0
+anchor_bottom = 0.968
+offset_left = 0.231995
+offset_top = 0.152
+offset_right = -11.0
+offset_bottom = -0.264038
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="info"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.002
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -0.22406
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stats" type="RichTextLabel" parent="info/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_viii8")
+bbcode_enabled = true
+text = "[center]Stats-uri"
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="info/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="info/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 6
+script = ExtResource("3_op81h")
+
+[node name="Panel" type="Panel" parent="info/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 0.339607, 0, 1)
+self_modulate = Color(1, 0.341176, 0, 1)
+custom_minimum_size = Vector2(305, 305)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="GridContainer" parent="info"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.864
+anchor_right = 0.992
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -0.039978
+offset_right = -0.104004
+offset_bottom = 6.10352e-05
+columns = 4
+
+[node name="SlotContainer" parent="info/GridContainer" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+
+[node name="TextureRect2" parent="info/GridContainer/SlotContainer/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer2" parent="info/GridContainer" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+
+[node name="TextureRect2" parent="info/GridContainer/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer3" parent="info/GridContainer" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+
+[node name="TextureRect2" parent="info/GridContainer/SlotContainer3/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer4" parent="info/GridContainer" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+
+[node name="TextureRect2" parent="info/GridContainer/SlotContainer4/TextureHolder" index="0"]
+texture = null
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -188,6 +324,9 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.png", "*.jpeg")
 
+[node name="SkillTree" parent="." instance=ExtResource("4_op81h")]
+visible = false
+
 [connection signal="pressed" from="SaveLoadPanel/CreateNew" to="." method="_on_create_new_pressed"]
 [connection signal="pressed" from="SaveLoadPanel/Load" to="." method="_on_load_resource_pressed"]
 [connection signal="pressed" from="SaveLoadPanel/SaveSelected/VBoxContainer/Overwrite" to="." method="_on_overwrite_pressed"]
@@ -195,4 +334,10 @@ filters = PackedStringArray("*.png", "*.jpeg")
 [connection signal="pressed" from="Option/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Option/Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="Option/Add" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Option/Buttons/Skills" to="." method="_on_skills_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+
+[editable path="info/GridContainer/SlotContainer"]
+[editable path="info/GridContainer/SlotContainer2"]
+[editable path="info/GridContainer/SlotContainer3"]
+[editable path="info/GridContainer/SlotContainer4"]

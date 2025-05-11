@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="Dialogue" load_steps=2 format=3 uid="uid://c3idn6vlnqbuq"]
+[gd_resource type="Resource" script_class="Dialogue" load_steps=3 format=3 uid="uid://c3idn6vlnqbuq"]
 
 [ext_resource type="Script" uid="uid://b7g3m2d05171i" path="res://Scripturi/Dialogue.gd" id="1_1xmga"]
+[ext_resource type="Resource" uid="uid://baueuenjjun5k" path="res://NPCs/Femeie/Quests/0.tres" id="2_r5cmy"]
 
 [resource]
 script = ExtResource("1_1xmga")
 name = "Femeie"
 dialogue = ""
-path_option = "Nu,nu esti!"
+path_option = "ok!"
 options = Array[ExtResource("1_1xmga")]([])
+quest = ExtResource("2_r5cmy")
