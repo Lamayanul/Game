@@ -4,7 +4,7 @@ extends Sprite2D
 @export var item_cantitate:int =1
 
 @onready var shadow = Sprite2D.new()
-
+var raritate: String 
 var float_amplitude: float = 2.0  
 var float_speed: float = 2.0 
 var original_position: Vector2 

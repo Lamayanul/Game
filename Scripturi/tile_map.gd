@@ -16,7 +16,7 @@ var curentSeed=preload("res://Flowers/grau.tscn")
 var plantedFlower:Dictionary={}
 var plantedGard:Dictionary={}
 @onready var animatie_sapa: Timer = $animatie_sapa
-@onready var hido = $"../hide"
+#@onready var hido = $"../hide"
 var placing_gard_mode = false  
 var placing_house=false
 @export var gard_tile_id: int = 3  
@@ -90,12 +90,12 @@ func _process(_delta):
 			var ID=inventory.selected_slot.get_id()
 			if ID=="9":
 				grid_land.visible=true
-				if planting_mode and (grid_land.visible or grid.visible) and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
-					
-					inventory.attack()
-					#animatie_sapa.start() ------------------------probleme de timing
-					replace_land_with_ogor(grid_cell)
-					planting_mode = false 
+				#if planting_mode and (grid_land.visible or grid.visible) and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
+					#
+					#inventory.attack()
+					##animatie_sapa.start() ------------------------probleme de timing
+					#replace_land_with_ogor(grid_cell)
+					#planting_mode = false 
 				
 			
 		if Input.is_action_just_pressed("harvest"):

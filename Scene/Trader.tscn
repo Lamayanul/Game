@@ -1,0 +1,301 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwi6u0tid31by"]
+
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_1w345"]
+[ext_resource type="Script" uid="uid://xhom6y6yh0mc" path="res://Scripturi/trader.gd" id="1_erp6j"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("1_erp6j")
+
+[node name="Player_trade" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.146
+anchor_top = 0.045
+anchor_right = 0.146
+anchor_bottom = 0.045
+offset_left = -0.192017
+offset_top = -0.160002
+offset_right = 131.808
+offset_bottom = 131.84
+columns = 2
+
+[node name="SlotContainer" parent="Player_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "player"
+
+[node name="TextureRect2" parent="Player_trade/SlotContainer/TextureHolder" index="0"]
+rotation = 0.00127952
+texture = null
+
+[node name="SlotContainer2" parent="Player_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "player"
+
+[node name="TextureRect2" parent="Player_trade/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer3" parent="Player_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "player"
+
+[node name="TextureRect2" parent="Player_trade/SlotContainer3/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer4" parent="Player_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "player"
+
+[node name="TextureRect2" parent="Player_trade/SlotContainer4/TextureHolder" index="0"]
+texture = null
+
+[node name="Trader_trade" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.656
+anchor_top = 0.045
+anchor_right = 0.656
+anchor_bottom = 0.045
+offset_left = 0.287964
+offset_top = -0.160002
+offset_right = 132.288
+offset_bottom = 131.84
+grow_vertical = 2
+columns = 2
+
+[node name="SlotContainer" parent="Trader_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "trader"
+
+[node name="TextureRect2" parent="Trader_trade/SlotContainer/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer2" parent="Trader_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "trader"
+
+[node name="TextureRect2" parent="Trader_trade/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer3" parent="Trader_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "trader"
+
+[node name="TextureRect2" parent="Trader_trade/SlotContainer3/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer4" parent="Trader_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "trader"
+
+[node name="TextureRect2" parent="Trader_trade/SlotContainer4/TextureHolder" index="0"]
+texture = null
+
+[node name="Result_trade" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.289
+anchor_right = 0.4
+anchor_bottom = 0.289
+offset_left = 0.199982
+offset_top = -0.272003
+offset_right = 132.2
+offset_bottom = 131.728
+grow_vertical = 0
+columns = 2
+
+[node name="SlotContainer" parent="Result_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "result"
+
+[node name="TextureRect2" parent="Result_trade/SlotContainer/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer2" parent="Result_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "result"
+
+[node name="TextureRect2" parent="Result_trade/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer3" parent="Result_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "result"
+
+[node name="TextureRect2" parent="Result_trade/SlotContainer3/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer4" parent="Result_trade" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "result"
+
+[node name="TextureRect2" parent="Result_trade/SlotContainer4/TextureHolder" index="0"]
+texture = null
+
+[node name="Accept" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.431
+anchor_top = 0.144
+anchor_right = 0.431
+anchor_bottom = 0.144
+offset_left = -0.512024
+offset_top = -0.312004
+offset_right = 59.488
+offset_bottom = 30.688
+text = "Accept
+"
+
+[node name="Back_trader" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.811
+anchor_top = 0.288
+anchor_right = 0.811
+anchor_bottom = 0.289
+offset_left = -0.272034
+offset_top = 0.375992
+offset_right = 199.728
+offset_bottom = 335.728
+grow_horizontal = 0
+grow_vertical = 2
+columns = 3
+
+[node name="SlotContainer" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer2" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer3" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer3/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer4" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer4/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer5" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer5/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer6" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer6/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer7" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer7/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer8" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer8/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer9" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer9/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer10" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer10/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer11" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer11/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer12" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer12/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer13" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer13/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer14" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer14/TextureHolder" index="0"]
+texture = null
+
+[node name="SlotContainer15" parent="Back_trader" instance=ExtResource("1_1w345")]
+layout_mode = 2
+slot_type = "back"
+
+[node name="TextureRect2" parent="Back_trader/SlotContainer15/TextureHolder" index="0"]
+texture = null
+
+[editable path="Player_trade/SlotContainer"]
+[editable path="Player_trade/SlotContainer2"]
+[editable path="Player_trade/SlotContainer3"]
+[editable path="Player_trade/SlotContainer4"]
+[editable path="Trader_trade/SlotContainer"]
+[editable path="Trader_trade/SlotContainer2"]
+[editable path="Trader_trade/SlotContainer3"]
+[editable path="Trader_trade/SlotContainer4"]
+[editable path="Result_trade/SlotContainer"]
+[editable path="Result_trade/SlotContainer2"]
+[editable path="Result_trade/SlotContainer3"]
+[editable path="Result_trade/SlotContainer4"]
+[editable path="Back_trader/SlotContainer"]
+[editable path="Back_trader/SlotContainer2"]
+[editable path="Back_trader/SlotContainer3"]
+[editable path="Back_trader/SlotContainer4"]
+[editable path="Back_trader/SlotContainer5"]
+[editable path="Back_trader/SlotContainer6"]
+[editable path="Back_trader/SlotContainer7"]
+[editable path="Back_trader/SlotContainer8"]
+[editable path="Back_trader/SlotContainer9"]
+[editable path="Back_trader/SlotContainer10"]
+[editable path="Back_trader/SlotContainer11"]
+[editable path="Back_trader/SlotContainer12"]
+[editable path="Back_trader/SlotContainer13"]
+[editable path="Back_trader/SlotContainer14"]
+[editable path="Back_trader/SlotContainer15"]

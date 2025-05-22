@@ -15,7 +15,6 @@ func _ready() -> void:
 func update_generators() -> void:
 	generators = get_tree().get_nodes_in_group("pow_gen")
 	pillars= get_tree().get_nodes_in_group("LightSource")
-	#print("powerrrrrr",generators)
 
 func update_connections() -> void:
 	connected_areas.clear()
@@ -67,16 +66,17 @@ func update_curves() -> void:
 
 		else:
 			line_2d.clear_points()
-
+####################################ASTERIX######################################################
 func get_closest_generator(pos: Vector2) -> Node:
 	var closest_gen = null
 	var min_dist = INF
 	for gen in generators:
-		var gen_pos = gen.global_position
-		var dist = pos.distance_to(gen_pos)
-		if dist < min_dist:
-			min_dist = dist
-			closest_gen = gen
+		if is_instance_valid(gen):
+			var gen_pos = gen.global_position
+			var dist = pos.distance_to(gen_pos)
+			if dist < min_dist:
+				min_dist = dist
+				closest_gen = gen
 	return closest_gen
 
 func draw_bezier_curve(line: Line2D, start_point: Vector2, end_point: Vector2) -> void:

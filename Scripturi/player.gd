@@ -6,7 +6,7 @@ var enemy_attack_cooldown=true
 var enemy_current_attack=false
 var player_alive=true
 var player_current_attack=false
-@onready var healthbar = get_node("/root/world/CanvasLayer/CanvasLayer/healthbar")
+#sa@onready var healthbar = get_node("/root/world/CanvasLayer/CanvasLayer/healthbar")
 @onready var healthbar_player =  get_node("/root/world/CanvasLayer/CanvasLayer/healthbar_player")
 var is_attacking = false
 var scut_used=0
@@ -26,7 +26,7 @@ var current_state = "idle"
 
 #-------------------------------------Info-hand-sprite------------------------------------------
 @onready var hand_sprite = $"../CanvasLayer/PanelContainer".get_node("sprite")
-@onready var info_label = $"../CanvasLayer/PanelContainer".get_node("InfoLabel")
+@onready var info_label = $"../CanvasLayer/PanelContainer/VBoxContainer".get_node("InfoLabel")
 
 #@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
 #@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
@@ -73,10 +73,10 @@ func _ready():
 	#color_rect.color = Color(0, 0, 0, 0.5)  # Negru cu 50% transparență
 	#color_rect.visible=false
 	arma_colisiune.disabled=true
-	healthbar.value=health
+	#healthbar.value=health
 	add_to_group("player_hitbox")
 	info_label.text=""
-	info_label.visible=false
+	info_label.visible=true
 	scut.visible=false
 	shield_touch.disabled=true
 	scut.add_to_group("scut")
@@ -92,40 +92,47 @@ func _init_enemy_list():
 
 
 #------------------------------_physics_process()------------------------------------------------------
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not can_move:
 		velocity = Vector2.ZERO
-		return  # dacă nu ai voie să te miști, ieși imediat
-		
-	if health<=0:
-		health=0
-		player_alive=false
+		animation_player.play("idle-down")
+		return
+
+	if health <= 0:
+		health = 0
+		player_alive = false
 		print("player killed")
 		self.queue_free()
-		
-	#var global_mouse_position = get_global_mouse_position()
-	#print("Mouse position: ", global_mouse_position)
-	
+		return
+
 	if is_attacking:
-		return  
-		
+		velocity = Vector2.ZERO
+		return
+
+	velocity = Vector2.ZERO  # important: resetăm în fiecare frame
+
 	if not is_jumping:
-		handle_movement()
-	
+		handle_movement()  # aici se setează velocity.x / velocity.y
+
 	if Input.is_action_just_pressed("jump") and not is_jumping and can_jump:
 		jump()
 
+	# tratarea săriturii
 	if is_jumping:
-		position += jumpDirection * speed  * delta
-	else:
-		position += velocity * delta
-		
+		velocity = jumpDirection * speed
+
+	# aplică mișcarea corect prin motorul fizic
+	move_and_slide()
+
+	# actualizează poziția scutului dacă e activ
 	if scut.visible:
 		update_shield_position()
-	if inv.has_shield and scut_used>0:
-		scut.visible=true
-		shield_touch.disabled=false
+
+	if inv.has_shield and scut_used > 0:
+		scut.visible = true
+		shield_touch.disabled = false
 		position_shield_opposite()
+
 	
 
 #----------------------------------player-movement------------------------------------------------------
@@ -232,7 +239,7 @@ func _on_body_exited(_body):
 	
 
 #----------------------------------equip_item/inequip_item---------------------------------------------
-func equip_item(item_texture: Texture, item_nume : String):
+func equip_item(item_texture: Texture, item_nume : String, item_raritate:String):
 	if scut.visible and inv.selected_slot.get_id() != "13":
 		scut.visible = false
 		shield_touch.disabled = true
@@ -241,7 +248,7 @@ func equip_item(item_texture: Texture, item_nume : String):
 		hand_sprite.texture = item_texture
 		hand_sprite.visible = true
 		hand_sprite.scale=Vector2(9,9)
-		info = "[center]ITEM : "  +item_nume+"[/center]"
+		info = "[center]ITEM: %s\nRARITATE: %s[/center]" % [item_nume, item_raritate]
 		
 	else:
 		print("Texture is null")
@@ -254,7 +261,7 @@ func inequip_item():
 	shield_touch.call_deferred("set_disabled", true)
 	
 	hand_sprite.texture=null
-	info_label.visible=false
+	info_label.visible=true
 	info_label.clear()
 	info = "" 
 	info_label.text = ""
@@ -648,6 +655,6 @@ func _on_panel_container_mouse_entered() -> void:
 
 
 func _on_panel_container_mouse_exited() -> void:
-	info_label.visible=false
+	info_label.visible=true
 	info_label.text=""
 	print("iesire")

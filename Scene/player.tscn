@@ -4017,8 +4017,7 @@ fill_to = Vector2(0.914474, 0.177632)
 y_sort_enabled = true
 collision_layer = 3
 collision_mask = 3
-slide_on_ceiling = false
-platform_on_leave = 2
+floor_constant_speed = true
 platform_floor_layers = 0
 script = ExtResource("1_cqeva")
 

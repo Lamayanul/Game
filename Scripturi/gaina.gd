@@ -42,33 +42,29 @@ func _ready():
 
 
 func _physics_process(_delta):
-	if hrana==5:
-		movement() 
-		move_and_slide()
-		return
+	if hrana == 5:
+		movement()
 	else:
 		if targets.size() > 0:
 			select_closest_target()
 
 		if current_target and is_instance_valid(current_target):
-			# 🔹 Verifică dacă am ajuns la țintă
 			if global_position.distance_to(current_target.global_position) < 1:
-				targets.erase(current_target)  # Elimină ținta curentă
-				current_target = null  # Resetează ținta
+				targets.erase(current_target)
+				current_target = null
 				if targets.size() > 0:
-					select_closest_target()  # Alege următoarea țintă
-			
+					select_closest_target()
+
 			if current_target and is_instance_valid(current_target):
 				navigation_agent_2d.target_position = current_target.global_position
-			var next_path_position = navigation_agent_2d.get_next_path_position()
-			velocity = (next_path_position - global_position).normalized() * MoveSpeed
-			move()
-			
+				var next_path_position = navigation_agent_2d.get_next_path_position()
+				velocity = (next_path_position - global_position).normalized() * MoveSpeed
 		else:
-			movement() 
+			movement()
 
 	move_and_slide()
 	hungry_time.start()
+
 
 func select_closest_target():
 	# 🔹 Elimină țintele invalide

@@ -43,7 +43,7 @@ var slot_container_chest_4: Node = null
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
-@onready var info_label = $"../PanelContainer".get_node("InfoLabel")
+@onready var info_label = $"../PanelContainer/VBoxContainer".get_node("InfoLabel")
 @onready var hand_sprite = $"../PanelContainer".get_node("sprite")
 #@onready var color_rect = $"../ColorRect"
 
@@ -118,7 +118,8 @@ func add_item(ID="", item_cantita=1) -> bool:
 	var item_nume = ItemData.get_nume(ID)
 	var item_number = ItemData.get_number(ID)
 	var item_cantitate = item_cantita
-	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume}
+	var item_raritate = ItemData.get_raritate(ID)
+	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate}
 
 	#print("Încerc să adaug item ID:", ID, " Cantitate:", item_cantitate)
 
@@ -130,7 +131,7 @@ func add_item(ID="", item_cantita=1) -> bool:
 			if child.filled and child.get_id() == ID:
 				#print("Item găsit în slot", i, ". Stivuiesc...")
 				child.cantitate += item_cantitate
-				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume})
+				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate})
 				return true  # A reușit să adauge obiectul, returnează `true`
 	
 	# 2. Dacă nu există un slot cu același ID, caută un slot gol
@@ -180,7 +181,7 @@ func _on_slot_selected(slot: Slot):
 	hand_sprite.texture = null
 	info_label.clear()
 	#color_rect.visible = false
-	info_label.visible = false
+	info_label.visible = true
 	
 	
 	# Dacă slotul selectat are un item (este plin), actualizează sprite-ul și eticheta
@@ -190,8 +191,12 @@ func _on_slot_selected(slot: Slot):
 		hand_sprite.visible = true
 		hand_sprite.scale = Vector2(0.5, 0.5)
 		
-		info_label.text = "[center]ITEM: " + slot.get_nume() + "[/center]"
-		info_label.visible = false
+		var nume     = slot.get_nume()
+		var raritate = slot.get_raritate()
+
+		
+		info_label.bbcode_text = "[center]ITEM: %s\nRARITATE: %s[/center]" % [nume, raritate]
+		info_label.visible = true
 		#color_rect.visible = false
 
 	# Actualizează poziția selectorului
@@ -200,7 +205,7 @@ func _on_slot_selected(slot: Slot):
 	# Echipează itemul la jucător
 	#var player = get_node("/root/world/player")
 	if  slot.get_texture() != null and is_instance_valid(player):
-		player.equip_item(slot.get_texture(), slot.get_nume())
+		player.equip_item(slot.get_texture(), slot.get_nume(), slot.get_raritate())
 	
 
 

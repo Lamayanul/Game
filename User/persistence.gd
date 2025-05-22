@@ -1329,6 +1329,9 @@ func load_chest(data:SaveData):
 			
 
 func load_pilar(data:SaveData):
+	var pillars_nodes = get_tree().get_nodes_in_group("LightSource")
+	for p in pillars_nodes:
+		p.queue_free()
 	for namae in data.elec_pillar_data.keys():
 		var pillar_info = data.elec_pillar_data[namae]
 		var new_pillar = preload("res://Scene/electricity_pillar.tscn").instantiate()

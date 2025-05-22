@@ -1,5 +1,6 @@
 extends Node2D
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
+@onready var trader = get_node("/root/world/CanvasLayer2")
 var count:int:
 	set(value):
 		count=value
@@ -18,6 +19,10 @@ func _input(event):
 		
 	if Input.is_action_just_pressed("toggle_grid"):
 		inv.instantiate_generator()
+	if event is InputEventKey:
+		if event.pressed and event.keycode==KEY_TAB:
+			trader.visible=!trader.visible
+			
 
 func save_data():
 	Persistence.scor=count

@@ -892,6 +892,7 @@ size = Vector2(11, 9)
 y_sort_enabled = true
 collision_layer = 9
 collision_mask = 9
+floor_constant_speed = true
 script = ExtResource("1_cyn6q")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

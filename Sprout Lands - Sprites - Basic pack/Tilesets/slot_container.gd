@@ -44,6 +44,9 @@ signal slot_selected(slot)
 		else:
 			label.text = ""
 
+@export var raritate: String:
+	set(value):
+		raritate=value
 #@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
 
 @onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume}:
@@ -89,7 +92,9 @@ func get_number()->int:
 func get_nume()->String:
 	return property.get("NUME","")
 	
-	
+func get_raritate()->String:
+	return property.get("RARITATE","")
+
 	
 func _get_drag_data(_at_position):
 	
@@ -106,10 +111,52 @@ func _get_drag_data(_at_position):
 	
 	return self
 
-func _can_drop_data(_at_position, _data):
-	return _data is Slot
+func _can_drop_data(_at_position, data):
+	# Permitem doar dacă data e un Slot
+	if not (data is Slot):
+		return false
+
+	# Blochează back → result
+	if data.slot_type == "back" and self.slot_type == "result":
+		return false
+	if data.slot_type == "result" and self.slot_type == "back":
+		return false
+		
+	if data.slot_type == "inventory" and self.slot_type == "back":
+		return false
+	if data.slot_type == "back" and self.slot_type == "inventory":
+		return false
+	
+	if data.slot_type == "trader" and self.slot_type == "result":
+		return false
+	if data.slot_type == "result" and self.slot_type == "trader":
+		return false
+	
+	if data.slot_type == "trader" and self.slot_type == "inventory":
+		return false
+	if data.slot_type == "inventory" and self.slot_type == "trader":
+		return false
+	
+	if data.slot_type == "player" and self.slot_type == "trader":
+		return false
+	if data.slot_type == "trader" and self.slot_type == "player":
+		return false
+	
+	if data.slot_type == "player" and self.slot_type == "back":
+		return false
+	if data.slot_type == "back" and self.slot_type == "player":
+		return false
+	
+	if data.slot_type == "inventory" and self.slot_type == "no_inv":
+		return true
+	if data.slot_type == "no_inv" and self.slot_type == "inventory":
+		return true
+
+	# Default: nu permitem
+	return true
 
 func _drop_data(_pos, data):
+	
 	if not (data is Slot):
 		return  # Asigură-te că datele droppate provin dintr-un slot valid
 
@@ -126,7 +173,12 @@ func _drop_data(_pos, data):
 		#print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		set_property(source_property)
 		data.clear_item()
-
+		
+		
+		if data.slot_type == "back" and self.slot_type == "result":
+			return
+			
+			
 		# Ajustează `inv.plin` în funcție de tipurile de sloturi
 		if data.slot_type == "inventory" and self.slot_type == "no_inv":
 			inv.plin -= 1  # Mutare din inventar în no_inv
@@ -138,6 +190,10 @@ func _drop_data(_pos, data):
 	
 
 	elif source_property != null and target_property != null:
+		
+		if data.slot_type == "back" and self.slot_type == "result":
+			return
+			
 		# Dacă itemele sunt de același tip, adunăm cantitățile
 		if source_property.has("NUMBER") and target_property.has("NUMBER") and source_property["NUMBER"] == target_property["NUMBER"]:
 			target_property["CANTITATE"] += source_property["CANTITATE"]
@@ -186,7 +242,6 @@ func _on_gui_input(event):
 
 func select():
 	is_selected = true
-	
 	
 
 func deselect():
@@ -237,9 +292,11 @@ func decrease_cantitate(amount: int) -> bool:
 
 func increase_cantitate(amount: int):
 	cantitate += amount
+	property["CANTITATE"] = cantitate
 	if cantitate > 0:
 		# Actualizează cantitatea afișată în UI
 		label.text = str(cantitate)
+		
 	else:
 		label.text = ""
 		

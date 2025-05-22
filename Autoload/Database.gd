@@ -22,3 +22,6 @@ func get_number(ID="0"):
 
 func get_nume(ID="0"):
  return content[ID]["nume"]
+
+func get_raritate(ID="0"):
+ return content[ID]["raritate"]

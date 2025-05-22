@@ -23,7 +23,7 @@ func _on_panel_container_mouse_entered() -> void:
 
 
 func _on_panel_container_mouse_exited() -> void:
-	$"../InfoLabel".visible=false
+	$"../InfoLabel".visible=true
 	$"../InfoLabel".text=""
 	#color_rect.visible=false
 	print("iesire")
