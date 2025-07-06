@@ -73,6 +73,8 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("consola"):
 		toggle = !toggle
 		$CanvasLayer.visible = toggle
+		if !is_instance_valid(get_player()):
+			return
 		if $CanvasLayer.visible:
 			get_player().can_move = false
 		else:

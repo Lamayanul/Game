@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://b5s4pub7glhjy"]
+[gd_scene load_steps=11 format=3 uid="uid://b5s4pub7glhjy"]
 
 [ext_resource type="Script" uid="uid://bav1fxu4d18cd" path="res://User/menu_save_load.gd" id="1_kn8vx"]
 [ext_resource type="Texture2D" uid="uid://bnnl78w0vlwf1" path="res://Sprout Lands - Sprites - Basic pack/Objects/clouds.jpeg" id="2_uuvnn"]
 [ext_resource type="Script" uid="uid://ch4rflesgkcxv" path="res://Scripturi/stats_ui.gd" id="3_op81h"]
 [ext_resource type="PackedScene" uid="uid://bvx4h074stip4" path="res://Scene/skill_tree.tscn" id="4_op81h"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="4_u6r4n"]
+[ext_resource type="Script" uid="uid://x2bed7mntqq5" path="res://Scripturi/grid_character.gd" id="6_gdp8x"]
 
-[sub_resource type="FontFile" id="FontFile_viii8"]
+[sub_resource type="FontFile" id="FontFile_gdp8x"]
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
@@ -29,7 +30,7 @@ cache/0/25/0/underline_thickness = 0.0
 cache/0/25/0/scale = 1.0
 
 [sub_resource type="Theme" id="Theme_83bh1"]
-default_font = SubResource("FontFile_viii8")
+default_font = SubResource("FontFile_gdp8x")
 default_font_size = 25
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viii8"]
@@ -327,6 +328,52 @@ filters = PackedStringArray("*.png", "*.jpeg")
 [node name="SkillTree" parent="." instance=ExtResource("4_op81h")]
 visible = false
 
+[node name="Grid_character" type="GridContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.228
+anchor_top = 0.095
+anchor_right = 0.228
+anchor_bottom = 0.095
+offset_left = -257.656
+offset_top = -61.56
+offset_right = 258.344
+offset_bottom = 65.44
+columns = 4
+script = ExtResource("6_gdp8x")
+
+[node name="SlotContainer" parent="Grid_character" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+slot_type = "helmet"
+
+[node name="TextureRect2" parent="Grid_character/SlotContainer/TextureHolder" index="0"]
+offset_right = 126.0
+offset_bottom = 131.0
+expand_mode = 0
+
+[node name="SlotContainer2" parent="Grid_character" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+slot_type = "armor"
+
+[node name="TextureRect2" parent="Grid_character/SlotContainer2/TextureHolder" index="0"]
+offset_right = 126.0
+offset_bottom = 131.0
+
+[node name="SlotContainer3" parent="Grid_character" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+slot_type = "arma"
+
+[node name="TextureRect2" parent="Grid_character/SlotContainer3/TextureHolder" index="0"]
+offset_right = 126.0
+offset_bottom = 131.0
+
+[node name="SlotContainer4" parent="Grid_character" instance=ExtResource("4_u6r4n")]
+layout_mode = 2
+slot_type = "ceva"
+
+[node name="TextureRect2" parent="Grid_character/SlotContainer4/TextureHolder" index="0"]
+offset_right = 126.0
+offset_bottom = 131.0
+
 [connection signal="pressed" from="SaveLoadPanel/CreateNew" to="." method="_on_create_new_pressed"]
 [connection signal="pressed" from="SaveLoadPanel/Load" to="." method="_on_load_resource_pressed"]
 [connection signal="pressed" from="SaveLoadPanel/SaveSelected/VBoxContainer/Overwrite" to="." method="_on_overwrite_pressed"]
@@ -341,3 +388,7 @@ visible = false
 [editable path="info/GridContainer/SlotContainer2"]
 [editable path="info/GridContainer/SlotContainer3"]
 [editable path="info/GridContainer/SlotContainer4"]
+[editable path="Grid_character/SlotContainer"]
+[editable path="Grid_character/SlotContainer2"]
+[editable path="Grid_character/SlotContainer3"]
+[editable path="Grid_character/SlotContainer4"]

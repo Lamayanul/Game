@@ -21,8 +21,15 @@ var knockback_force = 500
 #--------------------------------Animation-start---------------------------------------------------
 var _currentIdleAnimation="down"
 @onready var animation_player = $AnimationPlayer
+@onready var animation_player_2 =  $AnimationPlayer2
+@onready var animation_player_3: AnimationPlayer = $AnimationPlayer3
+@onready var animation_player_4: AnimationPlayer = $AnimationPlayer4
+
 var current_state = "idle"
 @onready var animatedSprite2D = $AnimatedSprite2D
+@onready var animated_sprite_2d_2: AnimatedSprite2D = $AnimatedSprite2D2
+@onready var animated_sprite_2d_3: AnimatedSprite2D = $AnimatedSprite2D3
+@onready var animated_sprite_2d_4: AnimatedSprite2D = $AnimatedSprite2D4
 
 #-------------------------------------Info-hand-sprite------------------------------------------
 @onready var hand_sprite = $"../CanvasLayer/PanelContainer".get_node("sprite")
@@ -60,6 +67,12 @@ var _tileMap
 @onready var farming_on=false
 @onready var timer: Timer = $Timer
 var can_move = true
+var current_clothes: String = ""
+
+
+
+
+
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -81,6 +94,8 @@ func _ready():
 	shield_touch.disabled=true
 	scut.add_to_group("scut")
 	scut.monitoring = true
+	animated_sprite_2d_2.z_index=1
+
 
 
 
@@ -95,7 +110,6 @@ func _init_enemy_list():
 func _physics_process(_delta):
 	if not can_move:
 		velocity = Vector2.ZERO
-		animation_player.play("idle-down")
 		return
 
 	if health <= 0:
@@ -164,22 +178,41 @@ func handle_movement():
 		velocity = velocity.normalized() * speed
 		if velocity.x != 0:
 			if velocity.x < 0:
-				animation_player.play("walk-left")
+				animation_player_2.play("walk-left-arma")
+				animation_player_3.play("walk-left-cap")
+				animation_player_4.play("walk-left-corp"+clothes(current_clothes))
 			else:
-				animation_player.play("walk-right")
+				animation_player_2.play("walk-right-arma")
+				animation_player_3.play("walk-right-cap")
+				animation_player_4.play("walk-right-corp"+clothes(current_clothes))
+				
 		elif velocity.y != 0:
 			if velocity.y < 0:
-				animation_player.play("walk-up")
+				animation_player_2.play("walk-up-arma")
+				animation_player_3.play("walk-up-cap")
+				animation_player_4.play("walk-up-corp"+clothes(current_clothes))
 			else:
-				animation_player.play("walk-down")
+				animation_player_2.play("walk-down-arma")
+				animation_player_3.play("walk-down-cap")
+				animation_player_4.play("walk-down-corp"+clothes(current_clothes))
 		current_state = "walking"
 	else:
-		animation_player.play("idle-" + _currentIdleAnimation)
+		animation_player_2.play("idle-" + _currentIdleAnimation + "-arma")
+		animation_player_3.play("idle-" + _currentIdleAnimation + "-cap")
+		animation_player_4.play("idle-" + _currentIdleAnimation + "-corp"+clothes(current_clothes))
 		current_state = "idle"
 
 	move_and_slide()
 
+func set_clothes(piece: String):
+	current_clothes = piece
 
+func clothes(piece:String):
+	if piece.is_empty():
+		return ""
+	else:
+		return "-"+piece
+	
 #-----------------------------------player-jump--------------------------------------------------------
 func jump():
 	if is_attacking:  # Blochează săritura în timpul atacului
@@ -298,13 +331,21 @@ func _on_inv_attacking(ID):
 		shield_touch.disabled=true
 		attack_weapon=10;
 		if last_direction.x > 0:  # Dreapta
-			animation_player.play("axe-right") 
+			animation_player_2.play("axe-right-arma") 
+			animation_player_3.play("idle-right-cap")
+			animation_player_4.play("idle-right-corp"+clothes(current_clothes))
 		elif last_direction.x < 0:   # Stânga
-			animation_player.play("axe-left") 
+			animation_player_2.play("axe-left-arma")
+			animation_player_3.play("idle-left-cap")
+			animation_player_4.play("idle-left-corp"+clothes(current_clothes))
 		elif last_direction.y > 0:  # Jos
-			animation_player.play("axe-down") 
+			animation_player_2.play("axe-down-arma") 
+			animation_player_3.play("idle-down-cap")
+			animation_player_4.play("idle-down-corp"+clothes(current_clothes))
 		elif last_direction.y < 0:  # Sus
-			animation_player.play("axe-up") 
+			animation_player_2.play("axe-up-arma") 
+			animation_player_3.play("idle-up-cap")
+			animation_player_4.play("idle-up-corp"+clothes(current_clothes))
 	if ID=="9":
 		scut.visible=false
 		shield_touch.disabled=true
@@ -322,13 +363,21 @@ func _on_inv_attacking(ID):
 		shield_touch.disabled=true
 		attack_weapon=5;
 		if last_direction.x > 0:  # Dreapta
-			animation_player.play("pickaxe-right") 
+			animation_player_2.play("pickaxe-right-arma")
+			animation_player_3.play("idle-right-cap")
+			animation_player_4.play("idle-right-corp"+clothes(current_clothes))
 		elif last_direction.x < 0:   # Stânga
-			animation_player.play("pickaxe-left") 
+			animation_player_2.play("pickaxe-left-arma") 
+			animation_player_3.play("idle-left-cap")
+			animation_player_4.play("idle-left-corp"+clothes(current_clothes))
 		elif last_direction.y > 0:  # Jos
-			animation_player.play("pickaxe-down") 
+			animation_player_2.play("pickaxe-down-arma")
+			animation_player_3.play("idle-down-cap")
+			animation_player_4.play("idle-down-corp"+clothes(current_clothes))
 		elif last_direction.y < 0:  # Sus
-			animation_player.play("pickaxe-up") 
+			animation_player_2.play("pickaxe-up-arma")
+			animation_player_3.play("idle-up-cap")
+			animation_player_4.play("idle-up-corp"+clothes(current_clothes))
 	if ID=="13":
 		scut.visible=true
 		shield_touch.disabled=false

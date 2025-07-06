@@ -1837,7 +1837,6 @@ size = Vector2(25, 16)
 
 [node name="world" type="Node2D" groups=["Persist"]]
 y_sort_enabled = true
-position = Vector2(-4, -7)
 script = ExtResource("1_u4a8w")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("44_lrs8y")]
@@ -2085,8 +2084,7 @@ ID = "3"
 
 [node name="Item7" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(227, 58)
-ID = "19"
-item_cantitate = 5
+ID = "25"
 
 [node name="Item9" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-136, 106)
@@ -2219,6 +2217,7 @@ ID = "18"
 visible = false
 
 [node name="Trader" parent="CanvasLayer2" instance=ExtResource("71_pydxm")]
+anchors_preset = -1
 anchor_left = -0.007
 anchor_bottom = 0.594
 offset_left = 4.064

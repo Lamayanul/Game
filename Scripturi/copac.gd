@@ -18,6 +18,7 @@ var is_cutting = true
 @export var fructe = false
 var is_resetting = false
 @export var player_path : NodePath
+
 func _ready():
 	_staticbody = get_node("StaticBody2D")
 	respawn_fruits.start()  
@@ -30,6 +31,7 @@ func _ready():
 	
 	if fructe:
 		animation_player.play("fructe")
+		
 func _on_body_entered(body: Node):
 	if body.is_in_group("player") or body.is_in_group("gaina"):
 		if _staticbody:
@@ -77,7 +79,6 @@ func play_taiere_animation():
 		
 
 	if index_taiere == 8:
-
 		var pos = Vector2(-20, 10)
 		animation_player.stop() 
 		animation_player.play("gata") 
@@ -113,6 +114,7 @@ func _on_respawn_tree_timeout():
 		is_resetting = false 
 		respawn_fruits.start()
 # Funcție pentru apariția fructelor
+
 func _on_respawn_fruits_timeout():
 	if not fructe and not is_resetting:  
 		animation_player.play("fructe") 

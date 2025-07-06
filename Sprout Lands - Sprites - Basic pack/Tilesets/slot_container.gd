@@ -22,8 +22,9 @@ var property_1: Dictionary = {}
 @onready var slot_container_3 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer3")
 @onready var slot_container_4 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer4")
 
-
+signal clothes_changed(new_clothes_id)
 signal slot_selected(slot)
+#signal item_changed
 
 @export var nume: String:
 	set(value):
@@ -95,6 +96,11 @@ func get_nume()->String:
 func get_raritate()->String:
 	return property.get("RARITATE","")
 
+func set_item_crafting():
+	emit_signal("item_changed")
+	
+func set_item(item_id):
+	emit_signal("clothes_changed", item_id)
 	
 func _get_drag_data(_at_position):
 	
@@ -115,7 +121,24 @@ func _can_drop_data(_at_position, data):
 	# Permitem doar dacă data e un Slot
 	if not (data is Slot):
 		return false
-
+	if data.slot_type == "inventory" and  (self.slot_type == "helmet" or self.slot_type=="arma" or self.slot_type=="ceva" or self.slot_type == "armor") and (int(data.get_id())<=24):
+		return false
+	
+	if data.slot_type == "inventory" and  (self.slot_type == "helmet" or self.slot_type=="arma" or self.slot_type=="ceva" )and data.get_id()=="25":
+		return false
+	
+	if data.slot_type == "helmet" and (self.slot_type == "armor" or self.slot_type == "arma" or self.slot_type == "ceva"):
+		return false
+	
+	if data.slot_type == "armor" and (self.slot_type == "helmet" or self.slot_type == "arma" or self.slot_type == "ceva"):
+		return false
+		
+	if data.slot_type == "arma" and (self.slot_type == "armor" or self.slot_type == "helmet" or self.slot_type == "ceva"):
+		return false
+	if data.slot_type == "ceva" and (self.slot_type == "armor" or self.slot_type == "arma" or self.slot_type == "helmet"):
+		return false
+	
+	
 	# Blochează back → result
 	if data.slot_type == "back" and self.slot_type == "result":
 		return false
@@ -219,7 +242,8 @@ func _drop_data(_pos, data):
 
 	#else:
 		#print("Nu s-a putut face drop-ul.")
-
+	if self.slot_type == "armor":
+		emit_signal("clothes_changed", get_id())
 	
 	
 	
@@ -263,9 +287,11 @@ func clear_item():
 
 	# Marchează slotul ca fiind gol
 	filled = false  
+	emit_signal("clothes_changed", "")
 	
 	# Oprește funcționalitatea drag-and-drop
 	#set_drag_preview(null)
+	
 	
 func get_id() -> String:
 	if property and property.has("Number") != null:

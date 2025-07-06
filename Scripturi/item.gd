@@ -55,10 +55,11 @@ func custom_scale():
 	if ID=="15" || ID=="23":
 		scale=Vector2(0.65,0.65)
 
-func _process(delta: float):
-	time_passed += delta
+func _process(_delta: float):
+	#time_passed += delta
 	#position.y = original_position.y + sin(time_passed * float_speed) * float_amplitude
 	#lamp()
+	pass
 	
 
 # Metodă pentru a seta textura pe obiect

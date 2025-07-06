@@ -6,6 +6,7 @@
 script = ExtResource("1_tw3vh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+offset = Vector2(0, 2)
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

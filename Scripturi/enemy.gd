@@ -295,6 +295,7 @@ func _on_atack_zone_area_exited(area):
 			GameState.current_ai_npc = null
 		print("gol: ",GameState.current_ai_npc)
 
+
 func send_text_to_ai():
 	if textEdit.text.strip_edges() == "":
 		return

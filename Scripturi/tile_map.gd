@@ -47,142 +47,11 @@ func _ready():
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
 	watering_ogor()
-	if is_instance_valid(player) :
-		var player_position = player.global_position
-		var player_direction = player.last_direction.normalized()  # Direcția „în față”
-		var drop_distance = 10  # Ajustează distanța conform nevoilor tale
-		var _drop_position = player_position + (player_direction * drop_distance)#####################
-		var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
-		var grid_cell = local_to_map(mouse_pos)  # Convertește poziția mouse-ului la coordonatele TileMap-ului
-		#var tile_data = get_cell_tile_data(2, grid_cell)
-		# Obținem datele pentru ambele straturi de tile-uri (2 = "ogor", 1 = "land")
-		var tile_data = $ogor.get_cell_tile_data( grid_cell)  # Stratul pentru "ogor"
-		var tile_data_land = $land.get_cell_tile_data( grid_cell) 
-		#var tile_data_land = get_cell_tile_data(1, grid_cell)  # Stratul pentru "land"
-		#var _tile_data_gard = get_cell_tile_data(3, grid_cell)
-		#var _tile_data_land_gard= get_cell_tile_data(4, grid_cell)
-		
-		# Resetăm vizibilitatea gridurilor
-		grid.visible = false
-		grid_land.visible = false
-		grid_gard.visible=false
+	handle_grid_display()
+	handle_gard_and_house_placement()
+	handle_harvesting()
+	handle_roof_transparency()
 
-		
-		# Verificăm întâi dacă tile-ul este de tip "ogor"
-		if tile_data != null and tile_data.get_custom_data("ogor"):
-			grid.visible = true  # Afișăm grid-ul pentru "ogor"
-			grid.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "ogor"
-		else:
-			grid.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "ogor"
-			
-		
-		if tile_data_land != null and tile_data_land.get_custom_data("land") and not grid.visible:
-			#grid_land.visible = true  #gridul de land
-			grid_land.position = map_to_local(grid_cell)  # Plasăm grid-ul pe tile-ul "land"
-		else:
-			grid_land.position = Vector2(-1, -1)  # Ascundem grid-ul pentru "land"
-			
-			
-			
-		  # Adaugă "plant_ogor" în Input Map
-		planting_mode = true
-		if inventory.selected_slot:
-			var ID=inventory.selected_slot.get_id()
-			if ID=="9":
-				grid_land.visible=true
-				#if planting_mode and (grid_land.visible or grid.visible) and hido.can_plant==true and Input.is_action_just_pressed("plant_ogor"):
-					#
-					#inventory.attack()
-					##animatie_sapa.start() ------------------------probleme de timing
-					#replace_land_with_ogor(grid_cell)
-					#planting_mode = false 
-				
-			
-		if Input.is_action_just_pressed("harvest"):
-			if plantedFlower.has(local_to_map(grid.position)) and is_harvestable(local_to_map(grid.position)):
-				print("da")
-				harvest_plant(local_to_map(grid.position))
-
-		if inventory.selected_slot and inventory.selected_slot.get_id() == "12": # Folosim ID-ul itemului gard
-			grid_gard.visible = true
-			grid_gard.position = map_to_local(grid_cell)
-			placing_gard_mode = true
-		else:
-			grid_gard.visible = false
-			placing_gard_mode = false
-			
-		
-				
-		if inventory.selected_slot:
-			var selected_id = inventory.selected_slot.get_id()
-	
-			if selected_id in ["6", "16", "17"]:  # Dacă e gard, podea sau acoperiș
-				grid_house.visible = true
-				grid_house.position = map_to_local(grid_cell)
-		
-				placing_house = selected_id == "6"
-				placing_podea = selected_id == "16"
-				placing_roof = selected_id == "17"
-			else:
-				grid_house.visible = false
-				placing_house = false
-				placing_podea = false
-				placing_roof = false
-		else:
-			grid_house.visible = false
-			placing_house = false
-			placing_podea = false
-			placing_roof = false
-
-#------------------------------------gard_planting/remove----------------------------------------------------------------
-			
-		
-		if placing_house and Input.is_action_just_pressed("cycle_house"):
-			var tile_data_house = $items.get_cell_tile_data( grid_cell)  # Check the house tile layer (layer 3)
-			if tile_data_house != null and tile_data_house.get_custom_data("house"): 
-				house_tile_index = (house_tile_index + 1) % house_tiles.size()
-				change_existing_house_tile(grid_cell)
-		
-		if placing_roof and Input.is_action_just_pressed("cycle_house"):
-			var tile_data_roof = $cliff.get_cell_tile_data( grid_cell)  # Check the house tile layer (layer 3)
-			if tile_data_roof != null and tile_data_roof.get_custom_data("roof"): 
-				roof_tile_index = (roof_tile_index + 1) % roof_tiles.size()
-				change_existing_roof_tile(grid_cell)
-				
-		if placing_house and Input.is_action_just_pressed("cycle_house"):
-			var tile_data_extra = $items.get_cell_tile_data(grid_cell)
-			if tile_data_extra != null and tile_data_extra.get_custom_data("extra"): 
-				extra_tile_index = (extra_tile_index + 1) % extra_house_tiles.size()
-				change_existing_house_tile(grid_cell)
-		
-		
-		
-	
-		if Input.is_action_just_pressed("place_gard"):
-			if placing_gard_mode:
-				place_gard(grid_cell)
-				place_gard_deal(grid_cell)
-			elif placing_house:
-				place_house(grid_cell)
-			elif placing_podea:
-				place_podea(grid_cell)
-			elif placing_roof:
-				place_roof(grid_cell)
-			
-			
-		var player_pos = player.global_position
-		var player_cell = local_to_map(player_pos)
-		var tile_data_player = $cliff.get_cell_tile_data(player_cell)
-		if tile_data_player and tile_data_player.get_custom_data("roof"):  # Verifică dacă e un acoperiș
-			$cliff.modulate = Color(1, 1, 1, 0.3)  # Face acoperișul semi-transparent
-		else:
-			$cliff.modulate = Color(1, 1, 1, 1)  # Revine la normal
-		#if inventory.selected_slot and inventory.selected_slot.get_id() == "2" and !arma_colisiune.disabled:
-			#player_position = arma_colisiune.global_position
-			#player_direction = player.last_direction.normalized()
-			#var target_position = player_position 
-			#grid_cell = local_to_map(target_position)
-			#remove_gard(grid_cell)
 	
 func change_existing_house_tile(grid_cell: Vector2):
 	if Input.is_action_pressed("shift"):  # Dacă ținem Shift, schimbăm tile-urile adiționale
@@ -311,7 +180,7 @@ func watering_ogor():
 		if plantedFlower.has(cellLocalCoord):
 			if inventory.selected_slot:
 				var ID=inventory.selected_slot.get_id()
-				if ID=="22" and player.farming_on:
+				if ID=="22" and player.farming_on and player:
 					var player_position = player.global_position
 					var player_direction = player.last_direction.normalized()  # Direcția „în față”
 					var drop_distance = 10  # Ajustează distanța conform nevoilor tale
@@ -389,7 +258,7 @@ func _on_umezeala_timeout() -> void:
 	var cellLocalCoord=local_to_map(grid.position)
 	var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
 	if tile:
-		if tile.get_custom_data("umed"):
+		if tile.get_custom_data("umed") and player:
 			var player_position = player.global_position
 			var player_direction = player.last_direction.normalized()  # Direcția „în față”
 			var drop_distance = 10  # Ajustează distanța conform nevoilor tale
@@ -398,3 +267,117 @@ func _on_umezeala_timeout() -> void:
 			var grid_cell = local_to_map(mouse_pos)
 			print("nu merge")
 			$ogor.set_cell( grid_cell, 2, Vector2(1,1))  
+
+func handle_grid_display():
+	if not is_instance_valid(player):
+		return
+	var player_position = player.global_position
+	var player_direction = player.last_direction.normalized()
+	var drop_distance = 10
+	var mouse_pos = player_position + (player_direction * drop_distance)
+	var grid_cell = local_to_map(mouse_pos)
+	var tile_data = $ogor.get_cell_tile_data(grid_cell)
+	var tile_data_land = $land.get_cell_tile_data(grid_cell)
+
+	grid.visible = false
+	grid_land.visible = false
+	grid_gard.visible = false
+
+	if tile_data != null and tile_data.get_custom_data("ogor"):
+		grid.visible = true
+		grid.position = map_to_local(grid_cell)
+	else:
+		grid.position = Vector2(-1, -1)
+
+	if tile_data_land != null and tile_data_land.get_custom_data("land") and not grid.visible:
+		grid_land.position = map_to_local(grid_cell)
+	else:
+		grid_land.position = Vector2(-1, -1)
+
+func handle_gard_and_house_placement():
+	if not is_instance_valid(player):
+		return
+	if not inventory.selected_slot:
+		grid_gard.visible = false
+		placing_gard_mode = false
+		grid_house.visible = false
+		placing_house = false
+		placing_podea = false
+		placing_roof = false
+		return
+
+	var player_position = player.global_position
+	var player_direction = player.last_direction.normalized()
+	var drop_distance = 10
+	var mouse_pos = player_position + (player_direction * drop_distance)
+	var grid_cell = local_to_map(mouse_pos)
+	var selected_id = inventory.selected_slot.get_id()
+
+	if selected_id == "12":
+		grid_gard.visible = true
+		grid_gard.position = map_to_local(grid_cell)
+		placing_gard_mode = true
+	else:
+		grid_gard.visible = false
+		placing_gard_mode = false
+
+	if selected_id in ["6", "16", "17"]:
+		grid_house.visible = true
+		grid_house.position = map_to_local(grid_cell)
+		placing_house = selected_id == "6"
+		placing_podea = selected_id == "16"
+		placing_roof = selected_id == "17"
+	else:
+		grid_house.visible = false
+		placing_house = false
+		placing_podea = false
+		placing_roof = false
+
+	handle_house_and_gard_input(grid_cell)
+	
+func handle_house_and_gard_input(grid_cell):
+	if placing_house and Input.is_action_just_pressed("cycle_house"):
+		var tile_data_house = $items.get_cell_tile_data(grid_cell)
+		if tile_data_house != null and tile_data_house.get_custom_data("house"):
+			house_tile_index = (house_tile_index + 1) % house_tiles.size()
+			change_existing_house_tile(grid_cell)
+
+	if placing_roof and Input.is_action_just_pressed("cycle_house"):
+		var tile_data_roof = $cliff.get_cell_tile_data(grid_cell)
+		if tile_data_roof != null and tile_data_roof.get_custom_data("roof"):
+			roof_tile_index = (roof_tile_index + 1) % roof_tiles.size()
+			change_existing_roof_tile(grid_cell)
+
+	if placing_house and Input.is_action_just_pressed("cycle_house"):
+		var tile_data_extra = $items.get_cell_tile_data(grid_cell)
+		if tile_data_extra != null and tile_data_extra.get_custom_data("extra"):
+			extra_tile_index = (extra_tile_index + 1) % extra_house_tiles.size()
+			change_existing_house_tile(grid_cell)
+
+	if Input.is_action_just_pressed("place_gard"):
+		if placing_gard_mode:
+			place_gard(grid_cell)
+			place_gard_deal(grid_cell)
+		elif placing_house:
+			place_house(grid_cell)
+		elif placing_podea:
+			place_podea(grid_cell)
+		elif placing_roof:
+			place_roof(grid_cell)
+
+func handle_harvesting():
+	if Input.is_action_just_pressed("harvest"):
+		var cell = local_to_map(grid.position)
+		if plantedFlower.has(cell) and is_harvestable(cell):
+			harvest_plant(cell)
+
+func handle_roof_transparency():
+	if not is_instance_valid(player):
+		return
+	var player_pos = player.global_position
+	var player_cell = local_to_map(player_pos)
+	var tile_data_player = $cliff.get_cell_tile_data(player_cell)
+	if tile_data_player and tile_data_player.get_custom_data("roof"):
+		$cliff.modulate = Color(1, 1, 1, 0.3)
+	else:
+		$cliff.modulate = Color(1, 1, 1, 1)

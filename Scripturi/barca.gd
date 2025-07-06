@@ -146,6 +146,7 @@ func _physics_process(_delta):
 
 
 
+
 #--------------------------------------atingere destinatie------------------------------------------
 
 func _on_navigation_agent_2d_path_changed():

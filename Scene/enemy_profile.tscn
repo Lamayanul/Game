@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bl4t8k0xv7cr4"]
+[gd_scene load_steps=13 format=3 uid="uid://bl4t8k0xv7cr4"]
 
 [ext_resource type="Script" uid="uid://cr8o3a2yi1px4" path="res://Scripturi/enemy_profile.gd" id="1_51cud"]
+[ext_resource type="Texture2D" uid="uid://bg62t78h5g64j" path="res://icon.svg" id="2_ggmca"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_neval"]
 
 [sub_resource type="Theme" id="Theme_51cud"]
 default_font_size = 25
@@ -8,36 +10,347 @@ default_font_size = 25
 [sub_resource type="Theme" id="Theme_ggmca"]
 default_font_size = 25
 
+[sub_resource type="Theme" id="Theme_neval"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_08hi8"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_bv5m1"]
+default_font_size = 25
+
+[sub_resource type="FontFile" id="FontFile_viii8"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/20/0/ascent = 0.0
+cache/0/20/0/descent = 0.0
+cache/0/20/0/underline_position = 0.0
+cache/0/20/0/underline_thickness = 0.0
+cache/0/20/0/scale = 1.0
+cache/0/50/0/ascent = 0.0
+cache/0/50/0/descent = 0.0
+cache/0/50/0/underline_position = 0.0
+cache/0/50/0/underline_thickness = 0.0
+cache/0/50/0/scale = 1.0
+cache/0/25/0/ascent = 0.0
+cache/0/25/0/descent = 0.0
+cache/0/25/0/underline_position = 0.0
+cache/0/25/0/underline_thickness = 0.0
+cache/0/25/0/scale = 1.0
+
+[sub_resource type="Theme" id="Theme_1wf2u"]
+default_font = SubResource("FontFile_viii8")
+default_font_size = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08lcq"]
+bg_color = Color(0, 0, 0, 0.470588)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ggmca"]
+
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -16.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 8
 script = ExtResource("1_51cud")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 0
-offset_right = 240.0
-offset_bottom = 263.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.552
+anchor_right = 0.5
+anchor_bottom = 0.552
+offset_left = -551.0
+offset_top = -357.696
+offset_right = 557.0
+offset_bottom = 0.303955
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 15)
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(274.75, 100)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = SubResource("Theme_51cud")
 bbcode_enabled = true
-text = "[center]"
+text = "[center]Nume"
+fit_content = true
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/VBoxContainer"]
 layout_mode = 2
+texture = ExtResource("2_ggmca")
 expand_mode = 5
 stretch_mode = 6
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 15)
+[node name="RichTextLabel2" type="RichTextLabel" parent="HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = SubResource("Theme_ggmca")
 bbcode_enabled = true
-text = "[center]"
+text = "[center]Alias"
+fit_content = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(274.75, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+theme = SubResource("Theme_neval")
+bbcode_enabled = true
+text = "[center]Abilitati"
+fit_content = true
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(274.75, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+theme = SubResource("Theme_08hi8")
+bbcode_enabled = true
+text = "[center]Ocupatii"
+fit_content = true
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(274.75, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+theme = SubResource("Theme_bv5m1")
+bbcode_enabled = true
+text = "[center]Personalitate"
+fit_content = true
+
+[node name="Option" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.756
+anchor_top = 0.5
+anchor_right = 0.756
+anchor_bottom = 0.5
+offset_left = -429.816
+offset_top = -370.0
+offset_right = 430.184
+offset_bottom = 388.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Save" type="Button" parent="Option"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Save
+"
+
+[node name="Load" type="Button" parent="Option"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Load"
+
+[node name="Add" type="Button" parent="Option"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "ADD"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Option"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Option/VBoxContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Option/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_1wf2u")
+theme_override_styles/normal = SubResource("StyleBoxFlat_08lcq")
+bbcode_enabled = true
+text = "[center]Sun_Smile_(╯‵□′)╯︵┻━┻"
+fit_content = true
+
+[node name="Buttons" type="HBoxContainer" parent="Option"]
+layout_mode = 2
+alignment = 1
+
+[node name="Skills" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(105, 50)
+layout_mode = 2
+text = "Skills"
+clip_text = true
+
+[node name="Inventory" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(105, 50)
+layout_mode = 2
+text = "Inventory"
+clip_text = true
+
+[node name="Button3" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(126, 50)
+layout_mode = 2
+text = "Main"
+
+[node name="Button4" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(105, 50)
+layout_mode = 2
+
+[node name="Settings" type="Button" parent="Option/Buttons"]
+custom_minimum_size = Vector2(105, 50)
+layout_mode = 2
+text = "Settings"
+clip_text = true
+
+[node name="TextureRect" type="TextureRect" parent="Option"]
+custom_minimum_size = Vector2(562, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Option"]
+layout_mode = 2
+alignment = 1
+
+[node name="SlotContainer" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer/TextureHolder" index="2"]
+anchors_preset = -1
+
+[node name="SlotContainer2" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer2/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer2/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer2/TextureHolder" index="2"]
+anchors_preset = -1
+
+[node name="SlotContainer3" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer3/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer3/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer3/TextureHolder" index="2"]
+anchors_preset = -1
+
+[node name="SlotContainer4" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer4/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer4/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer4/TextureHolder" index="2"]
+anchors_preset = -1
+
+[node name="SlotContainer5" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer5/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer5/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer5/TextureHolder" index="2"]
+anchors_preset = -1
+
+[node name="SlotContainer6" parent="Option/HBoxContainer" instance=ExtResource("3_neval")]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ggmca")
+
+[node name="TextureRect2" parent="Option/HBoxContainer/SlotContainer6/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="Option/HBoxContainer/SlotContainer6/TextureHolder" index="1"]
+anchors_preset = -1
+
+[node name="TextureRect3" parent="Option/HBoxContainer/SlotContainer6/TextureHolder" index="2"]
+anchors_preset = -1
+
+[editable path="Option/HBoxContainer/SlotContainer"]
+[editable path="Option/HBoxContainer/SlotContainer2"]
+[editable path="Option/HBoxContainer/SlotContainer3"]
+[editable path="Option/HBoxContainer/SlotContainer4"]
+[editable path="Option/HBoxContainer/SlotContainer5"]
+[editable path="Option/HBoxContainer/SlotContainer6"]

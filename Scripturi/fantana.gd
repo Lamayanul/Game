@@ -10,13 +10,19 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+#func _process(_delta: float) -> void:
+	#if inventory.selected_slot:
+		#if inventory.selected_slot.get_id()=="22":
+			#$CanvasLayer.visible=true
+		#else:
+			#$CanvasLayer.visible=false
+
+func afisare_fill():
 	if inventory.selected_slot:
 		if inventory.selected_slot.get_id()=="22":
 			$CanvasLayer.visible=true
 		else:
 			$CanvasLayer.visible=false
-
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

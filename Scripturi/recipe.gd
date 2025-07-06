@@ -36,6 +36,25 @@ func _process(_delta: float) -> void:
 		textrect.texture = null
 		textrect.modulate = Color(1, 1, 1, 0)  # Ascunde preview-ul dacă nu există suficiente ingrediente
 
+#func _update_crafting_preview():
+	#for recipe_name in recipes.keys():
+		#var recipe = recipes[recipe_name]
+		#var can_craft = true
+#
+		#for ingredient_id in recipe["ingredients"].keys():
+			#var required_amount = recipe["ingredients"][ingredient_id]
+			#if not has_item_in_slot(ingredient_id, required_amount):
+				#can_craft = false
+				#break
+#
+		#if can_craft:
+			#textrect.texture = recipe["result"]["TEXTURE"]
+			#textrect.modulate = Color(1, 1, 1, 0.5)
+			#return
+	#if is_instance_valid(textrect):
+		#textrect.texture = null
+		#textrect.modulate = Color(1, 1, 1, 0)
+
 
 var recipes = {
 	"apple_pie": {

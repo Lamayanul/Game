@@ -18,7 +18,7 @@ extends PanelContainer
 #
 #
 
-
+var fantana = null
 var slot_container_8: Node = null
 var slot_container_9: Node = null
 #@onready var oven = get_node("/root/world/oven")
@@ -69,6 +69,8 @@ var index=0
 
 signal plantSeed
 signal attacking
+
+
 
 func instantiate_chest():
 	var world = get_node("/root/world")
@@ -153,6 +155,7 @@ func add_item(ID="", item_cantita=1) -> bool:
 
 #--------------------------------_ready()----------------------------------------------------------------
 func _ready():
+	fantana = get_node("/root/world/Fantana")
 	for child in grid_container.get_children():
 		if child is Slot:
 			child.connect("slot_selected", Callable(self, "_on_slot_selected"))
@@ -169,15 +172,19 @@ func _ready():
 func _process(_delta: float) -> void:
 	lamp()
 	has_backpack()
+	
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
 	if selected_slot and is_instance_valid(player):
 		selected_slot.deselect()
 		player.info=""
-		
+	
+	
 	selected_slot = slot  
 	selected_slot.select()
-
+	
+	
+	
 	hand_sprite.texture = null
 	info_label.clear()
 	#color_rect.visible = false
@@ -206,7 +213,7 @@ func _on_slot_selected(slot: Slot):
 	#var player = get_node("/root/world/player")
 	if  slot.get_texture() != null and is_instance_valid(player):
 		player.equip_item(slot.get_texture(), slot.get_nume(), slot.get_raritate())
-	
+
 
 
 func update_selector_position(slot: Slot):
@@ -367,6 +374,7 @@ func select_slot_by_index(indexx: int):
 		var slot = grid_container.get_child(indexx)
 		if slot is Slot:
 			_on_slot_selected(slot)
+			fantana.afisare_fill()
 
 #---------------------------------drop-item-selected-----------------------------------------------------
 func drop_selected_item():

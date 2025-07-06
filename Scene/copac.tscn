@@ -736,7 +736,7 @@ offset = Vector2(-8, 0)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StaticBody2D"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_uvfcm")
+&"": SubResource("AnimationLibrary_uvfcm")
 }
 
 [node name="trunchi" type="CollisionShape2D" parent="StaticBody2D"]

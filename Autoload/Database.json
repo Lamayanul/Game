@@ -182,4 +182,11 @@
 	"nume":"graunte",
 	"raritate": "comuna"
 	},
+"25":{
+	"texture":"golden_armor.png",
+	"cantitate":1,
+	"number":25,
+	"nume":"golden_armor",
+	"raritate": "rara"
+	},
 }

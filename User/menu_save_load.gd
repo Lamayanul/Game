@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var add: Button = $Option/Add
 @onready var rich_text_label: RichTextLabel = $Option/VBoxContainer/RichTextLabel
 @onready var info: Panel = $info
+@onready var grid_character: GridContainer = $Grid_character
+
 @onready var grid_container: GridContainer = $info/VBoxContainer/HBoxContainer/GridContainer
 #@onready var data: String = ""
 #@onready var ora:String = ""
@@ -37,6 +39,7 @@ func _ready():
 	save_and_load.hide()
 	option.hide()
 	info.hide()
+	grid_character.hide()
 	rich_text_label.text = "[center]"+rich_text_label.text
 	dir_contents()
 	
@@ -53,6 +56,7 @@ func _input(event):
 			ui_stack.append(option)
 			option.show()
 			info.show()
+			grid_character.show()
 
 		elif ui_stack.size() > 0:
 			var removed = ui_stack.pop_back()
@@ -60,6 +64,7 @@ func _input(event):
 				removed.hide()
 				if removed == option:
 					info.hide()  # ascundem și info când option dispare
+					grid_character.hide()
 
 			if ui_stack.size() > 0:
 				var next = ui_stack[-1]
@@ -67,6 +72,7 @@ func _input(event):
 					next.show()
 					if next == option:
 						info.show()  # dacă revine option, revine și info
+						grid_character.show()
 
 
  
@@ -75,6 +81,7 @@ func _on_save_pressed():
 	mode = MODE.SAVE
 	option.hide()
 	info.hide()
+	grid_character.hide()
 
  
  
@@ -82,6 +89,7 @@ func _on_load_pressed():
 	mode = MODE.LOAD
 	option.hide()
 	info.hide()
+	grid_character.hide()
 	dir_contents()
 
 
@@ -260,6 +268,7 @@ func _on_skills_pressed() -> void:
 	$SkillTree.visible = true
 	$Option.visible=false
 	$info.visible=false
+	$Grid_character.visible=false
 	
 	if $SkillTree not in ui_stack:
 		ui_stack.append($SkillTree)

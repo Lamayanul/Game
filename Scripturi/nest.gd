@@ -19,10 +19,10 @@ var can_interact=false
 func _ready() -> void:
 	animated_sprite_2d.hide()
 
-func _process(_delta: float) -> void:
-	if is_clocit:
-		animated_sprite_2d.show()
-		animation_player.play("clocit")
+#func _process(_delta: float) -> void:
+	#if is_clocit:
+		#animated_sprite_2d.show()
+		#animation_player.play("clocit")
 		
 func get_gaini() -> Array:
 	return get_tree().get_nodes_in_group("gaina")
@@ -30,22 +30,25 @@ func get_gaini() -> Array:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	for gaina in get_gaini():
 		if is_instance_valid(gaina):
-			if body.is_in_group("gaina") and is_clocit==false:
+			if body.is_in_group("gaina") and not is_clocit:
 				gaina.stop_chicken()
-				is_clocit = true  # Setează starea ca adevărat
+				is_clocit = true
+				animated_sprite_2d.show()
+				animation_player.play("clocit")
 				timer.start()
-				clocit_times+=1
+				clocit_times += 1
 			if body.is_in_group("player"):
-				can_interact=true
+				can_interact = true
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	for gaina in get_gaini():
 		if is_instance_valid(gaina):
-			if body.is_in_group("gaina")and is_clocit:
-				is_clocit = false  # Setează starea ca fals
+			if body.is_in_group("gaina") and is_clocit:
+				is_clocit = false
+				animated_sprite_2d.hide()     # ascunzi când nu mai clocește
 				gaina.start_chicken()
 			if body.is_in_group("player"):
-				can_interact=false
+				can_interact = false
 		
 func _input(event):
 	if harv_egg and event.is_action_pressed("interact") and can_interact:
@@ -57,13 +60,15 @@ func _input(event):
 func _on_timer_timeout() -> void:
 	for gaina in get_gaini():
 		if is_instance_valid(gaina):
-			is_clocit=false
+			is_clocit = false
+			animated_sprite_2d.hide()
 			gaina.start_chicken()
-			if clocit_times==3:
-					egg_move()
+			if clocit_times == 3:
+				egg_move()
 			else:
 				animation_player.play("ou")
-				harv_egg=true
+				animated_sprite_2d.show()
+				harv_egg = true
 	
 func egg_move():
 	animation_player.play("ou_move")

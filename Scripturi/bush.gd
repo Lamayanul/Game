@@ -21,18 +21,31 @@ func _on_timer_respawn_timeout():
 	timer_respawn.stop()
 
 # Funcție care este apelată constant în fiecare frame
-func _process(_delta):
-	#hue=fmod(hue+(delta*cycles_per_second),1.0)
-	#bush_normal.modulate=Color.from_hsv(hue,1.0,1.0)
-	if player_in_zone and Input.is_action_just_pressed("interact"):
-		if bush_fructe.visible:  # Verificăm dacă fructele sunt vizibile
-			bush_fructe.visible = false
-			bush_normal.visible = true
-			# Calculăm poziția de drop relativ la poziția curentă a tufișului
-			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
-			var drop_position = global_position + drop_offset 
-			inv.drop_item_everywhere("8", 3, drop_position)
-			timer_respawn.start()  # Pornim din nou temporizatorul pentru respawn
+#func _process(_delta):
+	##hue=fmod(hue+(delta*cycles_per_second),1.0)
+	##bush_normal.modulate=Color.from_hsv(hue,1.0,1.0)
+	#if player_in_zone and Input.is_action_just_pressed("interact"):
+		#if bush_fructe.visible:  # Verificăm dacă fructele sunt vizibile
+			#bush_fructe.visible = false
+			#bush_normal.visible = true
+			## Calculăm poziția de drop relativ la poziția curentă a tufișului
+			#var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
+			#var drop_position = global_position + drop_offset 
+			#inv.drop_item_everywhere("8", 3, drop_position)
+			#timer_respawn.start()  # Pornim din nou temporizatorul pentru respawn
+
+func _input(event):
+	if player_in_zone and event.is_action_pressed("interact"):
+		culege_fruct()
+
+func culege_fruct():
+	if bush_fructe.visible:
+		bush_fructe.visible = false
+		bush_normal.visible = true
+		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+		var drop_position = global_position + drop_offset 
+		inv.drop_item_everywhere("8", 3, drop_position)
+		timer_respawn.start()
 
 # Funcție care se declanșează când jucătorul intră în zonă
 func _on_body_entered(body):
@@ -58,5 +71,5 @@ func play_minare_animation():
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("arma"):
-		if inv.selected_slot.get_id()=="2":
+		if  inv.selected_slot and inv.selected_slot.get_id()=="2":
 			call_deferred("play_minare_animation")
