@@ -1608,13 +1608,13 @@ region = Rect2(240, 0, 80, 80)
 atlas = ExtResource("17_jx4b7")
 region = Rect2(320, 0, 80, 80)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rrli7"]
-atlas = ExtResource("17_jx4b7")
-region = Rect2(400, 0, 80, 80)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_iou1c"]
 atlas = ExtResource("17_jx4b7")
 region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrli7"]
+atlas = ExtResource("17_jx4b7")
+region = Rect2(400, 0, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8sfs2"]
 atlas = ExtResource("17_jx4b7")
@@ -3103,7 +3103,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-down-arma",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3161,7 +3161,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-down-corp",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3190,7 +3190,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-down-corp-golden",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3335,7 +3335,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-left-corp-golden",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3441,10 +3441,10 @@ animations = [{
 "texture": SubResource("AtlasTexture_dk6r1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rrli7")
+"texture": SubResource("AtlasTexture_iou1c")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_iou1c")
+"texture": SubResource("AtlasTexture_rrli7")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8sfs2")
@@ -3480,7 +3480,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-right-corp-golden",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3625,7 +3625,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk-up-corp-golden",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,

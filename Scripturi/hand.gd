@@ -16,14 +16,14 @@ func _process(delta: float):
 
 
 func _on_panel_container_mouse_entered() -> void:
-	$"../InfoLabel".visible=true
+	$"../VBoxContainer/InfoLabel".visible=true
 	#color_rect.visible=true
-	$"../InfoLabel".text=player.info
+	$"../VBoxContainer/InfoLabel".text=player.info
 	print("intrare")
 
 
 func _on_panel_container_mouse_exited() -> void:
-	$"../InfoLabel".visible=true
-	$"../InfoLabel".text=""
+	$"../VBoxContainer/InfoLabel".visible=true
+	$"../VBoxContainer/InfoLabel".text=""
 	#color_rect.visible=false
 	print("iesire")

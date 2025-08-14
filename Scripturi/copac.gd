@@ -71,7 +71,7 @@ func play_taiere_animation():
 		var drop_position = global_position + drop_offset 
 		inv.drop_item_everywhere("7", 3, drop_position) 
 		fructe = false 
-		animation_player.stop() 
+
 		animation_player.play("taiere")  
 		return 
 		
@@ -80,8 +80,10 @@ func play_taiere_animation():
 
 	if index_taiere == 8:
 		var pos = Vector2(-20, 10)
-		animation_player.stop() 
 		animation_player.play("gata") 
+		
+		animation_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
+		
 		var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
 		var drop_position = global_position + drop_offset 
 		inv.drop_item_everywhere("6", 3, drop_position) 
@@ -89,12 +91,19 @@ func play_taiere_animation():
 			inv.drop_item_everywhere("7", 3, pos) 
 		#reset_tree_state() 
 		#respawn_tree.start()   
+		#queue_free()
+		#var radacina_mare_scene = load("res://Scene/radacina_mare.tscn")
+		#var radacina_mare_instance = radacina_mare_scene.instantiate()
+		#radacina_mare_instance.global_position = global_position + Vector2(3,10)
+		#get_parent().add_child(radacina_mare_instance)
+		
+func _on_animation_finished(anim_name):
+	if anim_name == "gata":
 		queue_free()
 		var radacina_mare_scene = load("res://Scene/radacina_mare.tscn")
 		var radacina_mare_instance = radacina_mare_scene.instantiate()
-		radacina_mare_instance.global_position = global_position + Vector2(3,11)
+		radacina_mare_instance.global_position = global_position + Vector2(0,5)
 		get_parent().add_child(radacina_mare_instance)
-
 
 func reset_tree_state():
 

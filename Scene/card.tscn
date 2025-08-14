@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://lxt8b220wo4a" path="res://Shaders/fake_3D.gdshader" id="1_7h7yf"]
 [ext_resource type="Shader" uid="uid://bi2f8nsk3sop0" path="res://Shaders/dissolve.gdshader" id="1_8jfk0"]
 [ext_resource type="Script" uid="uid://brbc157hkiwm8" path="res://Scripturi/card.gd" id="1_borcn"]
-[ext_resource type="Texture2D" uid="uid://bv8cym72g8b6q" path="res://assets/mar.png" id="4_xwqq4"]
+[ext_resource type="Texture2D" uid="uid://cvml1fro3jxxt" path="res://pass_cuppons/model_cupon_pisi.png" id="4_xwqq4"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kntej"]
 seed = -15
@@ -34,7 +34,7 @@ shader_parameter/x_rot = 0.0
 shader_parameter/inset = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xsth3"]
-size = Vector2(130, 175)
+size = Vector2(130, 93)
 
 [node name="Card" type="Button"]
 material = SubResource("ShaderMaterial_3ph3s")
@@ -50,12 +50,6 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_7aqjh")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_7aqjh")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_7aqjh")
 script = ExtResource("1_borcn")
-angle_x_max = null
-angle_y_max = null
-max_offset_shadow = null
-spring = null
-damp = null
-velocity_multiplier = null
 
 [node name="Shadow" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 1)
@@ -74,21 +68,26 @@ stretch_mode = 4
 [node name="CardTexture" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_cho03")
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 0.059
+anchor_right = 0.908
 anchor_bottom = 1.0
+offset_left = 1.032
+offset_top = -25.0
+offset_right = 0.983994
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_xwqq4")
 stretch_mode = 4
 
-[node name="DestroyArea" type="Area2D" parent="."]
+[node name="area" type="Area2D" parent="."]
+position = Vector2(74, 165)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DestroyArea"]
-position = Vector2(75, 104.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area"]
 shape = SubResource("RectangleShape2D_xsth3")
-disabled = true
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="body_entered" from="area" to="." method="_on_body_entered"]

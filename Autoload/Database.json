@@ -189,4 +189,53 @@
 	"nume":"golden_armor",
 	"raritate": "rara"
 	},
+"26":{
+	"texture":"model_cupon_pisi.png",
+	"cantitate":1,
+	"number":26,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"27":{
+	"texture":"model_cupon_oita.png",
+	"cantitate":1,
+	"number":27,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"28":{
+	"texture":"model_cupon_bufon.png",
+	"cantitate":1,
+	"number":28,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"29":{
+	"texture":"model_cupon_mew.png",
+	"cantitate":1,
+	"number":29,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"30":{
+	"texture":"folder.png",
+	"cantitate":1,
+	"number":30,
+	"nume":"Folder",
+	"raritate": "epic"
+	},
+"31":{
+	"texture":"storage.png",
+	"cantitate":1,
+	"number":31,
+	"nume":"Storage",
+	"raritate": "epic"
+	},
+"32":{
+	"texture":"quest.png",
+	"cantitate":1,
+	"number":32,
+	"nume":"Quest",
+	"raritate": "epic"
+	},
 }

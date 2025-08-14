@@ -223,6 +223,7 @@ position = Vector2(-0.709311, 17.7328)
 shape = SubResource("RectangleShape2D_8sx1i")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
 anchors_preset = 8

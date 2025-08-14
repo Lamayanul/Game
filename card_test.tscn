@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk6hjkqitnryp"]
+
+[ext_resource type="Texture2D" uid="uid://cvml1fro3jxxt" path="res://pass_cuppons/model_cupon_pisi.png" id="1_m5mso"]
+
+[node name="TextureRect" type="TextureRect"]
+custom_minimum_size = Vector2(152, 207)
+offset_right = 152.0
+offset_bottom = 256.0
+texture = ExtResource("1_m5mso")

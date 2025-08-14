@@ -8,7 +8,7 @@ var last_direction = Vector2(0, 1)
 @onready var inventory = get_node("/root/world/CanvasLayer/Inv")
 var selected_slot: Slot = null  
 @onready var player = get_node_or_null("/root/world/player")
-@onready var seminte_grid: Sprite2D = $Seminte
+#@onready var seminte_grid: Sprite2D = $Seminte
 var drop=1
 var cell
 var planting_mode = false
@@ -33,15 +33,15 @@ var ogor_tile_tiles=[Vector2(1,1),Vector2(0,0),Vector2(0,1),Vector2(0,2),Vector2
 var ogor_tile_index=0
 var placing_podea=false
 var placing_roof=false
-@onready var fantana_bar = get_node("/root/world/Fantana/CanvasLayer/ProgressBar")
+@onready var fantana_bar = get_node_or_null("/root/world/Fantana/CanvasLayer/ProgressBar")
 
 
 
 #-------------------------------_ready--------------------------------------------------------------------------
-func _ready():
-	grid_land.visible=false
-	grid_gard.visible = false
-	seminte_grid.visible=false
+#func _ready():
+	#grid_land.visible=false
+	#grid_gard.visible = false
+	#seminte_grid.visible=false
 
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
@@ -50,7 +50,7 @@ func _process(_delta):
 	handle_grid_display()
 	handle_gard_and_house_placement()
 	handle_harvesting()
-	handle_roof_transparency()
+	#handle_roof_transparency()
 
 	
 func change_existing_house_tile(grid_cell: Vector2):
@@ -367,17 +367,17 @@ func handle_house_and_gard_input(grid_cell):
 
 func handle_harvesting():
 	if Input.is_action_just_pressed("harvest"):
-		var cell = local_to_map(grid.position)
-		if plantedFlower.has(cell) and is_harvestable(cell):
-			harvest_plant(cell)
+		var celll = local_to_map(grid.position)
+		if plantedFlower.has(celll) and is_harvestable(celll):
+			harvest_plant(celll)
 
-func handle_roof_transparency():
-	if not is_instance_valid(player):
-		return
-	var player_pos = player.global_position
-	var player_cell = local_to_map(player_pos)
-	var tile_data_player = $cliff.get_cell_tile_data(player_cell)
-	if tile_data_player and tile_data_player.get_custom_data("roof"):
-		$cliff.modulate = Color(1, 1, 1, 0.3)
-	else:
-		$cliff.modulate = Color(1, 1, 1, 1)
+#func handle_roof_transparency():
+	#if not is_instance_valid(player):
+		#return
+	#var player_pos = player.global_position
+	#var player_cell = local_to_map(player_pos)
+	#var tile_data_player = $cliff.get_cell_tile_data(player_cell)
+	#if tile_data_player and tile_data_player.get_custom_data("roof"):
+		#$cliff.modulate = Color(1, 1, 1, 0.3)
+	#else:
+		#$cliff.modulate = Color(1, 1, 1, 1)

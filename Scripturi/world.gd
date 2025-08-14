@@ -1,6 +1,8 @@
 extends Node2D
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
-@onready var trader = get_node("/root/world/CanvasLayer2")
+@onready var world: Node2D = $"."
+
+#@onready var trader = get_node("/root/world/CanvasLayer2")
 var count:int:
 	set(value):
 		count=value
@@ -13,26 +15,33 @@ func mark_dirty() -> void:
 	needs_update = true
 	
 func _input(event):
-	if event is InputEventKey:
-		if event.pressed and event.keycode==KEY_ENTER:
-			inv.instantiate_pillar()
-		
-	if Input.is_action_just_pressed("toggle_grid"):
-		inv.instantiate_generator()
+	#if event is InputEventKey:
+		#if event.pressed and event.keycode==KEY_ENTER:
+			#inv.instantiate_pillar()
+		#
+	#if Input.is_action_just_pressed("toggle_grid"):
+		#inv.instantiate_generator()
 	if event is InputEventKey:
 		if event.pressed and event.keycode==KEY_TAB:
-			trader.visible=!trader.visible
+			pass
+			#trader.visible=!trader.visible
 			
 
-func save_data():
-	Persistence.scor=count
-
-func load_data():
-	count=Persistence.scor
+#func save_data():
+	#Persistence.scor=count
+#
+#func load_data():
+	#count=Persistence.scor
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	auto_detect_refresh_rate()
+	var spawner := preload("res://EnemySpawner.gd").new()
+	spawner.enemy_scene = preload("res://Scene/enemy.tscn")
+	world.add_child(spawner)
+
+# pornește cu poziție specifică
+	spawner.start_spawning(Vector2(-582, 934))
 
 
 

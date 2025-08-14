@@ -160,14 +160,14 @@ stretch_mode = 6
 
 [node name="Option" type="VBoxContainer" parent="." groups=["option"]]
 anchors_preset = -1
-anchor_left = 0.216
-anchor_top = 0.7
-anchor_right = 0.216
-anchor_bottom = 0.7
-offset_left = -243.832
-offset_top = -436.6
-offset_right = 272.168
-offset_bottom = 175.4
+anchor_left = 0.228
+anchor_top = 0.498
+anchor_right = 0.228
+anchor_bottom = 0.498
+offset_left = -257.656
+offset_top = -303.704
+offset_right = 258.344
+offset_bottom = 306.296
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -237,12 +237,12 @@ clip_text = true
 anchors_preset = -1
 anchor_left = 0.459
 anchor_top = 0.026
-anchor_right = 1.0
-anchor_bottom = 0.968
+anchor_right = 0.99
+anchor_bottom = 0.628
 offset_left = 0.231995
 offset_top = 0.152
-offset_right = -11.0
-offset_bottom = -0.264038
+offset_right = 0.52002
+offset_bottom = 0.0559998
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -254,7 +254,8 @@ anchors_preset = -1
 anchor_right = 1.002
 anchor_bottom = 1.0
 offset_left = -1.0
-offset_right = -0.22406
+offset_right = -0.223938
+offset_bottom = -2.99994
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -284,13 +285,13 @@ size_flags_horizontal = 3
 [node name="GridContainer" type="GridContainer" parent="info"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.864
+anchor_top = 0.809
 anchor_right = 0.992
-anchor_bottom = 1.0
+anchor_bottom = 0.984
 offset_left = 7.0
-offset_top = -0.039978
-offset_right = -0.104004
-offset_bottom = 6.10352e-05
+offset_top = -0.15097
+offset_right = -0.103882
+offset_bottom = 0.0240479
 columns = 4
 
 [node name="SlotContainer" parent="info/GridContainer" instance=ExtResource("4_u6r4n")]
@@ -330,14 +331,14 @@ visible = false
 
 [node name="Grid_character" type="GridContainer" parent="."]
 anchors_preset = -1
-anchor_left = 0.228
-anchor_top = 0.095
-anchor_right = 0.228
-anchor_bottom = 0.095
-offset_left = -257.656
-offset_top = -61.56
-offset_right = 258.344
-offset_bottom = 65.44
+anchor_left = 0.227
+anchor_top = 0.098
+anchor_right = 0.227
+anchor_bottom = 0.098
+offset_left = -256.504
+offset_top = -63.504
+offset_right = 259.496
+offset_bottom = 63.496
 columns = 4
 script = ExtResource("6_gdp8x")
 

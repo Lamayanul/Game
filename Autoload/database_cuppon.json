@@ -1,0 +1,241 @@
+{
+ "0":{
+  "texture" : "",
+  "cantitate":0,
+  "number":0,
+  "nume":"",
+  "raritate": ""
+	 },
+
+ "1":{
+  "texture" : "Egg_item.png",
+  "cantitate":1,
+  "number":1,
+  "nume":"ou",
+  "raritate": "comuna"
+	 },
+	
+"2":{
+	"texture":"axe.png",
+	"cantitate":1,
+	"number":2,
+	"nume":"topor",
+	"raritate": "rara"
+	},
+	
+"3":{
+	"texture":"grau.png",
+	"cantitate":1,
+	"number":3,
+	"nume":"seminte grau",
+	"raritate": "comuna"
+	},
+	
+"4":{
+	"texture":"grau_de_recoltat.png",
+	"cantitate":1,
+	"number":4,
+	"nume":"grau",
+	"raritate": "comuna"
+	},
+	
+"5":{
+	"texture":"vinete_seminte.png",
+	"cantitate":1,
+	"number":5,
+	"nume":"seminte vinete",
+	"raritate": "comuna"
+	},
+	
+"6":{
+	"texture":"lemn.png",
+	"cantitate":1,
+	"number":6,
+	"nume":"lemn",
+	"raritate": "comuna"
+	},
+	
+"7":{
+	"texture":"mar.png",
+	"cantitate":1,
+	"number":7,
+	"nume":"mar",
+	"raritate": "comuna"
+	},
+	
+"8":{
+	"texture":"berry.png",
+	"cantitate":1,
+	"number":8,
+	"nume":"berry",
+	"raritate": "comuna"
+	},
+"9":{
+	"texture":"hoe.png",
+	"cantitate":1,
+	"number":9,
+	"nume":"hoe",
+	"raritate": "comuna"
+	},
+"10":{
+	"texture":"pickaxe.png",
+	"cantitate":1,
+	"number":10,
+	"nume":"pickaxe",
+	"raritate": "rara"
+	},
+"11":{
+	"texture":"piatra-item.png",
+	"cantitate":1,
+	"number":11,
+	"nume":"piatra",
+	"raritate": "comuna"
+	},
+"12":{
+	"texture":"gard_pivot.png",
+	"cantitate":1,
+	"number":12,
+	"nume":"gard",
+	"raritate": "comuna"
+	},
+"13":{
+	"texture":"shield.png",
+	"cantitate":1,
+	"number":13,
+	"nume":"scut",
+	"raritate": "rara"
+	},
+"14":{
+	"texture":"gambling_mace.png",
+	"cantitate":1,
+	"number":14,
+	"nume":"Buzduganul norocului",
+	"raritate": "epica"
+	},
+"15":{
+	"texture":"pie.png",
+	"cantitate":1,
+	"number":15,
+	"nume":"apple pie",
+	"raritate": "rara"
+	},
+"16":{
+	"texture":"podea_tile.png",
+	"cantitate":1,
+	"number":16,
+	"nume":"podea",
+	"raritate": "comuna"
+	},
+"17":{
+	"texture":"roof.png",
+	"cantitate":1,
+	"number":17,
+	"nume":"roof",
+	"raritate": "comuna"
+	},
+"18":{
+	"texture":"backpack.png",
+	"cantitate":1,
+	"number":18,
+	"nume":"backpack",
+	"raritate": "rara"
+	},
+"19":{
+	"texture":"blue_lightBulb.png",
+	"cantitate":1,
+	"number":19,
+	"nume":"bec albastru",
+	"raritate": "rara"
+	},
+"20":{
+	"texture":"red_lightBulb.png",
+	"cantitate":1,
+	"number":20,
+	"nume":"bec rosu",
+	"raritate": "rara"
+	},
+"21":{
+	"texture":"orange_lightBulb.png",
+	"cantitate":1,
+	"number":21,
+	"nume":"bec portocaliu",
+	"raritate": "rara"
+	},
+"22":{
+	"texture":"water_can.png",
+	"cantitate":1,
+	"number":22,
+	"nume":"stropitoare",
+	"raritate": "comuna"
+	},
+"23":{
+	"texture":"lamp.png",
+	"cantitate":1,
+	"number":23,
+	"nume":"felinar",
+	"raritate": "comuna"
+	},
+"24":{
+	"texture":"graunte.png",
+	"cantitate":1,
+	"number":24,
+	"nume":"graunte",
+	"raritate": "comuna"
+	},
+"25":{
+	"texture":"golden_armor.png",
+	"cantitate":1,
+	"number":25,
+	"nume":"golden_armor",
+	"raritate": "rara"
+	},
+"26":{
+	"texture":"model_cupon_pisi.png",
+	"cantitate":1,
+	"number":26,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"27":{
+	"texture":"model_cupon_oita.png",
+	"cantitate":1,
+	"number":27,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"28":{
+	"texture":"model_cupon_bufon.png",
+	"cantitate":1,
+	"number":28,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"29":{
+	"texture":"model_cupon_mew.png",
+	"cantitate":1,
+	"number":29,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"30":{
+	"texture":"model_cupon_cavaler.png",
+	"cantitate":1,
+	"number":30,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"31":{
+	"texture":"model_cupon_duck.png",
+	"cantitate":1,
+	"number":31,
+	"nume":"cupon",
+	"raritate": "epic"
+	},
+"32":{
+	"texture":"model_pass_cornfield.png",
+	"cantitate":1,
+	"number":32,
+	"nume":"pass",
+	"raritate": "epic"
+	},
+}

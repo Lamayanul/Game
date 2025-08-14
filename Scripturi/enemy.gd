@@ -42,21 +42,28 @@ var player_in_zone =false
 var possible_names = ["MeowSky", "Clawzor", "Grumpy", "ShadowFang", "Bitey", "Mr. Whiskers", "RageCat", "Snarlz"]
 @onready var namae  = ""
 
-@onready var image = $CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer/TextureRect
+@onready var image = $CanvasLayer/Control2/TextureRect
 
 @onready var aiText: RichTextLabel = $CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer/RichTextLabel
 @onready var textEdit: TextEdit = $CanvasLayer/Control2/PanelContainer/VBoxContainer/TextEdit
 var deplasare=false
-
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 var happy=0;
 var angry=0;
 var dictator=0;
 
+var ai_target_set = false
 
+var ai_tasks = [
+	{ "type": "pickup", "item": "apple", "location": Vector2(100, 150), "completed": false },
+	{ "type": "goto", "location": Vector2(500, 300), "completed": false },
+	{ "type": "deliver", "item": "apple", "location": Vector2(600, 400), "completed": false }
+]
+var current_task_index = 0
 
 
 func _ready():
-	healthbar_enemy.value=0
+	#healthbar_enemy.value=0
 	$ChangeDirection.start()
 	add_to_group("enemy_hitbox")
 	#select_new_direction()
@@ -64,19 +71,43 @@ func _ready():
 	$arma/colisiune.disabled=true
 	for player_h in hitboxex:
 		player_hitbox=player_h
-	image.texture=load("res://Sprout Lands - Sprites - Basic pack/Objects/variant.jpeg")
+	#image.texture=load("res://Icons/✗ 𝐭𝐚𝐭𝐬𝐮 ✗.png")
 	namae = possible_names.pick_random()
 	text_rich_name.text = namae
+	#nav_agent.velocity_computed.connect(_on_velocity_computed)
 
 
 func get_player():
 	return get_tree().get_first_node_in_group("player")
 
-
-
+#func go_to(pos: Vector2):
+	#nav_agent.target_position = pos
+	#
+#func has_item(item: String) -> bool:
+	## Schimbă cu sistemul tău de inventar
+	#return true
+#
+#func pick_item(item: String):
+	#print("AI picked up:", item)
+#
+#func deliver_item(item: String):
+	#print("AI delivered:", item)
+#
+#func _on_velocity_computed(safe_velocity):
+	#velocity = safe_velocity
 
 
 func _physics_process(_delta):
+	#process_ai_tasks()
+	#if nav_agent.is_navigation_finished():
+		## Task completat sau treci la următorul
+		#return
+	#var next_velocity = nav_agent.get_next_path_position() - global_position
+	#velocity = next_velocity.normalized() * MoveSpeed
+	#movement()
+	#move_and_slide()
+	
+
 	if deplasare:
 		velocity=Vector2.ZERO
 		animated_sprite_2d.play("idle")
@@ -90,6 +121,52 @@ func _physics_process(_delta):
 		velocity = moveDirection * MoveSpeed
 		move_and_slide()
 		movement()
+
+#func find_nearest_item(item_type: String) -> Node2D:
+	#var nearest_item = null
+	#var min_dist = INF
+	#for item in get_tree().get_nodes_in_group("item"):
+		## Verifică tipul
+		#if item.item_type == item_type and is_instance_valid(item):
+			#var dist = global_position.distance_to(item.global_position)
+			#if dist < min_dist:
+				#min_dist = dist
+				#nearest_item = item
+	#return nearest_item
+
+
+	#
+#func process_ai_tasks():
+	#if current_task_index >= ai_tasks.size():
+		#return # Toate task-urile terminate
+#
+	#var task = ai_tasks[current_task_index]
+	#match task["type"]:
+		#"pickup":
+			## Dacă nu avem mărul, mergem la locația de pickup
+			#if not has_item("apple"):
+				#go_to(task["location"])
+				#if (global_position.distance_to(task["location"]) < 10):
+					#pick_item("apple")
+					#task["completed"] = true
+					#current_task_index += 1
+			#else:
+				#current_task_index += 1
+		#"deliver":
+			#if has_item("apple"):
+				#go_to(task["location"])
+				#if (global_position.distance_to(task["location"]) < 10):
+					#deliver_item("apple")
+					#task["completed"] = true
+					#current_task_index += 1
+			#else:
+				#current_task_index += 1
+		#"goto":
+			#go_to(task["location"])
+			#if (global_position.distance_to(task["location"]) < 10):
+				#task["completed"] = true
+				#current_task_index += 1
+
 
 func select_new_direction():
 	var random = RandomNumberGenerator.new()

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bk76o88xy0crq"]
+
+[node name="Button" type="Button"]
+z_index = 1
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = -1
+anchor_right = 0.168
+anchor_bottom = 0.233
+offset_right = -0.536011
+offset_bottom = 0.0159912
+text = "TAB"

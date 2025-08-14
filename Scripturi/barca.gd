@@ -19,7 +19,7 @@ var player_in_boat=false
 var player_near_boat=false
 @onready var animated_sprite_2d = $AnimatedSprite2D
 var moveDirectionHandlerBoat=Vector2.ZERO
-@onready var camera_boat: Camera2D = $camera_boat
+#@onready var camera_boat: Camera2D = $camera_boat
 @onready var visible_on_screen_notifier_2d: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
 var valid=false
 #-----------------------------------ready----------------------------------------------------
@@ -219,7 +219,7 @@ func enter_boat():
 	player.set_physics_process(false)  # Dezactivăm procesarea jucătorului
 	miscare = false  # Oprim mișcarea aleatorie cât timp controlăm barca manual
 	movement=50
-	camera_boat.make_current()
+	#camera_boat.make_current()
 	player.reparent(self)  # Reatașează jucătorul ca „child” al bărcii
 	player.global_position = global_position + Vector2(0,3) 
 	change_direction_timer.stop()  # Oprim schimbarea direcției aleatorii

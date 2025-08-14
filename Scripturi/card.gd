@@ -1,4 +1,8 @@
 extends Button
+@export var ID =""
+@export var item_cantitate:int =1
+var original_position: Vector2 
+var item_texture: Texture
 
 @export var angle_x_max: float = 15.0
 @export var angle_y_max: float = 15.0
@@ -25,13 +29,16 @@ var velocity: Vector2
 
 @onready var card_texture: TextureRect = $CardTexture
 @onready var shadow = $Shadow
-@onready var collision_shape = $DestroyArea/CollisionShape2D
+@onready var area = $area/CollisionShape2D
 
 func _ready() -> void:
 	# Convert to radians because lerp_angle is using that
+	# Setează textura folosind ID-ul
+	set_texture1(load("res://assets/" + DatabaseCuppon.get_texture(ID)) as Texture)
+	original_position = position    
+
 	angle_x_max = deg_to_rad(angle_x_max)
 	angle_y_max = deg_to_rad(angle_y_max)
-	collision_shape.set_deferred("disabled", true)
 	$Shadow.texture= $CardTexture.texture
 	$Shadow.modulate = Color(0,0,0,0.4)
 
@@ -91,7 +98,7 @@ func handle_mouse_click(event: InputEvent) -> void:
 	else:
 		# drop card
 		following_mouse = false
-		collision_shape.set_deferred("disabled", false)
+		area.set_deferred("disabled", false)
 		if tween_handle and tween_handle.is_running():
 			tween_handle.kill()
 		tween_handle = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
@@ -144,3 +151,57 @@ func _on_mouse_exited() -> void:
 		tween_hover.kill()
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween_hover.tween_property(self, "scale", Vector2.ONE, 0.55)
+
+func _on_body_entered(body):
+	
+	if QuestManager.quest and QuestManager.quest.objectives == "Fetch":
+		if ID == QuestManager.quest.required_item_id:
+			print("✔️ Itemul necesar pentru quest a fost colectat:", ID)
+			QuestManager.next_quest()
+			queue_free()
+			return
+	
+	if body.is_in_group("player"):
+		var inventory = get_parent().find_child("Inv2")
+		
+		print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
+		print("Inventar plin:", inventory.plin)
+
+		# 1. Încearcă să adauge itemul în inventar
+		var added = inventory.add_item(ID, self.get_cantiti())
+
+		# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
+		if added:
+			queue_free()
+			print("Obiect colectat și șters.")
+		else:
+			print("Inventarul este plin! Nu pot adăuga obiectul.")
+
+	
+
+
+
+
+	
+
+# Metodă pentru a seta textura pe obiect
+func set_texture1(texture_drop: Texture):
+	item_texture = texture_drop
+	$CardTexture.texture = item_texture  # Asigură-te că setezi textura pe Sprite2D
+
+# Metodă pentru a seta cantitatea pe obiect
+func set_cantitate(cantitate: int):
+	if cantitate==0:
+		
+		return
+	item_cantitate = cantitate
+	# Dacă ai un Label pentru a afișa cantitatea, îl poți seta aici
+	# Exemplu: label.text = str(item_cantitate)
+func get_cantiti():
+	return item_cantitate
+	
+func set_lumina(new_ID):
+	if new_ID=="23":
+		$PointLight2D.visible=true
+		$PointLight2D.enabled=true
+		print("Aprind lumina!")

@@ -7,7 +7,7 @@ var enemy_current_attack=false
 var player_alive=true
 var player_current_attack=false
 #sa@onready var healthbar = get_node("/root/world/CanvasLayer/CanvasLayer/healthbar")
-@onready var healthbar_player =  get_node("/root/world/CanvasLayer/CanvasLayer/healthbar_player")
+@onready var healthbar_player =  get_node("/root/world/CanvasLayer/healthbar_player")
 var is_attacking = false
 var scut_used=0
 #-----------------------------jump/movement----------------------------------------------------------
@@ -17,7 +17,7 @@ var jumpDirection = Vector2.ZERO
 var last_direction = Vector2(0, 1)
 var knockback_force = 500
 @onready var camera_2d: Camera2D = $Camera2D
-@onready var fantana_bar = get_node("/root/world/Fantana/CanvasLayer/ProgressBar")
+@onready var fantana_bar = get_node_or_null("/root/world/Fantana/CanvasLayer/ProgressBar")
 #--------------------------------Animation-start---------------------------------------------------
 var _currentIdleAnimation="down"
 @onready var animation_player = $AnimationPlayer
@@ -32,19 +32,19 @@ var current_state = "idle"
 @onready var animated_sprite_2d_4: AnimatedSprite2D = $AnimatedSprite2D4
 
 #-------------------------------------Info-hand-sprite------------------------------------------
-@onready var hand_sprite = $"../CanvasLayer/PanelContainer".get_node("sprite")
-@onready var info_label = $"../CanvasLayer/PanelContainer/VBoxContainer".get_node("InfoLabel")
+
 
 #@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
 #@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
 var info:String=""
-@onready var player_icon = $"../CanvasLayer/CanvasLayer/healthbar_player/player_icon"
+@onready var player_icon = $"../CanvasLayer/healthbar_player/player_icon"
 var attack_weapon=0;
 #----------------------------------Enemy-action/stats-------------------------------------------------
 @onready var attack_timer = $attack_timer
 @onready var arma =$arma
 @onready var arma_colisiune = $arma/arma_colisiune
 var camera_enemy = null
+var see_all = null
 var colisiune
 #@onready var camera_boat: Camera2D = $"../boat/camera_boat"
 
@@ -63,6 +63,7 @@ var selected_slot: Slot = null
 var tile_map
 var _tileMap
 @onready var inv: PanelContainer = $"../CanvasLayer/Inv"
+@onready var inv2: PanelContainer = $"../CanvasLayer/Inv2"
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 @onready var farming_on=false
 @onready var timer: Timer = $Timer
@@ -88,8 +89,7 @@ func _ready():
 	arma_colisiune.disabled=true
 	#healthbar.value=health
 	add_to_group("player_hitbox")
-	info_label.text=""
-	info_label.visible=true
+
 	scut.visible=false
 	shield_touch.disabled=true
 	scut.add_to_group("scut")
@@ -103,11 +103,13 @@ func _init_enemy_list():
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	for enemy in enemies:
 		camera_enemy=enemy.get_node("camera_enemy")
+		see_all = enemy.get_node("CanvasLayer2")
 	print("inamici: ",enemies)  # Ar trebui acum să fie lista corectă
 
 
 #------------------------------_physics_process()------------------------------------------------------
 func _physics_process(_delta):
+	velocity = Vector2.ZERO
 	if not can_move:
 		velocity = Vector2.ZERO
 		return
@@ -123,7 +125,7 @@ func _physics_process(_delta):
 		velocity = Vector2.ZERO
 		return
 
-	velocity = Vector2.ZERO  # important: resetăm în fiecare frame
+	  # important: resetăm în fiecare frame
 
 	if not is_jumping:
 		handle_movement()  # aici se setează velocity.x / velocity.y
@@ -178,9 +180,10 @@ func handle_movement():
 		velocity = velocity.normalized() * speed
 		if velocity.x != 0:
 			if velocity.x < 0:
-				animation_player_2.play("walk-left-arma")
-				animation_player_3.play("walk-left-cap")
-				animation_player_4.play("walk-left-corp"+clothes(current_clothes))
+				if animation_player.current_animation != ("walk-left-corp") or !animation_player.is_playing():
+					animation_player_2.play("walk-left-arma")
+					animation_player_3.play("walk-left-cap")
+					animation_player_4.play("walk-left-corp"+clothes(current_clothes))
 			else:
 				animation_player_2.play("walk-right-arma")
 				animation_player_3.play("walk-right-cap")
@@ -203,6 +206,7 @@ func handle_movement():
 		current_state = "idle"
 
 	move_and_slide()
+
 
 func set_clothes(piece: String):
 	current_clothes = piece
@@ -278,13 +282,9 @@ func equip_item(item_texture: Texture, item_nume : String, item_raritate:String)
 		shield_touch.disabled = true
 	if item_texture:
 		print("Texture set successfully")
-		hand_sprite.texture = item_texture
-		hand_sprite.visible = true
-		hand_sprite.scale=Vector2(9,9)
-		info = "[center]ITEM: %s\nRARITATE: %s[/center]" % [item_nume, item_raritate]
-		
-	else:
-		print("Texture is null")
+
+
+
 	
 
 
@@ -293,11 +293,7 @@ func inequip_item():
 	scut_used=0
 	shield_touch.call_deferred("set_disabled", true)
 	
-	hand_sprite.texture=null
-	info_label.visible=true
-	info_label.clear()
-	info = "" 
-	info_label.text = ""
+
 
 #func _on_area_2d_mouse_entered():
 	#info_label.visible=true
@@ -469,14 +465,17 @@ func deal_with_damage():
 		healthbar_player.value = health
 
 		apply_knockback()  # Efect opțional de recul
+		print("see_all node: 0", see_all)
 		if health <= 0:
+			print("see_all node: 1", see_all)
+			see_all.visible=true
 			self.queue_free()  # Jucătorul moare
 			player_icon.texture = null
 			$"../TileMap/Grid_gard".visible = false
 			$"../TileMap/Grid_land".visible = false
 			$"../TileMap/Grid_ogor".visible = false
 			camera_enemy.make_current()
-
+			
 		enemy_inattack_range = false
 		enemy_current_attack = false
 
@@ -497,7 +496,7 @@ func deal_with_damage1():
 			$"../TileMap/Grid_land".visible = false
 			$"../TileMap/Grid_ogor".visible = false
 			camera_enemy.make_current()
-
+			see_all.visible=true
 		enemy_inattack_range = false
 		enemy_current_attack = false
 
@@ -695,15 +694,3 @@ func spawn_items_around_player(_ID):
 
 func suicide():
 	self.queue_free()
-
-
-func _on_panel_container_mouse_entered() -> void:
-	info_label.visible=true
-	info_label.text=info
-	print("intrare")
-
-
-func _on_panel_container_mouse_exited() -> void:
-	info_label.visible=true
-	info_label.text=""
-	print("iesire")

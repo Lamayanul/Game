@@ -1,0 +1,202 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7k4co3fxvk2o"]
+
+[ext_resource type="Script" uid="uid://n8vostbkpjft" path="res://Scene/control_desk_func.gd" id="1_34mea"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_exnfj"]
+[ext_resource type="Texture2D" uid="uid://b6bi1rfst7dr7" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/desk.png" id="1_hx8fp"]
+[ext_resource type="Script" uid="uid://d1uv2vr81r0dg" path="res://Scripturi/control_desk.gd" id="1_yj8rn"]
+[ext_resource type="Texture2D" uid="uid://qm1lo2pieccl" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/sertar1.png" id="4_hx8fp"]
+[ext_resource type="Texture2D" uid="uid://cl87gm00n24bt" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/interior_ser.png" id="5_c55bq"]
+[ext_resource type="Script" uid="uid://cqfqhb8bp5kjc" path="res://Scripturi/sertar.gd" id="6_yj8rn"]
+
+[node name="Control" type="Control"]
+y_sort_enabled = true
+layout_mode = 3
+anchor_right = 0.746
+anchor_bottom = 0.65
+offset_right = -0.391968
+offset_bottom = -0.199982
+script = ExtResource("1_34mea")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+anchor_top = 0.407
+anchor_right = 0.991
+anchor_bottom = 1.138
+offset_top = 5.65298
+offset_right = -0.269043
+offset_bottom = -0.0979919
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_hx8fp")
+script = ExtResource("1_yj8rn")
+slot_scene = ExtResource("1_exnfj")
+
+[node name="SlotContainer2" parent="TextureRect" instance=ExtResource("1_exnfj")]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.164
+anchor_top = 0.342
+anchor_right = 0.164
+anchor_bottom = 0.342
+offset_left = -31.96
+offset_top = -31.822
+offset_right = 32.04
+offset_bottom = 32.178
+slot_type = "tray"
+
+[node name="TextureRect2" parent="TextureRect/SlotContainer2/TextureHolder" index="0"]
+texture = null
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+z_index = -1
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.138
+anchor_right = 0.248
+anchor_bottom = 1.347
+offset_top = -0.0979919
+offset_right = -0.0320129
+offset_bottom = -0.0870361
+mouse_filter = 2
+texture = ExtResource("4_hx8fp")
+
+[node name="Button" type="Button" parent="TextureRect3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect3"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.432
+anchor_right = 1.0
+offset_top = 0.0158081
+offset_right = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_c55bq")
+script = ExtResource("6_yj8rn")
+slot_scene = ExtResource("1_exnfj")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.248
+anchor_top = 1.138
+anchor_right = 0.496
+anchor_bottom = 1.347
+offset_left = -0.0320129
+offset_top = -0.0979919
+offset_right = -0.0640259
+offset_bottom = -0.0870361
+texture = ExtResource("4_hx8fp")
+
+[node name="Button" type="Button" parent="TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect2"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.432
+anchor_right = 1.0
+offset_top = 0.0158081
+offset_right = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_c55bq")
+script = ExtResource("6_yj8rn")
+slot_scene = ExtResource("1_exnfj")
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.496
+anchor_top = 1.138
+anchor_right = 0.744
+anchor_bottom = 1.347
+offset_left = -0.0640564
+offset_top = -0.0979919
+offset_right = -0.0960083
+offset_bottom = -0.0870361
+texture = ExtResource("4_hx8fp")
+
+[node name="Button" type="Button" parent="TextureRect4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect4"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.432
+anchor_right = 0.981
+offset_top = 0.0158081
+offset_right = 4.04692
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_c55bq")
+script = ExtResource("6_yj8rn")
+slot_scene = ExtResource("1_exnfj")
+
+[node name="TextureRect5" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.744
+anchor_top = 1.138
+anchor_right = 0.991
+anchor_bottom = 1.347
+offset_left = -0.0960083
+offset_top = -0.0979919
+offset_right = -0.268982
+offset_bottom = -0.0870361
+texture = ExtResource("4_hx8fp")
+
+[node name="Button" type="Button" parent="TextureRect5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect5"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.432
+anchor_right = 1.0
+anchor_bottom = 0.062
+offset_top = 0.0158081
+offset_bottom = -5.456
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_c55bq")
+script = ExtResource("6_yj8rn")
+slot_scene = ExtResource("1_exnfj")
+
+[connection signal="pressed" from="TextureRect3/Button" to="." method="_on_button1_pressed"]
+[connection signal="pressed" from="TextureRect2/Button" to="." method="_on_button2_pressed"]
+[connection signal="pressed" from="TextureRect4/Button" to="." method="_on_button3_pressed"]
+[connection signal="pressed" from="TextureRect5/Button" to="." method="_on_button4_pressed"]
+
+[editable path="TextureRect/SlotContainer2"]

@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://cov2w06svfo6g"]
+
+[ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="1_07rpg"]
+[ext_resource type="Script" uid="uid://bti7mwa3ewr2h" path="res://User/inv_cuppon.gd" id="1_n5at4"]
+[ext_resource type="PackedScene" uid="uid://dv5n7e30eoa54" path="res://User/slot_container_cuppon.tscn" id="2_n5at4"]
+[ext_resource type="Texture2D" uid="uid://g2nknj28mrgx" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_select.png" id="3_5sck2"]
+
+[node name="Inv" type="PanelContainer"]
+anchors_preset = -1
+anchor_right = 0.607
+anchor_bottom = 0.429
+offset_right = -0.264038
+offset_bottom = 0.00799561
+script = ExtResource("1_n5at4")
+
+[node name="Back" type="NinePatchRect" parent="."]
+visible = false
+layout_mode = 2
+texture = ExtResource("1_07rpg")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 55
+columns = 4
+
+[node name="SlotContainer" parent="MarginContainer/GridContainer" instance=ExtResource("2_n5at4")]
+layout_mode = 2
+
+[node name="SlotContainer2" parent="MarginContainer/GridContainer" instance=ExtResource("2_n5at4")]
+layout_mode = 2
+
+[node name="SlotContainer3" parent="MarginContainer/GridContainer" instance=ExtResource("2_n5at4")]
+layout_mode = 2
+
+[node name="SlotContainer4" parent="MarginContainer/GridContainer" instance=ExtResource("2_n5at4")]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+visible = false
+custom_minimum_size = Vector2(128, 256)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_5sck2")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Timer" type="Timer" parent="."]

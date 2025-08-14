@@ -1,0 +1,224 @@
+[gd_scene load_steps=14 format=3 uid="uid://mgntgh16bq06"]
+
+[ext_resource type="Script" uid="uid://drb6m5ohpl1a5" path="res://pc.gd" id="1_nm7iu"]
+[ext_resource type="Texture2D" uid="uid://do6p2of182aah" path="res://Sprout Lands - Sprites - Basic pack/Objects/PC.png" id="2_qq25d"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_52hwo"]
+[ext_resource type="Shader" uid="uid://cx8uaul7w2l23" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/pc_item.gdshader" id="4_qq25d"]
+[ext_resource type="Texture2D" uid="uid://l4h4tdax82bt" path="res://Sprout Lands - Sprites - Basic pack/Objects/Give a hand.jpeg" id="5_1kquy"]
+[ext_resource type="PackedScene" uid="uid://c53tjlotiir5s" path="res://Scene/pc_inv.tscn" id="5_52hwo"]
+[ext_resource type="Shader" uid="uid://ucm2sptjxfls" path="res://Shaders/pc_old.gdshader" id="5_jer4h"]
+[ext_resource type="PackedScene" uid="uid://dvhcggjwy043s" path="res://Scene/taskbar.tscn" id="7_gqwo1"]
+[ext_resource type="Texture2D" uid="uid://c7inimwv3oyxi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_sus.png" id="9_sieio"]
+[ext_resource type="Texture2D" uid="uid://b0lr4lbldppgi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_jos.png" id="10_a4lyx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gqwo1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gqwo1"]
+shader = ExtResource("5_jer4h")
+shader_parameter/bars_count = 18
+shader_parameter/bar_thickness = 0.01
+shader_parameter/softness = 0.038
+shader_parameter/speed = 0.231
+shader_parameter/color_cycle_speed = 0.3
+shader_parameter/sat = 1.0
+shader_parameter/val = 0.077
+shader_parameter/bars_opacity = 0.75
+shader_parameter/bg_dim = 0.25
+shader_parameter/use_local_texture = false
+shader_parameter/global_offset_y = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_52hwo"]
+shader = ExtResource("4_qq25d")
+shader_parameter/shear_top_px = -9.23098
+shader_parameter/shear_bottom_px = 8.55802
+shader_parameter/scale_y_top = 1.565
+shader_parameter/scale_y_bottom = 0.368
+shader_parameter/taper_x_top = 0.0
+shader_parameter/use_rect_size = false
+shader_parameter/rect_size = Vector2(0, 0)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_nm7iu")
+
+[node name="Inv" parent="." instance=ExtResource("5_52hwo")]
+z_index = 2
+layout_mode = 1
+anchor_left = 0.03
+anchor_top = 0.063
+anchor_right = 0.104
+anchor_bottom = 0.631
+offset_left = -0.560005
+offset_top = 0.175999
+offset_right = 0.192001
+offset_bottom = 0.111969
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gqwo1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.063
+anchor_right = 0.756
+anchor_bottom = 0.934
+offset_left = -0.560001
+offset_top = 0.175999
+offset_right = 0.0879517
+offset_bottom = -0.231995
+mouse_filter = 2
+texture = ExtResource("5_1kquy")
+expand_mode = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_gqwo1")
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.063
+anchor_right = 0.756
+anchor_bottom = 0.935
+offset_left = -0.560001
+offset_top = 0.175999
+offset_right = 0.0880127
+offset_bottom = 0.119995
+mouse_filter = 2
+texture = ExtResource("5_1kquy")
+expand_mode = 1
+
+[node name="Ecran" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.786
+anchor_bottom = 1.0
+offset_right = 0.527954
+mouse_filter = 2
+texture = ExtResource("2_qq25d")
+
+[node name="SlotContainer" parent="." instance=ExtResource("3_52hwo")]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.803
+anchor_top = 0.721
+anchor_right = 0.984
+anchor_bottom = 0.91
+offset_left = -0.0560303
+offset_top = -0.208008
+offset_right = -0.567993
+offset_bottom = 0.320007
+
+[node name="TextureRect2" parent="SlotContainer/TextureHolder" index="0"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.986
+anchor_bottom = 1.0
+offset_right = 2.04399
+offset_bottom = 0.0
+
+[node name="TextureRect" parent="SlotContainer/TextureHolder" index="1"]
+material = SubResource("ShaderMaterial_52hwo")
+
+[node name="Label" parent="SlotContainer/TextureHolder/TextureRect" index="0"]
+visible = false
+
+[node name="TaskBar" parent="." instance=ExtResource("7_gqwo1")]
+layout_mode = 1
+anchor_left = 0.03
+anchor_top = 0.872
+anchor_right = 0.756
+anchor_bottom = 0.934
+offset_left = -0.560001
+offset_top = -0.0560303
+offset_right = 0.0879517
+offset_bottom = -0.231995
+
+[node name="Tray" type="HBoxContainer" parent="TaskBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.725
+offset_right = 6.10352e-05
+offset_bottom = -4.57764e-05
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.786
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.52795
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.004
+anchor_top = 0.466
+anchor_right = 1.0
+anchor_bottom = 0.721
+offset_left = -0.02
+offset_top = 0.0319824
+offset_bottom = -0.208008
+mouse_filter = 2
+texture = ExtResource("9_sieio")
+
+[node name="TextureRect2" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.004
+anchor_top = 0.721
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.02
+offset_top = -0.208008
+mouse_filter = 2
+texture = ExtResource("10_a4lyx")
+
+[node name="Button" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.803
+anchor_top = 0.929
+anchor_right = 0.826
+anchor_bottom = 0.977
+offset_left = -0.0560303
+offset_top = 0.00799561
+offset_right = 0.447937
+offset_bottom = -0.0960083
+text = "D"
+
+[node name="Button2" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.831
+anchor_top = 0.929
+anchor_right = 0.855
+anchor_bottom = 0.977
+offset_left = -0.312012
+offset_top = 0.00799561
+offset_right = 0.039978
+offset_bottom = -0.0960083
+text = "I"
+
+[connection signal="pressed" from="Button" to="." method="_on_btn_open_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_btn_close_pressed"]
+
+[editable path="SlotContainer"]

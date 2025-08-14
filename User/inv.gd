@@ -53,11 +53,11 @@ var selected_slot: Slot = null  # Slotul selectat
 #@onready var player = $"../../player"
 @onready var player = get_node_or_null("/root/world/player")
 var timp_ramas=0
-@onready var label: Label = get_node("/root/world/CanvasLayer/Felinar/Label")
+#@onready var label: Label = get_node("/root/world/CanvasLayer/Felinar/Label")
 @onready var timer: Timer = $Timer
 @onready var player_light = get_node_or_null("/root/world/player/PointLight2D")
 #@onready var light: PointLight2D = $PointLight2D
-@onready var slot_container12: Slot = get_node("/root/world/CanvasLayer/Felinar/SlotContainer")
+#@onready var slot_container12: Slot = get_node("/root/world/CanvasLayer/Felinar/SlotContainer")
 var id=""
 
 var index=0
@@ -69,48 +69,48 @@ var index=0
 
 signal plantSeed
 signal attacking
+var SlotTrayScene = preload("res://User/slot_container.tscn") 
+@onready var tray_container = get_node("/root/world/CanvasLayer/Masa/TextureRect")
 
-
-
-func instantiate_chest():
-	var world = get_node("/root/world")
-	chest = chest_scene.instantiate()
-	chest.position = Vector2(40, 0)
-	world.add_child.call_deferred(chest)
-
-	# La fel, după ce adaugi în scenă, poți accesa copiii
-	slot_container_chest = chest.get_node("CanvasLayer/GridContainer/SlotContainer")
-	slot_container_chest_2 = chest.get_node("CanvasLayer/GridContainer/SlotContainer2")
-	slot_container_chest_3 = chest.get_node("CanvasLayer/GridContainer/SlotContainer3")
-	slot_container_chest_4 = chest.get_node("CanvasLayer/GridContainer/SlotContainer4")
-	
-func instantiate_oven():
-	oven = oven_scene.instantiate()
-	oven.position = Vector2(200, 200)
-	add_child(oven)
-
-	# Acum că oven e în scenă, poți accesa nodurile din interiorul lui
-	slot_container_5 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
-	slot_container_6 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer")
-	slot_container_7 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
-	
-	
-func instantiate_pillar():
-	var world = get_node("/root/world")
-	pillar = pillar_scene.instantiate()
-	pillar.position = Vector2(280, 50)+Vector2(index+5,index)
-	index-=5
-	world.add_child.call_deferred(pillar)
-	slot_container_8= pillar.get_node("CanvasLayer/GridContainer/SlotContainer")
-	slot_container_9 = pillar.get_node("CanvasLayer/GridContainer/SlotContainer2")
-
-
-func instantiate_generator():
-	var world = get_node("/root/world")
-	gen = gen_scene.instantiate()
-	gen.position = Vector2(300, 30)+Vector2(0,index)
-	index-=40
-	world.add_child.call_deferred(gen)
+#func instantiate_chest():
+	#var world = get_node("/root/world")
+	#chest = chest_scene.instantiate()
+	#chest.position = Vector2(40, 0)
+	#world.add_child.call_deferred(chest)
+#
+	## La fel, după ce adaugi în scenă, poți accesa copiii
+	#slot_container_chest = chest.get_node("CanvasLayer/GridContainer/SlotContainer")
+	#slot_container_chest_2 = chest.get_node("CanvasLayer/GridContainer/SlotContainer2")
+	#slot_container_chest_3 = chest.get_node("CanvasLayer/GridContainer/SlotContainer3")
+	#slot_container_chest_4 = chest.get_node("CanvasLayer/GridContainer/SlotContainer4")
+	#
+#func instantiate_oven():
+	#oven = oven_scene.instantiate()
+	#oven.position = Vector2(200, 200)
+	#add_child(oven)
+#
+	## Acum că oven e în scenă, poți accesa nodurile din interiorul lui
+	#slot_container_5 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
+	#slot_container_6 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer")
+	#slot_container_7 = oven.get_node("CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
+	#
+	#
+#func instantiate_pillar():
+	#var world = get_node("/root/world")
+	#pillar = pillar_scene.instantiate()
+	#pillar.position = Vector2(280, 50)+Vector2(index+5,index)
+	#index-=5
+	#world.add_child.call_deferred(pillar)
+	#slot_container_8= pillar.get_node("CanvasLayer/GridContainer/SlotContainer")
+	#slot_container_9 = pillar.get_node("CanvasLayer/GridContainer/SlotContainer2")
+#
+#
+#func instantiate_generator():
+	#var world = get_node("/root/world")
+	#gen = gen_scene.instantiate()
+	#gen.position = Vector2(300, 30)+Vector2(0,index)
+	#index-=40
+	#world.add_child.call_deferred(gen)
 
 
 #---------------------------------------add_item()-----------------------------------------------------
@@ -155,7 +155,7 @@ func add_item(ID="", item_cantita=1) -> bool:
 
 #--------------------------------_ready()----------------------------------------------------------------
 func _ready():
-	fantana = get_node("/root/world/Fantana")
+	fantana = get_node_or_null("/root/world/Fantana")
 	for child in grid_container.get_children():
 		if child is Slot:
 			child.connect("slot_selected", Callable(self, "_on_slot_selected"))
@@ -168,10 +168,20 @@ func _ready():
 			_on_slot_selected(first_slot)
 	slots = [slot_container, slot_container_2, slot_container_3, slot_container_4]
 	#print("Slots list:", slots)  # Verifică dacă toate sunt valide
+	#
+#func _process(_delta: float) -> void:
+	#lamp()
+	##has_backpack()
+	for slot in grid_container.get_children():
+		if slot.has_signal("request_tray_spawn"):
+			slot.connect("request_tray_spawn", Callable(self, "_on_slot_right_clicked"))
 	
-func _process(_delta: float) -> void:
-	lamp()
-	has_backpack()
+func _on_slot_right_clicked(item_data):
+		var tray_slot = SlotTrayScene.instantiate()
+		tray_slot.get_node("TextureHolder/TextureRect2").texture=null
+		tray_slot.slot_type="tray"
+		tray_container.add_child(tray_slot)
+		tray_slot.set_property(item_data)  
 	
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot):
@@ -202,7 +212,7 @@ func _on_slot_selected(slot: Slot):
 		var raritate = slot.get_raritate()
 
 		
-		info_label.bbcode_text = "[center]ITEM: %s\nRARITATE: %s[/center]" % [nume, raritate]
+		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s[/center]" % [nume, raritate]
 		info_label.visible = true
 		#color_rect.visible = false
 
@@ -374,7 +384,8 @@ func select_slot_by_index(indexx: int):
 		var slot = grid_container.get_child(indexx)
 		if slot is Slot:
 			_on_slot_selected(slot)
-			fantana.afisare_fill()
+			if is_instance_valid(fantana):
+				fantana.afisare_fill()
 
 #---------------------------------drop-item-selected-----------------------------------------------------
 func drop_selected_item():
@@ -449,6 +460,7 @@ func drop_item(ID: String, cantiti: int):
 		item_instance.set_cantitate(item_cantitate)
 		item_instance.set_texture1(item_texture)
 		item_instance.ID = ID
+		item_instance.type="slot"
 		#item_instance.set_lumina(ID)
 		var player_position = player.global_position
 		var player_direction = player.last_direction.normalized()  # Direcția „în față”
@@ -616,72 +628,72 @@ func has_shield() -> bool:
 				return true
 	return false
 	
-func has_backpack():
-	var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
-	if not backpack:  
-		#print("EROARE: Nodul 'Backpack-afis' nu a fost găsit!")
-		return  
+#func has_backpack():
+	#var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
+	#if not backpack:  
+		##print("EROARE: Nodul 'Backpack-afis' nu a fost găsit!")
+		#return  
+#
+	## Verificăm dacă rucsacul există în orice slot din inventar
+	#var has_backpack_1 = false
+	#for slot in slots:
+		 ## Presupun că ai un array `slots` în inventar
+		#if slot is Slot  and slot.get_id() == "18":
+#
+			#has_backpack_1 = true
+			#break  # Nu mai căutăm, am găsit rucsacul
+	#
+	#backpack.visible = has_backpack_1  # Devine invizibil doar dacă e scos complet din inventar
 
-	# Verificăm dacă rucsacul există în orice slot din inventar
-	var has_backpack_1 = false
-	for slot in slots:
-		 # Presupun că ai un array `slots` în inventar
-		if slot is Slot  and slot.get_id() == "18":
-
-			has_backpack_1 = true
-			break  # Nu mai căutăm, am găsit rucsacul
-	
-	backpack.visible = has_backpack_1  # Devine invizibil doar dacă e scos complet din inventar
-
-func lamp():
-	var item_23_gasit = false
-	lamp_inv()
-	for i in range(grid_container.get_child_count()):
-			var slot = grid_container.get_child(i)
-			if slot is Slot:
-				# Verifica daca slotul este plin si contine un scut
-				if slot.get_id() == "23":
-					id=slot.get_id()
-					item_23_gasit = true
-					$"../Felinar".visible = true
-					lumina_pe_player()
-					if slot_container12.get_id()=="7":
-						var cantitate= slot_container12.get_cantitate()
-						if cantitate>0:
-							timp_ramas=cantitate*60
-							label.text = format_time(timp_ramas)
-							timer.start()
-							slot_container12.clear_item()
-							
-	if player and not item_23_gasit and is_instance_valid(player_light):
-		$"../Felinar".visible = false
-		player_light.visible=false
-		player_light.enabled=false
-
-func lumina_pe_player():
-	if timp_ramas>0:
-		player_light.visible=true
-		player_light.enabled=true
-		
-func _on_timer_timeout() -> void:
-	if timp_ramas > 0:
-		timp_ramas -= 1  # Scade o secundă din timpul rămas
-		label.text = format_time(timp_ramas)  # 🔥 Actualizează UI-ul
-
-		# Consumă 1 combustibil la fiecare 60 secunde
-		if timp_ramas % 60 == 0:
-			var cantitate = slot_container12.get_cantitate()
-			if cantitate > 0:
-				slot_container12.set_cantitate(cantitate - 1)  # 🔥 Consumă combustibil
-				#print("Cantitatea rămasă: " + str(cantitate - 1))
-
-			if cantitate - 1 <= 0:
-				print("Combustibilul s-a epuizat!")
-			
-	else:
-		#light.enabled=false
-		timer.stop()
-		#print("Timpul a expirat!")
+#func lamp():
+	#var item_23_gasit = false
+	#lamp_inv()
+	#for i in range(grid_container.get_child_count()):
+			#var slot = grid_container.get_child(i)
+			#if slot is Slot:
+				## Verifica daca slotul este plin si contine un scut
+				#if slot.get_id() == "23":
+					#id=slot.get_id()
+					#item_23_gasit = true
+					#$"../Felinar".visible = true
+					#lumina_pe_player()
+					#if slot_container12.get_id()=="7":
+						#var cantitate= slot_container12.get_cantitate()
+						#if cantitate>0:
+							#timp_ramas=cantitate*60
+							#label.text = format_time(timp_ramas)
+							#timer.start()
+							#slot_container12.clear_item()
+							#
+	#if player and not item_23_gasit and is_instance_valid(player_light):
+		##$"../Felinar".visible = false
+		#player_light.visible=false
+		#player_light.enabled=false
+#
+#func lumina_pe_player():
+	#if timp_ramas>0:
+		#player_light.visible=true
+		#player_light.enabled=true
+		#
+#func _on_timer_timeout() -> void:
+	#if timp_ramas > 0:
+		#timp_ramas -= 1  # Scade o secundă din timpul rămas
+		#label.text = format_time(timp_ramas)  # 🔥 Actualizează UI-ul
+#
+		## Consumă 1 combustibil la fiecare 60 secunde
+		#if timp_ramas % 60 == 0:
+			#var cantitate = slot_container12.get_cantitate()
+			#if cantitate > 0:
+				#slot_container12.set_cantitate(cantitate - 1)  # 🔥 Consumă combustibil
+				##print("Cantitatea rămasă: " + str(cantitate - 1))
+#
+			#if cantitate - 1 <= 0:
+				#print("Combustibilul s-a epuizat!")
+			#
+	#else:
+		##light.enabled=false
+		#timer.stop()
+		##print("Timpul a expirat!")
 		
 
 
@@ -691,9 +703,9 @@ func format_time(seconds: int) -> String:
 	var secs = seconds % 60
 	return str(minutes).pad_zeros(2) + ":" + str(secs).pad_zeros(2)
 
-func lamp_inv():
-	if not timer.is_stopped():
-		var items = get_tree().get_nodes_in_group("item")
-		for item in items:
-			if item.ID=="23":
-				item.set_lumina("23")
+#func lamp_inv():
+	#if not timer.is_stopped():
+		#var items = get_tree().get_nodes_in_group("item")
+		#for item in items:
+			#if item.ID=="23":
+				#item.set_lumina("23")

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgc7bfs3whjaw"]
+[gd_scene load_steps=5 format=3 uid="uid://bgc7bfs3whjaw"]
 
 [ext_resource type="Script" uid="uid://dyrrlcjhaa4wm" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/slot_container.gd" id="1_l8wts"]
 [ext_resource type="Texture2D" uid="uid://ddd6b1k5r0k1f" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_Slot.png" id="2_60n7o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tfnp6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qudmq"]
 font_size = 20
@@ -14,6 +16,7 @@ offset_right = 48.0
 offset_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tfnp6")
 script = ExtResource("1_l8wts")
 
 [node name="TextureHolder" type="Control" parent="."]

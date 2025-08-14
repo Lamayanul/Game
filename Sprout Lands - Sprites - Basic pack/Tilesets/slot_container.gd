@@ -9,7 +9,7 @@ class_name Slot
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
-@onready var water_fill = get_node("/root/world/Fantana/CanvasLayer")
+@onready var water_fill = get_node_or_null("/root/world/Fantana/CanvasLayer")
 
 @export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
 
@@ -25,6 +25,11 @@ var property_1: Dictionary = {}
 signal clothes_changed(new_clothes_id)
 signal slot_selected(slot)
 #signal item_changed
+signal request_tray_spawn(item_data)
+
+var dragging := false
+var drag_offset := Vector2.ZERO
+
 
 @export var nume: String:
 	set(value):
@@ -99,8 +104,8 @@ func get_raritate()->String:
 func set_item_crafting():
 	emit_signal("item_changed")
 	
-func set_item(item_id):
-	emit_signal("clothes_changed", item_id)
+func set_item(item_idx):
+	emit_signal("clothes_changed", item_idx)
 	
 func _get_drag_data(_at_position):
 	
@@ -114,8 +119,9 @@ func _get_drag_data(_at_position):
 	preview.add_child(preview_texture)
 	
 	set_drag_preview(preview)
-	
+
 	return self
+
 
 func _can_drop_data(_at_position, data):
 	# Permitem doar dacă data e un Slot
@@ -256,6 +262,8 @@ func _drop_data(_pos, data):
 func _ready():
 	# Conectează semnalul de selecție
 	connect("gui_input",Callable( self, "_on_gui_input"))
+
+
 	
 
 func _on_gui_input(event):
@@ -263,7 +271,38 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		is_selected = true
 		emit_signal("slot_selected", self)
+	if slot_type=="tray":
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+			if event.pressed:
+				dragging = true
+				drag_offset = get_global_mouse_position() - global_position
+				#raise()  # Aduce panelul în față
+			else:
+				dragging = false
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if cantitate>0 and slot_type=="inventory" and get_node("/root/world/CanvasLayer/Masa").visible==true:
+			emit_signal("request_tray_spawn", property.duplicate())
+			self.clear_item()
 
+func _process(delta):
+	if dragging:
+		global_position = get_global_mouse_position() - drag_offset
+		var mouse_pos = get_parent().get_local_mouse_position() - drag_offset
+		var rect = get_parent().get_rect()  # Rect2(0,0,w,h)
+		
+		# Calculează limitele pentru ca itemul să nu iasă din parent
+		var min_x = 0
+		var min_y = -25
+		var max_x = rect.size.x - size.x
+		var max_y = rect.size.y - size.y
+		
+		# Clamp la limite
+		position = Vector2(
+			clamp(mouse_pos.x, min_x, max_x),
+			clamp(mouse_pos.y, min_y, max_y)
+		)
+
+		
 func select():
 	is_selected = true
 	
@@ -277,7 +316,7 @@ func clear_item():
 	$TextureHolder/TextureRect.texture = null  
 	# Resetează textul etichetei la gol
 	label.text = ""
-	water_fill.visible=false
+	#water_fill.visible=false
 	
 	# Resetează cantitatea
 	cantitate = 0
@@ -289,6 +328,8 @@ func clear_item():
 	filled = false  
 	emit_signal("clothes_changed", "")
 	
+	if slot_type == "tray":
+		queue_free()
 	# Oprește funcționalitatea drag-and-drop
 	#set_drag_preview(null)
 	
@@ -356,3 +397,4 @@ func has_free_slot() -> bool:
 			return true  # Există un loc libe
 	
 	return false  # Nu există locuri libere
+	

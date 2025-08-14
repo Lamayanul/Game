@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://dv5n7e30eoa54"]
+
+[ext_resource type="Script" uid="uid://bxe5jmawbq1m8" path="res://User/slot_container_cuppon.gd" id="1_1m4ci"]
+[ext_resource type="Texture2D" uid="uid://dfgxfavmupvns" path="res://Sprout Lands - Sprites - Basic pack/Objects/support_cupon.png" id="2_kc7pg"]
+[ext_resource type="Shader" uid="uid://lxt8b220wo4a" path="res://Shaders/fake_3D.gdshader" id="3_kt2mv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oj0yg"]
+resource_local_to_scene = true
+shader = ExtResource("3_kt2mv")
+shader_parameter/rect_size = Vector2(152, 207)
+shader_parameter/fov = 90.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_qudmq"]
+font_size = 20
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="SlotContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(128, 256)
+offset_right = 48.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_1m4ci")
+
+[node name="TextureHolder" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TextureRect2" type="TextureRect" parent="TextureHolder"]
+custom_minimum_size = Vector2(128, 256)
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 256.0
+texture = ExtResource("2_kc7pg")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="TextureHolder"]
+material = SubResource("ShaderMaterial_oj0yg")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.008
+anchor_right = 0.992
+anchor_bottom = 1.0
+offset_left = 0.0240005
+offset_right = 0.0239944
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="TextureHolder/TextureRect"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.816
+anchor_right = 1.0
+anchor_bottom = 0.816
+offset_left = -27.896
+offset_top = -27.905
+offset_right = -5.896
+offset_bottom = 0.094986
+grow_horizontal = 0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_qudmq")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Button" type="Button" parent="TextureHolder/TextureRect"]
+visible = false
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 1
+offset_left = 20.0
+offset_top = -43.0
+offset_right = 110.0
+offset_bottom = -12.0
+text = "Open"
+
+[node name="TextureRect3" type="TextureRect" parent="TextureHolder"]
+custom_minimum_size = Vector2(128, 256)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered_slot"]
+[connection signal="mouse_entered" from="TextureHolder" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="TextureHolder" to="." method="_on_mouse_exited"]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce2keilgfwy4x"]
+
+[ext_resource type="Script" uid="uid://cqfqhb8bp5kjc" path="res://Scripturi/sertar.gd" id="1_j7il3"]
+[ext_resource type="Texture2D" uid="uid://cl87gm00n24bt" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/interior_ser.png" id="1_k6jvg"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062
+offset_right = -0.32
+offset_bottom = -0.176003
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_k6jvg")
+script = ExtResource("1_j7il3")

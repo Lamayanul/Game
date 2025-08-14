@@ -2,7 +2,7 @@ extends Sprite2D
 
 @export var ID =""
 @export var item_cantitate:int =1
-
+@export var type: String
 @onready var shadow = Sprite2D.new()
 var raritate: String 
 var float_amplitude: float = 2.0  
@@ -19,7 +19,10 @@ var item_texture: Texture
 
 func _ready():
 	# Setează textura folosind ID-ul
-	set_texture1(load("res://assets/" + ItemData.get_texture(ID)) as Texture)
+	if type=="slot":
+		set_texture1(load("res://assets/" + ItemData.get_texture(ID)) as Texture)
+	else:
+		set_texture1(load("res://assets/" + DatabaseCuppon.get_texture(ID)) as Texture)
 	original_position = position    
 	custom_scale()
 
@@ -34,27 +37,47 @@ func _on_body_entered(body):
 			return
 	
 	if body.is_in_group("player"):
-		var inventory = get_parent().find_child("Inv")
+		if type=="slot":
+			var inventory = get_parent().find_child("Inv")
+			
+			print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
+			print("Inventar plin:", inventory.plin)
+
+			# 1. Încearcă să adauge itemul în inventar
+			var added = inventory.add_item(ID, self.get_cantiti())
+
+			# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
+			if added:
+				queue_free()
+				print("Obiect colectat și șters.")
+			else:
+				print("Inventarul este plin! Nu pot adăuga obiectul.")
+				
+				
+		if type=="slot_cup":
+			var inventory = get_parent().find_child("Inv2")
 		
-		print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
-		print("Inventar plin:", inventory.plin)
+			print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
+			print("Inventar plin:", inventory.plin)
 
-		# 1. Încearcă să adauge itemul în inventar
-		var added = inventory.add_item(ID, self.get_cantiti())
+			# 1. Încearcă să adauge itemul în inventar
+			var added = inventory.add_item(ID, self.get_cantiti())
 
-		# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
-		if added:
-			queue_free()
-			print("Obiect colectat și șters.")
-		else:
-			print("Inventarul este plin! Nu pot adăuga obiectul.")
-
-	
+			# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
+			if added:
+				queue_free()
+				print("Obiect colectat și șters.")
+			else:
+				print("Inventarul este plin! Nu pot adăuga obiectul.")
+		
 
 func custom_scale():
 	if ID=="15" || ID=="23":
 		scale=Vector2(0.65,0.65)
+	if  ID=="26" || ID=="27" || ID=="28" || ID=="29" || ID=="30" || ID=="31" || ID=="32":
+		scale=Vector2(0.1,0.1)
 
+		
 func _process(_delta: float):
 	#time_passed += delta
 	#position.y = original_position.y + sin(time_passed * float_speed) * float_amplitude
@@ -78,11 +101,11 @@ func set_cantitate(cantitate: int):
 func get_cantiti():
 	return item_cantitate
 	
-func set_lumina(new_ID):
-	if new_ID=="23":
-		$PointLight2D.visible=true
-		$PointLight2D.enabled=true
-		print("Aprind lumina!")
+#func set_lumina(new_ID):
+	#if new_ID=="23":
+		#$PointLight2D.visible=true
+		#$PointLight2D.enabled=true
+		#print("Aprind lumina!")
 		
 		
 #func lamp():

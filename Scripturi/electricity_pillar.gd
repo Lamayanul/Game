@@ -2,7 +2,10 @@ extends StaticBody2D
 
 #@onready var animated_sprite_2d_2: AnimatedSprite2D = $AnimatedSprite2D2
 #@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+var t: float = 0
 
+@export var orbit_radius: float = 3
+@export var orbit_speed: float = 23
 @onready var power_node_con = get_node("/root/world/Node2D3")
 #@onready var point_light_2d_2: PointLight2D = $PointLight2D2
 #@onready var point_light_2d: PointLight2D = $PointLight2D
@@ -55,16 +58,54 @@ func assign_closest_generator():
 	update_connections()
 	
 
+func update_lights():
+	var id1 = slot_container.get_id()
+	var id2 = slot_container_2.get_id()
+	var has_gen = is_instance_valid(powg) and powg.generator_on
+	var timer =powg.get_node("Timer")
+	var gen_active = has_gen and not timer.is_stopped()
+	
+	# --- Pentru primul slot ---
+	if gen_active and id1 in ["19", "20", "21"]:
+		$area/PointLight2D.enabled = true
+		match id1:
+			"19":
+				$area/PointLight2D.color = Color(0, 0, 1)   # Albastru
+			"20":
+				$area/PointLight2D.color = Color(1, 0, 0)   # Roșu
+			"21":
+				$area/PointLight2D.color = Color(0, 1, 0)   # Verde
+	else:
+		$area/PointLight2D.enabled = false
 
-func _process(_delta: float) -> void:
+	# --- Pentru al doilea slot ---
+	if gen_active and id2 in ["19", "20", "21"]:
+		$area/PointLight2D2.enabled = true
+		match id2:
+			"19":
+				$area/PointLight2D2.color = Color(0, 0, 1)   # Albastru
+			"20":
+				$area/PointLight2D2.color = Color(1, 0, 0)   # Roșu
+			"21":
+				$area/PointLight2D2.color = Color(0, 1, 0)   # Verde
+	else:
+		$area/PointLight2D2.enabled = false
+
+
+func _process(delta: float) -> void:
 	if powg == null or not is_instance_valid(powg):
 		assign_closest_generator()
 	#var powg = self  # fiecare generator se referă la el însuși
 	
 	#print("daadadadadadaddadadadadad",powg )
 	#enable()
-	BEC()
-	update_connections()
+	update_lights()
+	$area/PointLight2D.energy = 0.5+ 0.5 * sin(t*10)
+	t += delta * orbit_speed
+	#$area/PointLight2D.position = Vector2(
+		#cos(t+4) * orbit_radius,
+		#sin(t) * orbit_radius)
+	#update_connections()
 	#if generator_active:  # Aprinde becurile doar dacă generatorul este activ
 		#activate_lights()
 	#else:
@@ -89,56 +130,60 @@ func _process(_delta: float) -> void:
 		#if light:
 			#light.enabled = true  # Activare bec
 			#light2.enabled = true
+# Returnează un array cu toți pilonii conectați la acest generator (direct sau indirect)
+func get_all_connected_pillars(start_pillar, _generator, all_pillars, connect_distance):
+	var result = []
+	var queue = []
+	var visited = {}
+	
+	queue.append(start_pillar)
+	visited[start_pillar] = true
+	
+	while queue.size() > 0:
+		var current = queue.pop_front()
+		result.append(current)
+		# Caută vecinii la distanță mică (piloni legați)
+		for other in all_pillars:
+			if other != current and not visited.has(other):
+				if current.global_position.distance_to(other.global_position) <= connect_distance:
+					queue.append(other)
+					visited[other] = true
+	return result
 
 
 func BEC():
-	var power_node_area = get_tree().root.get_node_or_null("world/Node2D3")
+	var _power_node_area = get_tree().root.get_node_or_null("world/Node2D3")
+	var all_pillars = get_tree().get_nodes_in_group("pillar")
+	var connect_distance = 130  # sau cât ai tu la conexiuni între piloni
+	var timer = powg.get_node("Timer")
+	for generator in get_tree().get_nodes_in_group("pow_gen"):
+		if not generator.generator_on:
+			continue
 
-	for pillar in get_tree().get_nodes_in_group("pillar"):
-
-		if pillar in power_node_area.connected_areas:
-
-			var power_node = get_tree().get_nodes_in_group("pow_gen")
-			for node in power_node:
-
-				var timer = node.get_node("Timer")
-
-				# Verificăm slot_container
-				if slot_container.get_id() == "21" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
-					$area/PointLight2D.enabled = true
-					$area/PointLight2D.color = Color(0, 1, 0) 
-					
-				elif slot_container.get_id() == "20" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
-					$area/PointLight2D.enabled = true
-					$area/PointLight2D.color = Color(1, 0, 0)  # Verde pentru ID 20
-				elif slot_container.get_id() == "19" and not timer.is_stopped() and is_instance_valid(powg) and powg.generator_on and conect:
-					$area/PointLight2D.enabled = true
-					$area/PointLight2D.color = Color(0, 0, 1)  # Albastru pentru ID 19
-					#if slot_container.cantitate>1 and inv.plin!=4:
-						#inv.add_item("19",slot_container.cantitate-1) ###
-						#slot_container.cantitate=1                    ###
-					#elif slot_container.cantitate>1 and inv.plin==4:
-						#inv.drop_item("19",slot_container.cantitate-1)
-						#slot_container.cantitate=1
-
-				else:
-					$area/PointLight2D.enabled = false
+		# Ia toți pilonii conectați în rețea la generatorul acesta
+		for pillar in all_pillars:
+			if generator.global_position.distance_to(pillar.global_position) <= connect_distance:
+				var connected_pillars_nou = get_all_connected_pillars(pillar, generator, all_pillars, connect_distance)
 				
-				# Verificăm slot_container_2
-				if slot_container_2.get_id() == "21" and not timer.is_stopped() and buton and conect:
-					$area/PointLight2D2.enabled = true
-					$area/PointLight2D2.color = Color(0, 1, 0)  # Roșu pentru ID 21
-				elif slot_container_2.get_id() == "20" and not timer.is_stopped()  and buton and conect:
-					$area/PointLight2D2.enabled = true
-					$area/PointLight2D2.color = Color(1, 0, 0)  # Verde pentru ID 20
-				elif slot_container_2.get_id() == "19" and not timer.is_stopped() and buton and conect:
-					$area/PointLight2D2.enabled = true
-					$area/PointLight2D2.color = Color(0, 0, 1)  # Albastru pentru ID 19
-				else:
-					$area/PointLight2D2.enabled = false
+				# Aprinde fiecare pilon din rețea dacă are itemul corect
+				for p in connected_pillars_nou:
+					# Verifică dacă are itemul în slot
+					if slot_container.get_id() in ["19", "20", "21"] and powg.generator_on and not timer.is_stopped():  # sau cum vrei tu
+						$area/PointLight2D.enabled = true
+						# poți seta culoarea aici în funcție de ID
+					else:
+						$area/PointLight2D.enabled = false
 
 
 
+func update_pillar_lights():
+	var all_pillars = get_tree().get_nodes_in_group("pillar")
+	for pillar in all_pillars:
+		if not pillar.powg or not pillar.powg.generator_on:
+			# Stinge luminile pilonului
+			$area/PointLight2D.enabled = false
+			$area/PointLight2D2.enabled = false
+			
 func update_connections() -> void:
 	"""Actualizează lista cu pilonii conectați la generator."""
 	connected_pillars.clear()
