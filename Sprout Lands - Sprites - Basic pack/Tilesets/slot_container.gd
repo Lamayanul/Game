@@ -5,7 +5,7 @@ class_name Slot
   # Asigură-te că accesezi corect TextureRect
 @onready var label = %Label
 @export var is_selected: bool = false
-
+@export var scop =""
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
@@ -62,7 +62,13 @@ var drag_offset := Vector2.ZERO
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume = property["NUME"]
-	
+		raritate = property["RARITATE"]
+		curse = property["CURSE"]
+		effects = property["EFFECTS"]
+
+@export var curse: Variant = null   # poate fi null sau Dictionary; Variant e cel mai sigur
+@export var effects: Variant = null       # listă de efecte din JSON
+
 
 # Metoda pentru setarea texturii și cantității
 func set_property(data):
@@ -75,6 +81,10 @@ func set_property(data):
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume=property["NUME"]
+		raritate = property["RARITATE"]
+		curse = property["CURSE"]
+		effects = property["EFFECTS"]
+		
 		label.text = str(cantitate)
 		if cantitate > 0:
 			label.text = str(cantitate)
@@ -100,9 +110,18 @@ func get_nume()->String:
 	
 func get_raritate()->String:
 	return property.get("RARITATE","")
+	
+func get_effects() -> Variant:
+	return property.get("EFFECTS", [])
+
+func get_curse() -> Variant:
+	return property.get("CURSE", null)
+
+
 
 func set_item_crafting():
 	emit_signal("item_changed")
+	
 	
 func set_item(item_idx):
 	emit_signal("clothes_changed", item_idx)
@@ -301,6 +320,22 @@ func _process(delta):
 			clamp(mouse_pos.x, min_x, max_x),
 			clamp(mouse_pos.y, min_y, max_y)
 		)
+	if dragging and scop=="tab":
+		global_position = get_global_mouse_position() - drag_offset
+		var mouse_pos = get_parent().get_local_mouse_position() - drag_offset
+		var rect = get_parent().get_rect()  # Rect2(0,0,w,h)
+		
+		# Calculează limitele pentru ca itemul să nu iasă din parent
+		var min_x = 0
+		var min_y = 0
+		var max_x = rect.size.x - size.x
+		var max_y = rect.size.y - size.y
+		
+		# Clamp la limite
+		position = Vector2(
+			clamp(mouse_pos.x, min_x, max_x),
+			clamp(mouse_pos.y, min_y, max_y)
+		)
 
 		
 func select():
@@ -322,8 +357,8 @@ func clear_item():
 	cantitate = 0
 
 	# Resetează ID-ul sau alte proprietăți relevante
-	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0, "NUME":""}
-
+	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0, "NUME":"","RARITATE":"", "EFFECTS":[], "CURSE":null}
+	
 	# Marchează slotul ca fiind gol
 	filled = false  
 	emit_signal("clothes_changed", "")
@@ -335,7 +370,7 @@ func clear_item():
 	
 	
 func get_id() -> String:
-	if property and property.has("Number") != null:
+	if property and property.has("number") != null:
 		for key in ItemData.content.keys():
 			if ItemData.content[key]["number"] == number:
 				return key
@@ -398,3 +433,15 @@ func has_free_slot() -> bool:
 	
 	return false  # Nu există locuri libere
 	
+# Adaugă un efect (ca Dictionary) la instanța din slot
+func add_effect_dict(e: Variant) -> void:
+	#var arr: Array = property.get("EFFECTS", [])
+	#arr.append(e)
+	property["EFFECTS"] = e
+	# dacă ai UI/tooltip, emite un semnal aici
+
+# Setează/înlocuiește blestemul (Dictionary sau null)
+func set_curse_dict(c: Variant) -> void:
+	# c poate fi Dictionary sau null
+	property["CURSE"] = c
+	# semnal pt. UI dacă e nevoie

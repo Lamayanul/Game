@@ -21,7 +21,12 @@ const TAB_REGISTRY := {
 		"scene": preload("res://Scene/dock_tab.tscn"),
 		"title": "Quest",
 		"icon":  preload("res://assets/quest.png")
-	}
+	},
+	"33": {
+		"scene": preload("res://Tabs/browser.tscn"),
+		"title": "Browser",
+		"icon":  preload("res://assets/browser.png")
+	},
 }
 
 # Ținem o singură instanță per ID

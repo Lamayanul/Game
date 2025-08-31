@@ -2,6 +2,8 @@ extends Sprite2D
 
 @export var ID =""
 @export var item_cantitate:int =1
+@export var curse = {}
+@export var effects = []
 @export var type: String
 @onready var shadow = Sprite2D.new()
 var raritate: String 
@@ -44,7 +46,7 @@ func _on_body_entered(body):
 			print("Inventar plin:", inventory.plin)
 
 			# 1. Încearcă să adauge itemul în inventar
-			var added = inventory.add_item(ID, self.get_cantiti())
+			var added = inventory.add_item(ID, self.get_cantiti(), self.get_curse(), self.get_effects())
 
 			# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
 			if added:
@@ -101,6 +103,23 @@ func set_cantitate(cantitate: int):
 func get_cantiti():
 	return item_cantitate
 	
+func get_curse():
+	return curse
+	
+func get_effects():
+	return effects
+	
+	
+func set_curse(curse_var: Variant):
+	if curse_var=="":
+		return 
+	curse = curse_var
+
+func set_effects(effects_var: Variant):
+	if effects_var=="":
+		return 
+	effects = effects_var
+
 #func set_lumina(new_ID):
 	#if new_ID=="23":
 		#$PointLight2D.visible=true

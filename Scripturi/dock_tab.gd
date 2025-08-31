@@ -2,21 +2,23 @@ extends PanelContainer
 
 @onready var title_bar: Control = $VBoxContainer/TitleBar
 @onready var close_btn: Button = $VBoxContainer/TitleBar/TextureRect/CloseBtn
-@onready var content: Control = $VBoxContainer/Content
+#@onready var content: Control = $VBoxContainer/Content
 @export var min_size_px := Vector2(180, 120)
 @export var max_size_px := Vector2(1600, 1000)
 @export var edge_thickness := 8.0
 @onready var title: Label = $VBoxContainer/TitleBar/TextureRect/Title
-
-
+@onready var pc = self.get_parent()
+@export var type_tab=""
+@export var slot_tab: PackedScene = preload("res://User/slot_container.tscn")
 @export var window_title := "Tab"
 @export var window_icon: Texture2D
+@onready var ecran = self.get_parent().get_node("CanvasLayer/TextureRect2")
+@onready var taskbar = self.get_parent().get_node("TaskBar")
 
-const TASKBAR_H := 48.0
-const MARGIN_LEFT  := 60.0
-const MARGIN_TOP   := 65.0
-const MARGIN_RIGHT := 467.0   # spațiul „rezervat” în dreapta
-const MARGIN_BOTTOM:= 140.0    # spațiul „rezervat” jos
+@export var pad_left  := 0.0
+@export var pad_top   := 0.0
+@export var pad_right := 0.0
+@export var pad_bottom:= 0.0  # spațiul „rezervat” jos
 
 var dragging := false
 var resizing := false
@@ -38,14 +40,27 @@ func minimize() -> void:
 	Taskbar.mini_tab(self, self.find_child("Title").text, window_icon)
 	visible = false
 	
+
 func _ready():
+	pc.storage.connect(_on_scan_slot_transmit)
 	close_btn.pressed.connect(_on_close_pressed)
 	title_bar.gui_input.connect(_on_titlebar_gui_input)
 	gui_input.connect(_on_gui_input)
-	# Ca să prindă input doar titlebar-ul
+
 	title_bar.mouse_filter = Control.MOUSE_FILTER_STOP
-	# Cursor de “move” opțional
 	title_bar.mouse_default_cursor_shape = Control.CURSOR_MOVE
+
+	# important: re-încadrează la schimbarea rezoluției / monitorului
+	get_viewport().size_changed.connect(_on_viewport_resized)
+	# și chiar acum, după ce layout-ul inițial s-a stabilit
+	call_deferred("_on_viewport_resized")
+	print("ecran",ecran.name)
+	if is_instance_valid(ecran) and ecran is Control:
+		(ecran as Control).resized.connect(_on_viewport_resized)
+	if is_instance_valid(taskbar) and taskbar is Control:
+		(taskbar as Control).resized.connect(_on_viewport_resized)
+		(taskbar as Control).visibility_changed.connect(_on_viewport_resized)
+	call_deferred("_on_viewport_resized")
 
 
 func _on_close_pressed():
@@ -55,8 +70,10 @@ func _on_close_pressed():
 
 func _on_titlebar_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
-		minimize()
-		return
+		if type_tab!="notification":
+			minimize()
+		else:
+			return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_dragging = true
@@ -72,21 +89,62 @@ func _on_titlebar_gui_input(event: InputEvent) -> void:
 		_clamp_inside_viewport()
 
 func _viewport_bounds_rect() -> Rect2:
-	var vp := get_viewport_rect().size
-	var x0 := MARGIN_LEFT
-	var y0 := MARGIN_TOP
-	var x1 := vp.x - MARGIN_RIGHT
-	var y1 := vp.y - MARGIN_BOTTOM
-	return Rect2(Vector2(x0, y0), Vector2(max(0.0, x1 - x0), max(0.0, y1 - y0)))
+	# bounds = ecran (TextureRect2) minus padding și minus taskbar-ul de jos
+	var r := Rect2(Vector2.ZERO, get_viewport_rect().size)
+	if is_instance_valid(ecran) and ecran is Control:
+		r = (ecran as Control).get_global_rect()
+
+	# padding manual (opțional)
+	r.position.x += pad_left
+	r.position.y += pad_top
+	r.size.x -= (pad_left + pad_right)
+
+	# scade din înălțime ce ocupă taskbar-ul (doar dacă se suprapune pe X)
+	if is_instance_valid(taskbar) and taskbar is Control:
+		var tb := (taskbar as Control).get_global_rect()
+		var x_overlap = max(0.0, min(r.position.x + r.size.x, tb.position.x + tb.size.x) - max(r.position.x, tb.position.x))
+		if x_overlap > 0.0:
+			var cut_bottom = clamp((r.position.y + r.size.y) - tb.position.y, 0.0, r.size.y)
+			r.size.y -= cut_bottom  # „ridică” podeaua bounds-ului până la taskbar
+	# după ce am scăzut taskbar-ul, mai aplicăm pad_bottom dacă vrei extra spațiu
+	r.size.y -= pad_bottom
+	return r
+
+func _on_viewport_resized() -> void:
+	# taie dimensiunea dacă depășește ecranul curent
+	var b := _viewport_bounds_rect()
+	var new_size := size
+	new_size.x = clamp(new_size.x, min_size_px.x, min(max_size_px.x, b.size.x))
+	new_size.y = clamp(new_size.y, min_size_px.y, min(max_size_px.y, b.size.y))
+	size = new_size
+	# apoi asigură poziția în interior
+	_clamp_inside_viewport()
+	#set_bottom_margin(0)
+#
+#func _on_bounds_changed() -> void:
+	#var b := _viewport_bounds_rect()
+	#var s := size
+	#s.x = clamp(s.x, min_size_px.x, min(max_size_px.x, b.size.x))
+	#s.y = clamp(s.y, min_size_px.y, min(max_size_px.y, b.size.y))
+	#size = s
+	#_clamp_inside_viewport()
+
+
 
 func _clamp_inside_viewport() -> void:
 	var bounds := _viewport_bounds_rect()
 	var new_pos := global_position
 	new_pos.x = clamp(new_pos.x, bounds.position.x, bounds.position.x + bounds.size.x - size.x)
-	new_pos.y = clamp(new_pos.y, bounds.position.y, bounds.position.y + bounds.size.y - size.y)
+	new_pos.y = clamp(new_pos.y, bounds.position.y, bounds.position.y + bounds.size.y - size.y-20)
 	global_position = new_pos
 
 func _on_gui_input(event: InputEvent) -> void:
+	if dragging:
+		var b := _viewport_bounds_rect()
+		var p := get_global_mouse_position() - drag_offset
+		p.x = clamp(p.x, b.position.x, b.position.x + b.size.x - size.x)
+		p.y = clamp(p.y, b.position.y, b.position.y + b.size.y - size.y)
+		global_position = p
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			move_to_front()  # Godot 4 replacement for raise()
@@ -119,17 +177,24 @@ func _on_gui_input(event: InputEvent) -> void:
 		if resizing:
 			_do_resize(local)
 
+#func set_bottom_margin(px: float) -> void:
+	#pad_bottom = max(0.0, px)
+	#_on_bounds_changed()  
+
 func _edge_hit(local: Vector2) -> Vector2:
-	var left   := local.x <= edge_thickness
 	var right  := local.x >= size.x - edge_thickness
-	var top    := local.y <= edge_thickness
 	var bottom := local.y >= size.y - edge_thickness
-	var dir := Vector2.ZERO
-	if left:  dir.x = -1
-	elif right: dir.x = 1
-	if top:   dir.y = -1
-	elif bottom: dir.y = 1
-	return dir
+
+
+	if right and bottom:
+		return Vector2(1, 1)   # colț dreapta-jos
+	elif right:
+		return Vector2(1, 0)   # marginea dreaptă
+	elif bottom:
+		return Vector2(0, 1)   # marginea de jos
+	return Vector2.ZERO        # toate celelalte margini sunt dezactivate
+
+
 
 #func _update_cursor(local: Vector2) -> void:
 	#var e := _edge_hit(local)
@@ -178,7 +243,7 @@ func _do_resize(local: Vector2) -> void:
 	var max_h := bounds.position.y + bounds.size.y - new_pos.y
 
 	new_size.x = clamp(new_size.x, min_size_px.x, min(max_size_px.x, max_w))
-	new_size.y = clamp(new_size.y, min_size_px.y, min(max_size_px.y, max_h))
+	new_size.y = clamp(new_size.y, min_size_px.y, min(max_size_px.y, max_h-20))
 
 	position = new_pos
 	size = new_size
@@ -188,3 +253,24 @@ func _do_resize(local: Vector2) -> void:
 
 var _dragging := false
 var _drag_offset := Vector2.ZERO
+
+func _on_scan_slot_transmit(data):
+	if type_tab=="storage":
+		var slot = slot_tab.instantiate()
+		slot.custom_minimum_size = Vector2(64, 64)
+		slot.size = slot.custom_minimum_size
+		slot.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		slot.size_flags_vertical   = Control.SIZE_SHRINK_CENTER
+		slot.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		slot.scop="tab"
+		$VBoxContainer/Content.add_child(slot)   
+		slot.get_node("TextureHolder/TextureRect2").texture=null 
+		slot.slot_type="tray"
+		slot.set_property(data)
+		
+
+
+func _on_text_edit_gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if (event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER):
+			accept_event() # oprește comportamentul default (nu mai adaugă rând nou)

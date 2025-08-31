@@ -2,10 +2,15 @@
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_8twd8"]
 [ext_resource type="Texture2D" uid="uid://bg62t78h5g64j" path="res://icon.svg" id="2_8twd8"]
-[ext_resource type="Texture2D" uid="uid://e1qwo2v2w7wf" path="res://Tabs/supply_chain.png" id="2_oa6d7"]
+[ext_resource type="Texture2D" uid="uid://da12t27felh3u" path="res://Tabs/devil.png" id="2_oa6d7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
 bg_color = Color(1, 0.768116, 0.73913, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0, 0.0149773, 1)
 
 [sub_resource type="Gradient" id="Gradient_po6gu"]
 offsets = PackedFloat32Array(0)
@@ -16,7 +21,7 @@ gradient = SubResource("Gradient_po6gu")
 height = 52
 
 [sub_resource type="Theme" id="Theme_8twd8"]
-default_font_size = 25
+default_font_size = 40
 
 [node name="DockTab" type="PanelContainer"]
 z_index = 2

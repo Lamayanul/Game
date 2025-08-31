@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://mgntgh16bq06"]
+[gd_scene load_steps=15 format=3 uid="uid://cj567gtda6mkd"]
 
-[ext_resource type="Script" uid="uid://drb6m5ohpl1a5" path="res://pc.gd" id="1_nm7iu"]
+[ext_resource type="Script" uid="uid://drb6m5ohpl1a5" path="res://Tabs/pc.gd" id="1_g60ad"]
 [ext_resource type="Texture2D" uid="uid://do6p2of182aah" path="res://Sprout Lands - Sprites - Basic pack/Objects/PC.png" id="2_qq25d"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_52hwo"]
 [ext_resource type="Shader" uid="uid://cx8uaul7w2l23" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/pc_item.gdshader" id="4_qq25d"]
 [ext_resource type="Texture2D" uid="uid://l4h4tdax82bt" path="res://Sprout Lands - Sprites - Basic pack/Objects/Give a hand.jpeg" id="5_1kquy"]
-[ext_resource type="PackedScene" uid="uid://c53tjlotiir5s" path="res://Scene/pc_inv.tscn" id="5_52hwo"]
+[ext_resource type="PackedScene" uid="uid://c53tjlotiir5s" path="res://Tabs/pc_inv.tscn" id="5_52hwo"]
 [ext_resource type="Shader" uid="uid://ucm2sptjxfls" path="res://Shaders/pc_old.gdshader" id="5_jer4h"]
-[ext_resource type="PackedScene" uid="uid://dvhcggjwy043s" path="res://Scene/taskbar.tscn" id="7_gqwo1"]
+[ext_resource type="PackedScene" uid="uid://dvhcggjwy043s" path="res://Tabs/taskbar.tscn" id="8_xj3c6"]
+[ext_resource type="PackedScene" uid="uid://c1fi2o13u0x6x" path="res://notification_tab.tscn" id="9_a4lyx"]
 [ext_resource type="Texture2D" uid="uid://c7inimwv3oyxi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_sus.png" id="9_sieio"]
 [ext_resource type="Texture2D" uid="uid://b0lr4lbldppgi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_jos.png" id="10_a4lyx"]
 
@@ -45,7 +46,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_nm7iu")
+script = ExtResource("1_g60ad")
 
 [node name="Inv" parent="." instance=ExtResource("5_52hwo")]
 z_index = 2
@@ -79,6 +80,7 @@ expand_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
+visible = false
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_gqwo1")
@@ -86,11 +88,11 @@ anchors_preset = -1
 anchor_left = 0.03
 anchor_top = 0.063
 anchor_right = 0.756
-anchor_bottom = 0.935
-offset_left = -0.560001
+anchor_bottom = 0.934
+offset_left = -0.560005
 offset_top = 0.175999
-offset_right = 0.0880127
-offset_bottom = 0.119995
+offset_right = 0.0879517
+offset_bottom = -0.231995
 mouse_filter = 2
 texture = ExtResource("5_1kquy")
 expand_mode = 1
@@ -108,14 +110,15 @@ texture = ExtResource("2_qq25d")
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.803
-anchor_top = 0.721
-anchor_right = 0.984
-anchor_bottom = 0.91
+anchor_left = 0.802789
+anchor_top = 0.766031
+anchor_right = 0.983953
+anchor_bottom = 0.948594
 offset_left = -0.0560303
 offset_top = -0.208008
 offset_right = -0.567993
 offset_bottom = 0.320007
+metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect2" parent="SlotContainer/TextureHolder" index="0"]
 visible = false
@@ -132,27 +135,20 @@ material = SubResource("ShaderMaterial_52hwo")
 [node name="Label" parent="SlotContainer/TextureHolder/TextureRect" index="0"]
 visible = false
 
-[node name="TaskBar" parent="." instance=ExtResource("7_gqwo1")]
+[node name="TaskBar" parent="." instance=ExtResource("8_xj3c6")]
 layout_mode = 1
-anchor_left = 0.03
-anchor_top = 0.872
-anchor_right = 0.756
-anchor_bottom = 0.934
-offset_left = -0.560001
-offset_top = -0.0560303
-offset_right = 0.0879517
-offset_bottom = -0.231995
 
 [node name="Tray" type="HBoxContainer" parent="TaskBar"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.725
-offset_right = 6.10352e-05
-offset_bottom = -4.57764e-05
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+anchor_left = 0.002
+anchor_top = -0.161
+anchor_right = 0.002
+anchor_bottom = -0.161
+offset_left = -0.0500002
+offset_top = 0.0144424
+offset_right = 37.95
+offset_bottom = 38.0144
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -218,7 +214,27 @@ offset_right = 0.039978
 offset_bottom = -0.0960083
 text = "I"
 
+[node name="Scan" type="Button" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.916
+anchor_top = 0.929
+anchor_right = 0.976
+anchor_bottom = 0.977
+offset_left = -0.232056
+offset_top = 0.00799561
+offset_right = -0.352051
+offset_bottom = -0.0960083
+text = "SCAN"
+
+[node name="DockTab" parent="." instance=ExtResource("9_a4lyx")]
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 190.0
+
 [connection signal="pressed" from="Button" to="." method="_on_btn_open_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_btn_close_pressed"]
+[connection signal="pressed" from="Scan" to="." method="_on_scan_pressed"]
 
 [editable path="SlotContainer"]

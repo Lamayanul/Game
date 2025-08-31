@@ -1,7 +1,7 @@
 extends Node2D
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 @onready var world: Node2D = $"."
-
+var pc = false
 #@onready var trader = get_node("/root/world/CanvasLayer2")
 var count:int:
 	set(value):
@@ -25,6 +25,11 @@ func _input(event):
 		if event.pressed and event.keycode==KEY_TAB:
 			pass
 			#trader.visible=!trader.visible
+	if Input.is_action_just_pressed("interact") and pc:
+		$CanvasLayer/Control.visible = not $CanvasLayer/Control.visible
+		var layer := $"CanvasLayer/Control/CanvasLayer"
+		layer.visible = !layer.visible
+		
 			
 
 #func save_data():
@@ -36,12 +41,12 @@ func _input(event):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	auto_detect_refresh_rate()
-	var spawner := preload("res://EnemySpawner.gd").new()
-	spawner.enemy_scene = preload("res://Scene/enemy.tscn")
-	world.add_child(spawner)
+	#var spawner := preload("res://EnemySpawner.gd").new()
+	#spawner.enemy_scene = preload("res://Scene/enemy.tscn")
+	#world.add_child(spawner)
 
 # pornește cu poziție specifică
-	spawner.start_spawning(Vector2(-582, 934))
+	#spawner.start_spawning(Vector2(-582, 934))
 
 
 
@@ -58,3 +63,13 @@ func auto_detect_refresh_rate():
 		Engine.max_fps = 100
 	else:
 		Engine.max_fps = 144
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		pc=true
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		pc=false

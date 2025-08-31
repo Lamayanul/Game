@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c53tjlotiir5s"]
 
-[ext_resource type="Script" uid="uid://cx8rg5c6et75u" path="res://Scripturi/pc_apps.gd" id="1_grxkk"]
+[ext_resource type="Script" uid="uid://cx8rg5c6et75u" path="res://Tabs/pc_apps.gd" id="1_grxkk"]
 [ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="2_1qa2b"]
-[ext_resource type="PackedScene" uid="uid://c4ioa4kk844s2" path="res://Scene/slot_container_app.tscn" id="3_grxkk"]
+[ext_resource type="PackedScene" uid="uid://c4ioa4kk844s2" path="res://Tabs/slot_container_app.tscn" id="3_grxkk"]
 [ext_resource type="Texture2D" uid="uid://g2nknj28mrgx" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_select.png" id="4_8mdvo"]
 
 [node name="Inv" type="PanelContainer"]
@@ -35,19 +35,15 @@ theme_override_constants/v_separation = 30
 
 [node name="SlotContainer" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
 layout_mode = 2
-slot_type = "app"
 
 [node name="SlotContainer2" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
 layout_mode = 2
-slot_type = "app"
 
 [node name="SlotContainer3" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
 layout_mode = 2
-slot_type = "app"
 
 [node name="SlotContainer4" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
 layout_mode = 2
-slot_type = "app"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 visible = false

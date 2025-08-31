@@ -11,7 +11,7 @@ extends CanvasLayer
 @onready var info: Panel = $info
 @onready var grid_character: GridContainer = $Grid_character
 
-@onready var grid_container: GridContainer = $info/VBoxContainer/HBoxContainer/GridContainer
+#@onready var grid_container: GridContainer = $info/VBoxContainer/HBoxContainer/GridContainer
 #@onready var data: String = ""
 #@onready var ora:String = ""
 @onready var Control_imag = Persistence.get_node("CanvasLayer/Control")

@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://dh5rxbokk4dqq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5iuu"]
+bg_color = Color(0.394531, 0.394531, 0.394531, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4ov7"]
+bg_color = Color(0.690196, 0.00392157, 0.0627451, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jnik0"]
+bg_color = Color(0.691406, 0.0023461, 0.0643357, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywhfi"]
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 170.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 172.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t5iuu")
+
+[node name="Button" type="Button" parent="PanelContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_j4ov7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jnik0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ywhfi")
+text = "Rainbow team"

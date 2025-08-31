@@ -6,7 +6,7 @@
 script = ExtResource("1_f661b")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2
+layer = 3
 visible = false
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]

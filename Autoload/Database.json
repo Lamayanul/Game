@@ -4,7 +4,9 @@
   "cantitate":0,
   "number":0,
   "nume":"",
-  "raritate": ""
+  "raritate": "",
+  "curse":null,
+  "effects": null,
 	 },
 
  "1":{
@@ -12,7 +14,9 @@
   "cantitate":1,
   "number":1,
   "nume":"ou",
-  "raritate": "comuna"
+  "raritate": "comuna",
+  "curse":null,
+  "effects": null,
 	 },
 	
 "2":{
@@ -20,7 +24,9 @@
 	"cantitate":1,
 	"number":2,
 	"nume":"topor",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 	
 "3":{
@@ -28,7 +34,9 @@
 	"cantitate":1,
 	"number":3,
 	"nume":"seminte grau",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 	
 "4":{
@@ -36,7 +44,9 @@
 	"cantitate":1,
 	"number":4,
 	"nume":"grau",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 	
 "5":{
@@ -44,7 +54,9 @@
 	"cantitate":1,
 	"number":5,
 	"nume":"seminte vinete",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 	
 "6":{
@@ -52,7 +64,9 @@
 	"cantitate":1,
 	"number":6,
 	"nume":"lemn",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 	
 "7":{
@@ -60,7 +74,9 @@
 	"cantitate":1,
 	"number":7,
 	"nume":"mar",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 	
 "8":{
@@ -68,174 +84,233 @@
 	"cantitate":1,
 	"number":8,
 	"nume":"berry",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "9":{
 	"texture":"hoe.png",
 	"cantitate":1,
 	"number":9,
 	"nume":"hoe",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "10":{
 	"texture":"pickaxe.png",
 	"cantitate":1,
 	"number":10,
 	"nume":"pickaxe",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "11":{
 	"texture":"piatra-item.png",
 	"cantitate":1,
 	"number":11,
 	"nume":"piatra",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "12":{
 	"texture":"gard_pivot.png",
 	"cantitate":1,
 	"number":12,
 	"nume":"gard",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "13":{
 	"texture":"shield.png",
 	"cantitate":1,
 	"number":13,
 	"nume":"scut",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "14":{
 	"texture":"gambling_mace.png",
 	"cantitate":1,
 	"number":14,
 	"nume":"Buzduganul norocului",
-	"raritate": "epica"
+	"raritate": "epica",
+	"curse":null,
+	"effects": null,
 	},
 "15":{
 	"texture":"pie.png",
 	"cantitate":1,
 	"number":15,
 	"nume":"apple pie",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "16":{
 	"texture":"podea_tile.png",
 	"cantitate":1,
 	"number":16,
 	"nume":"podea",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "17":{
 	"texture":"roof.png",
 	"cantitate":1,
 	"number":17,
 	"nume":"roof",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "18":{
 	"texture":"backpack.png",
 	"cantitate":1,
 	"number":18,
 	"nume":"backpack",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "19":{
 	"texture":"blue_lightBulb.png",
 	"cantitate":1,
 	"number":19,
 	"nume":"bec albastru",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "20":{
 	"texture":"red_lightBulb.png",
 	"cantitate":1,
 	"number":20,
 	"nume":"bec rosu",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "21":{
 	"texture":"orange_lightBulb.png",
 	"cantitate":1,
 	"number":21,
 	"nume":"bec portocaliu",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "22":{
 	"texture":"water_can.png",
 	"cantitate":1,
 	"number":22,
 	"nume":"stropitoare",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "23":{
 	"texture":"lamp.png",
 	"cantitate":1,
 	"number":23,
 	"nume":"felinar",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "24":{
 	"texture":"graunte.png",
 	"cantitate":1,
 	"number":24,
 	"nume":"graunte",
-	"raritate": "comuna"
+	"raritate": "comuna",
+	"curse":null,
+	"effects": null,
 	},
 "25":{
 	"texture":"golden_armor.png",
 	"cantitate":1,
 	"number":25,
 	"nume":"golden_armor",
-	"raritate": "rara"
+	"raritate": "rara",
+	"curse":null,
+	"effects": null,
 	},
 "26":{
 	"texture":"model_cupon_pisi.png",
 	"cantitate":1,
 	"number":26,
 	"nume":"cupon",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "27":{
 	"texture":"model_cupon_oita.png",
 	"cantitate":1,
 	"number":27,
 	"nume":"cupon",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "28":{
 	"texture":"model_cupon_bufon.png",
 	"cantitate":1,
 	"number":28,
 	"nume":"cupon",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "29":{
 	"texture":"model_cupon_mew.png",
 	"cantitate":1,
 	"number":29,
 	"nume":"cupon",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "30":{
 	"texture":"folder.png",
 	"cantitate":1,
 	"number":30,
 	"nume":"Folder",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "31":{
 	"texture":"storage.png",
 	"cantitate":1,
 	"number":31,
 	"nume":"Storage",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 "32":{
 	"texture":"quest.png",
 	"cantitate":1,
 	"number":32,
 	"nume":"Quest",
-	"raritate": "epic"
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
+	},
+"33":{
+	"texture":"browser.png",
+	"cantitate":1,
+	"number":33,
+	"nume":"Browser",
+	"raritate": "epic",
+	"curse":null,
+	"effects": null,
 	},
 }

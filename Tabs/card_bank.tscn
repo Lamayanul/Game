@@ -1,0 +1,246 @@
+[gd_scene load_steps=13 format=3 uid="uid://unhb7pius38k"]
+
+[ext_resource type="Script" uid="uid://s65pu368bwim" path="res://Tabs/card_bank.gd" id="1_4llwd"]
+[ext_resource type="Texture2D" uid="uid://bwqgk8a0d67s0" path="res://Tabs/card_back.jpeg" id="1_p6an0"]
+[ext_resource type="Texture2D" uid="uid://m8r4rvkj2igf" path="res://Tabs/cip_card.png" id="2_4llwd"]
+[ext_resource type="Texture2D" uid="uid://4otiddxiarhp" path="res://Tabs/master.png" id="3_cikp4"]
+[ext_resource type="Texture2D" uid="uid://dcswy3jptbr7a" path="res://Tabs/card_bank_beh.jpeg" id="5_cikp4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15jui"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.949219, 0.949219, 0.949219, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Theme" id="Theme_smu3q"]
+default_font_size = 35
+
+[sub_resource type="Theme" id="Theme_7gjvn"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_ewjhs"]
+default_font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smu3q"]
+bg_color = Color(0.296875, 0.296875, 0.296875, 0.32549)
+
+[sub_resource type="Gradient" id="Gradient_7gjvn"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ewjhs"]
+gradient = SubResource("Gradient_7gjvn")
+width = 1
+height = 1
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 0.586
+anchor_bottom = 0.664
+offset_right = -0.0640259
+offset_bottom = 0.0319824
+mouse_filter = 2
+script = ExtResource("1_4llwd")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(600, 340)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_15jui")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_p6an0")
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="PanelContainer/TextureRect"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.073
+anchor_right = 0.073
+offset_left = -0.238003
+offset_right = 199.762
+offset_bottom = 67.0
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = SubResource("Theme_smu3q")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "Mastercard"
+vertical_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/TextureRect"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.054
+anchor_top = 0.256
+anchor_right = 0.054
+anchor_bottom = 0.256
+offset_left = -0.211998
+offset_top = 0.151993
+offset_right = 199.788
+offset_bottom = 269.152
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "12/23"
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="PanelContainer/TextureRect"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+anchor_left = 0.054
+anchor_right = 0.054
+offset_left = -0.212
+offset_right = 325.788
+offset_bottom = 336.0
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = SubResource("Theme_7gjvn")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "1234 5678 4321 8765"
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="PanelContainer/TextureRect"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.054
+anchor_top = 0.464
+anchor_right = 0.054
+anchor_bottom = 0.464
+offset_left = -0.212
+offset_top = 0.0879974
+offset_right = 199.788
+offset_bottom = 204.088
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = SubResource("Theme_ewjhs")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "Mr. Prince"
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.099
+anchor_top = 0.199
+anchor_right = 0.099
+anchor_bottom = 0.199
+offset_left = 0.0059967
+offset_top = 0.135994
+offset_right = 81.534
+offset_bottom = 77.136
+mouse_filter = 2
+texture = ExtResource("2_4llwd")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="PanelContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.851
+anchor_top = 0.825
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.121979
+offset_top = -0.100021
+mouse_filter = 2
+texture = ExtResource("3_cikp4")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="PanelContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_cikp4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="PanelContainer/TextureRect2"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.073
+anchor_right = 0.073
+offset_left = -0.238003
+offset_right = 199.762
+offset_bottom = 67.0
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = SubResource("Theme_smu3q")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "Mastercard"
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="PanelContainer/TextureRect2"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 0.218
+anchor_right = 0.972
+anchor_bottom = 0.38
+offset_left = 0.256001
+offset_top = -0.144005
+offset_right = -0.0960083
+offset_bottom = -0.0400085
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = SubResource("Theme_7gjvn")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_smu3q")
+bbcode_enabled = true
+text = "112"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/TextureRect2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.028
+anchor_top = 0.029
+anchor_right = 1.028
+anchor_bottom = 0.198
+offset_left = -0.0959997
+offset_top = 0.0679998
+offset_right = 0.0960083
+offset_bottom = 0.015995
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_ewjhs")
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="PanelContainer/TextureRect2"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.464
+anchor_right = 1.0
+anchor_bottom = 0.951
+offset_top = 0.0879974
+offset_bottom = 0.09198
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "ceva ceva altceva"
+
+[connection signal="gui_input" from="PanelContainer" to="." method="_on_gui_input"]

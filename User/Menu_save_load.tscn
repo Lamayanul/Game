@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://b5s4pub7glhjy"]
+[gd_scene load_steps=12 format=3 uid="uid://b5s4pub7glhjy"]
 
 [ext_resource type="Script" uid="uid://bav1fxu4d18cd" path="res://User/menu_save_load.gd" id="1_kn8vx"]
 [ext_resource type="Texture2D" uid="uid://bnnl78w0vlwf1" path="res://Sprout Lands - Sprites - Basic pack/Objects/clouds.jpeg" id="2_uuvnn"]
-[ext_resource type="Script" uid="uid://ch4rflesgkcxv" path="res://Scripturi/stats_ui.gd" id="3_op81h"]
+[ext_resource type="Script" uid="uid://dy6w40p6d03uh" path="res://User/scroll_container.gd" id="3_ohrbk"]
+[ext_resource type="PackedScene" uid="uid://unhb7pius38k" path="res://Tabs/card_bank.tscn" id="4_ohrbk"]
 [ext_resource type="PackedScene" uid="uid://bvx4h074stip4" path="res://Scene/skill_tree.tscn" id="4_op81h"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="4_u6r4n"]
 [ext_resource type="Script" uid="uid://x2bed7mntqq5" path="res://Scripturi/grid_character.gd" id="6_gdp8x"]
@@ -40,7 +41,7 @@ bg_color = Color(0, 0, 0, 0.470588)
 default_font_size = 25
 
 [node name="CanvasLayer" type="CanvasLayer"]
-layer = 2
+layer = 3
 script = ExtResource("1_kn8vx")
 
 [node name="SaveLoadPanel" type="Panel" parent="."]
@@ -246,6 +247,40 @@ offset_bottom = 0.0559998
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="info"]
+custom_minimum_size = Vector2(600, 340)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.026
+anchor_top = 0.114
+anchor_right = 0.026
+anchor_bottom = 0.114
+offset_left = -0.144834
+offset_top = -0.126598
+offset_right = 599.855
+offset_bottom = 339.873
+scale = Vector2(0.659899, 0.786311)
+mouse_filter = 0
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+script = ExtResource("3_ohrbk")
+
+[node name="Rail" type="HBoxContainer" parent="info/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 0
+theme_override_constants/separation = -1
+
+[node name="Control" parent="info/ScrollContainer/Rail" instance=ExtResource("4_ohrbk")]
+layout_mode = 2
+
+[node name="Control2" parent="info/ScrollContainer/Rail" instance=ExtResource("4_ohrbk")]
+layout_mode = 2
+
+[node name="Control3" parent="info/ScrollContainer/Rail" instance=ExtResource("4_ohrbk")]
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="info"]
 clip_contents = true
@@ -258,6 +293,7 @@ offset_right = -0.223938
 offset_bottom = -2.99994
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Stats" type="RichTextLabel" parent="info/VBoxContainer"]
 layout_mode = 2
@@ -265,22 +301,6 @@ theme = SubResource("Theme_viii8")
 bbcode_enabled = true
 text = "[center]Stats-uri"
 fit_content = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="info/VBoxContainer"]
-layout_mode = 2
-
-[node name="GridContainer" type="GridContainer" parent="info/VBoxContainer/HBoxContainer"]
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 6
-script = ExtResource("3_op81h")
-
-[node name="Panel" type="Panel" parent="info/VBoxContainer/HBoxContainer"]
-modulate = Color(1, 0.339607, 0, 1)
-self_modulate = Color(1, 0.341176, 0, 1)
-custom_minimum_size = Vector2(305, 305)
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="GridContainer" type="GridContainer" parent="info"]
 layout_mode = 1
@@ -330,6 +350,7 @@ filters = PackedStringArray("*.png", "*.jpeg")
 visible = false
 
 [node name="Grid_character" type="GridContainer" parent="."]
+z_index = -1
 anchors_preset = -1
 anchor_left = 0.227
 anchor_top = 0.098

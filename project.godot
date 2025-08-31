@@ -24,13 +24,24 @@ Persistence="*res://User/persistence.tscn"
 GameState="*res://Scripturi/GameState.gd"
 QuestManager="*res://Scene/quest_manager.tscn"
 DatabaseCuppon="*res://Autoload/database_cuppon.gd"
-Taskbar="*res://Scene/taskbar.tscn"
-TabManager="*res://Scripturi/TabManager.gd"
+WeaponsBD="*res://Fights/WeaponsBD.gd"
+TabManager="*res://Tabs/TabManager.gd"
+Taskbar="*res://Tabs/taskbar.tscn"
+ItemsDB="*res://Tabs/ItemsDB.gd"
 
 [debug]
 
 gdscript/warnings/unused_signal=0
 gdscript/warnings/integer_division=0
+
+[display]
+
+window/size/viewport_width=1024
+window/size/viewport_height=512
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/stretch/scale=0.5
 
 [editor_plugins]
 

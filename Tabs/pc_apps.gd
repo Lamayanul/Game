@@ -156,6 +156,7 @@ func _ready():
 	add_item("30",1)
 	add_item("31",1)
 	add_item("32",1)
+	add_item("33",1)
 #func _on_slot_right_clicked(item_data):
 		#var tray_slot = SlotTrayScene.instantiate()
 		#tray_slot.get_node("TextureHolder/TextureRect2").texture=null
@@ -247,18 +248,18 @@ var slots = []
 
 #---------------------------------------input-uri-diverse----------------------------------------------------
 func _input(event):
-	if Input.is_action_just_pressed("drop"):
-		drop_selected_item()
-	if Input.is_action_just_pressed("drop_1"):
-		drop_selected_item_1()
-	if Input.is_action_just_pressed("plantSeed"):
-		plantare()
-	if Input.is_action_just_pressed("attack"):
-		attack()
-	if Input.is_action_just_pressed("eat"):
-		eat()
-	if Input.is_action_just_pressed("consola"):
-		pass
+	#if Input.is_action_just_pressed("drop"):
+		#drop_selected_item()
+	#if Input.is_action_just_pressed("drop_1"):
+		#drop_selected_item_1()
+	#if Input.is_action_just_pressed("plantSeed"):
+		#plantare()
+	#if Input.is_action_just_pressed("attack"):
+		#attack()
+	#if Input.is_action_just_pressed("eat"):
+		#eat()
+	#if Input.is_action_just_pressed("consola"):
+		#pass
 		
 	if Input.is_action_just_pressed("slot_1"):
 		select_slot_by_index(0)

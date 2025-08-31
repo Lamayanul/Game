@@ -1,0 +1,312 @@
+[gd_scene load_steps=19 format=3 uid="uid://duiinnoergl23"]
+
+[ext_resource type="Script" uid="uid://m4t0fu7ba0hh" path="res://Scripturi/combat.gd" id="1_145ap"]
+[ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="2_mmg4p"]
+[ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="3_1blk7"]
+[ext_resource type="Texture2D" uid="uid://deagc4swpklua" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill.png" id="4_dr6gs"]
+[ext_resource type="Texture2D" uid="uid://x75g30bweuxo" path="res://Tiny Wonder Farm Free/characters/main character old/portrait female.png" id="5_d54dn"]
+[ext_resource type="Texture2D" uid="uid://e3jqsek4cshc" path="res://Sprout Lands - Sprites - Basic pack/Objects/under-2.png" id="6_0q1xu"]
+[ext_resource type="Texture2D" uid="uid://d02ev55og5vnx" path="res://Sprout Lands - Sprites - Basic pack/Objects/border-e.png" id="7_oypbx"]
+[ext_resource type="Texture2D" uid="uid://dhbxoe4r8xpn0" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill-e.png" id="8_koky7"]
+[ext_resource type="Texture2D" uid="uid://cp8xfk2dbkasr" path="res://Tiny Wonder Farm Free/characters/main character/portrait male.png" id="9_vckdu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmx0f"]
+bg_color = Color(1, 0.685068, 0.926543, 1)
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(1, 0.686275, 0.92549, 1)
+
+[sub_resource type="Theme" id="Theme_acpyq"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_145ap"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_1rklm"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_tmx0f"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_oupg2"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_asair"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_iwotu"]
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_abfpn"]
+default_font_size = 30
+
+[node name="Control" type="Control"]
+visible = false
+layout_mode = 3
+anchor_top = 0.077
+anchor_right = 1.0
+anchor_bottom = 0.914
+offset_top = 0.103996
+offset_bottom = -0.272034
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_145ap")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+visible = false
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_top = 0.077
+anchor_right = 1.0
+anchor_bottom = 0.914
+offset_top = -1.424
+offset_bottom = 2.03201
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tmx0f")
+
+[node name="Fundal" type="TextureRect" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 6
+
+[node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer/Fundal"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -224.0
+offset_top = 54.0
+offset_right = 206.0
+offset_bottom = 153.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Enemy_move" type="RichTextLabel" parent="CanvasLayer/PanelContainer/Fundal/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.428
+anchor_top = 1.111
+anchor_right = 1.009
+anchor_bottom = 2.111
+offset_left = -0.0400085
+offset_top = 0.010994
+offset_right = 0.129974
+offset_bottom = 0.0109863
+theme = SubResource("Theme_acpyq")
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player_move" type="RichTextLabel" parent="CanvasLayer/PanelContainer/Fundal/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.111
+anchor_right = 0.5
+anchor_bottom = 2.111
+offset_top = 0.010994
+offset_bottom = 0.0109863
+theme = SubResource("Theme_145ap")
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
+visible = false
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.432
+anchor_top = 0.752
+anchor_right = 0.614
+anchor_bottom = 0.854
+offset_left = -154.368
+offset_top = -52.024
+offset_right = 31.264
+offset_bottom = -0.248016
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 2
+
+[node name="Attack" type="Button" parent="CanvasLayer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_1rklm")
+text = "Attack"
+
+[node name="Defense" type="Button" parent="CanvasLayer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_tmx0f")
+text = "Defense"
+
+[node name="Item" type="Button" parent="CanvasLayer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_oupg2")
+text = "Skill"
+
+[node name="Surrender" type="Button" parent="CanvasLayer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_asair")
+text = "Item
+"
+
+[node name="Enemy_ele" type="VBoxContainer" parent="CanvasLayer"]
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.563063
+anchor_top = 0.0740156
+anchor_right = 1.0
+anchor_bottom = 0.908266
+offset_left = 0.42395
+offset_top = 0.103996
+offset_bottom = -0.0320435
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Enemy_ele"]
+z_index = 1
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_iwotu")
+bbcode_enabled = true
+text = "Le Bossache"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/Enemy_ele"]
+z_index = 1
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+value = 80.0
+texture_under = ExtResource("2_mmg4p")
+texture_over = ExtResource("3_1blk7")
+texture_progress = ExtResource("4_dr6gs")
+
+[node name="Label" type="Label" parent="CanvasLayer/Enemy_ele"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Enemy_ele"]
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("5_d54dn")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Player_ele" type="VBoxContainer" parent="CanvasLayer"]
+z_index = 1
+anchors_preset = -1
+anchor_left = -0.000414014
+anchor_top = 0.0740156
+anchor_right = 0.431078
+anchor_bottom = 0.908266
+offset_left = 0.42395
+offset_top = 0.103996
+offset_right = -0.424011
+offset_bottom = -0.0320435
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Player_ele"]
+z_index = 1
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_iwotu")
+bbcode_enabled = true
+text = "Nume_player"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/Player_ele"]
+z_index = 1
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+value = 30.0
+texture_under = ExtResource("6_0q1xu")
+texture_over = ExtResource("7_oypbx")
+texture_progress = ExtResource("8_koky7")
+
+[node name="Label" type="Label" parent="CanvasLayer/Player_ele"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/Player_ele"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("9_vckdu")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+metadata/_edit_use_anchors_ = true
+
+[node name="GridContainer2" type="GridContainer" parent="CanvasLayer"]
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.432
+anchor_top = 0.752
+anchor_right = 0.614
+anchor_bottom = 0.854
+offset_left = -154.368
+offset_top = -52.024
+offset_right = 31.264
+offset_bottom = -0.248016
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 2
+
+[node name="Move1" type="Button" parent="CanvasLayer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_1rklm")
+text = "Attack"
+
+[node name="Move2" type="Button" parent="CanvasLayer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_tmx0f")
+text = "Item"
+
+[node name="Move3" type="Button" parent="CanvasLayer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_oupg2")
+text = "Skill"
+
+[node name="Back" type="Button" parent="CanvasLayer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_abfpn")
+text = "Back
+"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=122 format=4 uid="uid://brg7vyjjrwx3t"]
+[gd_scene load_steps=123 format=4 uid="uid://brg7vyjjrwx3t"]
 
 [ext_resource type="Texture2D" uid="uid://demwg6nskrbp8" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/Grass.png" id="1_okv3e"]
 [ext_resource type="Script" uid="uid://cpm0capnnw8mj" path="res://Scripturi/world.gd" id="1_u4a8w"]
@@ -46,12 +46,12 @@
 [ext_resource type="Script" uid="uid://ca78fmw7555vm" path="res://Scripturi/FPS.gd" id="31_704b0"]
 [ext_resource type="PackedScene" uid="uid://w6fwtl6c02v6" path="res://Scene/cycle_d_n.tscn" id="37_3x3v4"]
 [ext_resource type="Script" uid="uid://b13fgv52m1c27" path="res://Scripturi/ecran.gd" id="46_we7e6"]
+[ext_resource type="PackedScene" uid="uid://cj567gtda6mkd" path="res://Tabs/pc.tscn" id="54_n4quh"]
 [ext_resource type="PackedScene" uid="uid://bq865rkdcos1b" path="res://Scene/mana_profesonala.tscn" id="54_vx50t"]
 [ext_resource type="PackedScene" uid="uid://oole82yty3pu" path="res://Scene/electricity_pillar.tscn" id="55_ll6pr"]
 [ext_resource type="PackedScene" uid="uid://b7k4co3fxvk2o" path="res://Scene/control_desk.tscn" id="56_ll6pr"]
-[ext_resource type="PackedScene" uid="uid://sge5b0ajwcpn" path="res://Scene/enemySpawner.tscn" id="57_00i6b"]
 [ext_resource type="PackedScene" uid="uid://cov2w06svfo6g" path="res://User/inv_cuppon.tscn" id="57_3cdja"]
-[ext_resource type="PackedScene" uid="uid://mgntgh16bq06" path="res://Scene/pc.tscn" id="58_n4quh"]
+[ext_resource type="PackedScene" uid="uid://duiinnoergl23" path="res://Scene/combat.tscn" id="58_3cdja"]
 [ext_resource type="Shader" uid="uid://lxt8b220wo4a" path="res://Shaders/fake_3D.gdshader" id="59_iy7id"]
 [ext_resource type="PackedScene" uid="uid://dv5n7e30eoa54" path="res://User/slot_container_cuppon.tscn" id="60_tdwy7"]
 [ext_resource type="PackedScene" uid="uid://b6i200oqdrag8" path="res://Scene/node_2d.tscn" id="60_ysm1r"]
@@ -1086,6 +1086,9 @@ shader_parameter/y_rot = 0.0
 shader_parameter/x_rot = 0.0
 shader_parameter/inset = 0.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n4quh"]
+size = Vector2(19, 18)
+
 [node name="world" type="Node2D" groups=["Persist"]]
 y_sort_enabled = true
 script = ExtResource("1_u4a8w")
@@ -1197,6 +1200,13 @@ position = Vector2(-45, 63)
 [node name="Item20" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-242, 874)
 ID = "7"
+curse = {
+"id": "fragile",
+"modifiers": {
+"def_mult": 0.8
+}
+}
+effects = ["regen, 5, 10.0"]
 type = "slot"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1214,6 +1224,7 @@ offset_right = -0.248047
 offset_bottom = -0.240021
 
 [node name="healthbar_player" type="TextureProgressBar" parent="CanvasLayer"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -1235,6 +1246,7 @@ region_enabled = true
 region_rect = Rect2(0, 152, 1120, 680)
 
 [node name="healthbar_enemy" type="TextureProgressBar" parent="CanvasLayer"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -1545,7 +1557,12 @@ offset_bottom = 16.256
 text = "▲
 ▼"
 
-[node name="Control" parent="CanvasLayer" instance=ExtResource("58_n4quh")]
+[node name="Control3" parent="CanvasLayer" instance=ExtResource("58_3cdja")]
+offset_top = -39.508
+offset_bottom = -39.884
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("54_n4quh")]
+visible = false
 
 [node name="player" parent="." instance=ExtResource("6_5tioc")]
 position = Vector2(-444, 929)
@@ -1609,10 +1626,17 @@ position = Vector2(-292, 817)
 ID = "32"
 type = "slot_cup"
 
-[node name="Node2D4" parent="." instance=ExtResource("57_00i6b")]
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-635, 865)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-8.5, 1)
+shape = SubResource("RectangleShape2D_n4quh")
 
 [connection signal="timeout" from="TileMap/animatie_sapa" to="TileMap" method="_on_animatie_sapa_timeout"]
 [connection signal="timeout" from="TileMap/umezeala" to="TileMap" method="_on_umezeala_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 
 [editable path="CanvasLayer/Inv2"]
 [editable path="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer"]

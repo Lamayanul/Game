@@ -25,3 +25,9 @@ func get_nume(ID="0"):
 
 func get_raritate(ID="0"):
  return content[ID]["raritate"]
+
+func get_curse(ID="0"):     # return content.get(id, {}).get("curse", null)
+ return content[ID]["curse"]
+
+func get_effects(ID="0"):  #-> Array: return content.get(id, {}).get("effects", []) 
+ return content[ID]["effects"]

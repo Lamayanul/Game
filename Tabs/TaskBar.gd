@@ -11,7 +11,8 @@ var tray: Control
 var _buttons: Dictionary = {}
 
 func _physics_process(_delta):
-	rich_text_label.text = ora.text + "\n" + zi.text
+	if is_instance_valid(ora):
+		rich_text_label.text = ora.text + "\n" + zi.text
 	
 func add_window(win: PanelContainer, title: String = "", icon: Texture2D = null) -> void:
 	if _buttons.has(win):

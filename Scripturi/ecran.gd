@@ -1,62 +1,64 @@
 extends CanvasLayer
 
-@onready var inventory_panel_cup = $Inv2 # sau calea ta!
-@onready var toggle_button_cup = $Button
+@onready var inventory_panel_cup: Control = $Inv2
+@onready var toggle_button_cup: Button   = $Button
 
-@onready var inventory_panel = $Inv 
-@onready var toggle_button = $Button2
+@onready var inventory_panel: Control    = $Inv
+@onready var toggle_button: Button       = $Button2
 
-var is_shown_cup = false
-var is_shown = false
-var tween_cup : Tween = null
-var tween : Tween = null
+var is_shown_cup := false
+var is_shown := false
+var tween_cup: Tween
+var tween: Tween
+
+const MARGIN := 10.0
 
 func _ready():
-	get_viewport().connect("size_changed", Callable(self, "_on_viewport_resized"))
-	call_deferred("_init_inventory_slide")
-	toggle_button_cup.connect("pressed", Callable(self, "_on_toggle_inventory_pressed_cup"))
-	toggle_button.connect("pressed", Callable(self, "_on_toggle_inventory_pressed"))
+	get_viewport().size_changed.connect(_on_viewport_resized)
+	await get_tree().process_frame  # asigură layout-ul și mărimile
+	# ancorați-le DOAR pe Y la bottom (nu atingem X, nici size)
+	_anchor_y_bottom(inventory_panel_cup)
+	_anchor_y_bottom(inventory_panel)
+
+	_init_inventory_slide()
+	toggle_button_cup.pressed.connect(_on_toggle_inventory_pressed_cup)
+	toggle_button.pressed.connect(_on_toggle_inventory_pressed)
+
+func _anchor_y_bottom(p: Control) -> void:
+	p.anchor_top = 1.0
+	p.anchor_bottom = 1.0
+	# nu schimbăm anchor_left/right → X rămâne cum e
+
+func _canvas_h() -> float:
+	# dimensiunea VIZIBILĂ a canvas-ului (corectă pentru keep/expand/scale)
+	return get_viewport().get_visible_rect().size.y
+
+func _shown_y(panel: Control) -> float:
+	return _canvas_h() - panel.size.y - MARGIN
+
+func _hidden_y(_panel: Control) -> float:
+	return _canvas_h() + MARGIN
 
 func _init_inventory_slide():
-	# Inițializează panel-urile pe poziție ascunsă, la baza ecranului
-	inventory_panel_cup.position.y = get_hidden_y(inventory_panel_cup)
-	inventory_panel.position.y = get_hidden_y(inventory_panel)
+	inventory_panel_cup.position.y = _hidden_y(inventory_panel_cup)
+	inventory_panel.position.y = _hidden_y(inventory_panel)
 	is_shown_cup = false
 	is_shown = false
 
-func get_shown_y(panel: Control) -> float:
-	# Poziția pentru slide “la vedere” (lipit de jos, dar cât să fie perfect vizibil)
-	return get_viewport().size.y - panel.size.y - 10 # -10 ca să fie 10px peste margine, schimbă după preferință
-
-func get_hidden_y(_panel: Control) -> float:
-	# Poziția de ascuns, sub ecran complet
-	return get_viewport().size.y + 30 # +30 ca să fie cu 30px sub margine, sau poți face +panel.size.y
-
 func _on_toggle_inventory_pressed_cup():
 	if tween_cup: tween_cup.kill()
-	tween_cup = create_tween()
-	var show_y = get_shown_y(inventory_panel_cup)
-	var hide_y = get_hidden_y(inventory_panel_cup)
-	var target_y = show_y if !is_shown_cup else hide_y
-	tween_cup.tween_property(inventory_panel_cup, "position:y", target_y, 0.7).set_trans(Tween.TRANS_SINE)
+	tween_cup = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var target_y :=_hidden_y(inventory_panel_cup) if  is_shown_cup else _shown_y(inventory_panel_cup)
+	tween_cup.tween_property(inventory_panel_cup, "position:y", target_y, 0.7)
 	is_shown_cup = !is_shown_cup
 
 func _on_toggle_inventory_pressed():
 	if tween: tween.kill()
-	tween = create_tween()
-	var show_y = get_shown_y(inventory_panel)
-	var hide_y = get_hidden_y(inventory_panel)
-	var target_y = show_y if !is_shown else hide_y
-	tween.tween_property(inventory_panel, "position:y", target_y, 0.7).set_trans(Tween.TRANS_SINE)
+	tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var target_y :=_hidden_y(inventory_panel) if is_shown else _shown_y(inventory_panel)
+	tween.tween_property(inventory_panel, "position:y", target_y, 0.7)
 	is_shown = !is_shown
 
 func _on_viewport_resized():
-	# La resize, repoziționează inventarele dacă sunt ascunse
-	if !is_shown_cup:
-		inventory_panel_cup.position.y = get_hidden_y(inventory_panel_cup)
-	else:
-		inventory_panel_cup.position.y = get_shown_y(inventory_panel_cup)
-	if !is_shown:
-		inventory_panel.position.y = get_hidden_y(inventory_panel)
-	else:
-		inventory_panel.position.y = get_shown_y(inventory_panel)
+	inventory_panel_cup.position.y = _shown_y(inventory_panel_cup) if is_shown_cup else _hidden_y(inventory_panel_cup)
+	inventory_panel.position.y     = _shown_y(inventory_panel)  if is_shown    else _hidden_y(inventory_panel)

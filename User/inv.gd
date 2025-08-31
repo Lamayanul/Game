@@ -69,6 +69,7 @@ var index=0
 
 signal plantSeed
 signal attacking
+signal weapon_equip_request(weapon_id: String)
 var SlotTrayScene = preload("res://User/slot_container.tscn") 
 @onready var tray_container = get_node("/root/world/CanvasLayer/Masa/TextureRect")
 
@@ -114,14 +115,16 @@ var SlotTrayScene = preload("res://User/slot_container.tscn")
 
 
 #---------------------------------------add_item()-----------------------------------------------------
-func add_item(ID="", item_cantita=1) -> bool:
+func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 	
 	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
 	var item_nume = ItemData.get_nume(ID)
 	var item_number = ItemData.get_number(ID)
 	var item_cantitate = item_cantita
 	var item_raritate = ItemData.get_raritate(ID)
-	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate}
+	var item_curse = curse
+	var item_effects = effects
+	var item_data = {"TEXTURE": item_texture, "CANTITATE": item_cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate, "CURSE":item_curse, "EFFECTS":item_effects}
 
 	#print("Încerc să adaug item ID:", ID, " Cantitate:", item_cantitate)
 
@@ -133,7 +136,7 @@ func add_item(ID="", item_cantita=1) -> bool:
 			if child.filled and child.get_id() == ID:
 				#print("Item găsit în slot", i, ". Stivuiesc...")
 				child.cantitate += item_cantitate
-				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate})
+				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate, "CURSE":item_curse, "EFFECTS":item_effects})
 				return true  # A reușit să adauge obiectul, returnează `true`
 	
 	# 2. Dacă nu există un slot cu același ID, caută un slot gol
@@ -208,11 +211,26 @@ func _on_slot_selected(slot: Slot):
 		hand_sprite.visible = true
 		hand_sprite.scale = Vector2(0.5, 0.5)
 		
+		#slot.add_effect_dict({
+	#"id": "regen",
+	#"amount": 5,
+	#"duration": 10.0
+#})
+		#slot.set_curse_dict({
+	#"id": "fragile",
+	#"modifiers": {"def_mult": 0.8}
+#})
+
 		var nume     = slot.get_nume()
 		var raritate = slot.get_raritate()
+		var curse = slot.get_curse()
+		var effects = slot.get_effects()
+		var curse_txt   = _fmt_curse(slot.get_curse())
+		var effects_txt = _fmt_effects(slot.get_effects())
+
 
 		
-		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s[/center]" % [nume, raritate]
+		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s \nCURSE: %s \nEFFECTS: %s[/center]" % [nume, raritate, curse_txt, effects_txt]
 		info_label.visible = true
 		#color_rect.visible = false
 
@@ -223,8 +241,83 @@ func _on_slot_selected(slot: Slot):
 	#var player = get_node("/root/world/player")
 	if  slot.get_texture() != null and is_instance_valid(player):
 		player.equip_item(slot.get_texture(), slot.get_nume(), slot.get_raritate())
+	var wid = _weapon_id_from_slot(slot)
+	if wid != "":
+		emit_signal("weapon_equip_request", wid)
+
+# Mic utilitar pentru join (merge cu orice array)
+func _join(arr: Array, sep: String) -> String:
+	var out := ""
+	for i in arr.size():
+		out += str(arr[i])
+		if i < arr.size() - 1:
+			out += sep
+	return out
+
+func _fmt_curse(c: Variant) -> String:
+	if c == null:
+		return "—"
+	if c is Dictionary:
+		var id := String(c.get("id","?"))
+		var mods := ""
+		if c.has("modifiers") and c["modifiers"] is Dictionary:
+			var kv := []
+			for k in c["modifiers"].keys():
+				kv.append("%s = %s" % [k, str(c["modifiers"][k])])
+			mods = _join(kv, ", ")
+		return "\n• "+id + ("" if mods == "" else " (" + mods + ")")
+	return str(c)
+
+	# Normalizează la Array
+func _fmt_effects(eff: Variant) -> String:
+	if eff == null:
+		return "—"
+	var arr: Array = []
+	if eff is Array:
+		arr = eff
+	elif eff is Dictionary:
+		arr = [eff]
+	else:
+		return str(eff)
+
+	if arr.is_empty():
+		return "—"
+
+	var lines: Array[String] = []
+	for e in arr:
+		if e is Dictionary:
+			var id := String(e.get("id", "?"))
+			var parts: Array[String] = []
+			for k in e.keys():
+				if k == "id":
+					continue
+				parts.append("%s=%s" % [str(k), str(e[k])])
+			var tail := " (" + _join(parts, ", ") + ")" if parts.size() > 0 else ""
+			lines.append("\n• %s%s" % [id, tail])
+		else:
+			lines.append("\n• " + str(e))
+
+	return _join(lines, "\n")
 
 
+
+
+const ITEMID_TO_WEAPONID := {
+	"0":"FIST",
+	"2": "AXE01",
+	"9": "SWORD01",
+	# ...
+}
+
+func _weapon_id_from_slot(slot: Slot) -> String:
+	var item_id = slot.get_id()        # ex: "2", "9", etc.
+	# dacă ai așa ceva în ItemData, folosește-l:
+	if ItemData.has_method("get_weapon_ref"):
+		return String(ItemData.get_weapon_ref(item_id))
+	# fallback: maparea locală
+	if ITEMID_TO_WEAPONID.has(item_id):
+		return ITEMID_TO_WEAPONID[item_id]
+	return ""
 
 func update_selector_position(slot: Slot):
 	var slot_position = slot.get_global_position()
@@ -405,12 +498,15 @@ func drop_selected_item():
 			#var mouse = get_global_mouse_position()
 			var _world = get_node("/root/world/")
 			var cantiti=selected_slot.get_cantitate()
+			var curse = selected_slot.get_curse()
+			var effects = selected_slot.get_effects()
 			# Convertește coordonatele mouse-ului în coordonatele locale ale TileMap
 			#var mouse_position_global = get_viewport().get_mouse_position()
 			#var mouse_position_local = world.to_local(mouse_position_global)
 			# Drop itemul la poziția exactă a mouse-ului
 
-			drop_item(ID,cantiti)
+			#drop_item(ID,cantiti)
+			drop_item(ID,cantiti,curse, effects)
 			
 			#print("Poziția calculată pentru drop: ", drop_position)
 			
@@ -441,7 +537,7 @@ func update_inventory_status():
 
 
 #--------------------------------functie-drop-default--------------------------------------------------
-func drop_item(ID: String, cantiti: int):
+func drop_item(ID: String, cantiti: int, curse: Variant, effects: Variant):
 	# Obține textura și cantitatea din ItemData
 	if cantiti==0:
 		return
@@ -449,7 +545,8 @@ func drop_item(ID: String, cantiti: int):
 	var item_cantitate = cantiti
 	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
 	var item_texture = load(item_texture_path) as Texture
-	
+	var item_curse = curse
+	var item_effects = effects
 	# Încarcă scena itemului
 	var item_scene = load("res://User/Item.tscn") as PackedScene
 	if item_scene and is_instance_valid(player) :
@@ -459,6 +556,8 @@ func drop_item(ID: String, cantiti: int):
 		var item_instance = item_scene.instantiate()
 		item_instance.set_cantitate(item_cantitate)
 		item_instance.set_texture1(item_texture)
+		item_instance.set_curse(item_curse)
+		item_instance.set_effects(item_effects)
 		item_instance.ID = ID
 		item_instance.type="slot"
 		#item_instance.set_lumina(ID)
@@ -486,6 +585,8 @@ func drop_selected_item_1():
 			#print("ID-ul itemului este: ", ID)
 			#var item_cantitate = selected_slot.get_cantitate()
 			var cantitate_de_drop = 1  # Cantitatea pe care vrei să o dai la drop
+			var curse = selected_slot.get_curse()
+			var effects = selected_slot.get_effects()
 			# Obține poziția mouse-ului în coordonate globale
 			var mouse_position = Vector2(100,100)
 			var world = get_node("/root/world/")
@@ -506,7 +607,7 @@ func drop_selected_item_1():
 			if ID=="0":
 				cantitate_de_drop=0
 			
-			drop_item(ID , cantitate_de_drop)
+			drop_item(ID , cantitate_de_drop, curse, effects)
 			#player.inequip_item() 
 			update_inventory_status()
 		#else:

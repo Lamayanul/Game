@@ -1,0 +1,21 @@
+{
+ "1":{
+	"nume":"mar",
+	"descriere" : "Acest obiect se gaseste in copaci"
+	 },
+	
+ "2":{
+	"nume":"topor",
+	"descriere" : "Acest obiect se foloseste pentru a taia copaci"
+	 },
+	
+"3":{
+	"nume":"grau",
+	"descriere" : "de aici mananci"
+	},
+	
+ "4":{
+	"nume":"piatra",
+	"descriere" : "obiect dur"
+	 },
+}
