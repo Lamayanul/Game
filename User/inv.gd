@@ -137,6 +137,7 @@ func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 				#print("Item găsit în slot", i, ". Stivuiesc...")
 				child.cantitate += item_cantitate
 				child.set_property({"TEXTURE": item_texture, "CANTITATE": child.cantitate, "NUMBER": item_number, "NUME": item_nume, "RARITATE":item_raritate, "CURSE":item_curse, "EFFECTS":item_effects})
+				_apply_to_player_from_slot(child)
 				return true  # A reușit să adauge obiectul, returnează `true`
 	
 	# 2. Dacă nu există un slot cu același ID, caută un slot gol
@@ -149,6 +150,11 @@ func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 				child.set_property(item_data)
 				child.filled = true
 				plin += 1
+				_apply_to_player_from_slot(child)
+				var se = player.get_node_or_null("StatusEffects")
+				if se:
+					se.apply_from_slot(child) 
+					se.refresh_holding(grid_container)
 				return true  # A reușit să adauge obiectul, returnează `true`
 
 	# 3. Dacă inventarul este plin și nu există sloturi libere
@@ -254,19 +260,62 @@ func _join(arr: Array, sep: String) -> String:
 			out += sep
 	return out
 
+# Mic utilitar pt. value → text, fără ghilimele
+func _fmt_any(v: Variant) -> String:
+	if v == null:
+		return "null"
+	if v is Dictionary:
+		var kv := []
+		for k in v.keys():
+			kv.append("%s=%s" % [str(k), _fmt_any(v[k])])
+		kv.sort()
+		return _join(kv, ", ")
+	if v is Array:
+		var items := []
+		for it in v:
+			items.append(_fmt_any(it))
+		return _join(items, ", ")
+	return str(v)
+
+func _fmt_modifiers(mods: Dictionary) -> String:
+	var kv := []
+	for k in mods.keys():
+		kv.append("%s=%s" % [str(k), str(mods[k])])
+	kv.sort()
+	return _join(kv, ", ")
+
 func _fmt_curse(c: Variant) -> String:
 	if c == null:
 		return "—"
 	if c is Dictionary:
 		var id := String(c.get("id","?"))
-		var mods := ""
-		if c.has("modifiers") and c["modifiers"] is Dictionary:
-			var kv := []
-			for k in c["modifiers"].keys():
-				kv.append("%s = %s" % [k, str(c["modifiers"][k])])
-			mods = _join(kv, ", ")
-		return "\n• "+id + ("" if mods == "" else " (" + mods + ")")
+
+		var parts := []
+
+		# câmpuri „cunoscute”, în ordine
+		if c.has("mode"):
+			parts.append("mode=" + String(c["mode"]))
+		if c.has("duration"):
+			parts.append("duration=" + str(c["duration"]))
+		if c.has("period"):
+			parts.append("period=" + str(c["period"]))
+
+		# modifiers frumos
+		if c.has("modifiers") and c["modifiers"] is Dictionary and not c["modifiers"].is_empty():
+			parts.append("modifiers: " + _fmt_modifiers(c["modifiers"]))
+
+		# orice alte proprietăți viitoare (le afișăm generic)
+		var skip := ["id","mode","duration","period","modifiers"]
+		for k in c.keys():
+			if k in skip: continue
+			parts.append("%s=%s" % [str(k), _fmt_any(c[k])])
+
+		var tail := "" if parts.is_empty() else " (" + _join(parts, ", ") + ")"
+		return "\n• " + id + tail
+
+	# fallback (dacă e alt tip)
 	return str(c)
+
 
 	# Normalizează la Array
 func _fmt_effects(eff: Variant) -> String:
@@ -291,7 +340,7 @@ func _fmt_effects(eff: Variant) -> String:
 			for k in e.keys():
 				if k == "id":
 					continue
-				parts.append("%s=%s" % [str(k), str(e[k])])
+				parts.append("%s = %s" % [str(k), str(e[k])])
 			var tail := " (" + _join(parts, ", ") + ")" if parts.size() > 0 else ""
 			lines.append("\n• %s%s" % [id, tail])
 		else:
@@ -308,6 +357,19 @@ const ITEMID_TO_WEAPONID := {
 	"9": "SWORD01",
 	# ...
 }
+
+
+func _apply_to_player_from_slot(slot: Slot) -> void:
+	if not is_instance_valid(player): return
+	var se = player.get_node_or_null("StatusEffects") as StatusEffects
+	if se == null:
+		push_warning("Player nu are un nod StatusEffects ca și copil.")
+		return
+	# (opțional) dacă re-echipezi același slot, scoate întâi vechiul efect:
+	se.remove_from_slot(slot)
+	se.apply_from_slot(slot)
+
+
 
 func _weapon_id_from_slot(slot: Slot) -> String:
 	var item_id = slot.get_id()        # ex: "2", "9", etc.
@@ -504,7 +566,10 @@ func drop_selected_item():
 			#var mouse_position_global = get_viewport().get_mouse_position()
 			#var mouse_position_local = world.to_local(mouse_position_global)
 			# Drop itemul la poziția exactă a mouse-ului
-
+			var se = player.get_node_or_null("StatusEffects") as StatusEffects
+			if se:
+				se.remove_from_slot(selected_slot)
+				se.refresh_holding(grid_container)
 			#drop_item(ID,cantiti)
 			drop_item(ID,cantiti,curse, effects)
 			
@@ -514,8 +579,9 @@ func drop_selected_item():
 			selected_slot.clear_item()
 			selected_slot.deselect()
 			selected_slot = null  # Deselectează slotul după drop
-		
-			update_inventory_status()
+			#var se = player.get_node_or_null("StatusEffects") as StatusEffects
+			#if se: se.remove_from_slot(selected_slot)
+			#update_inventory_status()
 			#print(plin)
 			
 			player.inequip_item()
@@ -662,35 +728,65 @@ func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
 
 
 #------------------------------------------functie-eat()-----------------------------------------------
-func eat():
-	# Verificăm dacă există un slot selectat
-	if selected_slot == null:
-		#print("Nu ai selectat nimic în inventar!")
-		return
-	
-	var slot = selected_slot  # Slotul selectat
-	if slot is Slot and slot.filled:
-		var ID = slot.get_id()
-		
-		if ID == "1" || ID=="8":  # Verificăm dacă itemul este de tip mâncare
-			var cantitate_de_mancat = 1  # Cantitatea de mâncare consumată
-			player.health += 10  # Creștem sănătatea jucătorului
-			player.healthbar_player.value = player.health  # Actualizăm bara de sănătate
-			if player.health > 100:  # Asigurăm că sănătatea nu trece peste 100
-				player.health = 100 
-
-			# Reducem cantitatea din item și dacă rămâne 0, golim slotul
-			if slot.decrease_cantitate(cantitate_de_mancat):
-				slot.clear_item()  # Golim slotul
-				slot.deselect()  # Deselectăm slotul după ce itemul a fost consumat
-				plin -= 1  # Reducem numărul de sloturi pline din inventar
-				player.inequip_item()  # Scoatem itemul din echipare dacă era echipat
-				#print("Ai mâncat un item, viața ta a crescut.")
-			return
+#func eat():
+	## Verificăm dacă există un slot selectat
+	#if selected_slot == null:
+		##print("Nu ai selectat nimic în inventar!")
+		#return
+	#
+	#var slot = selected_slot  # Slotul selectat
+	#if slot is Slot and slot.filled:
+		#var ID = slot.get_id()
+		#
+		#if ID == "1" || ID=="8" || ID=="7":  # Verificăm dacă itemul este de tip mâncare
+			#var cantitate_de_mancat = 1  # Cantitatea de mâncare consumată
+			##player.health += 10  # Creștem sănătatea jucătorului
+			##player.healthbar_player.value = player.health  # Actualizăm bara de sănătate
+			#if player.health > 100:  # Asigurăm că sănătatea nu trece peste 100
+				#player.health = 100 
+				#
+			#var se = player.get_node_or_null("StatusEffects")
+			##if se and selected_slot:
+				##se.apply_on_use_from_slot(selected_slot)
+			## Reducem cantitatea din item și dacă rămâne 0, golim slotul
+			#if slot.decrease_cantitate(cantitate_de_mancat):
+				#se.remove_from_slot(selected_slot)
+				#slot.clear_item()  # Golim slotul
+				#slot.deselect()  # Deselectăm slotul după ce itemul a fost consumat
+				#plin -= 1  # Reducem numărul de sloturi pline din inventar
+				#player.inequip_item()  # Scoatem itemul din echipare dacă era echipat
+				##print("Ai mâncat un item, viața ta a crescut.")
+			#return
 	#else:
 		#print("Slotul selectat nu conține mâncare!")
 #
 	#print("Nu ai mâncare în inventar!")
+
+# Inv.gd (în funcția ta eat())
+func eat():
+	if selected_slot == null:
+		return
+	var ID = selected_slot.get_id()
+	if ID == "1" or ID == "8" or true: # ← dacă vrei să permiți “consumabile” generic
+		var se := player.get_node_or_null("StatusEffects") as StatusEffects
+		if se:
+			# aplică doar efectele/curse cu mode="consumable"
+			se.apply_on_use_from_slot(selected_slot)
+			se.refresh_holding(grid_container)
+
+		# acum chiar consumi 1 din slot
+		if selected_slot.decrease_cantitate(1):
+			# slot golit complet -> se scot automat efectele HOLDING ale acelui slot
+			if se:
+				se.remove_from_slot(selected_slot)
+				se.refresh_holding(grid_container)
+			selected_slot.clear_item()
+			plin -= 1
+			player.inequip_item()
+		else:
+			# slotul a rămas cu cantitate > 0 (ex: stack) => holding-urile rămân corect active
+			pass
+
 
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=580 format=3 uid="uid://def8fyw03nhf6"]
+[gd_scene load_steps=581 format=3 uid="uid://def8fyw03nhf6"]
 
 [ext_resource type="Texture2D" uid="uid://du8pusfbqst35" path="res://Base Character - Free/idle.png" id="1_3sdfn"]
 [ext_resource type="Script" uid="uid://b04sadlh7lvp8" path="res://Scripturi/player.gd" id="1_cqeva"]
@@ -29,6 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://dyegqpykkv6hv" path="res://Base Character - Premium/basic/walk-corp.png" id="17_jx4b7"]
 [ext_resource type="Texture2D" uid="uid://baa58bvlp54uu" path="res://Base Character - Premium/basic/walk-corp-golden.png" id="18_uktg4"]
 [ext_resource type="Texture2D" uid="uid://dsbdlb2u2ftus" path="res://Base Character - Premium/farming/pickaxe-attack-arma.png" id="19_b881n"]
+[ext_resource type="Script" uid="uid://d0hu2a0vnei26" path="res://Scripturi/StatusEffects.gd" id="30_2gnqs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fivss"]
 size = Vector2(9.15235, 3.0625)
@@ -7597,6 +7598,9 @@ texture = SubResource("GradientTexture2D_eqfay")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="StatusEffects" type="Node" parent="."]
+script = ExtResource("30_2gnqs")
 
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]

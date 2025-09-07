@@ -1200,13 +1200,39 @@ position = Vector2(-45, 63)
 [node name="Item20" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-242, 874)
 ID = "7"
+effects = [{
+"amount": 5,
+"duration": 10.0,
+"id": "poison",
+"mode": "consumable",
+"tags": ["dot"]
+}]
+type = "slot"
+
+[node name="Item8" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(-446, 895)
+ID = "8"
 curse = {
+"duration": -1,
 "id": "fragile",
+"mode": "consumable",
 "modifiers": {
-"def_mult": 0.8
+"max_hp_cap": 70
 }
 }
-effects = ["regen, 5, 10.0"]
+type = "slot"
+
+[node name="Item9" parent="." instance=ExtResource("13_6ft7m")]
+position = Vector2(-433, 969)
+ID = "4"
+effects = [{
+"duration": -1,
+"id": "cleanse",
+"mode": "holding",
+"remove": {
+"ids": "poison"
+}
+}]
 type = "slot"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1224,7 +1250,6 @@ offset_right = -0.248047
 offset_bottom = -0.240021
 
 [node name="healthbar_player" type="TextureProgressBar" parent="CanvasLayer"]
-visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -1234,6 +1259,8 @@ offset_bottom = 110.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 value = 100.0
+allow_greater = true
+allow_lesser = true
 texture_under = ExtResource("14_2xshd")
 texture_over = ExtResource("15_37cqh")
 texture_progress = ExtResource("16_g28i7")

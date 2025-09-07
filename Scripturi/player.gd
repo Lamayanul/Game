@@ -47,6 +47,10 @@ var camera_enemy = null
 var see_all = null
 var colisiune
 #@onready var camera_boat: Camera2D = $"../boat/camera_boat"
+var atk = 10
+var def = 10
+var max_hp = 100
+var spd = 10
 
 
 #-------------------------------------Player-stats----------------------------------------------
@@ -69,7 +73,7 @@ var _tileMap
 @onready var timer: Timer = $Timer
 var can_move = true
 var current_clothes: String = ""
-
+@onready var se: StatusEffects = $StatusEffects
 
 
 
@@ -79,6 +83,8 @@ var current_clothes: String = ""
 func _ready():
 	await get_tree().process_frame 
 	await get_tree().process_frame 
+	if se and healthbar_player:
+		se.hp_changed.connect(_on_hp_changed)
 	call_deferred("_init_enemy_list")
 	tile_map = get_tree().current_scene.get_node("TileMap")
 	_tileMap = get_node("/root/world/TileMap")
@@ -89,13 +95,21 @@ func _ready():
 	arma_colisiune.disabled=true
 	#healthbar.value=health
 	add_to_group("player_hitbox")
-
 	scut.visible=false
 	shield_touch.disabled=true
 	scut.add_to_group("scut")
 	scut.monitoring = true
 	animated_sprite_2d_2.z_index=1
+	
 
+func _on_hp_changed(h: int, eff_max: int, ui_max: int) -> void:
+	healthbar_player.max_value = ui_max   # <— rămâne 100
+	healthbar_player.value     = h        # <— arată cât HP ai (plafonat deja la eff_max)
+	# (opțional) arată vizual cap-ul: dacă ai un al doilea “cap bar”, setează:
+	# cap_bar.max_value = ui_max
+	# cap_bar.value     = eff_max   # pentru a vedea “porțiunea blocată”
+	
+	
 
 
 
@@ -107,8 +121,15 @@ func _init_enemy_list():
 	print("inamici: ",enemies)  # Ar trebui acum să fie lista corectă
 
 
+
+
+
+
+		
+		
 #------------------------------_physics_process()------------------------------------------------------
 func _physics_process(_delta):
+	
 	velocity = Vector2.ZERO
 	if not can_move:
 		velocity = Vector2.ZERO

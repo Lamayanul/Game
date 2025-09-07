@@ -111,13 +111,9 @@ func get_effects():
 	
 	
 func set_curse(curse_var: Variant):
-	if curse_var=="":
-		return 
 	curse = curse_var
 
 func set_effects(effects_var: Variant):
-	if effects_var=="":
-		return 
 	effects = effects_var
 
 #func set_lumina(new_ID):
