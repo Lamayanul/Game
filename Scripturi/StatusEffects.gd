@@ -122,6 +122,11 @@ func apply_on_use_from_slot(slot: Node) -> void:
 
 
 func remove_from_slot(slot: Node) -> void:
+	if not can_unequip_slot(slot):
+		# opțional: un mesaj vizual/sunet
+		if owner and owner.has_method("show_toast"):
+			owner.show_toast("Itemul este blestemat: nu-l poți scoate!")
+		return
 	_remove_curses_by_source(slot)
 	_remove_buffs_by_source(slot)
 	_remove_effects_by_source(slot)
@@ -136,14 +141,22 @@ func apply_consumable_effects(effects: Array) -> void:
 # ------------ Adăugare/gestionare curse & efecte ------------
 
 func add_curse(c: Dictionary, source = null) -> void:
+	# dacă există un cleanser care acoperă cursele astea, NU o adăugăm
+	for cl in active_cleansers:
+		var rules = cl.get("rules", {})
+		var cu_rules = rules.get("curses", {})
+		if _curse_matches_rules(c, cu_rules):
+			return
+
 	var inst := {
 		"data": c,
-		"source": source,                    # păstrezi sursa originală (obiect/string)
-		"source_tag": _source_tag(source),   # și tag normalizat pentru comparații
+		"source": source,
+		"source_tag": _source_tag(source),
 		"time_left": float(c.get("duration", -1.0))
 	}
 	active_curses.append(inst)
 	_recompute_stats()
+
 
 func add_effect(e: Dictionary, source = null) -> void:
 	var id := String(e.get("id","")).to_lower()
@@ -165,8 +178,13 @@ func add_effect(e: Dictionary, source = null) -> void:
 			rules_effects = remove_rules.get("effects", {})
 
 		# 1) curăță imediat ce e activ
-		_purge_curses(rules_curses)
-		_purge_effects(rules_effects)
+		var removed_c := _purge_curses(rules_curses)
+		var removed_e := _purge_effects(rules_effects)
+
+# 2) recalc din prima, ca UI/lock-urile să se actualizeze vizibil
+		if removed_c > 0 or removed_e > 0:
+			_recompute_stats()
+		
 
 		# 2) păstrează cleanser-ul dacă are durată ≠ 0
 		if dur != 0.0:
@@ -464,21 +482,32 @@ func _curse_matches_rules(curse_data: Dictionary, rules: Dictionary) -> bool:
 	if rules.get("all", false):
 		return true
 
+	var has_lock := not _lock_from_data(curse_data).is_empty()  # <— lock virtual
+
+	# --- ids (acceptă String sau Array) ---
 	var ids_val = rules.get("ids", null)
 	if ids_val != null:
-		if ids_val is String:
-			ids_val = [ids_val]
+		if ids_val is String: ids_val = [ids_val]
 		if ids_val is Array and not ids_val.is_empty():
 			var cid := _canon(curse_data.get("id",""))
 			for rid in ids_val:
-				if _canon(rid) == cid:
+				var rr := _canon(rid)
+				if rr == cid:
+					return true
+				# ID special virtual: "lock"
+				if rr == "lock" and has_lock:
 					return true
 
+	# --- tags (acceptă String sau Array) ---
 	var tags_val = rules.get("tags", null)
 	if tags_val != null:
-		if tags_val is String:
-			tags_val = [tags_val]
+		if tags_val is String: tags_val = [tags_val]
 		if tags_val is Array and not tags_val.is_empty():
+			# dacă efectul are lock, tratează ca și cum ar avea tag "lock"
+			for rt in tags_val:
+				if _canon(rt) == "lock" and has_lock:
+					return true
+			# altfel intersectează cu tags reale
 			var ctags = curse_data.get("tags", [])
 			if ctags is Array:
 				for t in ctags:
@@ -487,6 +516,7 @@ func _curse_matches_rules(curse_data: Dictionary, rules: Dictionary) -> bool:
 							return true
 
 	return false
+
 
 
 
@@ -546,3 +576,93 @@ func refresh_holding(container: Node) -> void:
 func _canon(x) -> String:
 	return String(x).strip_edges().to_lower()
 	
+func _lock_from_data(d: Dictionary) -> Dictionary:
+	# acceptă lock=true (toate acțiunile) sau lock={...}
+	if not d.has("lock"): 
+		# suport vechi: flags.lock_equip
+		var flags = d.get("flags", {})
+		if flags is Dictionary and flags.get("lock_equip", false):
+			return {"unequip": true, "drop": true, "move": true}
+		return {}
+	var L = d["lock"]
+	if typeof(L) == TYPE_BOOL:
+		return {"unequip": true, "drop": true, "move": true} if L else {}
+	return L if (L is Dictionary) else {}
+
+func _has_lock_for_action(source, action: String) -> bool:
+	# dacă cleanser-ul acoperă lock-urile, nu mai blocăm nimic
+	if _cleanse_disables_locks_now():
+		return false
+
+	var tag := _source_tag(source)
+	for c in active_curses:
+		var d = c.get("data", {})
+		var lock := _lock_from_data(d)
+		if lock.is_empty():
+			continue
+		var ctag = c.get("source_tag", _source_tag(c.get("source", null)))
+		if ctag != tag:
+			continue
+		if lock.get("all", false) or lock.get(action, false):
+			return true
+	return false
+
+
+func can_unequip_slot(slot: Node) -> bool:
+	return not _has_lock_for_action(slot, "unequip")
+
+func can_drop_slot(slot: Node) -> bool:
+	return not _has_lock_for_action(slot, "drop")
+
+func can_move_slot(slot: Node) -> bool:
+	return not _has_lock_for_action(slot, "move")
+	
+func _curse_is_lock(d: Dictionary) -> bool:
+	var id := String(d.get("id","")).to_lower()
+	if id == "lock": 
+		return true
+	# sau prin tag: "lock"
+	if d.has("tags") and d["tags"] is Array:
+		for t in d["tags"]:
+			if String(t).to_lower() == "lock":
+				return true
+	return false
+
+func is_slot_locked(slot: Node) -> bool:
+	var tag := _source_tag(slot)
+	for c in active_curses:
+		var data = c.get("data", {})
+		if _curse_is_lock(data):
+			# lock pe exact itemul din slot (sursa curse-ului)
+			if c.get("source_tag", _source_tag(c.get("source", null))) == tag:
+				return true
+			# opțional: lock pe tip de slot (dacă vrei suport)
+			var st = data.get("slot_types", [])
+			if slot.has_method("slot_type") and st is Array and slot.slot_type in st:
+				return true
+	return false
+
+func can_move_slot_lock(slot: Node) -> bool:
+	return not is_slot_locked(slot)
+
+func _cleanse_disables_locks_now() -> bool:
+	# dacă există un cleanser activ care acoperă lock-urile, ignorăm orice lock
+	for cl in active_cleansers:
+		var rules = cl.get("rules", {})
+		var cr = rules.get("curses", {})
+		if cr.get("all", false): 
+			return true
+		# acceptă tags/ids ca String sau Array
+		var ids_val = cr.get("ids", null)
+		if ids_val is String: ids_val = [ids_val]
+		if ids_val is Array:
+			for rid in ids_val:
+				if String(rid).to_lower() == "lock":
+					return true
+		var tags_val = cr.get("tags", null)
+		if tags_val is String: tags_val = [tags_val]
+		if tags_val is Array:
+			for t in tags_val:
+				if String(t).to_lower() == "lock":
+					return true
+	return false

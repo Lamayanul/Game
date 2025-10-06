@@ -5,6 +5,7 @@ extends Sprite2D
 @export var curse = {}
 @export var effects = []
 @export var type: String
+@export var type_dict = []
 @onready var shadow = Sprite2D.new()
 var raritate: String 
 var float_amplitude: float = 2.0  
@@ -116,6 +117,8 @@ func set_curse(curse_var: Variant):
 func set_effects(effects_var: Variant):
 	effects = effects_var
 
+func set_type(type_var: Variant):
+	type_dict = type_var
 #func set_lumina(new_ID):
 	#if new_ID=="23":
 		#$PointLight2D.visible=true

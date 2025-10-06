@@ -70,11 +70,7 @@ size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 25
 text = "x"
 
-[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-alignment = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Content"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -84,3 +80,8 @@ bbcode_enabled = true
 text = "[center]Local Virtual Storage"
 fit_content = true
 scroll_active = false
+
+[node name="Content_storage" type="GridContainer" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+columns = 6

@@ -3,6 +3,7 @@ extends Node
 
 # Unde montăm ferestrele (setat din scenă sau în _ready)
 @export var ui_root_path: NodePath = ^"/root/world/CanvasLayer/Control"
+
 var ui_root: Node
 
 # Mapare ID item -> scene, titlu, icon, (opțional) setup method
@@ -35,6 +36,7 @@ var _open_tabs: Dictionary = {}   # id -> Control/PanelContainer
 func _ready():
 	ui_root = get_node(ui_root_path)
 	Taskbar.add_window(null,"",preload("res://assets/windows.png"))
+
 
 func open_tab_for_id(id: String, payload: Dictionary = {}) -> void:
 	if not TAB_REGISTRY.has(id): return

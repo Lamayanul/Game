@@ -18,6 +18,7 @@ var lock := false          # true = OPEN, false = CLOSE
 var base_y: float = -50.0    # poziția inițială (locală) a target-ului
 
 signal storage(data)
+signal active_tab
 
 func _ready() -> void:
 	target = get_node(target_path)

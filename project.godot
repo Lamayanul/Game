@@ -86,6 +86,8 @@ player_image=""
 cycle=""
 option=""
 ai_chats=""
+market=""
+browser=""
 
 [input]
 

@@ -31,3 +31,6 @@ func get_curse(ID="0"):     # return content.get(id, {}).get("curse", null)
 
 func get_effects(ID="0"):  #-> Array: return content.get(id, {}).get("effects", []) 
  return content[ID]["effects"]
+
+func get_type(ID="0"):  #-> Array: return content.get(id, {}).get("effects", []) 
+ return content[ID]["type"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bdbqa40w6fhjf"]
+[gd_scene load_steps=29 format=3 uid="uid://bdbqa40w6fhjf"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_21n6t"]
 [ext_resource type="Texture2D" uid="uid://cmnntvo131h3l" path="res://Tabs/browser.png" id="2_klhmi"]
@@ -9,7 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://dh5rxbokk4dqq" path="res://Tabs/moving_buton.tscn" id="4_a5wrn"]
 [ext_resource type="Texture2D" uid="uid://cex5k4ahk336a" path="res://Tabs/loupe.png" id="4_ggdit"]
 [ext_resource type="Script" uid="uid://c6cyxgsmb5ymh" path="res://Tabs/MarqueeButtonsD.gd" id="6_5twsn"]
-[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="10_j1uka"]
+[ext_resource type="FontFile" uid="uid://c3y8aej1f3qau" path="res://Fonts/The Melody.otf" id="10_inpi5"]
+[ext_resource type="Script" uid="uid://biuhnkve5plwp" path="res://Tabs/add_market.gd" id="10_jj33y"]
+[ext_resource type="PackedScene" uid="uid://b3vsvhwfvjkdk" path="res://Tabs/market_slot_advance.tscn" id="11_wehm2"]
+[ext_resource type="Script" uid="uid://1dme5s8h1y7c" path="res://Tabs/add_market_product.gd" id="13_inpi5"]
+[ext_resource type="PackedScene" uid="uid://dluls5pgk36bb" path="res://Tabs/market_slot.tscn" id="13_kcrse"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
 bg_color = Color(1, 0.768116, 0.73913, 1)
@@ -82,17 +86,20 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="Theme" id="Theme_jj33y"]
-default_font_size = 30
+[sub_resource type="Theme" id="Theme_wa8fj"]
+default_font = ExtResource("10_inpi5")
+default_font_size = 25
 
-[node name="DockTab" type="PanelContainer"]
+[node name="DockTab" type="PanelContainer" groups=["browser"]]
 z_index = 2
-custom_minimum_size = Vector2(950, 710)
+custom_minimum_size = Vector2(1200, 710)
 offset_right = 949.0
 offset_bottom = 512.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_21n6t")
 type_tab = "browser"
+market_grid_all_path = NodePath("VBoxContainer/Market/ScrollContainer/GridContainer")
+market_grid_product_path = NodePath("VBoxContainer/Market/ScrollContainer/GridContainer2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0.145098)
@@ -105,6 +112,7 @@ stretch_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TitleBar" type="HBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(180, 40)
@@ -155,7 +163,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_2t4ub")
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="TextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
+[node name="www" type="TextEdit" parent="VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(600, 50)
 layout_mode = 2
 theme = SubResource("Theme_2t4ub")
@@ -166,16 +174,16 @@ theme_override_constants/caret_width = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_o6n6p")
 caret_blink = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Search" type="VBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Search"]
 layout_mode = 2
 texture = ExtResource("3_21n6t")
 stretch_mode = 5
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Search"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -189,16 +197,16 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Search"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_klhmi")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Search/PanelContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Search/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -206,7 +214,7 @@ texture = ExtResource("4_ggdit")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="TextEdit" type="TextEdit" parent="VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Search/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(600, 50)
 layout_mode = 2
 theme = SubResource("Theme_klhmi")
@@ -215,41 +223,44 @@ theme_override_colors/font_color = Color(0, 0, 0, 0.6)
 theme_override_styles/normal = SubResource("StyleBoxFlat_21n6t")
 placeholder_text = "Search"
 
-[node name="Control" type="Control" parent="VBoxContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="VBoxContainer/Search"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 script = ExtResource("4_5twsn")
 button_scene = ExtResource("4_a5wrn")
 
-[node name="Control2" type="Control" parent="VBoxContainer/VBoxContainer"]
+[node name="Control2" type="Control" parent="VBoxContainer/Search"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 script = ExtResource("6_5twsn")
 button_scene = ExtResource("4_a5wrn")
 
-[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/Search"]
 layout_mode = 2
 theme = SubResource("Theme_o6n6p")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
-[node name="Control3" type="Control" parent="VBoxContainer/VBoxContainer"]
+[node name="Control3" type="Control" parent="VBoxContainer/Search"]
 layout_mode = 2
 script = ExtResource("3_2t4ub")
 
-[node name="Control" type="Control" parent="VBoxContainer"]
+[node name="Market" type="Control" parent="VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Market"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = -0.002
+anchor_right = 1.002
+offset_left = 0.392
 offset_top = 16.0
-offset_right = 2.0
+offset_right = -0.391968
 offset_bottom = 95.0
 grow_horizontal = 2
 rotation = -0.00235349
+mouse_filter = 2
 theme = SubResource("Theme_j1uka")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
@@ -261,7 +272,21 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Control"]
+[node name="Total_money" type="RichTextLabel" parent="VBoxContainer/Market/RichTextLabel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.295
+offset_right = -0.557495
+offset_bottom = 79.0
+theme = SubResource("Theme_wa8fj")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Market"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -272,161 +297,26 @@ offset_bottom = 592.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Control/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Market/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/v_separation = 100
+mouse_filter = 2
+theme_override_constants/v_separation = 40
+script = ExtResource("10_jj33y")
+slot_tab = ExtResource("11_wehm2")
 
-[node name="SlotContainer8" parent="VBoxContainer/Control/ScrollContainer/GridContainer" instance=ExtResource("10_j1uka")]
-custom_minimum_size = Vector2(64, 200)
+[node name="SlotContainer11" parent="VBoxContainer/Market/ScrollContainer/GridContainer" instance=ExtResource("13_kcrse")]
+visible = false
 layout_mode = 2
+mouse_filter = 2
 
-[node name="TextureRect2" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8/TextureHolder" index="0"]
-offset_right = 128.0
-offset_bottom = 128.0
-
-[node name="TextureRect" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8/TextureHolder" index="1"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 128.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Label" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8/TextureHolder/TextureRect" index="0"]
-anchors_preset = -1
-anchor_left = 0.898
-anchor_top = 0.946
-anchor_right = 0.898
-anchor_bottom = 0.946
-offset_left = -20.944
-offset_top = -28.034
-offset_right = 0.0559921
-offset_bottom = -0.0340042
-
-[node name="TextureRect3" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8/TextureHolder" index="2"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 866.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8/TextureHolder" index="3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.148
-anchor_right = 1.0
-offset_left = -0.167999
-offset_bottom = 128.0
-theme = SubResource("Theme_jj33y")
-bbcode_enabled = true
-text = "Nume produs, cantitatea, raritatea, origine, caracteristici"
-scroll_active = false
-
-[node name="SlotContainer9" parent="VBoxContainer/Control/ScrollContainer/GridContainer" instance=ExtResource("10_j1uka")]
-custom_minimum_size = Vector2(64, 200)
+[node name="GridContainer2" type="GridContainer" parent="VBoxContainer/Market/ScrollContainer"]
+visible = false
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("13_inpi5")
+slot_tab = ExtResource("11_wehm2")
 
-[node name="TextureRect2" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9/TextureHolder" index="0"]
-offset_right = 128.0
-offset_bottom = 128.0
-
-[node name="TextureRect" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9/TextureHolder" index="1"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 128.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Label" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9/TextureHolder/TextureRect" index="0"]
-anchors_preset = -1
-anchor_left = 0.898
-anchor_top = 0.946
-anchor_right = 0.898
-anchor_bottom = 0.946
-offset_left = -20.944
-offset_top = -28.034
-offset_right = 0.0559921
-offset_bottom = -0.0340042
-
-[node name="TextureRect3" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9/TextureHolder" index="2"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 866.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9/TextureHolder" index="3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.148
-anchor_right = 1.0
-offset_left = -0.167999
-offset_bottom = 128.0
-theme = SubResource("Theme_jj33y")
-bbcode_enabled = true
-text = "Nume produs, cantitatea, raritatea, origine, caracteristici"
-scroll_active = false
-
-[node name="SlotContainer10" parent="VBoxContainer/Control/ScrollContainer/GridContainer" instance=ExtResource("10_j1uka")]
-custom_minimum_size = Vector2(64, 200)
-layout_mode = 2
-
-[node name="TextureRect2" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10/TextureHolder" index="0"]
-offset_right = 128.0
-offset_bottom = 128.0
-
-[node name="TextureRect" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10/TextureHolder" index="1"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 128.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Label" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10/TextureHolder/TextureRect" index="0"]
-anchors_preset = -1
-anchor_left = 0.898
-anchor_top = 0.946
-anchor_right = 0.898
-anchor_bottom = 0.946
-offset_left = -20.944
-offset_top = -28.034
-offset_right = 0.0559921
-offset_bottom = -0.0340042
-
-[node name="TextureRect3" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10/TextureHolder" index="2"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 866.0
-offset_bottom = 129.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10/TextureHolder" index="3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.148
-anchor_right = 1.0
-offset_left = -0.167999
-offset_bottom = 128.0
-theme = SubResource("Theme_jj33y")
-bbcode_enabled = true
-text = "Nume produs, cantitatea, raritatea, origine, caracteristici"
-scroll_active = false
-
-[connection signal="gui_input" from="VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/TextEdit" to="." method="_on_text_edit_gui_input"]
-
-[editable path="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer8"]
-[editable path="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer9"]
-[editable path="VBoxContainer/Control/ScrollContainer/GridContainer/SlotContainer10"]
+[connection signal="gui_input" from="VBoxContainer/Search/PanelContainer/HBoxContainer/TextEdit" to="." method="_on_text_edit_gui_input"]

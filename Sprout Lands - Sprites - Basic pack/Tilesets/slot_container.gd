@@ -10,12 +10,27 @@ var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
 @onready var inv = get_node("/root/world/CanvasLayer/Inv")
 @onready var water_fill = get_node_or_null("/root/world/Fantana/CanvasLayer")
-
+@onready var player = get_node("/root/world/player")
 @export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
+@onready var price_text: RichTextLabel = get_node_or_null("../PanelContainer3/Price")
+@onready var providers: Control = get_node_or_null("../PanelContainer2/Provider")
+@onready var description = get_node_or_null("../PanelContainer/description")
+@onready var buton = get_node_or_null("TextureHolder/Button")
+
+var price: int = 0
 
 # Proprietatea care definește obiectul din slot
 var property_1: Dictionary = {}
 
+const DEFAULT_ITEM := {
+	"TEXTURE": null,
+	"CANTITATE": 0,
+	"NUMBER": 0,
+	"NUME": "",
+	"RARITATE": "",
+	"EFFECTS": [],
+	"CURSE": null
+}
 
 @onready var slot_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer")
 @onready var slot_container_2 = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer2")
@@ -26,10 +41,10 @@ signal clothes_changed(new_clothes_id)
 signal slot_selected(slot)
 #signal item_changed
 signal request_tray_spawn(item_data)
-
+signal browser(data)
 var dragging := false
 var drag_offset := Vector2.ZERO
-
+signal request_total_money_update(delta:int)
 
 @export var nume: String:
 	set(value):
@@ -55,20 +70,20 @@ var drag_offset := Vector2.ZERO
 		raritate=value
 #@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
 
-@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume}:
+@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume, "RARITATE":raritate, "CURSE":curse, "EFFECTS":effects, "TYPE":type}:
 	set(value):
 		property = value 
 		texture_rect.texture = property["TEXTURE"]  # Actualizează direct textura în TextureRect
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume = property["NUME"]
-		raritate = property["RARITATE"]
-		curse = property["CURSE"]
-		effects = property["EFFECTS"]
+		raritate = String(property.get(["RARITATE"],""))
+		curse = property.get("CURSE", null)
+		effects = property.get("EFFECTS", [])
 
 @export var curse: Variant = null   # poate fi null sau Dictionary; Variant e cel mai sigur
 @export var effects: Variant = null       # listă de efecte din JSON
-
+@export var type: Variant = null  
 
 # Metoda pentru setarea texturii și cantității
 func set_property(data):
@@ -81,10 +96,10 @@ func set_property(data):
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume=property["NUME"]
-		raritate = property["RARITATE"]
-		curse = property["CURSE"]
-		effects = property["EFFECTS"]
-		
+		raritate = String(property.get(["RARITATE"],""))
+		curse = property.get("CURSE", null)
+		effects = property.get("EFFECTS", [])
+		type = property.get("TYPE",[])
 		label.text = str(cantitate)
 		if cantitate > 0:
 			label.text = str(cantitate)
@@ -94,6 +109,9 @@ func set_property(data):
 			filled=false
 		else:
 			filled=true
+		if slot_type=="market":
+			update_description()
+
 	
 	
 func get_texture() -> Texture:
@@ -117,7 +135,9 @@ func get_effects() -> Variant:
 func get_curse() -> Variant:
 	return property.get("CURSE", null)
 
-
+func get_type() -> Variant:
+	return property.get("TYPE", [])
+	
 
 func set_item_crafting():
 	emit_signal("item_changed")
@@ -125,6 +145,13 @@ func set_item_crafting():
 	
 func set_item(item_idx):
 	emit_signal("clothes_changed", item_idx)
+	
+
+func _normalize_property(src: Dictionary) -> Dictionary:
+	var d := DEFAULT_ITEM.duplicate(true)
+	for k in src.keys():
+		d[k] = src[k]
+	return d
 	
 func _get_drag_data(_at_position):
 	
@@ -144,8 +171,18 @@ func _get_drag_data(_at_position):
 
 func _can_drop_data(_at_position, data):
 	# Permitem doar dacă data e un Slot
+	var se = player.get_node_or_null("StatusEffects") as StatusEffects
+	
 	if not (data is Slot):
 		return false
+		
+	if se and not se.can_move_slot(data):
+		return false
+	
+	if se and self.get_texture() != null and not se.can_move_slot(self):
+		return false
+	
+		
 	if data.slot_type == "inventory" and  (self.slot_type == "helmet" or self.slot_type=="arma" or self.slot_type=="ceva" or self.slot_type == "armor") and (int(data.get_id())<=24):
 		return false
 	
@@ -204,10 +241,14 @@ func _can_drop_data(_at_position, data):
 	return true
 
 func _drop_data(_pos, data):
+	var se = player.get_node_or_null("StatusEffects") as StatusEffects
 	
 	if not (data is Slot):
 		return  # Asigură-te că datele droppate provin dintr-un slot valid
 
+	if se and not se.can_move_slot(data):
+		return
+		
 	if self == data:
 		#print("Itemul este deja în acest slot. Nu se face nicio acțiune.")
 		return  # Nu facem nimic dacă sloturile sunt identice
@@ -243,27 +284,22 @@ func _drop_data(_pos, data):
 			return
 			
 		# Dacă itemele sunt de același tip, adunăm cantitățile
-		if source_property.has("NUMBER") and target_property.has("NUMBER") and source_property["NUMBER"] == target_property["NUMBER"]:
-			target_property["CANTITATE"] += source_property["CANTITATE"]
+		# Stivuim DOAR dacă ID + (CURSE,EFFECTS) sunt IDENTICE
+		if _can_stack_props(source_property, target_property):
+			target_property["CANTITATE"] += int(source_property.get("CANTITATE", 0))
 			data.clear_item()
 			set_property(target_property)
-			#print("Cantitățile au fost combinate.")
 		else:
-			# Schimbăm itemele între sloturile inventory și no_inv
-			# Verificăm că tipurile de sloturi sunt diferite (inventory și no_inv)
-			if data.slot_type == "inventory" and self.slot_type == "no_inv":
-				# Actualizăm inv.plin corespunzător
-				
-				print("Mutat item din inventory în no_inv. Inv plin:", inv.plin)
-			elif data.slot_type == "no_inv" and self.slot_type == "inventory":
-				
-				print("Mutat item din no_inv în inventory. Inv plin:", inv.plin)
+	# opțional: blochează complet swap între normal și cursed
+			if _is_mixed_normal_vs_cursed(source_property, target_property):
+		# aici poți afișa un mesaj / sunet și pur și simplu să nu faci nimic
+				return
 
-			# Acum schimbăm efectiv itemele între sloturi
+	# altfel, swap normal
 			var temp = target_property
 			set_property(source_property)
 			data.set_property(temp)
-			print("Itemele au fost schimbate între sloturi.")
+
 
 	#else:
 		#print("Nu s-a putut face drop-ul.")
@@ -281,6 +317,7 @@ func _drop_data(_pos, data):
 func _ready():
 	# Conectează semnalul de selecție
 	connect("gui_input",Callable( self, "_on_gui_input"))
+
 
 
 	
@@ -357,7 +394,7 @@ func clear_item():
 	cantitate = 0
 
 	# Resetează ID-ul sau alte proprietăți relevante
-	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0, "NUME":"","RARITATE":"", "EFFECTS":[], "CURSE":null}
+	property = {"TEXTURE": null, "CANTITATE": 0, "NUMBER": 0, "NUME":"","RARITATE":"", "EFFECTS":[], "CURSE":null, "TYPE":[]}
 	
 	# Marchează slotul ca fiind gol
 	filled = false  
@@ -445,3 +482,219 @@ func set_curse_dict(c: Variant) -> void:
 	# c poate fi Dictionary sau null
 	property["CURSE"] = c
 	# semnal pt. UI dacă e nevoie
+
+func _normalize_effects(v) -> Array:
+	if v == null: return []
+	if v is Array: return v
+	if v is Dictionary: return [v]
+	return []
+
+func _effect_fp(e: Dictionary) -> String:
+	var id     := String(e.get("id","")).to_lower()
+	var mode   := String(e.get("mode",""))
+	var amount := str(e.get("amount", 0))
+	var dur    := str(e.get("duration", 0))   # scoate dacă nu vrei să conteze durata
+	var period := str(e.get("period", 1))
+	var tags   := ""
+	if e.has("tags") and e["tags"] is Array:
+		var t := []
+		for x in e["tags"]:
+			t.append(String(x).to_lower())
+		t.sort()
+		tags = ",".join(t)
+	return "%s|%s|%s|%s|%s|%s" % [id, mode, amount, dur, period, tags]
+
+func _effects_sig(v) -> String:
+	var arr := _normalize_effects(v)
+	var sigs := []
+	for e in arr:
+		if e is Dictionary:
+			sigs.append(_effect_fp(e))
+	sigs.sort()
+	return "|".join(sigs)
+
+func _curse_sig(v) -> String:
+	if v == null or not (v is Dictionary): return ""
+	var id   := String(v.get("id","")).to_lower()
+	var mode := String(v.get("mode",""))
+	var tags := ""
+	if v.has("tags") and v["tags"] is Array:
+		var t := []
+		for x in v["tags"]:
+			t.append(String(x).to_lower())
+		t.sort()
+		tags = ",".join(t)
+	var mods_sig := ""
+	if v.has("modifiers") and v["modifiers"] is Dictionary:
+		var keys = v["modifiers"].keys()
+		keys.sort()
+		var parts := []
+		for k in keys:
+			parts.append("%s=%s" % [String(k), str(v["modifiers"][k])])
+		mods_sig = "|".join(parts)
+	return "%s|%s|%s|%s" % [id, mode, mods_sig, tags]
+
+func _props_sig(p: Dictionary) -> String:
+	return "%s||%s" % [_curse_sig(p.get("CURSE", null)), _effects_sig(p.get("EFFECTS", null))]
+
+func _can_stack_props(a: Dictionary, b: Dictionary) -> bool:
+	if int(a.get("NUMBER", -1)) != int(b.get("NUMBER", -2)):
+		return false
+	return _props_sig(a) == _props_sig(b)
+
+# opțional: dacă vrei să BLOCHEZI swap între normal și cursed
+func _is_mixed_normal_vs_cursed(a: Dictionary, b: Dictionary) -> bool:
+	var sa := _props_sig(a)
+	var sb := _props_sig(b)
+	var empty_a := sa == "||"
+	var empty_b := sb == "||"
+	return empty_a != empty_b
+
+func _bb(s) -> String:
+	# escape minim pentru BBCode (dacă ai nume cu [ ] )
+	return String(s).replace("[", "\\[").replace("]", "\\]")
+
+func _arr_to_str(a) -> String:
+	if a is Array and not a.is_empty():
+		var out := []
+		for v in a:
+			out.append(String(v))
+		return ", ".join(out)
+	return ""
+
+func _mods_lines(d: Dictionary, indent := "    ") -> Array:
+	var lines: Array = []
+	if not (d.has("modifiers") and d["modifiers"] is Dictionary):
+		return lines
+	var keys = d["modifiers"].keys()
+	keys.sort()
+	for k in keys:
+		lines.append("%s- %s: %s" % [indent, String(k), str(d["modifiers"][k])])
+	return lines
+
+func _human_mode(m) -> String:
+	var s := String(m)
+	if s == "" or s.to_lower() == "holding":
+		return "holding"
+	if s.to_lower() == "consumable" or s.to_lower() == "comsumable":
+		return "consumable"
+	return s
+
+func _human_dur(d) -> String:
+	if typeof(d) in [TYPE_NIL, TYPE_BOOL] or float(d) == 0:
+		return "instant"
+	var fd = float(d)
+	return "permanent" if fd < 0 else "%d" % fd
+
+func update_description() -> void:
+	if description == null:
+		return
+
+	var p := property if property is Dictionary else {}
+	var lines: Array = []
+
+	# HEAD
+	var name := _bb(p.get("NUME",""))
+	var rar  := String(p.get("RARITATE","")).to_lower()
+	var qty  := int(p.get("CANTITATE", 0))
+	var idn  := int(p.get("NUMBER", 0))
+
+	# culoare raritate (opțional)
+	var rar_color = {
+		"common": "#B0B0B0",
+		"uncommon": "#34c759",
+		"rare": "#3399ff",
+		"epic": "#a335ee",
+		"legendary": "#ff8000",
+	}.get(rar, "#ffffff")
+
+	lines.append("[b]%s[/b]" % name)
+	if rar != "":
+		lines.append("[color=%s][i]%s[/i][/color]" % [rar_color, rar])
+	lines.append("Cantitate: %d" % qty)
+	lines.append("ID produs: %d" % idn)
+
+	# CURSE
+	var c = p.get("CURSE", null)
+	if c is Dictionary and not c.is_empty():
+		#lines.append("") # spațiu
+		lines.append("[b]Curse[/b]")
+		lines.append(" • id: %s" % _bb(c.get("id","")))
+		lines.append(" • mode: %s" % _human_mode(c.get("mode","holding")))
+		lines.append(" • duration: %s" % _human_dur(c.get("duration", -1)))
+		var tags = c.get("tags", [])
+		if tags is Array and not tags.is_empty():
+			lines.append(" • tags: %s" % _arr_to_str(tags))
+		# modifiers (atk_add, max_hp_cap, *_mult etc.)
+		lines += _mods_lines(c)
+		# lock (dacă există)
+		if c.has("lock"):
+			lines.append(" • lock: %s" % str(c.get("lock")))
+		# orice alte câmpuri extra utile
+		if c.has("extra"):
+			lines.append(" • extra: %s" % str(c.get("extra")))
+
+	# EFFECTS (poate fi dicționar sau array)
+	var eff_raw = p.get("EFFECTS", null)
+	var effs: Array = []
+	if eff_raw is Array:
+		effs = eff_raw
+	elif eff_raw is Dictionary:
+		effs = [eff_raw]
+	if not effs.is_empty():
+		lines.append("")
+		lines.append("[b]Efecte[/b]")
+		for e in effs:
+			if not (e is Dictionary): 
+				continue
+			var eid := _bb(e.get("id",""))
+			var mode := _human_mode(e.get("mode",""))
+			var amount = e.get("amount", null)
+			var dur    = e.get("duration", null)
+			var period = e.get("period", null)
+			var etags  = e.get("tags", [])
+
+			lines.append(" • %s%s" % [eid, " (%s)" % mode if mode != "" else ""])
+			var sub := []
+			if amount != null: sub.append("amount=%s" % str(amount))
+			if dur    != null: sub.append("duration=%s" % _human_dur(dur))
+			if period != null: sub.append("period=%s" % float(period))
+			if etags is Array and not etags.is_empty():
+				sub.append("tags=%s" % _arr_to_str(etags))
+			if not sub.is_empty():
+				lines.append("    " + "; ".join(sub))
+			# modifiers în efect temporar (dacă ai astfel de efecte-buff)
+			lines += _mods_lines(e)
+
+	# SCRIE în RichTextLabel
+	description.bbcode_enabled = true
+	description.bbcode_text = "\n".join(lines)
+	description.visible = true
+
+
+func _on_button_pressed() -> void:
+
+
+	# verifică dacă există referință validă la total_money_text
+	var browser_tab = get_tree().get_first_node_in_group("browser")
+	if browser_tab == null:
+		return
+
+	# verificare bani
+	if browser_tab.total_money_site < price:
+		print("Nu ai destui bani pentru acest item!")
+		return  # oprește achiziția
+
+	# ai destui bani → scade prețul
+	emit_signal("request_total_money_update", -price)
+
+	# logica existentă
+	if self.cantitate > 0:
+		var src_data = self.get_item()
+		browser.emit(src_data)
+		self.clear_item()
+		if src_data.is_empty(): return
+		if self.cantitate == 0:
+			$TextureHolder/Button.disabled = true
+			$"../PanelContainer/description".text = ""
+			$"../PanelContainer3/Price".text = ""

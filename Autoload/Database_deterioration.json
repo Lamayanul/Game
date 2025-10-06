@@ -1,0 +1,47 @@
+{
+ "0":{
+	"grad": {
+	  "factory_new": "",
+	  "minimal_wear": "",
+	  "filed_tested": "",
+	  "deteriorated": ""
+			},
+	"rooten": {
+	  "cooked_new": 0,
+	  "cooked_ago": 0,
+	  "cooked_last": 0,
+	  "cooked_zero": 0
+			  }
+	 },
+
+ "1":{
+	"grad": {
+	  "factory_new": "res://assets/Deterioration_assets/Egg_item.png",
+	  "minimal_wear": "res://assets/Deterioration_assets/Egg_item_mw.png",
+	  "filed_tested": "res://assets/Deterioration_assets/Egg_item_ft.png",
+	  "deteriorated": "res://assets/Deterioration_assets/Egg_item_dt.png"
+			},
+	"rooten": {
+	  "cooked_new": 0,
+	  "cooked_ago": 0,
+	  "cooked_last": 0,
+	  "cooked_zero": 0
+			  }
+	 },
+	
+"2":{
+	"grad": {
+	  "factory_new": "res://assets/Deterioration_assets/axe.png",
+	  "minimal_wear": "res://assets/Deterioration_assets/axe_mw.png",
+	  "filed_tested": "res://assets/Deterioration_assets/axe_ft.png",
+	  "deteriorated": "res://assets/Deterioration_assets/axe_dt.png"
+			},
+	"rooten": {
+	  "cooked_new": 5,
+	  "cooked_ago": 2,
+	  "cooked_last": 10,
+	  "cooked_zero": 7
+			  }
+	},
+	
+}

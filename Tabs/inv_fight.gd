@@ -2,7 +2,7 @@ extends PanelContainer
 
 #------------------------------grid-uri--------------------------------------------------------------
 @onready var grid_container = $MarginContainer/GridContainer
-@onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
+#@onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
 #@onready var slot_container_5 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
 #@onready var slot_container_7 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
 #@onready var slot_container_6 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
@@ -43,13 +43,12 @@ var slot_container_chest_4: Node = null
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
-@onready var info_label = $"../PanelContainer/VBoxContainer".get_node("InfoLabel")
-@onready var hand_sprite = $"../PanelContainer".get_node("sprite")
+
 #@onready var color_rect = $"../ColorRect"
 
 #--------------------------noduri-principale--------------------------------------------------------
 var selected_slot: Slot = null  # Slotul selectat
-@onready var tile_map = $"../../TileMap"
+#@onready var tile_map = $"../../TileMap"
 #@onready var player = $"../../player"
 @onready var player = get_node_or_null("/root/world/player")
 var timp_ramas=0
@@ -281,18 +280,13 @@ func _on_slot_selected(slot: Slot):
 	
 	
 	
-	hand_sprite.texture = null
-	info_label.clear()
-	#color_rect.visible = false
-	info_label.visible = true
+
 	
 	
 	# Dacă slotul selectat are un item (este plin), actualizează sprite-ul și eticheta
 	if slot.get_texture() != null:
 
-		hand_sprite.texture = slot.get_texture()
-		hand_sprite.visible = true
-		hand_sprite.scale = Vector2(0.5, 0.5)
+
 		
 		#slot.add_effect_dict({
 	#"id": "regen",
@@ -313,8 +307,7 @@ func _on_slot_selected(slot: Slot):
 
 
 		
-		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s \nCURSE: %s \nEFFECTS: %s[/center]" % [nume, raritate, curse_txt, effects_txt]
-		info_label.visible = true
+
 		#color_rect.visible = false
 
 	# Actualizează poziția selectorului
@@ -664,7 +657,7 @@ func drop_selected_item():
 			#print(plin)
 			
 			player.inequip_item()
-			info_label.text=""
+
 			
 			
 		#else:
@@ -714,7 +707,7 @@ func drop_item(ID: String, cantiti: int, curse: Variant, effects: Variant):
 		item_instance.position = drop_position 
 		world_node.add_child(item_instance)
 		player.inequip_item()
-		info_label.text=""
+
 		#if ID=="18":
 			#var backpack = get_tree().root.get_node("world/CanvasLayer/Backpack-afis")  
 			#backpack.visible = false
@@ -746,7 +739,7 @@ func drop_selected_item_1():
 				selected_slot.deselect()
 				selected_slot = null
 				plin -= 1
-				info_label.text=""
+		
 				player.inequip_item()  # Dez-echipează itemul
 			
 			if ID=="0":
@@ -777,33 +770,33 @@ func attack():
 			emit_signal("attacking",ID)
 		
 #---------------------------harvest-drop------------------------------------------------------------
-func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
-	# Obține textura și cantitatea din ItemData
-	var item_cantitate = cantiti
-	if cantiti==0:
-		plin=0
-		return
-	var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
-	var item_texture = load(item_texture_path) as Texture
-	
-	# Încarcă scena itemului
-	var item_scene = load("res://User/item.tscn") as PackedScene
-	if item_scene:
-		# Instanțiază scena
-		var world_node = get_node("/root/world/")
-		
-		var item_instance = item_scene.instantiate()
-		item_instance.set_cantitate(item_cantitate)
-		item_instance.set_texture1(item_texture)
-		
-		item_instance.ID = ID
-		
-		var global_position1=tile_map.map_to_local(location)
-		item_instance.position = global_position1
-		#drop_position=Vector2(100,100)
-		# Folosește 'position' pentru coordonate locale
-		#global_cantiti=cantiti
-		world_node.add_child(item_instance)
+#func drop_item_harvest(ID: String, cantiti: int,location:Vector2):
+	## Obține textura și cantitatea din ItemData
+	#var item_cantitate = cantiti
+	#if cantiti==0:
+		#plin=0
+		#return
+	#var item_texture_path = "res://assets/" + ItemData.get_texture(ID)
+	#var item_texture = load(item_texture_path) as Texture
+	#
+	## Încarcă scena itemului
+	#var item_scene = load("res://User/item.tscn") as PackedScene
+	#if item_scene:
+		## Instanțiază scena
+		#var world_node = get_node("/root/world/")
+		#
+		#var item_instance = item_scene.instantiate()
+		#item_instance.set_cantitate(item_cantitate)
+		#item_instance.set_texture1(item_texture)
+		#
+		#item_instance.ID = ID
+		#
+		#var global_position1=tile_map.map_to_local(location)
+		#item_instance.position = global_position1
+		##drop_position=Vector2(100,100)
+		## Folosește 'position' pentru coordonate locale
+		##global_cantiti=cantiti
+		#world_node.add_child(item_instance)
 
 
 #------------------------------------------functie-eat()-----------------------------------------------

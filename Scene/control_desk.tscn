@@ -76,8 +76,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = -3.432
 anchor_right = 1.0
-offset_top = 0.0158081
-offset_right = 1.52588e-05
+offset_top = 1.60757
+offset_right = -0.31897
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -96,6 +96,7 @@ offset_left = -0.0320129
 offset_top = -0.0979919
 offset_right = -0.0640259
 offset_bottom = -0.0870361
+mouse_filter = 2
 texture = ExtResource("4_hx8fp")
 
 [node name="Button" type="Button" parent="TextureRect2"]

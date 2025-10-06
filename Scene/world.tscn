@@ -1200,6 +1200,13 @@ position = Vector2(-45, 63)
 [node name="Item20" parent="." instance=ExtResource("13_6ft7m")]
 position = Vector2(-242, 874)
 ID = "7"
+curse = {
+"duration": -1,
+"id": "bind",
+"lock": true,
+"mode": "holding",
+"tags": ["lock", "curse"]
+}
 effects = [{
 "amount": 5,
 "duration": 10.0,
@@ -1230,8 +1237,16 @@ effects = [{
 "id": "cleanse",
 "mode": "holding",
 "remove": {
-"ids": "poison"
+"curses": {
+"tags": "lock"
 }
+}
+}, {
+"amount": 1,
+"duration": 20.0,
+"id": "poison",
+"mode": "consumable",
+"tags": ["dot", null]
 }]
 type = "slot"
 

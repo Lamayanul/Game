@@ -1,0 +1,103 @@
+[gd_scene load_steps=8 format=3 uid="uid://cywf1hge6uljc"]
+
+[ext_resource type="Texture2D" uid="uid://y3ta0r5gifpy" path="res://Tabs/owner_3.png" id="1_7qoeh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajuio"]
+bg_color = Color(0.496094, 0.347318, 0.294854, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ll22c"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qoeh"]
+bg_color = Color(0.172549, 0.172549, 0.172549, 0.607843)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0g4j"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iq5x7"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="Theme" id="Theme_i0g4j"]
+default_font_size = 25
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 0.445
+anchor_bottom = 0.158
+offset_right = 0.319977
+offset_bottom = 0.103996
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -81.0
+offset_right = 3.05176e-05
+theme_override_styles/panel = SubResource("StyleBoxFlat_ajuio")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("1_7qoeh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Button" type="Button" parent="PanelContainer"]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_ll22c")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7qoeh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i0g4j")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iq5x7")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Button"]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.235
+anchor_right = 0.91
+offset_left = 23.84
+offset_right = 0.039978
+offset_bottom = 81.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = SubResource("Theme_i0g4j")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.998268, 0.971832, 1)
+theme_override_constants/outline_size = 7
+bbcode_enabled = true
+text = "Factory of FOOD"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
