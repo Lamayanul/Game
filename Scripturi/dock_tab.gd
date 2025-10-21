@@ -20,11 +20,16 @@ extends PanelContainer
 @onready var market_grid = get_node_or_null("VBoxContainer/Market/ScrollContainer/GridContainer")
 @onready var content = get_node_or_null("/root/world/CanvasLayer/Control/StorageTab/VBoxContainer/Content_storage")
 @onready var total_money_text = get_node_or_null("VBoxContainer/Market/RichTextLabel/Total_money")
+@onready var inv_player = self.get_node_or_null("Control/TextureRect2/Inv_player")
+
+@onready var storage_tab_grid = get_node_or_null("/root/world/CanvasLayer/Control/StorageTab/VBoxContainer/Content_storage")
 
 var total_money_site = 200
 
 @export var market_grid_all_path: NodePath
 @export var market_grid_product_path: NodePath
+
+
 
 @onready var market_grid_all := get_node_or_null(market_grid_all_path)
 @onready var market_grid_product := get_node_or_null(market_grid_product_path)
@@ -42,6 +47,9 @@ var dragging := false
 var resizing := false
 var resize_dir := Vector2.ZERO
 var drag_offset := Vector2.ZERO
+
+
+var _market_loaded_once := false
 
 var ROUTES := [
 	# www.market sau www.market/ceva
@@ -112,9 +120,7 @@ func minimize() -> void:
 	
 
 func _ready():
-	
 	print(content)
-	
 	pc.storage.connect(_on_scan_slot_transmit)
 	close_btn.pressed.connect(_on_close_pressed)
 	title_bar.gui_input.connect(_on_titlebar_gui_input)
@@ -166,6 +172,89 @@ func _ready():
 		_navigate_to("www.search", true)
 	if type_tab == "browser":
 		call_deferred("_wire_market_grid")  # după ce s-a stabilit scena
+	for n in get_tree().get_nodes_in_group("emits_to_storage"):
+		_try_bind_slot(n)
+
+	# 2b) orice Slot nou adăugat în scenă (după _ready) va fi legat automat
+	if not get_tree().is_connected("node_added", Callable(self, "_on_node_added")):
+		get_tree().node_added.connect(Callable(self, "_on_node_added"))
+	_wire_existing_slots()
+	# prinde și sloturile create ulterior
+	if is_instance_valid(content):
+		if not content.is_connected("child_entered_tree", Callable(self, "_on_storage_child_entered")):
+			content.child_entered_tree.connect(Callable(self, "_on_storage_child_entered"))
+
+func _wire_existing_slots() -> void:
+	if is_instance_valid(content):
+		for c in content.get_children():
+			_try_bind_slot(c)
+		
+func _on_node_added(n: Node) -> void:
+	_try_bind_slot(n)
+
+func _try_bind_slot(n: Node) -> void:
+	if n is Slot and n.is_in_group("comslot"):
+		var s := n as Slot
+		if not s.is_connected("send_to_storage", Callable(self, "_on_send_to_storage")):
+			s.send_to_storage.connect(Callable(self, "_on_send_to_storage"))
+	if n is Slot:
+		# fie conectezi direct gui_input...
+		if not n.is_connected("gui_input", Callable(self, "_on_slot_gui_input")):
+			n.gui_input.connect(Callable(self, "_on_slot_gui_input").bind(n))
+		# ...sau, preferabil, un semnal custom emis de Slot (vezi mai jos)
+		#if n.has_signal("right_click") and not n.is_connected("right_click", Callable(self, "_on_slot_right_click")):
+			#n.connect("right_click", Callable(self, "_on_slot_right_click").bind(n))
+			
+func _on_slot_gui_input(event: InputEvent, slot: Slot) -> void:
+	if event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_MIDDLE \
+	and event.pressed:
+
+		if type_tab == "storage" and is_instance_valid(slot) and slot.get_cantitate() > 0:
+			var inv = _get_active_inv()
+			if inv == null:
+				return
+
+			# NU mai crește manual plin; lasă inv.add_item să decidă.
+			# (Dar păstrează verificarea ta de capacitate, dacă nu e deja în add_item)
+			if inv.plin > 4:
+				return
+
+			var id := slot.get_id()
+			var ok = inv.add_item(id, 1)
+			if ok:
+				slot.decrease_cantitate(1)
+
+
+
+
+
+
+func _on_send_to_storage(data: Dictionary) -> void:
+	if type_tab=="storage":
+		var slot = slot_tab.instantiate()
+		slot.custom_minimum_size = Vector2(64, 64)
+		slot.size = slot.custom_minimum_size
+		slot.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		slot.size_flags_vertical   = Control.SIZE_SHRINK_CENTER
+		slot.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		slot.scop="tab"
+		$VBoxContainer/Content_storage.add_child(slot)   
+		slot.get_node("TextureHolder/TextureRect2").texture=null 
+		slot.slot_type="tray"
+		slot.set_property(data)
+		var payload := data.duplicate(true)
+		payload["CANTITATE"] = 1
+		
+		var tex2 := slot.get_node_or_null("TextureHolder/TextureRect2")
+		if tex2 is TextureRect:
+			(tex2 as TextureRect).texture = null
+		slot.slot_type = "tray"
+		slot.set_property(payload)
+		
+
+		
+
 
 func _wire_market_grid() -> void:
 	if not is_instance_valid(market_grid):
@@ -190,6 +279,8 @@ func _on_www_submitted(text: String) -> void:
 func _on_close_pressed():
 	visible = false
 	Taskbar.remove_tab(self)
+	#if type_tab=="fight":
+		#inv_player._set_active(false)
 
 
 func _on_titlebar_gui_input(event: InputEvent) -> void:
@@ -283,7 +374,10 @@ func _clamp_inside_viewport() -> void:
 	new_pos.y = clamp(new_pos.y, bounds.position.y, bounds.position.y + bounds.size.y - size.y-20)
 	global_position = new_pos
 
+
 func _on_gui_input(event: InputEvent) -> void:
+
+
 	if dragging:
 		var b := _viewport_bounds_rect()
 		var p := get_global_mouse_position() - drag_offset
@@ -324,9 +418,14 @@ func _on_gui_input(event: InputEvent) -> void:
 		if resizing:
 			_do_resize(local)
 
+
+						
 #func set_bottom_margin(px: float) -> void:
 	#pad_bottom = max(0.0, px)
 	#_on_bounds_changed()  
+
+
+
 
 func _edge_hit(local: Vector2) -> Vector2:
 	var right  := local.x >= size.x - edge_thickness
@@ -431,7 +530,6 @@ func _on_market_slot_transmit(data: Dictionary) -> void:
 	slot.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	slot.scop = "tab"
 	content.add_child(slot)
-
 	var tex2 := slot.get_node_or_null("TextureHolder/TextureRect2")
 	if tex2 is TextureRect:
 		(tex2 as TextureRect).texture = null
@@ -441,7 +539,7 @@ func _on_market_slot_transmit(data: Dictionary) -> void:
 
 
 
-	
+
 
 func _on_text_edit_gui_input(event: InputEvent) -> void:
 	# dacă nu e LineEdit și prinzi Enter aici
@@ -604,3 +702,10 @@ func _wire_one_grid(g: Node) -> void:
 		_try_bind_market_slot(c)
 	if not g.is_connected("child_entered_tree", Callable(self, "_on_market_child_entered")):
 		g.child_entered_tree.connect(Callable(self, "_on_market_child_entered"))
+
+func _get_active_inv():
+	var list := get_tree().get_nodes_in_group("inv_player_active")
+	if list.is_empty():
+		return null
+	# ia-l pe ultimul (cel mai recent activat)
+	return list[list.size() - 1]

@@ -88,6 +88,9 @@ option=""
 ai_chats=""
 market=""
 browser=""
+storage_tab=""
+comslot=""
+inv_player=""
 
 [input]
 

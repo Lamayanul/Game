@@ -259,6 +259,27 @@ func _ready():
 	for slot in grid_container.get_children():
 		if slot.has_signal("request_tray_spawn"):
 			slot.connect("request_tray_spawn", Callable(self, "_on_slot_right_clicked"))
+	add_to_group("inv_player_all")  # opțional, dacă vrei și grupul general
+	# dacă e deschis / vizibil din start:
+	if visible:
+		_set_active(true)
+	visibility_changed.connect(_on_visibility_changed)
+
+func _on_visibility_changed() -> void:
+	_set_active(visible)
+
+func _exit_tree() -> void:
+	# safety: scoate din grup la închidere
+	if is_in_group("inv_player_active"):
+		remove_from_group("inv_player_active")
+
+func _set_active(active: bool) -> void:
+	if active:
+		if not is_in_group("inv_player_active"):
+			add_to_group("inv_player_active")
+	else:
+		if is_in_group("inv_player_active"):
+			remove_from_group("inv_player_active")
 	
 func _on_slot_right_clicked(item_data):
 		var tray_slot = SlotTrayScene.instantiate()

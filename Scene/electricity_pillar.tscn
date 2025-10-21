@@ -233,3 +233,6 @@ shape = SubResource("CircleShape2D_0yoaf")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+
+[editable path="CanvasLayer/GridContainer/SlotContainer"]
+[editable path="CanvasLayer/GridContainer/SlotContainer2"]

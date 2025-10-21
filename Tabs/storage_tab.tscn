@@ -81,7 +81,7 @@ text = "[center]Local Virtual Storage"
 fit_content = true
 scroll_active = false
 
-[node name="Content_storage" type="GridContainer" parent="VBoxContainer"]
+[node name="Content_storage" type="GridContainer" parent="VBoxContainer" groups=["storage_tab"]]
 clip_contents = true
 layout_mode = 2
 columns = 6

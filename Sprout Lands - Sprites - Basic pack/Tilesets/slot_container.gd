@@ -17,6 +17,7 @@ var item_id: String = ""  # ID-ul itemului stivuit
 @onready var description = get_node_or_null("../PanelContainer/description")
 @onready var buton = get_node_or_null("TextureHolder/Button")
 
+
 var price: int = 0
 
 # Proprietatea care definește obiectul din slot
@@ -45,6 +46,8 @@ signal browser(data)
 var dragging := false
 var drag_offset := Vector2.ZERO
 signal request_total_money_update(delta:int)
+@export var context: String = ""  # "storage" sau "fight"
+signal send_to_storage(item_data: Dictionary)
 
 @export var nume: String:
 	set(value):
@@ -77,7 +80,7 @@ signal request_total_money_update(delta:int)
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume = property["NUME"]
-		raritate = String(property.get(["RARITATE"],""))
+		raritate = str(property.get("RARITATE", ""))
 		curse = property.get("CURSE", null)
 		effects = property.get("EFFECTS", [])
 
@@ -96,7 +99,7 @@ func set_property(data):
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume=property["NUME"]
-		raritate = String(property.get(["RARITATE"],""))
+		raritate = str(property.get("RARITATE", ""))
 		curse = property.get("CURSE", null)
 		effects = property.get("EFFECTS", [])
 		type = property.get("TYPE",[])
@@ -339,6 +342,12 @@ func _on_gui_input(event):
 		if cantitate>0 and slot_type=="inventory" and get_node("/root/world/CanvasLayer/Masa").visible==true:
 			emit_signal("request_tray_spawn", property.duplicate())
 			self.clear_item()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if slot_type=="comslot":
+			if cantitate > 0:
+				emit_signal("send_to_storage", property.duplicate(true))
+				self.decrease_cantitate(1)
+
 
 func _process(delta):
 	if dragging:
@@ -449,15 +458,14 @@ func add_item(new_item_id: String, amount: int):
 	self.filled = true
 	
 func get_item() -> Dictionary:
-	# Verificăm dacă slotul conține un item valid
-	if filled:
-		return {
-			"TEXTURE": property["TEXTURE"],  # Textura itemului
-			"CANTITATE": property["CANTITATE"],  # Cantitatea
-			"NUMBER": property["NUMBER"],  # Numărul/ID-ul itemului
-			"NUME": property["NUME"]}
-	else:
-		return {}  # Returnează un dicționar gol dacă nu există un item
+	# dacă vrei să rămână compatibilă, întoarce tot property
+	return property.duplicate(true)
+
+# sau un nou helper:
+func get_full_item() -> Dictionary:
+	return property.duplicate(true)
+	
+
 # Verifică dacă există locuri libere în inventar
 func has_free_slot() -> bool:
 	# Lista sloturilor din inventar
@@ -490,8 +498,8 @@ func _normalize_effects(v) -> Array:
 	return []
 
 func _effect_fp(e: Dictionary) -> String:
-	var id     := String(e.get("id","")).to_lower()
-	var mode   := String(e.get("mode",""))
+	var id     := str(e.get("id","")).to_lower()
+	var mode   := str(e.get("mode",""))
 	var amount := str(e.get("amount", 0))
 	var dur    := str(e.get("duration", 0))   # scoate dacă nu vrei să conteze durata
 	var period := str(e.get("period", 1))
@@ -499,7 +507,7 @@ func _effect_fp(e: Dictionary) -> String:
 	if e.has("tags") and e["tags"] is Array:
 		var t := []
 		for x in e["tags"]:
-			t.append(String(x).to_lower())
+			t.append(str(x).to_lower())
 		t.sort()
 		tags = ",".join(t)
 	return "%s|%s|%s|%s|%s|%s" % [id, mode, amount, dur, period, tags]
@@ -515,13 +523,13 @@ func _effects_sig(v) -> String:
 
 func _curse_sig(v) -> String:
 	if v == null or not (v is Dictionary): return ""
-	var id   := String(v.get("id","")).to_lower()
-	var mode := String(v.get("mode",""))
+	var id   := str(v.get("id","")).to_lower()
+	var mode := str(v.get("mode",""))
 	var tags := ""
 	if v.has("tags") and v["tags"] is Array:
 		var t := []
 		for x in v["tags"]:
-			t.append(String(x).to_lower())
+			t.append(str(x).to_lower())
 		t.sort()
 		tags = ",".join(t)
 	var mods_sig := ""
@@ -530,7 +538,7 @@ func _curse_sig(v) -> String:
 		keys.sort()
 		var parts := []
 		for k in keys:
-			parts.append("%s=%s" % [String(k), str(v["modifiers"][k])])
+			parts.append("%s=%s" % [str(k), str(v["modifiers"][k])])
 		mods_sig = "|".join(parts)
 	return "%s|%s|%s|%s" % [id, mode, mods_sig, tags]
 
@@ -552,13 +560,13 @@ func _is_mixed_normal_vs_cursed(a: Dictionary, b: Dictionary) -> bool:
 
 func _bb(s) -> String:
 	# escape minim pentru BBCode (dacă ai nume cu [ ] )
-	return String(s).replace("[", "\\[").replace("]", "\\]")
+	return str(s).replace("[", "\\[").replace("]", "\\]")
 
 func _arr_to_str(a) -> String:
 	if a is Array and not a.is_empty():
 		var out := []
 		for v in a:
-			out.append(String(v))
+			out.append(str(v))
 		return ", ".join(out)
 	return ""
 
@@ -573,7 +581,7 @@ func _mods_lines(d: Dictionary, indent := "    ") -> Array:
 	return lines
 
 func _human_mode(m) -> String:
-	var s := String(m)
+	var s := str(m)
 	if s == "" or s.to_lower() == "holding":
 		return "holding"
 	if s.to_lower() == "consumable" or s.to_lower() == "comsumable":
@@ -595,7 +603,7 @@ func update_description() -> void:
 
 	# HEAD
 	var name := _bb(p.get("NUME",""))
-	var rar  := String(p.get("RARITATE","")).to_lower()
+	var rar  := str(p.get("RARITATE","")).to_lower()
 	var qty  := int(p.get("CANTITATE", 0))
 	var idn  := int(p.get("NUMBER", 0))
 
@@ -674,11 +682,25 @@ func update_description() -> void:
 
 func _on_button_pressed() -> void:
 
-
+	
 	# verifică dacă există referință validă la total_money_text
 	var browser_tab = get_tree().get_first_node_in_group("browser")
+	
 	if browser_tab == null:
 		return
+	
+	var royal_tab : PackedScene = load("res://tab_fight.tscn")
+	var pc_tab = get_tree().get_first_node_in_group("pc")
+	if is_instance_valid(pc_tab):
+		var fight = royal_tab.instantiate()
+		pc_tab.add_child(fight)
+		
+	if pc_tab==null:
+		pass
+		
+		
+	#var royal_fight = get_node("/root/world/CanvasLayer/Control/Royal_battle")
+	#royal_fight.visible=true
 
 	# verificare bani
 	if browser_tab.total_money_site < price:
@@ -690,7 +712,7 @@ func _on_button_pressed() -> void:
 
 	# logica existentă
 	if self.cantitate > 0:
-		var src_data = self.get_item()
+		var src_data = property.duplicate(true) # în loc de get_item()
 		browser.emit(src_data)
 		self.clear_item()
 		if src_data.is_empty(): return

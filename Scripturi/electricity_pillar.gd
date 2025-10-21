@@ -56,7 +56,8 @@ func assign_closest_generator():
 	if powg:
 		print("🔌 Pilon conectat la generator:", powg.name)
 	update_connections()
-	
+
+
 
 func update_lights():
 	var id1 = slot_container.get_id()
