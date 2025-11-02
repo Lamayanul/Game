@@ -28,6 +28,7 @@ WeaponsBD="*res://Fights/WeaponsBD.gd"
 TabManager="*res://Tabs/TabManager.gd"
 Taskbar="*res://Tabs/taskbar.tscn"
 ItemsDB="*res://Tabs/ItemsDB.gd"
+ConfigureFight="*res://Tabs/Configure_fight.gd"
 
 [debug]
 

@@ -217,8 +217,8 @@ func _on_slot_gui_input(event: InputEvent, slot: Slot) -> void:
 
 			# NU mai crește manual plin; lasă inv.add_item să decidă.
 			# (Dar păstrează verificarea ta de capacitate, dacă nu e deja în add_item)
-			if inv.plin > 4:
-				return
+			#if inv.plin > 4:
+				#return
 
 			var id := slot.get_id()
 			var ok = inv.add_item(id, 1)

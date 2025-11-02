@@ -347,6 +347,11 @@ func _on_gui_input(event):
 			if cantitate > 0:
 				emit_signal("send_to_storage", property.duplicate(true))
 				self.decrease_cantitate(1)
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if self.slot_type=="comslot":
+			ConfigureFight.select_player_item(self)
+
+
 
 
 func _process(delta):

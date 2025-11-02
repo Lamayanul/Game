@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cywf1hge6uljc"]
+[gd_scene load_steps=9 format=3 uid="uid://cywf1hge6uljc"]
 
 [ext_resource type="Texture2D" uid="uid://y3ta0r5gifpy" path="res://Tabs/owner_3.png" id="1_7qoeh"]
+[ext_resource type="Script" uid="uid://d14x4t168863s" path="res://Tabs/Lions/providers.gd" id="1_ajuio"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajuio"]
 bg_color = Color(0.496094, 0.347318, 0.294854, 1)
@@ -54,6 +55,7 @@ offset_right = 0.319977
 offset_bottom = 0.103996
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ajuio")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1

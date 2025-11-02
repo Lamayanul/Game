@@ -1,10 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://b3vsvhwfvjkdk"]
+[gd_scene load_steps=24 format=3 uid="uid://b3vsvhwfvjkdk"]
 
 [ext_resource type="Script" uid="uid://dyrrlcjhaa4wm" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/slot_container.gd" id="1_tk167"]
 [ext_resource type="PackedScene" uid="uid://cywf1hge6uljc" path="res://Scene/providers.tscn" id="2_314ai"]
 [ext_resource type="Script" uid="uid://crxbar6hq35n0" path="res://Tabs/description.gd" id="3_314ai"]
 [ext_resource type="Texture2D" uid="uid://odyxr3yea0cm" path="res://Tabs/offer.png" id="3_ne8fh"]
+[ext_resource type="Texture2D" uid="uid://b7gvobw4efj2n" path="res://Tabs/owner_1.png" id="5_8jxfl"]
 [ext_resource type="FontFile" uid="uid://c3y8aej1f3qau" path="res://Fonts/The Melody.otf" id="5_ne8fh"]
+[ext_resource type="Texture2D" uid="uid://beh4yji3mmll4" path="res://Tabs/owner_2.png" id="6_d76gk"]
+[ext_resource type="Texture2D" uid="uid://y3ta0r5gifpy" path="res://Tabs/owner_3.png" id="7_y23aj"]
+[ext_resource type="Texture2D" uid="uid://dvxqysrdmivoa" path="res://Tabs/owner_4.png" id="8_qys1i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lmmu1"]
 bg_color = Color(0.6, 0.459297, 0.529605, 1)
@@ -230,6 +234,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_rqlci")
 [node name="Provider" parent="PanelContainer2" instance=ExtResource("2_314ai")]
 layout_mode = 2
 size_flags_vertical = 8
+owner_1_images = Array[Texture2D]([ExtResource("5_8jxfl")])
+owner_2_images = Array[Texture2D]([ExtResource("6_d76gk")])
+owner_3_images = Array[Texture2D]([ExtResource("7_y23aj")])
+owner_4_images = Array[Texture2D]([ExtResource("8_qys1i")])
 metadata/_edit_use_anchors_ = true
 
 [node name="PanelContainer3" type="PanelContainer" parent="."]
