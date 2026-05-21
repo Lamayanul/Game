@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://dd6imqa12vag1"]
+
+[ext_resource type="Script" uid="uid://dsth7h386lkuk" path="res://Tabs/Quests/QuestCard.gd" id="1_if5i1"]
+[ext_resource type="Texture2D" uid="uid://cfld5cpsd31qy" path="res://Tabs/Quests/star.png" id="2_41b7n"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_w6qjt"]
+[ext_resource type="Texture2D" uid="uid://cvnjbnyrknitn" path="res://Tabs/Quests/preot.png" id="3_tm7i2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41b7n"]
+bg_color = Color(0.885769, 0.877301, 0.96875, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="QuestCard" type="PanelContainer" unique_id=1251035883]
+custom_minimum_size = Vector2(150, 250)
+anchors_preset = -1
+anchor_right = 0.544
+anchor_bottom = 0.613
+offset_top = 0.46505737
+offset_right = -0.056030273
+offset_bottom = 0.14398193
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_41b7n")
+script = ExtResource("1_if5i1")
+star_texture = ExtResource("2_41b7n")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2047252533]
+layout_mode = 2
+texture = ExtResource("3_tm7i2")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="MainLayout" type="VBoxContainer" parent="." unique_id=557648830]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="MainLayout" unique_id=1212185551]
+layout_mode = 2
+
+[node name="GiverIcon" type="TextureRect" parent="MainLayout/Header" unique_id=346354504]
+layout_mode = 2
+
+[node name="InfoBox" type="VBoxContainer" parent="MainLayout/Header" unique_id=853111036]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MainLayout/Header/InfoBox" unique_id=1527747564]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+
+[node name="MetaInfo" type="HBoxContainer" parent="MainLayout/Header/InfoBox" unique_id=1512076293]
+layout_mode = 2
+
+[node name="GiverLabel" type="Label" parent="MainLayout/Header/InfoBox/MetaInfo" unique_id=1417999288]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+
+[node name="DifficultyStars" type="HBoxContainer" parent="MainLayout/Header/InfoBox/MetaInfo" unique_id=544325961]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout" unique_id=1162128982]
+layout_mode = 2
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="MainLayout" unique_id=1621651137]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="TimeBar" type="ProgressBar" parent="MainLayout" unique_id=865511061]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="TimeText" type="Label" parent="MainLayout/TimeBar" unique_id=1175096717]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="HSeparator2" type="HSeparator" parent="MainLayout" unique_id=1337300028]
+layout_mode = 2
+
+[node name="ActionArea" type="HBoxContainer" parent="MainLayout" unique_id=1557122868]
+layout_mode = 2
+
+[node name="Input" type="VBoxContainer" parent="MainLayout/ActionArea" unique_id=539802544]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainLayout/ActionArea/Input" unique_id=632187024]
+layout_mode = 2
+
+[node name="InputSlotHolder" type="PanelContainer" parent="MainLayout/ActionArea/Input" unique_id=563661021]
+layout_mode = 2
+
+[node name="Slot" parent="MainLayout/ActionArea/Input/InputSlotHolder" unique_id=416593129 instance=ExtResource("2_w6qjt")]
+layout_mode = 2
+
+[node name="ProgressLabel" type="Label" parent="MainLayout/ActionArea/Input" unique_id=1782860650]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="MainLayout/ActionArea" unique_id=49467123]
+layout_mode = 2
+
+[node name="Output" type="VBoxContainer" parent="MainLayout/ActionArea" unique_id=352342763]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainLayout/ActionArea/Output" unique_id=985769300]
+layout_mode = 2
+
+[node name="RewardSlotHolder" type="PanelContainer" parent="MainLayout/ActionArea/Output" unique_id=1834504543]
+layout_mode = 2
+
+[node name="Slot" parent="MainLayout/ActionArea/Output/RewardSlotHolder" unique_id=2070231309 instance=ExtResource("2_w6qjt")]
+layout_mode = 2
+
+[node name="SubmitButton" type="Button" parent="MainLayout" unique_id=383382730]
+layout_mode = 2
+
+[editable path="MainLayout/ActionArea/Input/InputSlotHolder/Slot"]
+[editable path="MainLayout/ActionArea/Output/RewardSlotHolder/Slot"]

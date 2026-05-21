@@ -2,6 +2,7 @@ extends Control
 
 var ButtonScene: PackedScene = preload("res://Scene/tab_but.tscn")
 @onready var ora = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Hour")
+@onready var minut = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Minute")
 @onready var zi = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/DayOfWeek")
 @export var tray_path: NodePath
 @onready var rich_text_label: RichTextLabel = $RichTextLabel
@@ -12,12 +13,12 @@ var _buttons: Dictionary = {}
 
 func _physics_process(_delta):
 	if is_instance_valid(ora):
-		rich_text_label.text = ora.text + "\n" + zi.text
+		rich_text_label.text = ora.text +":"+ minut.text + "\n" + zi.text
 	
-func add_window(win: PanelContainer, title: String = "", icon: Texture2D = null) -> void:
-	if _buttons.has(win):
+func add_window(win: PanelContainer, title: String = "", icon: Texture2D = null, custom_callback: Callable = Callable()) -> void:
+	if win != null and _buttons.has(win):
 		return
-	var b: Button = _buttons.get(win)
+	var b: Button = _buttons.get(win) if win != null else null
 	if b:
 		# exista deja: doar il actualizam si il aratam
 		b.text = title if title != "" else win.name
@@ -27,17 +28,22 @@ func add_window(win: PanelContainer, title: String = "", icon: Texture2D = null)
 	await get_tree().process_frame  # asigură layout-ul
 	
 	b = ButtonScene.instantiate()
-	
+	b.z_index=4
+	b.mouse_filter=Control.MOUSE_FILTER_PASS
 	b.text = title if title != "" else ""
 	if icon:
 		b.icon = icon
 	b.custom_minimum_size = Vector2(64, 32)
 	b.focus_mode = Control.FOCUS_NONE
-	b.pressed.connect(func():
-		restore_window(win)
-	)
+	if custom_callback.is_valid():
+		b.pressed.connect(custom_callback)
+	else:
+		b.pressed.connect(func():
+			restore_window(win)
+		)
 	get_node("/root/world/CanvasLayer/Control/TaskBar/Tray").add_child(b)
-	_buttons[win] = b
+	if win != null:
+		_buttons[win] = b
 
 func restore_window(win: PanelContainer) -> void:
 	#if _buttons.has(win):

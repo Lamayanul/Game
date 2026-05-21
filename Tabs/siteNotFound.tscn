@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvub08d3jius4"]
+
+[sub_resource type="Theme" id="Theme_323hl"]
+default_font_size = 150
+
+[sub_resource type="Theme" id="Theme_btnkp"]
+default_font_size = 30
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(1024, 512)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.203
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 0.0639954
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_323hl")
+text = "404"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.557
+anchor_right = 1.0
+anchor_bottom = 0.676
+offset_top = -0.184021
+offset_bottom = 7.88797
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_btnkp")
+text = "page not found"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

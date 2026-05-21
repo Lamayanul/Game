@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvhcggjwy043s"]
+[gd_scene format=3 uid="uid://dvhcggjwy043s"]
 
-[ext_resource type="Script" uid="uid://bpg6v5ut03cax" path="res://Scripturi/TaskBar.gd" id="1_to838"]
+[ext_resource type="Script" uid="uid://bpg6v5ut03cax" path="res://Tabs/TaskBar.gd" id="1_to838"]
 
 [sub_resource type="Theme" id="Theme_to838"]
 default_font_size = 25
@@ -14,7 +14,8 @@ height = 32
 fill_from = Vector2(0.448718, 0.0042735)
 fill_to = Vector2(0.448718, 0)
 
-[node name="TaskBar" type="Control"]
+[node name="TaskBar" type="Control" unique_id=2078344885]
+visible = false
 z_index = 1
 layout_mode = 3
 anchor_top = 0.938
@@ -26,10 +27,11 @@ offset_bottom = 12.824
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
+mouse_filter = 1
 script = ExtResource("1_to838")
 metadata/_edit_horizontal_guides_ = [213.0]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1326126245]
 z_index = 1
 custom_minimum_size = Vector2(32, 32)
 layout_direction = 3
@@ -49,7 +51,7 @@ scroll_following = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=225167920]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = -0.299

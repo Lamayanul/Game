@@ -8,11 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Game"
 run/main_scene="uid://brg7vyjjrwx3t"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]
@@ -46,12 +51,15 @@ window/stretch/scale=0.5
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/addons/fancy_folder_colors/plugin.cfg")
+enabled=PackedStringArray("res://addons/addons/fancy_folder_colors/plugin.cfg", "res://addons/ridiculous_coding/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
-"res://Base Character - Premium/Hana Caraka - Fantasy Interior/": "red"
+"res://Base Character - Premium/Hana Caraka - Fantasy Interior/": "red",
+"res://Sprout Lands - Sprites - Basic pack/Dungeon Pack/": "teal",
+"res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - premium pack/": "orange",
+"res://World of Solaria Marketplace Tileset Update 05/": "yellow"
 }
 
 [global_group]
@@ -92,6 +100,15 @@ browser=""
 storage_tab=""
 comslot=""
 inv_player=""
+enemy_inv=""
+fig=""
+live_camera=""
+light=""
+plug=""
+priza_limita=""
+plug_priza=""
+cablu=""
+scari=""
 
 [input]
 
@@ -235,6 +252,10 @@ drop_cup={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
 ]
 }
+
+[physics]
+
+common/physics_interpolation=true
 
 [rendering]
 

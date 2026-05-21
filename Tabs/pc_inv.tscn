@@ -1,19 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://c53tjlotiir5s"]
+[gd_scene format=3 uid="uid://c53tjlotiir5s"]
 
 [ext_resource type="Script" uid="uid://cx8rg5c6et75u" path="res://Tabs/pc_apps.gd" id="1_grxkk"]
 [ext_resource type="Texture2D" uid="uid://cvuciyxi2hnw3" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_background.png" id="2_1qa2b"]
 [ext_resource type="PackedScene" uid="uid://c4ioa4kk844s2" path="res://Tabs/slot_container_app.tscn" id="3_grxkk"]
 [ext_resource type="Texture2D" uid="uid://g2nknj28mrgx" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_select.png" id="4_8mdvo"]
 
-[node name="Inv" type="PanelContainer"]
-anchors_preset = -1
-anchor_right = 0.075
-anchor_bottom = 0.448
-offset_right = -0.400002
-offset_bottom = -0.304016
+[node name="Inv" type="PanelContainer" unique_id=1641641028]
+offset_right = 76.4
+offset_bottom = 229.07199
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_grxkk")
+metadata/_edit_use_anchors_ = true
 
-[node name="Back" type="NinePatchRect" parent="."]
+[node name="Back" type="NinePatchRect" parent="." unique_id=1537514157]
 visible = false
 layout_mode = 2
 texture = ExtResource("2_1qa2b")
@@ -22,30 +22,33 @@ patch_margin_top = 11
 patch_margin_right = 11
 patch_margin_bottom = 11
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1481698862]
 layout_mode = 2
 theme_override_constants/margin_left = 11
 theme_override_constants/margin_top = 11
 theme_override_constants/margin_right = 11
 theme_override_constants/margin_bottom = 11
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=1858338310]
 layout_mode = 2
-theme_override_constants/v_separation = 30
+theme_override_constants/v_separation = 100
 
-[node name="SlotContainer" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
-layout_mode = 2
-
-[node name="SlotContainer2" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
+[node name="SlotContainer" parent="MarginContainer/GridContainer" unique_id=1674030148 instance=ExtResource("3_grxkk")]
 layout_mode = 2
 
-[node name="SlotContainer3" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
+[node name="SlotContainer2" parent="MarginContainer/GridContainer" unique_id=97801953 instance=ExtResource("3_grxkk")]
 layout_mode = 2
 
-[node name="SlotContainer4" parent="MarginContainer/GridContainer" instance=ExtResource("3_grxkk")]
+[node name="SlotContainer3" parent="MarginContainer/GridContainer" unique_id=1340768107 instance=ExtResource("3_grxkk")]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+[node name="SlotContainer4" parent="MarginContainer/GridContainer" unique_id=1697289155 instance=ExtResource("3_grxkk")]
+layout_mode = 2
+
+[node name="SlotContainer5" parent="MarginContainer/GridContainer" unique_id=913575922 instance=ExtResource("3_grxkk")]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer" unique_id=109038147]
 visible = false
 layout_mode = 2
 mouse_filter = 2
@@ -53,4 +56,4 @@ texture = ExtResource("4_8mdvo")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=364828424]

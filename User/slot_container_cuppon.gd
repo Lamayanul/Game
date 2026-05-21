@@ -3,7 +3,7 @@ class_name Slot_Cup
 @export var angle_x_max: float = 15.0
 @export var angle_y_max: float = 15.0
 @export var max_offset_shadow: float = 50.0
-
+@export var card_efect = true
 @export_category("Oscillator")
 @export var spring: float = 150.0
 @export var damp: float = 10.0
@@ -37,8 +37,8 @@ var item_id: String = ""  # ID-ul itemului stivuit
 
 # Proprietatea care definește obiectul din slot
 var property_1: Dictionary = {}
-
-
+var dragging := false
+var drag_offset := Vector2.ZERO
 @onready var slot_container = get_node("/root/world/CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer")
 @onready var slot_container_2 = get_node("/root/world/CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer2")
 @onready var slot_container_3 = get_node("/root/world/CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer3")
@@ -47,7 +47,8 @@ var property_1: Dictionary = {}
 signal clothes_changed(new_clothes_id)
 signal slot_selected(slot)
 signal buton_apasat(slot)
-#signal item_changed
+signal request_tray_spawn(item_data)
+signal item_changed
 
 @export var nume: String:
 	set(value):
@@ -68,6 +69,7 @@ signal buton_apasat(slot)
 			label.text = str(cantitate)
 		else:
 			label.text = ""
+		emit_signal("item_changed")
 
 @export var raritate: String:
 	set(value):
@@ -81,6 +83,7 @@ signal buton_apasat(slot)
 		cantitate = property["CANTITATE"]
 		number = property["NUMBER"]
 		nume = property["NUME"]
+		emit_signal("item_changed")
 	
 
 # Metoda pentru setarea texturii și cantității
@@ -103,6 +106,7 @@ func set_property(data):
 			filled=false
 		else:
 			filled=true
+		emit_signal("item_changed")
 	
 	
 func get_texture() -> Texture:
@@ -127,6 +131,9 @@ func set_item(item_idx):
 	emit_signal("clothes_changed", item_idx)
 	
 func _get_drag_data(_at_position):
+	if slot_type == "tray":
+		return self
+		
 	is_selected=false
 	var preview_texture = TextureRect.new()
 	
@@ -287,13 +294,43 @@ func _ready():
 	
 
 func _on_gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			rotate_item_visual(1) # Rotim spre dreapta
+			accept_event() # Previne propagarea scroll-ului (ex: să nu facă scroll în container)
+			
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			rotate_item_visual(-1) # Rotim spre stânga
+			accept_event()
+	if slot_type=="tray":
+		if event is InputEventMouseButton and (event.button_index == MOUSE_BUTTON_RIGHT or event.button_index == MOUSE_BUTTON_LEFT):
+			if event.pressed:
+				dragging = true
+				drag_offset = get_global_mouse_position() - global_position
+				z_index = 10 # Aduce în față la click
+				move_to_front() # Asigură ordinea de desenare în ierarhie
+			else:
+				dragging = false
+				# Nu mai resetăm z_index la 0, deci rămâne deasupra
+			accept_event() # Consumăm evenimentul pentru a asigura capturarea release-ului
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if cantitate>0 and slot_type=="inventory" and get_node("/root/world/CanvasLayer/Masa").visible==true:
+			emit_signal("request_tray_spawn", property.duplicate())
+			self.clear_item()
+	# Detectează dublu-click pentru a deschide (folosit în special pe PC)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+		on_click()
+		accept_event()
+		return
+
 	# Detectează click-ul pentru a selecta slotul
 	if event is InputEventMouseButton and event.pressed:
 		is_selected = true
 		emit_signal("slot_selected", self)
 		
 	handle_mouse_click(event)
-	
+	if card_efect==false:
+		return
 	# Don't compute rotation when moving the card
 	if following_mouse: return
 	if not event is InputEventMouseMotion: return
@@ -317,7 +354,25 @@ func _on_gui_input(event):
 	
 	card_texture.material.set_shader_parameter("x_rot", rot_y)
 	card_texture.material.set_shader_parameter("y_rot", rot_x)
+	
+	
+func rotate_item_visual(direction: int) -> void:
+	if not texture_rect or texture_rect.texture == null:
+		return
 
+	# 1. Setăm punctul de rotație în centrul imaginii
+	# Dacă nu facem asta, imaginea se va roti în jurul colțului stânga-sus
+	texture_rect.pivot_offset = texture_rect.size / 2.0
+	
+	# 2. Definim pasul de rotație (în grade)
+	var step = 15.0 # Poți pune 90.0 dacă vrei rotație stil Tetris
+	
+	# 3. Aplicăm rotația (folosind un Tween pentru efect smooth)
+	var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var target_rotation = texture_rect.rotation_degrees + (step * direction)
+	
+	tween.tween_property(texture_rect, "rotation_degrees", target_rotation, 0.2)
+	
 func toggle_select():
 	if is_selected:
 		deselect()
@@ -326,7 +381,8 @@ func toggle_select():
 		
 func select():
 	is_selected = true
-	$TextureHolder/TextureRect/Button.visible=true
+	if slot_type != "tray":
+		$TextureHolder/TextureRect/Button.visible=true
 	
 
 func deselect():
@@ -341,6 +397,9 @@ func clear_item():
 	label.text = ""
 	#water_fill.visible=false
 	
+	if slot_type == "tray":
+		queue_free()
+		
 	# Resetează cantitatea
 	cantitate = 0
 
@@ -350,6 +409,7 @@ func clear_item():
 	# Marchează slotul ca fiind gol
 	filled = false  
 	emit_signal("clothes_changed", "")
+	emit_signal("item_changed")
 	
 	# Oprește funcționalitatea drag-and-drop
 	#set_drag_preview(null)
@@ -423,8 +483,32 @@ func _process(delta: float) -> void:
 	rotate_velocity(delta)
 	#follow_mouse(delta)
 	handle_shadow(delta)
+	if dragging:
+		# Safety check: if mouse button is released outside, stop dragging
+		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			dragging = false
+			return
+			
+		global_position = get_global_mouse_position() - drag_offset
+		var mouse_pos = get_parent().get_local_mouse_position() - drag_offset
+		var rect = get_parent().get_rect()  # Rect2(0,0,w,h)
+		
+		# Calculează limitele pentru ca itemul să nu iasă din parent
+		var min_x = 0
+		var min_y = -25
+		var max_x = rect.size.x - size.x
+		var max_y = rect.size.y - size.y
+		
+		# Clamp la limite
+		position = Vector2(
+			clamp(mouse_pos.x, min_x, max_x),
+			clamp(mouse_pos.y, min_y, max_y)
+		)
+	
 	
 func destroy() -> void:
+	if card_efect==false:
+		return
 	card_texture.use_parent_material = true
 	if tween_destroy and tween_destroy.is_running():
 		tween_destroy.kill()
@@ -433,6 +517,8 @@ func destroy() -> void:
 
 
 func rotate_velocity(delta: float) -> void:
+	if card_efect==false:
+		return
 	if not following_mouse: return
 	var _center_pos: Vector2 = global_position - (size/2.0)
 	#print("Pos: ", center_pos)
@@ -452,6 +538,8 @@ func rotate_velocity(delta: float) -> void:
 	rotation = displacement
 
 func handle_shadow(_delta: float) -> void:
+	if card_efect==false:
+		return
 	# Y position is enver changed.
 	# Only x changes depending on how far we are from the center of the screen
 	var center: Vector2 = get_viewport_rect().size / 2.0
@@ -460,11 +548,15 @@ func handle_shadow(_delta: float) -> void:
 
 
 func follow_mouse(_delta: float) -> void:
+	if card_efect==false:
+		return
 	if not following_mouse: return
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	global_position = mouse_pos - (size/2.0)
 
 func handle_mouse_click(event: InputEvent) -> void:
+	if card_efect==false:
+		return
 	if not event is InputEventMouseButton: return
 	if event.button_index != MOUSE_BUTTON_LEFT: return
 	
@@ -482,6 +574,8 @@ func handle_mouse_click(event: InputEvent) -> void:
 
 
 func _on_mouse_entered() -> void:
+	if card_efect==false:
+		return
 	if tween_hover and tween_hover.is_running():
 		tween_hover.kill()
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -489,6 +583,8 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	if card_efect==false:
+		return
 	# Reset rotation
 	if tween_rot and tween_rot.is_running():
 		tween_rot.kill()
@@ -502,6 +598,26 @@ func _on_mouse_exited() -> void:
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween_hover.tween_property(self, "scale", Vector2.ONE, 0.55)
 
+
+func set_compact_mode(compact: bool, scale_factor: float = 0.335):
+	if compact:
+		scale = Vector2(scale_factor, scale_factor)
+		# Reset rotation if it was rotated in rail
+		var holder = get_node_or_null("TextureHolder")
+		if holder:
+			holder.rotation_degrees = 0
+			holder.position = Vector2.ZERO
+		
+		# Reset label rotation/position
+		var label_node = get_node_or_null("TextureHolder/TextureRect/Label")
+		if label_node:
+			label_node.rotation_degrees = 0
+			label_node.position = Vector2.ZERO # Or its original position
+	else:
+		# Restore for rail if needed, but usually this is called when moving to rail
+		# which has its own add_coupon_card logic.
+		# For now, just reset scale.
+		scale = Vector2.ONE
 
 func on_click():
 	emit_signal("buton_apasat",self)

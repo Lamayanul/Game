@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://unhb7pius38k"]
 
-[ext_resource type="Script" uid="uid://s65pu368bwim" path="res://Tabs/card_bank.gd" id="1_4llwd"]
+[ext_resource type="Script" uid="uid://b83c4bdk431qg" path="res://Tabs/cupoane_card.gd" id="1_4llwd"]
 [ext_resource type="Texture2D" uid="uid://bwqgk8a0d67s0" path="res://Tabs/card_back.jpeg" id="1_p6an0"]
 [ext_resource type="Texture2D" uid="uid://m8r4rvkj2igf" path="res://Tabs/cip_card.png" id="2_4llwd"]
 [ext_resource type="Texture2D" uid="uid://4otiddxiarhp" path="res://Tabs/master.png" id="3_cikp4"]

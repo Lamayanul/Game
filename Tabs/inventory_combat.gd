@@ -62,20 +62,20 @@ func _random_item_key(keys: Array) -> String:
 
 # --- core populate ---
 func _populate_enemy_inventory(db: Dictionary) -> void:
-	# collect available slots (children that are Slot and are empty, or just any Slot)
+	# Colectăm doar sloturile care sunt efectiv goale
 	var slots: Array = []
 	for c in inv_enemy.get_node("MarginContainer/GridContainer").get_children():
-		if c is Slot:
+		if c is Slot and not c.filled:
 			slots.append(c)
 
 	if slots.is_empty():
-		push_warning("Inv_enemy has no Slot children.")
+		# Nu avem unde să mai punem iteme noi
 		return
 
-	# how many items we’ll place
-	var count = clamp(_rng.randi_range(min_items, max_items), 0, slots.size())
+	# Câte iteme noi punem (maxim numărul de sloturi libere)
+	var count = clamp(_rng.randi_range(min_items, max_items), 1, slots.size())
 
-	# shuffle slots so we fill random positions
+	# Amestecăm sloturile goale pentru varietate
 	slots.shuffle()
 
 	var filled := 0

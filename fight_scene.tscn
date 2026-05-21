@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b6smty2aysw5r"]
+[gd_scene load_steps=18 format=3 uid="uid://oq5thvjvjkff"]
 
 [ext_resource type="Script" uid="uid://boy1ext6tbus" path="res://Scripturi/fight_scene.gd" id="1_1rklm"]
 [ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="2_acpyq"]

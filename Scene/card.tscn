@@ -34,7 +34,7 @@ shader_parameter/x_rot = 0.0
 shader_parameter/inset = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xsth3"]
-size = Vector2(130, 93)
+size = Vector2(130, 145.5)
 
 [node name="Card" type="Button"]
 material = SubResource("ShaderMaterial_3ph3s")
@@ -85,6 +85,7 @@ stretch_mode = 4
 position = Vector2(74, 165)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="area"]
+position = Vector2(0, -26.25)
 shape = SubResource("RectangleShape2D_xsth3")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

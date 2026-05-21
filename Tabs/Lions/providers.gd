@@ -1,6 +1,8 @@
 # res://ProviderDisplay.gd
 extends Control
 
+signal provider_clicked(p_name: String)
+
 # --- Provider enum ---
 enum ProviderType { OWNER_1, OWNER_2, OWNER_3, OWNER_4 }
 
@@ -30,6 +32,17 @@ func _ready() -> void:
 	_rng.seed = int(Time.get_ticks_usec()) ^ int(get_instance_id())
 	_pick_provider_and_texture()  # alege provider + imagine
 	_update_ui()
+	
+	# Conectăm butonul pentru a emite semnalul
+	var btn = get_node_or_null("PanelContainer/Button")
+	if btn:
+		btn.pressed.connect(_on_button_pressed)
+	
+	print("prov: ",provider_uid )
+
+func _on_button_pressed():
+	# Trimitem numele providerului (textul de pe label)
+	provider_clicked.emit(provider_to_string(_provider))
 
 # ===== Public API =====
 func reroll() -> void:
@@ -93,12 +106,37 @@ func _provider_uid(p: int) -> StringName:
 		ProviderType.OWNER_4: return &"owner_4"
 		_: return &"unknown"
 
+# Adaugă asta în ProviderDisplay.gd
+
+# ===== Funcție apelată de Market.gd pentru sincronizare =====
+func force_provider_visuals(target_uid: String) -> void:
+	# 1. Actualizăm variabila publică
+	provider_uid = target_uid
+	
+	# 2. Convertim String-ul (din Market) în Enum-ul intern (int)
+	match target_uid:
+		"owner_1": _provider = ProviderType.OWNER_1
+		"owner_2": _provider = ProviderType.OWNER_2
+		"owner_3": _provider = ProviderType.OWNER_3
+		"owner_4": _provider = ProviderType.OWNER_4
+		_: 
+			print("ProviderDisplay: UID necunoscut ", target_uid)
+			return
+
+	# 3. Alegem o imagine random DOAR din lista provider-ului ales
+	var imgs := _get_provider_images(_provider)
+	if not imgs.is_empty():
+		icon_node.texture = imgs[_rng.randi_range(0, imgs.size() - 1)]
+	
+	# 4. Actualizăm textul
+	_update_ui()
+	
 func provider_to_string(p: int) -> String:
 	match p:
-		ProviderType.OWNER_1: return "Sale GOD"
+		ProviderType.OWNER_1: return "Duck's Empire"
 		ProviderType.OWNER_2: return "Bit Buyer"
 		ProviderType.OWNER_3: return "Factory of FOOD"
-		ProviderType.OWNER_4: return "Fancy Pants"
+		ProviderType.OWNER_4: return "Lions Market"
 		_: return "Unknown"
 
 # doar ca să vezi UID-ul în Inspector (read-only feel)

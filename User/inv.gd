@@ -2,7 +2,7 @@ extends PanelContainer
 
 #------------------------------grid-uri--------------------------------------------------------------
 @onready var grid_container = $MarginContainer/GridContainer
-@onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
+@onready var grid = get_node_or_null("/root/world/TileMap/Grid_ogor") # Referința la grid
 #@onready var slot_container_5 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer5")
 #@onready var slot_container_7 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer2")
 #@onready var slot_container_6 = get_node("/root/world/oven/CanvasLayer/Recipe/HBoxContainer/SlotContainer")
@@ -17,7 +17,7 @@ extends PanelContainer
 #@onready var slot_container_9: Slot = get_node("/root/world/Electricity_pillar/CanvasLayer/GridContainer/SlotContainer2")
 #
 #
-
+var ditto_repeat=0
 var fantana = null
 var slot_container_8: Node = null
 var slot_container_9: Node = null
@@ -43,13 +43,13 @@ var slot_container_chest_4: Node = null
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
-@onready var info_label = $"../PanelContainer/VBoxContainer".get_node("InfoLabel")
-@onready var hand_sprite = $"../PanelContainer".get_node("sprite")
+@onready var info_label =get_node_or_null("/root/world/CanvasLayer/PanelContainer/VBoxContainer/InfoLabel")
+@onready var hand_sprite = get_node_or_null("/root/world/CanvasLayer/PanelContainer/sprite")
 #@onready var color_rect = $"../ColorRect"
 
 #--------------------------noduri-principale--------------------------------------------------------
 var selected_slot: Slot = null  # Slotul selectat
-@onready var tile_map = $"../../TileMap"
+@onready var tile_map = get_node_or_null("/root/world/TileMap") 
 #@onready var player = $"../../player"
 @onready var player = get_node_or_null("/root/world/player")
 var timp_ramas=0
@@ -115,7 +115,7 @@ var SlotTrayScene = preload("res://User/slot_container.tscn")
 
 
 #---------------------------------------add_item()-----------------------------------------------------
-func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
+func add_item(ID="", item_cantita=1, curse=null, effects=null, ditto=false) -> bool:
 	var item_texture = load("res://assets/" + ItemData.get_texture(ID))
 	var item_nume    = ItemData.get_nume(ID)
 	var item_number  = ItemData.get_number(ID)
@@ -123,6 +123,8 @@ func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 	var item_curse   = curse
 	var item_effects = _normalize_effects(effects)  # <- normalizează ca listă
 	var item_type = ItemData.get_type(ID)
+	var item_ditto = ditto
+	var item_durability = ItemData.get_durability(ID)
 
 	var item_data = {
 		"TEXTURE": item_texture,
@@ -132,7 +134,9 @@ func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 		"RARITATE": item_raritate,
 		"CURSE": item_curse,
 		"EFFECTS": item_effects,
-		"TYPE": item_type
+		"TYPE": item_type,
+		"DITTO":item_ditto,
+		"DURABILITY":item_durability,
 	}
 
 	# 1) încearcă să stivuiască doar dacă ID + CURSE + EFFECTS sunt IDENTICE
@@ -149,7 +153,9 @@ func add_item(ID="", item_cantita=1, curse=null, effects=null) -> bool:
 					"RARITATE": item_raritate,
 					"CURSE": item_curse,
 					"EFFECTS": item_effects,
-					"TYPE": item_type
+					"TYPE": item_type,
+					"DITTO": item_ditto,
+					"DURABILITY":item_durability,
 				})
 				_apply_to_player_from_slot(child)
 				return true
@@ -241,9 +247,11 @@ func _can_stack_slot_with(child: Slot, item_id: String, curse, effects) -> bool:
 #--------------------------------_ready()----------------------------------------------------------------
 func _ready():
 	fantana = get_node_or_null("/root/world/Fantana")
+
 	for child in grid_container.get_children():
 		if child is Slot:
 			child.connect("slot_selected", Callable(self, "_on_slot_selected"))
+			child.connect("item_activated", Callable(self, "_on_item_activated"))
 
 	
 	  # Selectează automat primul slot
@@ -310,10 +318,11 @@ func _on_slot_selected(slot: Slot):
 		var effects = slot.get_effects()
 		var curse_txt   = _fmt_curse(slot.get_curse())
 		var effects_txt = _fmt_effects(slot.get_effects())
+		var durability = slot.get_durability()
 
 
 		
-		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s \nCURSE: %s \nEFFECTS: %s[/center]" % [nume, raritate, curse_txt, effects_txt]
+		info_label.bbcode_text = "[center]\nITEM: %s\nRARITATE: %s\n DURABILITY: %s\nCURSE: %s \nEFFECTS: %s[/center]" % [nume, raritate, durability,curse_txt, effects_txt]
 		info_label.visible = true
 		#color_rect.visible = false
 
@@ -456,7 +465,7 @@ func _weapon_id_from_slot(slot: Slot) -> String:
 	# fallback: maparea locală
 	if ITEMID_TO_WEAPONID.has(item_id):
 		return ITEMID_TO_WEAPONID[item_id]
-	return ""
+	return item_id # Return raw ID so any item can be displayed
 
 func update_selector_position(slot: Slot):
 	var slot_position = slot.get_global_position()
@@ -985,3 +994,65 @@ func format_time(seconds: int) -> String:
 		#for item in items:
 			#if item.ID=="23":
 				#item.set_lumina("23")
+
+func _on_item_activated(slot: Slot):
+	if ditto_repeat==1:
+		return
+	var current_id = slot.get_id()
+	var new_id = "" # Aici vom salva ID-ul în care se transformă
+
+	print("e true? ",slot.get_ditto())
+	# --- ZONA DE CONFIGURARE A TRANSFORMĂRILOR ---
+	# Exemplu: Dacă dai dublu click pe ID "10", se transformă în "11"
+	
+	var all_ids = ItemData.content.keys()
+	
+	if slot.get_ditto():
+		print("merges")
+		if all_ids.size() > 0:
+			var random_id = all_ids.pick_random()
+			print("Ditto transformat! ID vechi: ", current_id, " -> ID nou: ", random_id)
+			new_id=random_id
+			change_slot_item(slot, new_id)
+			ditto_repeat=1
+			return
+	
+
+
+
+# ADAPTARE 5: Funcția auxiliară care efectiv schimbă itemul în slot
+func change_slot_item(slot: Slot, new_id: String):
+	# 1. Luăm datele noului item din ItemData
+	var new_tex = load("res://assets/" + ItemData.get_texture(new_id))
+	var new_name = ItemData.get_nume(new_id)
+	var new_number = ItemData.get_number(new_id)
+	var new_raritate = ItemData.get_raritate(new_id)
+	var new_type = ItemData.get_type(new_id)
+	
+	# 2. Consumăm 1 bucată din itemul vechi
+	# Dacă vrei să se transforme TOT stack-ul, șterge linia cu decrease și folosește slot.get_cantitate() mai jos
+	var old_quantity = slot.get_cantitate()
+	
+	# Aici alegi logica: 
+	# Varianta A: Se schimbă doar itemul curent (transformare magică) -> Păstrează cantitatea
+	# Varianta B: E un "Loot Box" -> Scazi 1 cutie și primești 1 item
+	
+	# Exemplu pentru Varianta A (Transformare directă a tot ce e în slot):
+	slot.set_property({
+		"TEXTURE": new_tex,
+		"CANTITATE": old_quantity, # Păstrăm cantitatea veche
+		"NUMBER": new_number,
+		"NUME": new_name,
+		"RARITATE": new_raritate,
+		"TYPE": new_type,
+		"EFFECTS": [], # Poți adăuga efecte noi dacă vrei
+		"CURSE": null,
+		"DITTO":true,
+		"DURABILITY":20,
+	})
+	
+	# Actualizăm UI-ul jucătorului (text, info)
+	if selected_slot == slot:
+		_on_slot_selected(slot)
+		
+	print("Item transformat din ID " + slot.get_id() + " în ID " + new_id)

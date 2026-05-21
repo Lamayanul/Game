@@ -8,15 +8,20 @@ class_name Slot
 @export var scop =""
 var filled:bool=false
 var item_id: String = ""  # ID-ul itemului stivuit
-@onready var inv = get_node("/root/world/CanvasLayer/Inv")
+@onready var inv = get_node_or_null("/root/world/CanvasLayer/Inv")
 @onready var water_fill = get_node_or_null("/root/world/Fantana/CanvasLayer")
-@onready var player = get_node("/root/world/player")
+@onready var player = get_node_or_null("/root/world/player")
 @export var slot_type: String = "inventory"  # Valorile posibile: "inventory", "no_inv", etc.
 @onready var price_text: RichTextLabel = get_node_or_null("../PanelContainer3/Price")
 @onready var providers: Control = get_node_or_null("../PanelContainer2/Provider")
-@onready var description = get_node_or_null("../PanelContainer/description")
+@onready var description = get_node_or_null("../PanelContainer/ScrollContainer/description")
 @onready var buton = get_node_or_null("TextureHolder/Button")
+@onready var item_zomm= get_node_or_null("../PanelContainer/ScrollContainer/ItemZomm")
 
+@onready var trend_indicator =get_node_or_null("TextureHolder/Trend")
+@export var arrow_up_tex: Texture2D   # Trage aici o săgeată VERDE (în sus)
+@export var arrow_down_tex: Texture2D
+var _trend_tween: Tween
 
 var price: int = 0
 
@@ -30,7 +35,8 @@ const DEFAULT_ITEM := {
 	"NUME": "",
 	"RARITATE": "",
 	"EFFECTS": [],
-	"CURSE": null
+	"CURSE": null,
+	"DITTO":false
 }
 
 @onready var slot_container = get_node("/root/world/CanvasLayer/Inv/MarginContainer/GridContainer/SlotContainer")
@@ -48,11 +54,17 @@ var drag_offset := Vector2.ZERO
 signal request_total_money_update(delta:int)
 @export var context: String = ""  # "storage" sau "fight"
 signal send_to_storage(item_data: Dictionary)
+signal item_activated(slot)
 
 @export var nume: String:
 	set(value):
 		nume=value
 		
+		
+@export var durability:float:
+	set(value):
+		durability=value
+	
 @export var number : int = 0:
 	set(value):
 		number = value
@@ -73,7 +85,11 @@ signal send_to_storage(item_data: Dictionary)
 		raritate=value
 #@export_enum("Grau:0", "Seminte:1", "Axe:2") var type: int
 
-@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume, "RARITATE":raritate, "CURSE":curse, "EFFECTS":effects, "TYPE":type}:
+@export var ditto: bool=false:
+	set(value):
+		ditto=value
+
+@onready var property: Dictionary = {"TEXTURE": null, "CANTITATE": cantitate, "NUMBER":number, "NUME":nume, "RARITATE":raritate, "CURSE":curse, "EFFECTS":effects, "TYPE":type, "DITTO":ditto, "DURABILITY":durability}:
 	set(value):
 		property = value 
 		texture_rect.texture = property["TEXTURE"]  # Actualizează direct textura în TextureRect
@@ -83,10 +99,13 @@ signal send_to_storage(item_data: Dictionary)
 		raritate = str(property.get("RARITATE", ""))
 		curse = property.get("CURSE", null)
 		effects = property.get("EFFECTS", [])
+		ditto = property.get("DITTO",false)
+		durability = property.get("DURABILITY",0)
 
 @export var curse: Variant = null   # poate fi null sau Dictionary; Variant e cel mai sigur
 @export var effects: Variant = null       # listă de efecte din JSON
 @export var type: Variant = null  
+
 
 # Metoda pentru setarea texturii și cantității
 func set_property(data):
@@ -103,6 +122,8 @@ func set_property(data):
 		curse = property.get("CURSE", null)
 		effects = property.get("EFFECTS", [])
 		type = property.get("TYPE",[])
+		ditto = property.get("DITTO",false)
+		durability = property.get("DURABILITY",0)
 		label.text = str(cantitate)
 		if cantitate > 0:
 			label.text = str(cantitate)
@@ -139,8 +160,16 @@ func get_curse() -> Variant:
 	return property.get("CURSE", null)
 
 func get_type() -> Variant:
-	return property.get("TYPE", [])
+	var t = property.get("TYPE", [])
+	if t == null:
+		return []
+	return t
+
+func get_ditto() -> Variant:
+	return property.get("DITTO", false)
 	
+func get_durability() ->float:
+	return property.get("DURABILITY",0)
 
 func set_item_crafting():
 	emit_signal("item_changed")
@@ -157,7 +186,11 @@ func _normalize_property(src: Dictionary) -> Dictionary:
 	return d
 	
 func _get_drag_data(_at_position):
-	
+	if slot_type == "void":
+		return null
+	if slot_type == "tray":
+		return self
+		
 	var preview_texture = TextureRect.new()
 	
 	preview_texture.texture = texture_rect.texture
@@ -173,11 +206,11 @@ func _get_drag_data(_at_position):
 
 
 func _can_drop_data(_at_position, data):
-	# Permitem doar dacă data e un Slot
-	var se = player.get_node_or_null("StatusEffects") as StatusEffects
-	
-	if not (data is Slot):
+	# Permitem doar dacă data e un Slot valid
+	if not is_instance_valid(data) or not (data is Slot):
 		return false
+		
+	var se = player.get_node_or_null("StatusEffects") as StatusEffects
 		
 	if se and not se.can_move_slot(data):
 		return false
@@ -244,10 +277,10 @@ func _can_drop_data(_at_position, data):
 	return true
 
 func _drop_data(_pos, data):
-	var se = player.get_node_or_null("StatusEffects") as StatusEffects
-	
-	if not (data is Slot):
+	if not is_instance_valid(data) or not (data is Slot):
 		return  # Asigură-te că datele droppate provin dintr-un slot valid
+
+	var se = player.get_node_or_null("StatusEffects") as StatusEffects
 
 	if se and not se.can_move_slot(data):
 		return
@@ -326,18 +359,23 @@ func _ready():
 	
 
 func _on_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+		emit_signal("item_activated", self)
+		return 
 	# Detectează click-ul pentru a selecta slotul
 	if event is InputEventMouseButton and event.pressed:
 		is_selected = true
 		emit_signal("slot_selected", self)
-	if slot_type=="tray":
-		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+	if slot_type=="tray" or slot_type=="void":
+		if event is InputEventMouseButton and (event.button_index == MOUSE_BUTTON_RIGHT or event.button_index == MOUSE_BUTTON_LEFT):
 			if event.pressed:
 				dragging = true
 				drag_offset = get_global_mouse_position() - global_position
-				#raise()  # Aduce panelul în față
+				z_index = 0
+				move_to_front()
 			else:
 				dragging = false
+			accept_event()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if cantitate>0 and slot_type=="inventory" and get_node("/root/world/CanvasLayer/Masa").visible==true:
 			emit_signal("request_tray_spawn", property.duplicate())
@@ -347,15 +385,22 @@ func _on_gui_input(event):
 			if cantitate > 0:
 				emit_signal("send_to_storage", property.duplicate(true))
 				self.decrease_cantitate(1)
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if self.slot_type=="comslot":
-			ConfigureFight.select_player_item(self)
+
+	
 
 
 
 
 func _process(delta):
+	if filled and "food" in get_type() and slot_type != "market":
+		if decrease_durability(delta):
+			pass # Food spoiled logic handled in decrease_durability (clear_item)
 	if dragging:
+		# Safety check: if mouse button is released outside, stop dragging
+		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			dragging = false
+			return
+			
 		global_position = get_global_mouse_position() - drag_offset
 		var mouse_pos = get_parent().get_local_mouse_position() - drag_offset
 		var rect = get_parent().get_rect()  # Rect2(0,0,w,h)
@@ -388,6 +433,37 @@ func _process(delta):
 			clamp(mouse_pos.y, min_y, max_y)
 		)
 
+func decrease_durability(amount: float) -> bool:
+	if filled:
+		if _has_tag_or_id("unbreakable"):
+			return false
+		durability -= amount
+		property["DURABILITY"] = durability
+				# Optional: Update visual for durability here
+		if durability <= 0:
+			clear_item()
+			return true # Item broke/expired
+	return false
+func _has_tag_or_id(needle: String) -> bool:
+		# Check curse
+	if curse is Dictionary:
+		if str(curse.get("id", "")).to_lower() == needle: return true
+		var tags = curse.get("tags", [])
+		if tags is Array:
+			for t in tags:
+				if str(t).to_lower() == needle: return true
+		# Check effects
+	var effs = effects
+	if effs is Dictionary: effs = [effs]
+	if effs is Array:
+			for e in effs:
+				if e is Dictionary:
+					if str(e.get("id", "")).to_lower() == needle: return true
+					var tags = e.get("tags", [])
+					if tags is Array:
+						for t in tags:
+							if str(t).to_lower() == needle: return true
+	return false
 		
 func select():
 	is_selected = true
@@ -421,9 +497,10 @@ func clear_item():
 	
 	
 func get_id() -> String:
-	if property and property.has("number") != null:
+	if property and property.has("NUMBER"):
+		var target_number = int(property["NUMBER"])
 		for key in ItemData.content.keys():
-			if ItemData.content[key]["number"] == number:
+			if int(ItemData.content[key].get("number", -1)) == target_number:
 				return key
 	return "0"
 	
@@ -694,7 +771,7 @@ func _on_button_pressed() -> void:
 	if browser_tab == null:
 		return
 	
-	var royal_tab : PackedScene = load("res://tab_fight.tscn")
+	var royal_tab : PackedScene = load("res://Tabs/tab_fight.tscn")
 	var pc_tab = get_tree().get_first_node_in_group("pc")
 	if is_instance_valid(pc_tab):
 		var fight = royal_tab.instantiate()
@@ -708,20 +785,65 @@ func _on_button_pressed() -> void:
 	#royal_fight.visible=true
 
 	# verificare bani
-	if browser_tab.total_money_site < price:
+	if browser_tab.slot_container.cantitate < price:  #browser_tab.total_money_site < price
 		print("Nu ai destui bani pentru acest item!")
 		return  # oprește achiziția
 
 	# ai destui bani → scade prețul
 	emit_signal("request_total_money_update", -price)
 
+	# --- SINCRONIZARE CU DEPOZITUL ---
+	if slot_type == "market":
+		# Căutăm cine este providerul acestui slot
+		var p_node = get_node_or_null("../PanelContainer2/Provider")
+		if p_node and "name_label" in p_node:
+			var p_name = p_node.name_label.text
+			ItemData.buy_item_from_provider(p_name, get_id(), 1)
+	# ---------------------------------
+
 	# logica existentă
 	if self.cantitate > 0:
-		var src_data = property.duplicate(true) # în loc de get_item()
+		var src_data = property.duplicate(true)
 		browser.emit(src_data)
 		self.clear_item()
 		if src_data.is_empty(): return
 		if self.cantitate == 0:
 			$TextureHolder/Button.disabled = true
-			$"../PanelContainer/description".text = ""
+			$"../PanelContainer/ScrollContainer/description".text = ""
 			$"../PanelContainer3/Price".text = ""
+
+
+func _on_button_2_pressed() -> void:
+	item_zomm.visible = !item_zomm.visible
+	description.visible = !description.visible
+	
+
+func show_trend(is_increase: bool):
+	if not trend_indicator: return
+	
+	# 1. Setăm textura și culoarea
+	if is_increase:
+		trend_indicator.texture = arrow_up_tex
+		trend_indicator.modulate = Color.GREEN # Sau alb, dacă textura e deja verde
+	else:
+		trend_indicator.texture = arrow_down_tex
+		trend_indicator.modulate = Color.RED # Sau alb, dacă textura e deja roșie
+		
+	# 2. Animația (Apare -> Stă -> Dispare)
+	if _trend_tween: _trend_tween.kill()
+	_trend_tween = create_tween()
+	
+	# Resetăm starea
+	trend_indicator.scale = Vector2(0.5, 0.5)
+	trend_indicator.modulate.a = 0.0
+	trend_indicator.visible = true
+	
+	# Pop in
+	_trend_tween.tween_property(trend_indicator, "modulate:a", 1.0, 0.2)
+	_trend_tween.parallel().tween_property(trend_indicator, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	# Așteaptă
+	_trend_tween.tween_interval(0.5)
+	
+	# Fade out
+	_trend_tween.tween_property(trend_indicator, "modulate:a", 0.0, 0.3)

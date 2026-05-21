@@ -2,6 +2,7 @@ extends PanelContainer
 
 @onready var title_bar: Control = $VBoxContainer/TitleBar
 @onready var close_btn: Button = $VBoxContainer/TitleBar/TextureRect/CloseBtn
+@onready var shrink_btn: Button = get_node_or_null("VBoxContainer/TitleBar/TextureRect/ShrinkBtn")
 #@onready var content: Control = $VBoxContainer/Content
 @export var min_size_px := Vector2(180, 120)
 @export var max_size_px := Vector2(1600, 1000)
@@ -17,10 +18,22 @@ extends PanelContainer
 @onready var www = get_node_or_null("VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/www")
 @onready var search = get_node_or_null("VBoxContainer/Search")
 @onready var market = get_node_or_null("VBoxContainer/Market")
+@onready var csgo = get_node_or_null("VBoxContainer/Csgo")
+@onready var blackmarket = get_node_or_null("VBoxContainer/BlackMarket")
+@onready var forex = get_node_or_null("VBoxContainer/ForexChart")
 @onready var market_grid = get_node_or_null("VBoxContainer/Market/ScrollContainer/GridContainer")
+@onready var site_not_found= get_node_or_null("VBoxContainer/SiteNotFound")
 @onready var content = get_node_or_null("/root/world/CanvasLayer/Control/StorageTab/VBoxContainer/Content_storage")
 @onready var total_money_text = get_node_or_null("VBoxContainer/Market/RichTextLabel/Total_money")
 @onready var inv_player = self.get_node_or_null("Control/TextureRect2/Inv_player")
+@onready var slot_container= get_node_or_null("VBoxContainer/Market/RichTextLabel/SlotContainer")
+@onready var fundal = get_node_or_null("fundal")
+@onready var provider_page= get_node_or_null ("VBoxContainer/ProviderPage")
+@onready var cam = get_node_or_null ("VBoxContainer/LiveCamera")
+@onready var top_back = get_node_or_null("fundal/TopBack")
+
+@onready var ora = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Hour")
+@onready var minut = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Minute")
 
 @onready var storage_tab_grid = get_node_or_null("/root/world/CanvasLayer/Control/StorageTab/VBoxContainer/Content_storage")
 
@@ -57,33 +70,80 @@ var ROUTES := [
 		"pattern": r"^www\.market(?:/.*)?$",
 		"show": ["market"],
 		"title": "Market",
-		"handler": "_route_market_default"
+		"handler": "_route_market_default",
+		"fundal":"",
 	},
 	# www.search sau orice necunoscut → fallback la Search
 	{
 		"pattern": r"^www\.search(?:/.*)?$",
 		"show": ["search"],
-		"title": "Search"
+		"title": "Search",
+		"fundal":"res://Tabs/luna.png",
 	},
 	# www.storage
 	{
 		"pattern": r"^www\.storage(?:/.*)?$",
 		"show": ["storage"],
 		"title": "Storage",
-		"handler": "_route_storage"       # (opțional) cod rulat când intri
+		"handler": "_route_storage",       # (opțional) cod rulat când intri
+		"fundal":"",
 	},
 	# www.news/<category>
 	{
 		"pattern": r"^www\.news/([A-Za-z_]+)$",
 		"show": ["news"],
 		"title": "News",
-		"handler": "_route_news_with_category"  # primește grupul capturat
+		"handler": "_route_news_with_category",  # primește grupul capturat
+		"fundal":"",
 	},
 	{
-	"pattern": r"^www\.market\.([A-Za-z_]+)$",
-	"show": ["market"],
-	"title": "Market",
-	"handler": "_route_market_product"
+		"pattern": r"^www\.csgo(?:/.*)?$",
+		"show": ["csgo"],
+		"title": "Csgo",
+		"handler": "_route_luck",       # (opțional) cod rulat când intri
+		"fundal":"",
+	},
+	{
+		"pattern": r"^www\.black_market(?:/.*)?$",
+		"show": [],
+		"title": "Black Market",
+		"handler": "_route_black",    # (opțional) cod rulat când intri
+		"fundal":"res://Tabs/black_market_back.png",
+	},
+	{
+		"pattern": r"^www\.market\.([A-Za-z_]+)$",
+		"show": ["market"],
+		"title": "Market",
+		"handler": "_route_market_product",
+		"fundal":"",
+	},
+	{
+		"pattern": r"^www\.forex(?:/.*)?$",
+		"show": ["forex"],
+		"title": "Forex",
+		"handler": "_route_forex",       # (opțional) cod rulat când intri
+		"fundal":"",
+	},
+	{
+		"pattern": r"^www\.provider/(.+)$",
+		"show": ["provider"],
+		"title": "Provider Details",
+		"handler": "_route_provider",
+		"fundal":"",
+	},
+	{
+		"pattern": r"^www\.cam(?:/.*)?$",
+		"show": ["cam"],
+		"title": "CAM",
+		"handler": "_route_cam",
+		"fundal":"",
+	},
+	{
+		"pattern": "",
+		"show": ["site_not_found"],
+		"title": "Site not found",
+		"handler": "_route_not_found",
+		"fundal":"",
 	},
 ]
 func _try_bind_market_slot(n: Node) -> void:
@@ -94,16 +154,16 @@ func _try_bind_market_slot(n: Node) -> void:
 	if slot == null:
 		return
 
-	# semnalul care îți trimite date spre browser
-	if not slot.is_connected("browser", Callable(self, "_on_market_slot_transmit")):
-		slot.connect("browser", Callable(self, "_on_market_slot_transmit"))
+	## semnalul care îți trimite date spre browser
+	#if not slot.is_connected("browser", Callable(self, "_on_market_slot_transmit")):
+		#slot.connect("browser", Callable(self, "_on_market_slot_transmit"))
 
 	# semnalul pentru bani (AICI era problema)
 	if not slot.is_connected("request_total_money_update", Callable(self, "_on_total_money_update")):
 		slot.connect("request_total_money_update", Callable(self, "_on_total_money_update"))
 
 			
-func setup_from_item(payload: Dictionary) -> void:
+func setup_from_item(payload:Dictionary) -> void:
 	# personalizează UI în funcție de itemul care a deschis tabul
 	if payload.has("NUME"):
 		$VBoxContainer/TitleBar/TextureRect/Title.text = "%s" % [payload["NUME"]]
@@ -120,9 +180,10 @@ func minimize() -> void:
 	
 
 func _ready():
-	print(content)
 	pc.storage.connect(_on_scan_slot_transmit)
 	close_btn.pressed.connect(_on_close_pressed)
+	if is_instance_valid(shrink_btn):
+		shrink_btn.pressed.connect(_on_shrink_pressed)
 	title_bar.gui_input.connect(_on_titlebar_gui_input)
 	gui_input.connect(_on_gui_input)
 	if is_instance_valid(market_grid):
@@ -138,10 +199,11 @@ func _ready():
 				continue
 
 			# dacă `browser` e un semnal declarat în Slot: `signal browser(data)`:
-			if not slot.browser.is_connected(_on_market_slot_transmit):
-				slot.browser.connect(_on_market_slot_transmit)
+			#if not slot.browser.is_connected(_on_market_slot_transmit):
+			#	slot.browser.connect(_on_market_slot_transmit)
 	if is_instance_valid(total_money_text):
 		total_money_text.text = "APPLE: " + str(total_money_site)
+		slot_container.cantitate = total_money_site
 		# alternativ, varianta clasică de conectare după numele semnalului:
 		# if not slot.is_connected("browser", Callable(self, "_on_market_slot_transmit")):
 		#     slot.connect("browser", Callable(self, "_on_market_slot_transmit"))
@@ -166,6 +228,12 @@ func _ready():
 		PAGES = {
 		"search":  search,
 		"market":  market,
+		"csgo": csgo,
+		"blackmarket":blackmarket,
+		"site_not_found":site_not_found,
+		"forex":forex,
+		"provider": provider_page,
+		"cam": cam,
 		#"storage": storage,
 		#"news":    news,
 	}
@@ -193,17 +261,24 @@ func _on_node_added(n: Node) -> void:
 	_try_bind_slot(n)
 
 func _try_bind_slot(n: Node) -> void:
-	if n is Slot and n.is_in_group("comslot"):
-		var s := n as Slot
-		if not s.is_connected("send_to_storage", Callable(self, "_on_send_to_storage")):
-			s.send_to_storage.connect(Callable(self, "_on_send_to_storage"))
 	if n is Slot:
-		# fie conectezi direct gui_input...
+		var s := n as Slot
+		# Semnal pentru storage (Middle Click)
+		if n.is_in_group("comslot"):
+			if not s.is_connected("send_to_storage", Callable(self, "_on_send_to_storage")):
+				s.send_to_storage.connect(Callable(self, "_on_send_to_storage"))
+		
+		# Semnal pentru Market (Transfer la cumpărare)
+		if not s.is_connected("browser", Callable(self, "_on_market_slot_transmit")):
+			s.connect("browser", Callable(self, "_on_market_slot_transmit"))
+
+		# Semnal pentru bani
+		if not s.is_connected("request_total_money_update", Callable(self, "_on_total_money_update")):
+			s.connect("request_total_money_update", Callable(self, "_on_total_money_update"))
+
+		# Conectare gui_input pentru diverse acțiuni
 		if not n.is_connected("gui_input", Callable(self, "_on_slot_gui_input")):
 			n.gui_input.connect(Callable(self, "_on_slot_gui_input").bind(n))
-		# ...sau, preferabil, un semnal custom emis de Slot (vezi mai jos)
-		#if n.has_signal("right_click") and not n.is_connected("right_click", Callable(self, "_on_slot_right_click")):
-			#n.connect("right_click", Callable(self, "_on_slot_right_click").bind(n))
 			
 func _on_slot_gui_input(event: InputEvent, slot: Slot) -> void:
 	if event is InputEventMouseButton \
@@ -268,17 +343,30 @@ func _wire_market_grid() -> void:
 	_wire_one_grid(market_grid_all)
 	_wire_one_grid(market_grid_product)
 
+
+func _wire_one_grid(g: Node) -> void:
+	if not is_instance_valid(g): return
+	for c in g.get_children():
+		_try_bind_market_slot(c)
+	if not g.is_connected("child_entered_tree", Callable(self, "_on_market_child_entered")):
+		g.child_entered_tree.connect(Callable(self, "_on_market_child_entered"))
+		
 func _on_market_child_entered(n: Node) -> void:
 	_try_bind_market_slot(n)
 
 
 
-func _on_www_submitted(text: String) -> void:
-	_navigate_to(text, true)
+func open_provider_page(p_name: String):
+	print("DockTab: Deschid pagina pentru ", p_name)
+	_navigate_to("www.provider/" + p_name, true)
 
 func _on_close_pressed():
 	visible = false
 	Taskbar.remove_tab(self)
+
+func _on_shrink_pressed():
+	size = min_size_px
+	_clamp_inside_viewport()
 	#if type_tab=="fight":
 		#inv_player._set_active(false)
 
@@ -317,6 +405,7 @@ func _on_total_money_update(delta: int) -> void:
 	# Actualizează UI
 	if is_instance_valid(total_money_text):
 		total_money_text.text = "APPLE: " + str(total_money_site)
+		slot_container.cantitate = total_money_site
 		
 func _viewport_bounds_rect() -> Rect2:
 	# bounds = ecran (TextureRect2) minus padding și minus taskbar-ul de jos
@@ -337,7 +426,8 @@ func _viewport_bounds_rect() -> Rect2:
 			var cut_bottom = clamp((r.position.y + r.size.y) - tb.position.y, 0.0, r.size.y)
 			r.size.y -= cut_bottom  # „ridică” podeaua bounds-ului până la taskbar
 	# după ce am scăzut taskbar-ul, mai aplicăm pad_bottom dacă vrei extra spațiu
-	r.size.y -= pad_bottom
+	r.size.y -= pad_bottom-150
+	#r.size.y -= pad_bottom
 	return r
 
 func _on_viewport_resized() -> void:
@@ -388,6 +478,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			move_to_front()  # Godot 4 replacement for raise()
+
 			var local := get_local_mouse_position()  # for Control in Godot 4
 			var edge := _edge_hit(local)
 			if edge != Vector2.ZERO:
@@ -515,27 +606,34 @@ func _on_scan_slot_transmit(data):
 		slot.set_property(data)
 		
 func _on_market_slot_transmit(data: Dictionary) -> void:
-	if type_tab != "browser":
-		return
-	if not is_instance_valid(content):
-		push_warning("Browser tab: 'content' e null. Verifică calea: VBoxContainer/Content")
+		
+
+	var target_content
+	# Fallback pe variabila locală dacă căutarea în grup a eșuat
+	if not target_content:
+		target_content = content
+
+	if not is_instance_valid(target_content):
+		push_warning("Browser: Nu am găsit grila de Storage! Verifică dacă Tabul Storage este deschis și în grupul 'storage_tab'.")
 		return
 
 	var slot = slot_tab.instantiate()
-
 	slot.custom_minimum_size = Vector2(64, 64)
 	slot.size = slot.custom_minimum_size
 	slot.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	slot.size_flags_vertical   = Control.SIZE_SHRINK_CENTER
 	slot.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	slot.scop = "tab"
-	content.add_child(slot)
-	var tex2 := slot.get_node_or_null("TextureHolder/TextureRect2")
+	
+	target_content.add_child(slot)
+	
+	var tex2 = slot.get_node_or_null("TextureHolder/TextureRect2")
 	if tex2 is TextureRect:
 		(tex2 as TextureRect).texture = null
 
 	slot.slot_type = "tray"
 	slot.set_property(data)
+	print("Browser: Item transferat cu succes în Storage!")
 
 
 
@@ -587,22 +685,41 @@ func _navigate_to(input_text: String, push_history := true) -> void:
 	_apply_route(url_l)
 
 func _apply_route(url: String) -> void:
-	# ascunde tot
+	# ascunde tot ce există valid
 	for k in PAGES.keys():
-		PAGES[k].visible = false
+		if is_instance_valid(PAGES[k]):
+			PAGES[k].visible = false
+
+	# Resetăm TopBack la fiecare schimbare de pagină
+	if is_instance_valid(top_back):
+		top_back.visible = false
+		top_back.texture = null
+		top_back.modulate = Color.WHITE
 
 	for route in ROUTES:
 		var re := RegEx.new()
 		re.compile(route["pattern"])
 		var m := re.search(url)
 		if m:
-			# arată paginile cerute
+			# arată paginile cerute (dacă există)
 			for key in route["show"]:
 				if PAGES.has(key) and is_instance_valid(PAGES[key]):
 					PAGES[key].visible = true
 			# titlu
 			if route.has("title"):
 				title.text = String(route["title"])
+			# Verificăm dacă există cheia ȘI dacă are text în ea
+			if route.has("fundal") and route["fundal"] != "":
+				var path = route["fundal"]
+				if ResourceLoader.exists(path):
+					fundal.texture = load(path)
+					fundal.visible = true
+				else:
+					fundal.texture = null # Sau fundal.visible = false
+			else:
+				# AICI ESTE CHEIA: Dacă nu există "fundal" în JSON, îl ștergem pe cel vechi!
+				fundal.texture = null 
+	# fundal.visible = false # Opțional, poți să-l și ascunzi
 			# handler opțional (ex: pentru parametri)
 			if route.has("handler") and has_method(String(route["handler"])):
 				# treci url + capturi RegEx
@@ -693,15 +810,31 @@ func _normalize_product_token(s: String) -> String:
 	
 	
 func _route_market_default(_url: String, _groups: Array) -> void:
-	if is_instance_valid(market_grid_all):     market_grid_all.visible = true
-	if is_instance_valid(market_grid_product): market_grid_product.visible = false
+	if is_instance_valid(market): market.visible = true
+
+func _route_black(_url: String, _groups: Array) -> void:
+	# Verificăm ora din joc (trebuie să fie ora 00 pentru acces la Black Market)
+	var current_hour = -1
+	if is_instance_valid(ora):
+		current_hour = int(ora.text)
 	
-func _wire_one_grid(g: Node) -> void:
-	if not is_instance_valid(g): return
-	for c in g.get_children():
-		_try_bind_market_slot(c)
-	if not g.is_connected("child_entered_tree", Callable(self, "_on_market_child_entered")):
-		g.child_entered_tree.connect(Callable(self, "_on_market_child_entered"))
+	if current_hour == 0:
+		# ACCES PERMIS (00:00 - 00:59)
+		if PAGES.has("blackmarket") and is_instance_valid(PAGES["blackmarket"]):
+			PAGES["blackmarket"].visible = true
+			# Dacă scriptul de pe blackmarket are refresh, îl chemăm
+			if PAGES["blackmarket"].has_method("refresh_market"):
+				PAGES["blackmarket"].refresh_market()
+	else:
+		# ACCES INTERZIS
+		if PAGES.has("blackmarket") and is_instance_valid(PAGES["blackmarket"]):
+			PAGES["blackmarket"].visible = false
+		
+		if PAGES.has("site_not_found") and is_instance_valid(PAGES["site_not_found"]):
+			PAGES["site_not_found"].visible = true
+			
+		title.text = "Site not found"
+		if is_instance_valid(fundal): fundal.texture = null
 
 func _get_active_inv():
 	var list := get_tree().get_nodes_in_group("inv_player_active")
@@ -709,3 +842,36 @@ func _get_active_inv():
 		return null
 	# ia-l pe ultimul (cel mai recent activat)
 	return list[list.size() - 1]
+
+func _route_provider(_url: String, groups: Array) -> void:
+	if groups.is_empty(): return
+	var p_name = groups[0]
+	# Căutăm dacă avem un nod numit ProviderPage în ierarhie
+	var p_page = get_node_or_null("VBoxContainer/ProviderPage")
+	if p_page and p_page.has_method("load_provider"):
+		p_page.load_provider(p_name)
+
+func _route_cam(_url: String, _groups: Array) -> void:
+	if is_instance_valid(cam):
+		cam.visible = true
+		if cam.has_method("refresh_cameras_from_browser"):
+			cam.refresh_cameras_from_browser()
+		elif cam.has_method("refresh_cameras"):
+			cam.refresh_cameras()
+			
+	# Setăm TopBack pe negru cu dimensiunile cerute
+	if is_instance_valid(top_back):
+		var black_tex = PlaceholderTexture2D.new()
+		black_tex.size = Vector2(1196, 144)
+		top_back.texture = black_tex
+		top_back.modulate = Color.BLACK
+		top_back.visible = true
+		
+func _route_forex(_url: String, _groups: Array) -> void:
+	# Setăm TopBack pe negru cu dimensiunile cerute
+	if is_instance_valid(top_back):
+		var black_tex = PlaceholderTexture2D.new()
+		black_tex.size = Vector2(1196, 144)
+		top_back.texture = black_tex
+		top_back.modulate = Color.BLACK
+		top_back.visible = true

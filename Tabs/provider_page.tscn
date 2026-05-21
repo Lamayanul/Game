@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://c6y7s2f5n4m3j"]
+
+[ext_resource type="Script" uid="uid://dasymjemhj0ic" path="res://Tabs/browser.gd" id="1_p1"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="2_p2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3"]
+bg_color = Color(0.1, 0.1, 0.1, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ProviderPage" type="Control" unique_id=1248950960 groups=["browser"]]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 3
+anchor_top = 0.287
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.055999756
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_p1")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=269137201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="VBoxContent" type="VBoxContainer" parent="ScrollContainer" unique_id=1995913303]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="Banner" type="TextureRect" parent="ScrollContainer/VBoxContent" unique_id=999999]
+custom_minimum_size = Vector2(984, 180)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Header" type="HBoxContainer" parent="ScrollContainer/VBoxContent" unique_id=1832913900]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Name" type="Label" parent="ScrollContainer/VBoxContent/Header" unique_id=224138005]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_p2")
+theme_override_font_sizes/font_size = 32
+text = "Provider Name"
+
+[node name="Funds" type="Label" parent="ScrollContainer/VBoxContent/Header" unique_id=709491456]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_fonts/font = ExtResource("2_p2")
+theme_override_font_sizes/font_size = 24
+text = "Bani disponibili: 0 🍎"
+
+[node name="History" type="PanelContainer" parent="ScrollContainer/VBoxContent" unique_id=1325728569]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p3")
+
+[node name="Text" type="RichTextLabel" parent="ScrollContainer/VBoxContent/History" unique_id=1240855828]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_p2")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "Istoric tranzacții..."
+fit_content = true
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer/VBoxContent" unique_id=1566708128]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2

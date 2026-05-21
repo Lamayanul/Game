@@ -7,6 +7,8 @@ extends Sprite2D
 @export var type: String
 @export var type_dict = []
 @onready var shadow = Sprite2D.new()
+@export var ditto = false
+@export var durability = 0.0
 var raritate: String 
 var float_amplitude: float = 2.0  
 var float_speed: float = 2.0 
@@ -39,22 +41,39 @@ func _on_body_entered(body):
 			queue_free()
 			return
 	
-	if body.is_in_group("player"):
+	if body.is_in_group("player") or body.is_in_group("enemy"):
 		if type=="slot":
-			var inventory = get_parent().find_child("Inv")
+			# Try to find inventory. For player it might be via get_parent().find_child
+			# For enemy, the structure is usually body -> CanvasLayer3 -> Inv
+			var inventory = null
 			
-			print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
-			print("Inventar plin:", inventory.plin)
+			if body.is_in_group("player"):
+				inventory = get_parent().find_child("Inv")
+			elif body.is_in_group("enemy"):
+				# Assuming Enemy structure: Enemy -> CanvasLayer3 -> Inv
+				# Or check if body has method to get inventory
+				if body.has_node("CanvasLayer3/Inv"):
+					inventory = body.get_node("CanvasLayer3/Inv")
+			
+			if inventory:
+				if body.is_in_group("player"):
+					print("Jucătorul a atins obiectul. ID:", ID, " Cantitate:", item_cantitate)
+				else:
+					print("Inamicul a atins obiectul. ID:", ID)
+				
+				# 1. Încearcă să adauge itemul în inventar
+				var added = inventory.add_item(ID, self.get_cantiti(), self.get_curse(), self.get_effects(), self.get_ditto())
 
-			# 1. Încearcă să adauge itemul în inventar
-			var added = inventory.add_item(ID, self.get_cantiti(), self.get_curse(), self.get_effects())
-
-			# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
-			if added:
-				queue_free()
-				print("Obiect colectat și șters.")
+				# 2. Dacă s-a adăugat cu succes, elimină obiectul din scenă
+				if added:
+					queue_free()
+					if body.is_in_group("player"):
+						print("Obiect colectat și șters.")
+				else:
+					if body.is_in_group("player"):
+						print("Inventarul este plin! Nu pot adăuga obiectul.")
 			else:
-				print("Inventarul este plin! Nu pot adăuga obiectul.")
+				print("Inventar nu a fost gasit pentru: ", body.name)
 				
 				
 		if type=="slot_cup":
@@ -77,7 +96,7 @@ func _on_body_entered(body):
 func custom_scale():
 	if ID=="15" || ID=="23":
 		scale=Vector2(0.65,0.65)
-	if  ID=="26" || ID=="27" || ID=="28" || ID=="29" || ID=="30" || ID=="31" || ID=="32":
+	if  ID=="26" || ID=="27" || ID=="28" || ID=="29" || ID=="30" || ID=="31" || ID=="32" || ID=="33":
 		scale=Vector2(0.1,0.1)
 
 		
@@ -110,15 +129,26 @@ func get_curse():
 func get_effects():
 	return effects
 	
+func get_durability():
+	return durability
 	
 func set_curse(curse_var: Variant):
 	curse = curse_var
 
+func set_durability(dur:float):
+	durability = dur
+	
 func set_effects(effects_var: Variant):
 	effects = effects_var
 
 func set_type(type_var: Variant):
 	type_dict = type_var
+	
+func set_ditto(ditto_var:bool):
+	ditto=ditto_var
+	
+func get_ditto():
+	return ditto
 #func set_lumina(new_ID):
 	#if new_ID=="23":
 		#$PointLight2D.visible=true

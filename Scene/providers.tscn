@@ -1,32 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cywf1hge6uljc"]
+[gd_scene format=3 uid="uid://cywf1hge6uljc"]
 
 [ext_resource type="Texture2D" uid="uid://y3ta0r5gifpy" path="res://Tabs/owner_3.png" id="1_7qoeh"]
 [ext_resource type="Script" uid="uid://d14x4t168863s" path="res://Tabs/Lions/providers.gd" id="1_ajuio"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="3_iq5x7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajuio"]
-bg_color = Color(0.496094, 0.347318, 0.294854, 1)
+bg_color = Color(0.7058824, 0.5647059, 0.50980395, 1)
 border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ll22c"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qoeh"]
-bg_color = Color(0.172549, 0.172549, 0.172549, 0.607843)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0g4j"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
@@ -44,10 +24,32 @@ corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="Theme" id="Theme_i0g4j"]
-default_font_size = 25
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0g4j"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
-[node name="Control" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qoeh"]
+bg_color = Color(0.172549, 0.172549, 0.172549, 0.607843)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ll22c"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="Theme" id="Theme_i0g4j"]
+default_font = ExtResource("3_iq5x7")
+default_font_size = 23
+
+[node name="Control" type="Control" unique_id=2090028522]
 layout_mode = 3
 anchor_right = 0.445
 anchor_bottom = 0.158
@@ -57,7 +59,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ajuio")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1957362600]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -67,7 +69,7 @@ offset_top = -81.0
 offset_right = 3.05176e-05
 theme_override_styles/panel = SubResource("StyleBoxFlat_ajuio")
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=1641251634]
 custom_minimum_size = Vector2(80, 60)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -75,14 +77,14 @@ texture = ExtResource("1_7qoeh")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Button" type="Button" parent="PanelContainer"]
+[node name="Button" type="Button" parent="PanelContainer" unique_id=542128064]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_ll22c")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7qoeh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_i0g4j")
 theme_override_styles/normal = SubResource("StyleBoxFlat_iq5x7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i0g4j")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7qoeh")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ll22c")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Button"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Button" unique_id=567459477]
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 1
 anchors_preset = -1

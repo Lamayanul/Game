@@ -5,6 +5,7 @@ var enemy_inattack_range=false
 var enemy_attack_cooldown=true
 var enemy_current_attack=false
 var player_alive=true
+var este_transparent= false
 var player_current_attack=false
 #sa@onready var healthbar = get_node("/root/world/CanvasLayer/CanvasLayer/healthbar")
 @onready var healthbar_player =  get_node("/root/world/CanvasLayer/healthbar_player")
@@ -30,14 +31,15 @@ var current_state = "idle"
 @onready var animated_sprite_2d_2: AnimatedSprite2D = $AnimatedSprite2D2
 @onready var animated_sprite_2d_3: AnimatedSprite2D = $AnimatedSprite2D3
 @onready var animated_sprite_2d_4: AnimatedSprite2D = $AnimatedSprite2D4
-
+@export var war_type="ally"
 #-------------------------------------Info-hand-sprite------------------------------------------
 
-
+var is_high = false
 #@onready var area_2d = $"../CanvasLayer/PanelContainer/Sprite2D/item_mana/sprite/Area2D"
 #@onready var color_rect = get_node("/root/world/CanvasLayer/ColorRect")
 var info:String=""
-@onready var player_icon = $"../CanvasLayer/healthbar_player/player_icon"
+@onready var player_icon = get_node("/root/world/CanvasLayer/healthbar_player/player_icon")
+
 var attack_weapon=0;
 #----------------------------------Enemy-action/stats-------------------------------------------------
 @onready var attack_timer = $attack_timer
@@ -66,18 +68,14 @@ var selected_slot: Slot = null
 #----------------------------------TileMap------------------------------------------------------------
 var tile_map
 var _tileMap
-@onready var inv: PanelContainer = $"../CanvasLayer/Inv"
-@onready var inv2: PanelContainer = $"../CanvasLayer/Inv2"
+@onready var inv: PanelContainer = get_node("/root/world/CanvasLayer/Inv")
+@onready var inv2: PanelContainer = get_node("/root/world/CanvasLayer/Inv2")
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $arma/AudioStreamPlayer2D
 @onready var farming_on=false
 @onready var timer: Timer = $Timer
 var can_move = true
 var current_clothes: String = ""
 @onready var se: StatusEffects = $StatusEffects
-
-
-
-
 
 #-----------------------------------_ready()--------------------------------------------------------
 func _ready():
@@ -86,9 +84,12 @@ func _ready():
 	if se and healthbar_player:
 		se.hp_changed.connect(_on_hp_changed)
 	call_deferred("_init_enemy_list")
-	tile_map = get_tree().current_scene.get_node("TileMap")
+	#tile_map = get_tree().current_scene.get_node("TileMap")
 	_tileMap = get_node("/root/world/TileMap")
+	#ota_layer = get_node_or_null("/root/world/ota")
 	colisiune = get_node("colisiune")
+	
+
 	add_to_group("player")
 	#color_rect.color = Color(0, 0, 0, 0.5)  # Negru cu 50% transparență
 	#color_rect.visible=false
@@ -100,11 +101,18 @@ func _ready():
 	scut.add_to_group("scut")
 	scut.monitoring = true
 	animated_sprite_2d_2.z_index=1
+
+	if inv:
+		if not inv.is_connected("attacking", Callable(self, "_on_inv_attacking")):
+			inv.attacking.connect(_on_inv_attacking)
+			print("Semnalul attacking a fost conectat cu succes!")
+	else:
+		print("EROARE: Player-ul nu găsește nodul Inv!")
 	
 
 func _on_hp_changed(h: int, eff_max: int, ui_max: int) -> void:
 	healthbar_player.max_value = ui_max   # <— rămâne 100
-	healthbar_player.value     = h        # <— arată cât HP ai (plafonat deja la eff_max)
+	healthbar_player.value     = h        # <— arată cât HP ay (plafonat deja la eff_max)
 	# (opțional) arată vizual cap-ul: dacă ai un al doilea “cap bar”, setează:
 	# cap_bar.max_value = ui_max
 	# cap_bar.value     = eff_max   # pentru a vedea “porțiunea blocată”
@@ -129,6 +137,7 @@ func _init_enemy_list():
 		
 #------------------------------_physics_process()------------------------------------------------------
 func _physics_process(_delta):
+	if health==null: health=100
 	
 	velocity = Vector2.ZERO
 	if not can_move:
@@ -148,6 +157,8 @@ func _physics_process(_delta):
 
 	  # important: resetăm în fiecare frame
 
+
+
 	if not is_jumping:
 		handle_movement()  # aici se setează velocity.x / velocity.y
 
@@ -165,12 +176,16 @@ func _physics_process(_delta):
 	if scut.visible:
 		update_shield_position()
 
-	if inv.has_shield and scut_used > 0:
-		scut.visible = true
-		shield_touch.disabled = false
-		position_shield_opposite()
+	#if inv.has_shield and scut_used > 0:
+		#scut.visible = true
+		#shield_touch.disabled = false
+		#position_shield_opposite()
 
-	
+	# După move_and_slide()
+
+
+
+
 
 #----------------------------------player-movement------------------------------------------------------
 func handle_movement():
@@ -225,7 +240,6 @@ func handle_movement():
 		animation_player_3.play("idle-" + _currentIdleAnimation + "-cap")
 		animation_player_4.play("idle-" + _currentIdleAnimation + "-corp"+clothes(current_clothes))
 		current_state = "idle"
-
 	move_and_slide()
 
 
@@ -479,23 +493,23 @@ func _on_arma_area_entered(area):
 func deal_with_damage():
 	if enemy_inattack_range and enemy_current_attack == true:
 		var base_damage = 10
-		var final_damage = apply_damage_with_shield(base_damage)  # Daune ajustate după calculul scutului
+		var final_damage = apply_damage_with_shield(base_damage)
 
-		# Aplică daunele finale la viața jucătorului
 		health -= final_damage
-		healthbar_player.value = health
+		if healthbar_player:
+			healthbar_player.value = health
 
-		apply_knockback()  # Efect opțional de recul
-		print("see_all node: 0", see_all)
+		apply_knockback()
 		if health <= 0:
-			print("see_all node: 1", see_all)
-			see_all.visible=true
-			self.queue_free()  # Jucătorul moare
-			player_icon.texture = null
-			$"../TileMap/Grid_gard".visible = false
-			$"../TileMap/Grid_land".visible = false
-			$"../TileMap/Grid_ogor".visible = false
-			camera_enemy.make_current()
+			if see_all: see_all.visible = true
+			self.queue_free()
+			if player_icon: player_icon.texture = null
+			var tm = get_node_or_null("../TileMap")
+			if tm:
+				if tm.get_node_or_null("Grid_gard"): tm.get_node("Grid_gard").visible = false
+				if tm.get_node_or_null("Grid_land"): tm.get_node("Grid_land").visible = false
+				if tm.get_node_or_null("Grid_ogor"): tm.get_node("Grid_ogor").visible = false
+			if camera_enemy: camera_enemy.make_current()
 			
 		enemy_inattack_range = false
 		enemy_current_attack = false
@@ -503,21 +517,22 @@ func deal_with_damage():
 func deal_with_damage1():
 	if enemy_inattack_range and enemy_current_attack == true:
 		var base_damage = 10
-		 
-
-		# Aplică daunele finale la viața jucătorului
+		
 		health -= base_damage
-		healthbar_player.value = health
-		print("player health: " ,health)
-		apply_knockback()  # Efect opțional de recul
+		if healthbar_player:
+			healthbar_player.value = health
+		
+		apply_knockback()
 		if health <= 0:
-			self.queue_free()  # Jucătorul moare
-			player_icon.texture = null
-			$"../TileMap/Grid_gard".visible = false
-			$"../TileMap/Grid_land".visible = false
-			$"../TileMap/Grid_ogor".visible = false
-			camera_enemy.make_current()
-			see_all.visible=true
+			self.queue_free()
+			if player_icon: player_icon.texture = null
+			var tm = get_node_or_null("../TileMap")
+			if tm:
+				if tm.get_node_or_null("Grid_gard"): tm.get_node("Grid_gard").visible = false
+				if tm.get_node_or_null("Grid_land"): tm.get_node("Grid_land").visible = false
+				if tm.get_node_or_null("Grid_ogor"): tm.get_node("Grid_ogor").visible = false
+			if camera_enemy: camera_enemy.make_current()
+			if see_all: see_all.visible = true
 		enemy_inattack_range = false
 		enemy_current_attack = false
 
@@ -654,6 +669,7 @@ func _on_arma_body_entered_gard(body):
 			var drop_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))  # Offset aleatoriu
 			var drop_position = global_position + drop_offset
 			inv.call_deferred("drop_item_everywhere","6", 1, drop_position)
+
 	
 		# Condiții pentru gardul de pe stratul 4
 		if tile_data_cliff_gard and tile_data_cliff_gard.get_custom_data("cliff-gard") and inv.selected_slot and inv.selected_slot.get_id() == "2" and not arma_colisiune.disabled:

@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://coc24jtvmdh4h"]
+
+[ext_resource type="Shader" uid="uid://dr4joruppy8lb" path="res://NiceToHave/light_beam.gdshader" id="1_beam"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_8w2aa"]
+[ext_resource type="Script" uid="uid://4ny5gq4lk347" path="res://NiceToHave/light_controller.gd" id="3_controller"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_beam"]
+shader = ExtResource("1_beam")
+shader_parameter/beam_color = Color(1, 0.95, 0.8, 0.5)
+shader_parameter/top_width = 0.1
+shader_parameter/bottom_width = 0.6
+shader_parameter/fade_strength = 1.0
+shader_parameter/side_softness = 0.15
+
+[sub_resource type="Gradient" id="Gradient_441cj"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.7)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
+gradient = SubResource("Gradient_441cj")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="LightScene" type="Node2D" unique_id=2001209584]
+script = ExtResource("3_controller")
+
+[node name="VisualBeam" type="ColorRect" parent="." unique_id=60336127]
+material = SubResource("ShaderMaterial_beam")
+offset_left = -47.0
+offset_right = 48.0
+offset_bottom = 73.0
+color = Color(1, 1, 1, 0)
+
+[node name="EnvironmentLight" type="PointLight2D" parent="." unique_id=400328575]
+position = Vector2(6.67572e-06, 39.499992)
+scale = Vector2(2.4687502, 1.234375)
+color = Color(1, 0.9490196, 0.8, 0.32156864)
+energy = 1.2
+texture = SubResource("GradientTexture2D_light")
+
+[node name="Fireflies" type="CPUParticles2D" parent="." unique_id=2042613648]
+material = SubResource("CanvasItemMaterial_unshaded")
+position = Vector2(0, 38)
+amount = 20
+lifetime = 5.0
+preprocess = 2.0
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 25.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+damping_min = 2.0
+damping_max = 5.0
+scale_amount_min = 0.2
+scale_amount_max = 0.8
+color = Color(1, 1, 1, 0.8)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1341321803]
+visible = false
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=930968062]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1348.0
+offset_top = 404.0
+offset_right = -1148.0
+offset_bottom = 554.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="Slots" type="HBoxContainer" parent="CanvasLayer/Control" unique_id=1951332681]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -69.0
+offset_top = 20.0
+offset_right = 69.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="SlotContainer" parent="CanvasLayer/Control/Slots" unique_id=1303828030 instance=ExtResource("2_8w2aa")]
+layout_mode = 2
+
+[node name="SlotContainer2" parent="CanvasLayer/Control/Slots" unique_id=375168503 instance=ExtResource("2_8w2aa")]
+layout_mode = 2
+
+[node name="PowerButton" type="Button" parent="CanvasLayer/Control" unique_id=1338107818]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "LUMINA: ON"
+
+[editable path="CanvasLayer/Control/Slots/SlotContainer"]
+[editable path="CanvasLayer/Control/Slots/SlotContainer2"]

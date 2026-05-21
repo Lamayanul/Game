@@ -1,0 +1,142 @@
+[gd_scene load_steps=5 format=3 uid="uid://e12hmylrdino"]
+
+[ext_resource type="Script" uid="uid://n6j53lbnsh0c" path="res://Tabs/trend.gd" id="1_xyjno"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_am64c"]
+[ext_resource type="Texture2D" uid="uid://bfhcagnwy7ohd" path="res://Tabs/up-arrow.png" id="3_2yypg"]
+[ext_resource type="Texture2D" uid="uid://dnh6kxuooltld" path="res://Tabs/down-arrow.png" id="4_0k0h8"]
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 3
+script = ExtResource("1_xyjno")
+
+[node name="SlotContainer" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer2" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer2/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer3" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer3/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer4" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer4/TextureHolder" index="3"]
+layout_mode = 0
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer5" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer5/TextureHolder" index="3"]
+layout_mode = 0
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer6" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer6/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer7" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer7/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer8" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer8/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SlotContainer9" parent="GridContainer" instance=ExtResource("2_am64c")]
+layout_mode = 2
+arrow_up_tex = ExtResource("3_2yypg")
+arrow_down_tex = ExtResource("4_0k0h8")
+
+[node name="Trend" type="TextureRect" parent="GridContainer/SlotContainer9/TextureHolder" index="3"]
+layout_mode = 2
+offset_top = 41.0
+offset_right = 23.0
+offset_bottom = 64.0
+expand_mode = 1
+stretch_mode = 4
+
+[editable path="GridContainer/SlotContainer"]
+[editable path="GridContainer/SlotContainer2"]
+[editable path="GridContainer/SlotContainer3"]
+[editable path="GridContainer/SlotContainer4"]
+[editable path="GridContainer/SlotContainer5"]
+[editable path="GridContainer/SlotContainer6"]
+[editable path="GridContainer/SlotContainer7"]
+[editable path="GridContainer/SlotContainer8"]
+[editable path="GridContainer/SlotContainer9"]

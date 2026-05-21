@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ds1dxalyiv0p7"]
+
+[ext_resource type="Script" uid="uid://b7k3bb0umq7xc" path="res://Scripturi/breloc_line.gd" id="1_qj3vc"]
+[ext_resource type="Texture2D" uid="uid://chtssd0ku37ty" path="res://World of Solaria Marketplace Tileset Update 05/PNG/Shadows/Market Objects.png" id="2_trgo1"]
+
+[node name="Breloc" type="Node2D"]
+
+[node name="Line2D" type="Line2D" parent="."]
+width = 15.0
+script = ExtResource("1_qj3vc")
+length = 10
+
+[node name="charm_sprite" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("2_trgo1")
+region_enabled = true
+region_rect = Rect2(48, 608, 32, 32)

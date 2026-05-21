@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dtymdd8kjpd2b"]
+
+[ext_resource type="TileSet" uid="uid://b5p22y37tdyep" path="res://Sprout Lands - Sprites - Basic pack/Aqua/WaterTileSet.tres" id="1_1qui1"]
+[ext_resource type="Material" uid="uid://cgjocunkt7lim" path="res://Sprout Lands - Sprites - Basic pack/Aqua/WaterMaterial.tres" id="1_cf1t6"]
+[ext_resource type="Texture2D" uid="uid://hlkhwrwbx0sb" path="res://Sprout Lands - Sprites - Basic pack/Aqua/Grass texture.png" id="1_k7i4q"]
+[ext_resource type="Material" uid="uid://tj1entgdpoef" path="res://Sprout Lands - Sprites - Basic pack/Aqua/WaterTrails/WaterTrailSpriteMaterial.tres" id="5_vykh5"]
+[ext_resource type="Texture2D" uid="uid://bkmtl116unb3p" path="res://Sprout Lands - Sprites - Basic pack/Aqua/WaterTrails/WaterTrailGradient.png" id="5_wj72j"]
+[ext_resource type="Texture2D" uid="uid://2lul8k14hwv5" path="res://Sprout Lands - Sprites - Basic pack/Aqua/WaterTrails/CircleBlur64x64.png" id="6_vqg40"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ustwy"]
+viewport_path = NodePath("WaterTrail/SubViewport")
+
+[sub_resource type="Curve" id="Curve_f0mbj"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.515882), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_5mwvf"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[node name="Node2D" type="Node2D" unique_id=747276711]
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=496052534]
+position = Vector2(234, 221)
+zoom = Vector2(7, 7)
+
+[node name="GrassTexture" type="Sprite2D" parent="." unique_id=133365374]
+position = Vector2(387.5, 242)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_k7i4q")
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=1524590404]
+material = ExtResource("1_cf1t6")
+position = Vector2(174, 202)
+tile_map_data = PackedByteArray(0, 0, 4, 0, 12, 0, 0, 0, 7, 0, 21, 0, 0, 0)
+tile_set = ExtResource("1_1qui1")
+
+[node name="WaterTrail" type="Node2D" parent="." unique_id=480938126]
+
+[node name="Sprite2D" type="Sprite2D" parent="WaterTrail" unique_id=1491024148]
+material = ExtResource("5_vykh5")
+texture = SubResource("ViewportTexture_ustwy")
+
+[node name="SubViewport" type="SubViewport" parent="WaterTrail" unique_id=171596451]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="Line2D" type="Line2D" parent="WaterTrail/SubViewport" unique_id=11175928]
+width = 28.0
+width_curve = SubResource("Curve_f0mbj")
+gradient = SubResource("Gradient_5mwvf")
+texture = ExtResource("5_wj72j")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Circle" type="Sprite2D" parent="WaterTrail/SubViewport" unique_id=67607402]
+position = Vector2(128, 128)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_vqg40")

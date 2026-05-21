@@ -1,0 +1,231 @@
+[gd_scene format=3 uid="uid://div5hesv71j4c"]
+
+[ext_resource type="Script" uid="uid://b3gkmooge5ciq" path="res://Tabs/Quests/BaseQuestCard.gd" id="1_qdn42"]
+[ext_resource type="Texture2D" uid="uid://1ijirfs21d03" path="res://Tabs/Quests/priest_banner.png" id="3_p2g6j"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="3_ua6f1"]
+[ext_resource type="Texture2D" uid="uid://dj5kioc6cukua" path="res://Tabs/Quests/priest_icon.png" id="4_2cmvp"]
+[ext_resource type="PackedScene" uid="uid://c5rg51y06tp05" path="res://Tabs/Quests/slot_container_quest.tscn" id="4_ua6f1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8xi3"]
+bg_color = Color(0, 0, 0, 0.14509805)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cmvp"]
+bg_color = Color(0, 0, 0, 0.27450982)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ua6f1"]
+bg_color = Color(0, 0, 0, 0.2784314)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="PanelContainer" type="PanelContainer" unique_id=1436663348 node_paths=PackedStringArray("title_label", "giver_label", "description_label", "icon_texture", "time_bar", "submit_btn", "stars_container", "panel_stanga", "panel_dreapta", "input_slot_container", "reward_slot_container")]
+custom_minimum_size = Vector2(530, 230)
+anchors_preset = -1
+anchor_right = 0.518
+anchor_bottom = 0.45100003
+offset_top = 1.0
+offset_right = -0.43200684
+offset_bottom = 0.08798218
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_x8xi3")
+script = ExtResource("1_qdn42")
+title_label = NodePath("TextureRect/Title")
+giver_label = NodePath("TextureRect/Giver")
+description_label = NodePath("TextureRect/Description")
+icon_texture = NodePath("TextureRect")
+time_bar = NodePath("TextureRect/ProgressBar")
+submit_btn = NodePath("TextureRect/Submit")
+stars_container = NodePath("TextureRect/StarContainer")
+panel_stanga = NodePath("TextureRect/Panel_stanga")
+panel_dreapta = NodePath("TextureRect/Panel_dreapta")
+input_slot_container = NodePath("TextureRect/Input")
+reward_slot_container = NodePath("TextureRect/Reward")
+slot_scene = ExtResource("4_ua6f1")
+offer_lifetime = 60.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1923039797]
+layout_mode = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+expand_mode = 1
+stretch_mode = 6
+
+[node name="StarContainer" type="HBoxContainer" parent="TextureRect" unique_id=1378352249]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.411
+offset_left = 7.0
+offset_top = 77.0
+offset_right = -52.83
+offset_bottom = 109.0
+
+[node name="Title" type="RichTextLabel" parent="TextureRect" unique_id=1953729426]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+anchor_left = 0.497
+anchor_right = 0.981
+anchor_bottom = 0.168
+offset_left = -0.410004
+offset_right = 0.0700073
+offset_bottom = 0.103996
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_ua6f1")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+
+[node name="Giver" type="RichTextLabel" parent="TextureRect" unique_id=887610738]
+layout_mode = 0
+anchor_left = 0.017
+anchor_right = 0.981
+offset_left = -0.0100002
+offset_right = 0.0699463
+offset_bottom = 51.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_ua6f1")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Description" type="RichTextLabel" parent="TextureRect" unique_id=2091805950]
+layout_mode = 0
+anchor_left = 0.602
+anchor_right = 1.0
+offset_left = -0.0600281
+offset_top = 77.0
+offset_right = -3.0
+offset_bottom = 148.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_ua6f1")
+bbcode_enabled = true
+
+[node name="ProgressBar" type="ProgressBar" parent="TextureRect" unique_id=1579766430]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 50.0
+offset_right = -3.0
+offset_bottom = 77.0
+
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect" unique_id=1765317579]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.1040001
+offset_bottom = 0.09597778
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2cmvp")
+
+[node name="Input" parent="TextureRect" unique_id=1059985989 instance=ExtResource("4_ua6f1")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.313208
+anchor_top = 0.548822
+anchor_right = 0.500038
+anchor_bottom = 0.872255
+offset_right = -0.019928
+offset_bottom = -0.0598755
+metadata/_edit_use_anchors_ = true
+
+[node name="Reward" parent="TextureRect" unique_id=1831484364 instance=ExtResource("4_ua6f1")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492453
+anchor_top = 0.548822
+anchor_right = 0.679491
+anchor_bottom = 0.871566
+offset_right = -0.130005
+offset_bottom = 0.145
+slot_type = "mission"
+metadata/_edit_use_anchors_ = true
+
+[node name="Submit" type="Button" parent="TextureRect" unique_id=1898079850]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024809161
+anchor_top = 0.8032188
+anchor_right = 0.15408398
+anchor_bottom = 0.8032188
+offset_top = 0.07899475
+offset_right = 0.2599945
+offset_bottom = 19.373001
+theme_override_fonts/font = ExtResource("3_ua6f1")
+theme_override_font_sizes/font_size = 20
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect" unique_id=1168953776]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("3_p2g6j")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Time" type="Label" parent="TextureRect" unique_id=2090322963]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33607635
+anchor_top = 0.33060715
+anchor_right = 0.60707635
+anchor_bottom = 0.5986072
+offset_left = -0.104003906
+offset_top = -0.055999756
+offset_right = -0.10800171
+offset_bottom = -0.088012695
+theme_override_fonts/font = ExtResource("3_ua6f1")
+text = "dsadadad"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="TextureRect" unique_id=891676873]
+position = Vector2(87, 116)
+texture = ExtResource("4_2cmvp")
+
+[node name="Panel_dreapta" type="PanelContainer" parent="TextureRect" unique_id=1176208646]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48698476
+anchor_top = -0.013000011
+anchor_right = 1.0
+anchor_bottom = 1.3750356
+offset_left = -0.18000793
+offset_top = 229.912
+offset_right = 3.0
+offset_bottom = -0.0079956055
+theme_override_styles/panel = SubResource("StyleBoxFlat_ua6f1")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel_stanga" type="PanelContainer" parent="TextureRect" unique_id=419719434]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.013000011
+anchor_right = 0.48091602
+anchor_bottom = 1.3750001
+offset_left = -3.0
+offset_top = 229.912
+offset_right = 3.0
+offset_bottom = -3.0517578e-05
+theme_override_styles/panel = SubResource("StyleBoxFlat_ua6f1")
+metadata/_edit_use_anchors_ = true
+
+[editable path="TextureRect/Input"]
+[editable path="TextureRect/Reward"]

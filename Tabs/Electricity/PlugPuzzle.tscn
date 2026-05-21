@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://txfcgxaq4741"]
+
+[ext_resource type="Script" uid="uid://b3mbh540hgwk7" path="res://Tabs/Electricity/PlugPuzzle.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://xk1uid0dj5ys" path="res://Tabs/Electricity/plug.png" id="2_jncdf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f5rmt"]
+size = Vector2(40.000023, 60.015045)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jncdf"]
+size = Vector2(40.000053, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1hfs"]
+size = Vector2(1080.0027, 65.000244)
+
+[node name="PlugPuzzle" type="Control" unique_id=306913642]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 400.0
+scale = Vector2(0.1, 0.1)
+script = ExtResource("1_script")
+max_cable_length = 500.0
+
+[node name="Background" type="ColorRect" parent="." unique_id=1368541389]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Socket" type="Control" parent="." unique_id=1506311598 groups=["electrical_sockets"]]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 164.0
+offset_bottom = 164.0
+mouse_filter = 2
+
+[node name="Base" type="ColorRect" parent="Socket" unique_id=1070380485]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.781
+offset_bottom = 0.015991211
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.901961, 0.901961, 0.901961, 1)
+
+[node name="Hole" type="ColorRect" parent="Socket" unique_id=337930335]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="Indicator" type="ColorRect" parent="Socket" unique_id=1390084597]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 4.0
+offset_right = 56.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
+
+[node name="Cable" type="Line2D" parent="." unique_id=149274936]
+y_sort_enabled = true
+rotation = 0.005423853
+width = 8.0
+default_color = Color(0.12549, 0.12549, 0.12549, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Plug" type="Control" parent="." unique_id=1966087495 groups=["plug"]]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 400.0
+offset_top = 190.0
+offset_right = 440.0
+offset_bottom = 250.0
+pivot_offset = Vector2(20, 30)
+
+[node name="Sprite2D" type="Sprite2D" parent="Plug" unique_id=1536821429]
+z_index = -1
+position = Vector2(20.000006, 30)
+scale = Vector2(0.7031251, 0.8789069)
+texture = ExtResource("2_jncdf")
+
+[node name="Body" type="ColorRect" parent="Plug" unique_id=174965983]
+visible = false
+z_index = -1
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.235294, 0.235294, 0.235294, 1)
+
+[node name="Pins" type="Control" parent="Plug" unique_id=1820319917]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Pin1" type="ColorRect" parent="Plug/Pins" unique_id=1665128088]
+layout_mode = 0
+offset_left = -8.0
+offset_right = -3.0
+offset_bottom = 15.0
+color = Color(0.705882, 0.705882, 0.705882, 1)
+
+[node name="Pin2" type="ColorRect" parent="Plug/Pins" unique_id=93090991]
+layout_mode = 0
+offset_left = 3.0
+offset_right = 8.0
+offset_bottom = 15.0
+color = Color(0.705882, 0.705882, 0.705882, 1)
+
+[node name="Area2D" type="Area2D" parent="Plug" unique_id=1967297815 groups=["plug"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plug/Area2D" unique_id=1744601411]
+position = Vector2(20.25, 30.007492)
+scale = Vector2(0.99999917, 0.99999917)
+shape = SubResource("RectangleShape2D_f5rmt")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Plug" unique_id=741218527]
+position = Vector2(19.999908, 29.999954)
+scale = Vector2(0.9999998, 0.9999998)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plug/CharacterBody2D" unique_id=449797883]
+position = Vector2(3.0517578e-05, 4.5776367e-05)
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_jncdf")
+
+[node name="dezactivare" type="Area2D" parent="." unique_id=1197688063 groups=["priza_limita"]]
+position = Vector2(129.99998, 139.99998)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dezactivare" unique_id=1435018057]
+position = Vector2(449.999, 27)
+scale = Vector2(0.9999968, 0.9999968)
+shape = SubResource("RectangleShape2D_r1hfs")
+
+[connection signal="gui_input" from="Plug" to="." method="_on_plug_gui_input"]
+[connection signal="area_entered" from="dezactivare" to="." method="_on_dezactivare_area_entered"]
+[connection signal="area_exited" from="dezactivare" to="." method="_on_dezactivare_area_exited"]

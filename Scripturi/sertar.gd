@@ -7,7 +7,7 @@ func _can_drop_data(_pos, data):
 	if self.visible==false:
 		return false
 	if data is Slot and data.slot_type=="inventory":
-		return false
+		return false  
 	else:
 		return true
 

@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bg61b4dxjqnke"]
+
+[ext_resource type="Texture2D" uid="uid://1ji4oylwm7i" path="res://Tabs/test.png" id="1_c5d5r"]
+[ext_resource type="FontFile" uid="uid://byvfbv8rtnnd4" path="res://Fonts/Nihonium113.ttf" id="2_itr2o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5okj"]
+bg_color = Color(0, 0, 0, 0.98039216)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control" unique_id=2135884811]
+layout_mode = 3
+anchor_right = 0.14600001
+anchor_bottom = 1.0
+offset_right = 114.49599
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1850430929]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.3140001
+anchor_bottom = 1.0
+offset_right = 0.10394287
+theme_override_styles/panel = SubResource("StyleBoxFlat_p5okj")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=5034257]
+custom_minimum_size = Vector2(150, 300)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("1_c5d5r")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer" unique_id=1453160716]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/normal_font = ExtResource("2_itr2o")
+theme_override_font_sizes/normal_font_size = 40
+text = "dsadasdadasdadasdadadadsadasdasdadasdadasdsadadasdadasdasdadasdsasdsdadasdadadad"
+horizontal_alignment = 1
+vertical_alignment = 1

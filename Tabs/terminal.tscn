@@ -1,0 +1,190 @@
+[gd_scene format=3 uid="uid://fa7opo32lim4"]
+
+[ext_resource type="Script" uid="uid://cyv551rlqgavk" path="res://Tabs/terminal.gd" id="1_terminal"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://syd3ctmxq41q" path="res://Tabs/terminal.png" id="2_kll05"]
+[ext_resource type="Shader" uid="uid://b5e056uw8co6i" path="res://Shaders/rainbow_border.gdshader" id="3_shader"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.05, 0.05, 0.05, 0.95)
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rainbow_border"]
+shader = ExtResource("3_shader")
+shader_parameter/speed = 1.0
+shader_parameter/frequency = 0.5
+shader_parameter/brightness = 1.2
+shader_parameter/is_border = true
+shader_parameter/line_width = 4.0
+shader_parameter/rect_size = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kll05"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[sub_resource type="Gradient" id="Gradient_title"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 0.2, 0.2, 0.2, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_title"]
+gradient = SubResource("Gradient_title")
+height = 32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rainbow_text"]
+shader = ExtResource("3_shader")
+shader_parameter/speed = 0.5
+shader_parameter/frequency = 1.0
+shader_parameter/brightness = 1.0
+shader_parameter/is_border = false
+shader_parameter/line_width = 4.0
+shader_parameter/rect_size = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rainbow_input"]
+shader = ExtResource("3_shader")
+shader_parameter/speed = 0.5
+shader_parameter/frequency = 1.0
+shader_parameter/brightness = 1.5
+shader_parameter/is_border = false
+shader_parameter/line_width = 4.0
+shader_parameter/rect_size = Vector2(0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_input"]
+
+[node name="DockTab" type="PanelContainer" unique_id=521819740]
+z_index = 4
+custom_minimum_size = Vector2(700, 200)
+anchors_preset = -1
+offset_right = 700.0
+offset_bottom = 208.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+script = ExtResource("1_terminal")
+window_title = "Terminal"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1521632277]
+modulate = Color(1, 1, 1, 0.145098)
+custom_minimum_size = Vector2(200, 90)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+texture = ExtResource("2_kll05")
+stretch_mode = 2
+
+[node name="RainbowBorder" type="Panel" parent="." unique_id=1131837169]
+material = SubResource("ShaderMaterial_rainbow_border")
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kll05")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=951519315]
+layout_mode = 2
+
+[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer" unique_id=813321055]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar" unique_id=905739148]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture2D_title")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect" unique_id=1899762845]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Terminal"
+vertical_alignment = 1
+
+[node name="ShrinkBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=999999125]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -15.0
+offset_right = -40.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "-"
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=596791132]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -15.0
+offset_right = -5.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "x"
+
+[node name="TerminalContent" type="VBoxContainer" parent="VBoxContainer" unique_id=1479690501]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TerminalContent" unique_id=1090009929]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="Output" type="RichTextLabel" parent="VBoxContainer/TerminalContent/MarginContainer" unique_id=428238531]
+material = SubResource("ShaderMaterial_rainbow_text")
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "user@godot:~$ "
+scroll_following = true
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TerminalContent" unique_id=805744624]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TerminalContent" unique_id=103426348]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PromptLabel" type="Label" parent="VBoxContainer/TerminalContent/HBoxContainer" unique_id=320813271]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "  user@godot:~$ "
+
+[node name="Input" type="LineEdit" parent="VBoxContainer/TerminalContent/HBoxContainer" unique_id=1836552179]
+material = SubResource("ShaderMaterial_rainbow_input")
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_input")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_input")
+placeholder_text = "type command..."
+caret_blink = true
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TerminalContent/HBoxContainer" unique_id=1207705247]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TerminalContent" unique_id=92322853]
+layout_mode = 2

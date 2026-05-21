@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://bpq4g1b4dyowo"]
+
+[ext_resource type="PackedScene" uid="uid://div5hesv71j4c" path="res://Tabs/Quests/Characters/priest.tscn" id="1_jjdxv"]
+[ext_resource type="Script" uid="uid://hf1xvikgd4vd" path="res://Tabs/Quests/CharacterProfile.gd" id="2_nk0rk"]
+
+[resource]
+script = ExtResource("2_nk0rk")
+id = "1"
+display_name = "Father"
+quest_scene = ExtResource("1_jjdxv")
+flavor_texts = Array[String](["GOD!"])
+metadata/_custom_type_script = "uid://hf1xvikgd4vd"

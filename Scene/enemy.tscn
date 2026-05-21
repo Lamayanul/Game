@@ -1,14 +1,30 @@
-[gd_scene load_steps=130 format=3 uid="uid://dn1osqamgorag"]
+[gd_scene format=3 uid="uid://dn1osqamgorag"]
 
 [ext_resource type="Script" uid="uid://bkb65y1vnypn5" path="res://Scripturi/enemy.gd" id="1_8c6dx"]
 [ext_resource type="Texture2D" uid="uid://b4otyj2854hm1" path="res://Base Character - Premium/basic/death.png" id="1_inn2y"]
+[ext_resource type="Texture2D" uid="uid://cabd2nr24nab7" path="res://Fights/night.png" id="2_5jr7y"]
 [ext_resource type="Texture2D" uid="uid://c7y4nlm26ofww" path="res://Base Character - Premium/basic/idle.png" id="2_423kg"]
 [ext_resource type="Texture2D" uid="uid://dgxx50eriayau" path="res://Base Character - Premium/attack/sword.png" id="2_a767a"]
+[ext_resource type="Script" uid="uid://cr7vlwc3s4ovx" path="res://Scripturi/EnemyLoadout.gd" id="2_lgux2"]
 [ext_resource type="AudioStream" uid="uid://djsovd73q0vq" path="res://Sound/sword_meet.wav" id="2_tn1ve"]
 [ext_resource type="Texture2D" uid="uid://c3skfildne1id" path="res://Base Character - Premium/basic/walk.png" id="3_1hsc2"]
+[ext_resource type="Texture2D" uid="uid://d0uyexpoafbek" path="res://Fights/night_carac.png" id="3_myw4n"]
 [ext_resource type="Texture2D" uid="uid://huvx4f8x78sp" path="res://Base Character - Premium/basic/run.png" id="5_7tyfx"]
 [ext_resource type="Texture2D" uid="uid://swav0q0mrrat" path="res://NPCs/Emotii/Smiley.png" id="8_5op34"]
 [ext_resource type="PackedScene" uid="uid://bl4t8k0xv7cr4" path="res://Scene/enemy_profile.tscn" id="9_5op34"]
+[ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="10_r6llc"]
+[ext_resource type="Script" uid="uid://bobfbhm5yv077" path="res://Fights/enemy_inv.gd" id="11_00taw"]
+
+[sub_resource type="Resource" id="Resource_r3ffy"]
+script = ExtResource("2_lgux2")
+items = Array[String](["2", "9", "7", "8"])
+switch_weapon_chance = 1.0
+heal_threshold = 0.682
+heal_chance = 0.548
+night_texture = ExtResource("3_myw4n")
+night_background = ExtResource("2_5jr7y")
+night_items = Array[String](["3"])
+metadata/_custom_type_script = "uid://cr7vlwc3s4ovx"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6p5mf"]
 size = Vector2(8, 2)
@@ -1418,15 +1434,16 @@ default_font_size = 25
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r3ffy"]
 bg_color = Color(0, 0, 0, 0.262745)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["enemy"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=62483703 groups=["enemy"]]
 y_sort_enabled = true
 collision_layer = 7
 collision_mask = 7
 platform_on_leave = 2
 platform_floor_layers = 0
 script = ExtResource("1_8c6dx")
+loadout = SubResource("Resource_r3ffy")
 
-[node name="camera_enemy" type="Camera2D" parent="."]
+[node name="camera_enemy" type="Camera2D" parent="." unique_id=959758246]
 position = Vector2(70, 0)
 zoom = Vector2(6, 6)
 limit_smoothed = true
@@ -1434,27 +1451,27 @@ position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
-[node name="ChangeDirection" type="Timer" parent="."]
+[node name="ChangeDirection" type="Timer" parent="." unique_id=967577735]
 wait_time = 2.0
 autostart = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2105907175]
 position = Vector2(-1, 6)
 shape = SubResource("RectangleShape2D_6p5mf")
 
-[node name="enemy_hitbox" type="Area2D" parent="." groups=["enemy_hitbox"]]
+[node name="enemy_hitbox" type="Area2D" parent="." unique_id=1750076931 groups=["enemy_hitbox"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=1130561379]
 position = Vector2(-0.5, 3)
 shape = SubResource("RectangleShape2D_56oj4")
 
-[node name="take_damage" type="Timer" parent="."]
+[node name="take_damage" type="Timer" parent="." unique_id=1221756135]
 wait_time = 0.5
 
-[node name="color" type="Timer" parent="."]
+[node name="color" type="Timer" parent="." unique_id=1077079814]
 wait_time = 0.2
 
-[node name="healthbar" type="ProgressBar" parent="."]
+[node name="healthbar" type="ProgressBar" parent="." unique_id=936761811]
 visible = false
 offset_left = -6.0
 offset_top = -15.0
@@ -1465,20 +1482,18 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_06cge")
 value = 100.0
 show_percentage = false
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1101577917]
 position = Vector2(-1, -2)
 scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_fd2io")
 animation = &"walk-dreapta"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=826065574]
 root_node = NodePath("../AnimatedSprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_h6wi7")
-}
+libraries/ = SubResource("AnimationLibrary_h6wi7")
 speed_scale = 2.0
 
-[node name="arma" type="Area2D" parent="." groups=["arma"]]
+[node name="arma" type="Area2D" parent="." unique_id=1201255160 groups=["arma"]]
 y_sort_enabled = true
 position = Vector2(7.10543e-15, 3.55271e-15)
 rotation = -0.933751
@@ -1487,37 +1502,37 @@ collision_layer = 5
 collision_mask = 5
 metadata/_edit_group_ = true
 
-[node name="colisiune" type="CollisionShape2D" parent="arma"]
+[node name="colisiune" type="CollisionShape2D" parent="arma" unique_id=1129628045]
 position = Vector2(-2.32625, -14.9487)
 rotation = 1.77453
 scale = Vector2(0.437711, 0.437711)
 shape = SubResource("RectangleShape2D_wv2m2")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arma"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arma" unique_id=559579355]
 rotation = 0.933751
 scale = Vector2(1.31776, 1.31776)
 stream = ExtResource("2_tn1ve")
 
-[node name="detection" type="Area2D" parent="."]
+[node name="detection" type="Area2D" parent="." unique_id=1258869146]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="detection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection" unique_id=776340048]
 shape = SubResource("CircleShape2D_xey0k")
 
-[node name="atack_zone" type="Area2D" parent="."]
+[node name="atack_zone" type="Area2D" parent="." unique_id=1031674943]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="atack_zone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="atack_zone" unique_id=1387753791]
 shape = SubResource("CircleShape2D_brlc1")
 
-[node name="atack" type="Timer" parent="."]
+[node name="atack" type="Timer" parent="." unique_id=1344041135]
 wait_time = 0.5
 
-[node name="doge" type="Timer" parent="."]
+[node name="doge" type="Timer" parent="." unique_id=528526702]
 wait_time = 1.5
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1660394725]
 visible = false
 
-[node name="Control2" type="Control" parent="CanvasLayer"]
+[node name="Control2" type="Control" parent="CanvasLayer" unique_id=381887065]
 layout_mode = 3
 anchor_left = 0.146
 anchor_top = 1.0
@@ -1528,9 +1543,9 @@ offset_top = -648.0
 offset_right = 259.2
 size_flags_vertical = 4
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control2"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control2" unique_id=1786803237]
 top_level = true
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.151
 anchor_top = 1.0
 anchor_right = 0.151
@@ -1543,7 +1558,7 @@ texture = ExtResource("8_5op34")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control2"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control2" unique_id=2022889926]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.475
@@ -1554,13 +1569,13 @@ offset_top = 0.200012
 offset_right = -85.0
 offset_bottom = 8.07202
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control2/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control2/PanelContainer" unique_id=1933194300]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer" unique_id=2024949819]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1869686280]
 custom_minimum_size = Vector2(1000, 250)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -1568,7 +1583,7 @@ theme = SubResource("Theme_r6llc")
 bbcode_enabled = true
 text = "[center]"
 
-[node name="TextEdit" type="TextEdit" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/Control2/PanelContainer/VBoxContainer" unique_id=851841784]
 custom_minimum_size = Vector2(1000, 40)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -1576,8 +1591,7 @@ size_flags_vertical = 10
 theme = SubResource("Theme_00taw")
 placeholder_text = "   Type text"
 
-[node name="ai_name" type="RichTextLabel" parent="CanvasLayer/Control2"]
-visible = false
+[node name="ai_name" type="RichTextLabel" parent="CanvasLayer/Control2" unique_id=1708523518]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -1594,10 +1608,10 @@ text = "[indent]
 "
 fit_content = true
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1285606963]
 visible = false
 
-[node name="Control" parent="CanvasLayer2" instance=ExtResource("9_5op34")]
+[node name="Control" parent="CanvasLayer2" unique_id=1250395561 instance=ExtResource("9_5op34")]
 anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 0.5
@@ -1605,11 +1619,28 @@ anchor_bottom = 0.5
 offset_left = -576.0
 offset_right = -576.0
 
-[node name="WaitTimer" type="Timer" parent="."]
+[node name="WaitTimer" type="Timer" parent="." unique_id=209736855]
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=929760023]
 avoidance_enabled = true
 debug_enabled = true
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="." unique_id=1101930398]
+visible = false
+
+[node name="Inv" parent="CanvasLayer3" unique_id=679017926 groups=["enemy_inv"] instance=ExtResource("10_r6llc")]
+anchor_left = 0.144
+anchor_right = 0.144
+anchor_bottom = 0.0
+offset_left = -0.456009
+offset_right = 289.544
+offset_bottom = 86.0
+script = ExtResource("11_00taw")
+chest_scene = null
+oven_scene = null
+pillar_scene = null
+gen_scene = null
+metadata/_edit_use_anchors_ = true
 
 [connection signal="timeout" from="ChangeDirection" to="." method="_on_change_direction_timeout"]
 [connection signal="timeout" from="take_damage" to="." method="_on_take_damage_timeout"]
@@ -1622,3 +1653,9 @@ debug_enabled = true
 [connection signal="area_exited" from="atack_zone" to="." method="_on_atack_zone_area_exited"]
 [connection signal="timeout" from="atack" to="." method="_on_atack_timeout"]
 [connection signal="timeout" from="doge" to="." method="_on_doge_timeout"]
+
+[editable path="CanvasLayer3/Inv"]
+[editable path="CanvasLayer3/Inv/MarginContainer/GridContainer/SlotContainer"]
+[editable path="CanvasLayer3/Inv/MarginContainer/GridContainer/SlotContainer2"]
+[editable path="CanvasLayer3/Inv/MarginContainer/GridContainer/SlotContainer3"]
+[editable path="CanvasLayer3/Inv/MarginContainer/GridContainer/SlotContainer4"]

@@ -8,7 +8,7 @@ class_name StatusEffects
 const MODE_HOLDING    := "holding"
 const MODE_CONSUMABLE := "consumable"
 
-# Registru efecte – adaugi ușor intrări noi.
+# Registru efecte â€“ adaugi uÈ™or intrÄƒri noi.
 # Chei suportate: id, mode, tags, default_duration, default_period, default_amount, modifiers, special("cleanse"|"shield"|nil)
 const REG_EFFECTS := {
 	"regen": {
@@ -35,14 +35,18 @@ const REG_EFFECTS := {
 	},
 	"cleanse": {
 		"id": "cleanse", "mode": MODE_HOLDING, "tags": ["cleanse"],
-		# duration: -1 => permanent cât timp itemul e ținut; 0 => doar „burst”; >0 => temporar
+		# duration: -1 => permanent cÃ¢t timp itemul e È›inut; 0 => doar â€žburstâ€; >0 => temporar
 		"default_duration": -1.0,
-		"special": "cleanse" # apelează pipeline-ul de curățare/blocare
+		"special": "cleanse" # apeleazÄƒ pipeline-ul de curÄƒÈ›are/blocare
+	},
+	"burning": {
+		"id": "burning", "mode": MODE_HOLDING, "tags": ["dot", "fire"],
+		"default_amount": 2.0, "default_duration": -1.0, "default_period": 1.0
 	}
 }
 
-# Registru curse – la fel, extins ușor.
-# Chei suportate: id, mode, tags, default_duration, modifiers, lock, slot_types (opțional)
+# Registru curse â€“ la fel, extins uÈ™or.
+# Chei suportate: id, mode, tags, default_duration, modifiers, lock, slot_types (opÈ›ional)
 const REG_CURSES := {
 	"lock": {
 		"id": "lock", "mode": MODE_HOLDING, "tags": ["lock"], "default_duration": -1.0,
@@ -66,7 +70,7 @@ const REG_CURSES := {
 
 var base_stats := {"atk":10, "def":10, "max_hp":100, "spd":100}
 var cur_stats  := {"atk":10, "def":10, "max_hp":100, "spd":100}
-var ui_max_hp: int = -1  # „scala” UI, setată o singură dată
+var ui_max_hp: int = -1  # â€žscalaâ€ UI, setatÄƒ o singurÄƒ datÄƒ
 
 # active_curses: Array< { data:Dictionary, source, source_tag:String, time_left:float } >
 var active_curses: Array = []
@@ -155,7 +159,7 @@ func apply_on_use_from_slot(slot: Node) -> void:
 func remove_from_slot(slot: Node) -> void:
 	if not can_unequip_slot(slot):
 		if owner and owner.has_method("show_toast"):
-			owner.show_toast("Itemul este blestemat: nu-l poți scoate!")
+			owner.show_toast("Itemul este blestemat: nu-l poÈ›i scoate!")
 		return
 	_remove_curses_by_source(slot)
 	_remove_buffs_by_source(slot)
@@ -190,7 +194,7 @@ func add_effect_by_id(id: String, overrides: Dictionary = {}, source = null) -> 
 	add_effect(data, source)
 
 func add_curse(c: Dictionary, source = null) -> void:
-	# respectă cleanser-ele active: dacă regulile lor acoperă acest curse, nu-l adăugăm
+	# respectÄƒ cleanser-ele active: dacÄƒ regulile lor acoperÄƒ acest curse, nu-l adÄƒugÄƒm
 	for cl in active_cleansers:
 		var rules = cl.get("rules", {})
 		if _curse_matches_rules(c, rules.get("curses", {})):
@@ -207,7 +211,7 @@ func add_curse(c: Dictionary, source = null) -> void:
 
 func add_effect(e: Dictionary, source = null) -> void:
 	var id := _canon(e.get("id",""))
-	# Completează cu default-uri din registru (dacă există)
+	# CompleteazÄƒ cu default-uri din registru (dacÄƒ existÄƒ)
 	var def = REG_EFFECTS.get(id, {})
 	var mode := String(e.get("mode", def.get("mode", MODE_HOLDING))).to_lower()
 	var amount := float(e.get("amount", def.get("default_amount", 0.0)))
@@ -217,7 +221,7 @@ func add_effect(e: Dictionary, source = null) -> void:
 	var modifiers = e.get("modifiers", def.get("modifiers", null))
 	var special = String(e.get("special", def.get("special","")))
 
-	# 1) CLEANSE – curățare + (opțional) persistență pentru blocare
+	# 1) CLEANSE â€“ curÄƒÈ›are + (opÈ›ional) persistenÈ›Äƒ pentru blocare
 	if id == "cleanse" or special == "cleanse":
 		var remove_rules = e.get("remove", {})
 		var rules_curses  = remove_rules.get("curses", remove_rules)
@@ -242,7 +246,7 @@ func add_effect(e: Dictionary, source = null) -> void:
 		if _effect_matches_rules({"id": id, "tags": tags}, rules.get("effects", {})):
 			return
 
-	# 3) Adaugă efectul
+	# 3) AdaugÄƒ efectul
 	var inst := {
 		"id": id,
 		"amount": amount,
@@ -323,8 +327,12 @@ func _update_effects(delta: float) -> void:
 				while ef["accum"] >= ef.get("period",1.0):
 					ef["accum"] -= ef.get("period",1.0)
 					_heal(-int(round(ef.get("amount",0.0))))
+			"burning":
+				while ef["accum"] >= ef.get("period",1.0):
+					ef["accum"] -= ef.get("period",1.0)
+					_heal(-int(round(ef.get("amount",0.0))))
 			"shield":
-				# doar expiră în timp, absorbția e la on_incoming_damage()
+				# doar expirÄƒ Ã®n timp, absorbÈ›ia e la on_incoming_damage()
 				pass
 			_:
 				pass

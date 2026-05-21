@@ -1,0 +1,518 @@
+[gd_scene format=3 uid="uid://chedrcpncysuq"]
+
+[ext_resource type="Script" uid="uid://chws801y3yn8f" path="res://Fights/Caracters/Jake.gd" id="1_47mcl"]
+[ext_resource type="Texture2D" uid="uid://cmg5skuspm5to" path="res://Fights/back.png" id="2_47gt3"]
+[ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="3_47gt3"]
+[ext_resource type="Texture2D" uid="uid://dk5vlhknn2sn" path="res://Fights/ultimate_black_fbg.png" id="3_lkrkv"]
+[ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="4_lkrkv"]
+[ext_resource type="Texture2D" uid="uid://deagc4swpklua" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill.png" id="5_lwjqv"]
+[ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="6_e8tvd"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="7_kr0fs"]
+[ext_resource type="Script" uid="uid://bobfbhm5yv077" path="res://Fights/enemy_inv.gd" id="8_lwjqv"]
+[ext_resource type="Texture2D" uid="uid://cqev8vdlcoar1" path="res://Fights/mana_2.png" id="12_fv4t8"]
+[ext_resource type="Script" uid="uid://d0hu2a0vnei26" path="res://Scripturi/StatusEffects.gd" id="12_statuseffects"]
+[ext_resource type="Texture2D" uid="uid://5upak675g0to" path="res://Fights/mana_1.png" id="13_fv4t8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47gt3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lkrkv"]
+bg_color = Color(0.589844, 0.0289657, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rka4h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lwjqv"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 0.780392)
+
+[node name="CaracterCard" type="PanelContainer" unique_id=1152778452 node_paths=PackedStringArray("texture_bg", "name_label", "health_text", "health_bar", "description_label", "animated_sprite", "inv_panel", "slots_container")]
+anchors_preset = -1
+anchor_right = 1.00039
+anchor_bottom = 1.0
+offset_right = -0.400009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_47gt3")
+script = ExtResource("1_47mcl")
+texture_bg = NodePath("TextureRect/TextureRect2")
+name_label = NodePath("TextureRect/Nume")
+health_text = NodePath("TextureRect/Health")
+health_bar = NodePath("TextureRect/TextureProgressBar")
+description_label = NodePath("TextureRect/Description_label")
+animated_sprite = NodePath("TextureRect/AnimatedSprite2D")
+is_enemy = true
+inv_panel = NodePath("TextureRect/Inv")
+slots_container = NodePath("TextureRect/Inv/MarginContainer/GridContainer")
+metadata/_edit_use_anchors_ = true
+
+[node name="StatusEffects" type="Node" parent="." unique_id=917225996]
+script = ExtResource("12_statuseffects")
+
+[node name="TextureRect" type="Panel" parent="." unique_id=131435316]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect" unique_id=512528649]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.003
+anchor_right = 1.001
+anchor_bottom = 1.0
+offset_left = 3.054
+offset_right = 0.981934
+texture = ExtResource("2_47gt3")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect" unique_id=1278464564]
+layout_mode = 0
+anchor_left = -0.0615096
+anchor_top = -0.253906
+anchor_right = 1.37976
+anchor_bottom = 1.0
+offset_left = -0.191193
+size_flags_horizontal = 4
+texture = ExtResource("3_lkrkv")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Nume" type="RichTextLabel" parent="TextureRect" unique_id=1725807604]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.00294695
+anchor_top = -0.128549
+anchor_right = 0.616949
+anchor_bottom = -0.006
+offset_top = 0.0460014
+offset_right = -0.0540161
+offset_bottom = 0.036
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 33
+bbcode_enabled = true
+text = "Ultimate Black Guy"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Description_label" type="RichTextLabel" parent="TextureRect" unique_id=1719019266]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.718752
+anchor_top = 0.292969
+anchor_right = 0.998964
+anchor_bottom = 0.447141
+offset_right = 0.0640259
+offset_bottom = 0.0639954
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Health" type="RichTextLabel" parent="TextureRect" unique_id=1741654920]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.00392927
+anchor_top = 0.999874
+anchor_right = 1.005
+anchor_bottom = 1.073
+offset_top = 0.0639954
+offset_right = -0.0899658
+offset_bottom = 0.0619507
+theme_override_styles/normal = SubResource("StyleBoxFlat_lkrkv")
+bbcode_enabled = true
+text = "100/100"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="TextureRect" unique_id=929532107]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.150266
+anchor_right = 1.05338
+anchor_bottom = 0.365391
+offset_top = 0.0639992
+offset_right = -0.307129
+offset_bottom = -0.0800018
+texture_under = ExtResource("3_47gt3")
+texture_over = ExtResource("4_lkrkv")
+texture_progress = ExtResource("5_lwjqv")
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureRect" unique_id=462110834]
+sprite_frames = SubResource("SpriteFrames_rka4h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect" unique_id=1993413125]
+
+[node name="Inv" parent="TextureRect" unique_id=2023233626 instance=ExtResource("6_e8tvd")]
+layout_mode = 1
+anchor_left = 0.917485
+anchor_top = -0.00197628
+anchor_right = 1.00198
+anchor_bottom = 1.00198
+offset_left = -1.52588e-05
+offset_right = -0.0181274
+offset_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("8_lwjqv")
+chest_scene = null
+oven_scene = null
+pillar_scene = null
+gen_scene = null
+metadata/_edit_use_anchors_ = true
+
+[node name="GridContainer" parent="TextureRect/Inv/MarginContainer" index="0"]
+columns = 1
+
+[node name="SlotContainer5" parent="TextureRect/Inv/MarginContainer/GridContainer" index="4" unique_id=1654802474 instance=ExtResource("7_kr0fs")]
+layout_mode = 2
+
+[node name="SlotContainer6" parent="TextureRect/Inv/MarginContainer/GridContainer" index="5" unique_id=2128697444 instance=ExtResource("7_kr0fs")]
+visible = false
+layout_mode = 2
+
+[node name="SlotContainer7" parent="TextureRect/Inv/MarginContainer/GridContainer" index="6" unique_id=2027338041 instance=ExtResource("7_kr0fs")]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" parent="TextureRect/Inv/MarginContainer" index="1"]
+custom_minimum_size = Vector2(64, 64)
+
+[node name="Panel" type="Panel" parent="TextureRect" unique_id=270799644]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.003
+anchor_top = 1.073
+anchor_right = 1.003
+anchor_bottom = 2.073
+offset_left = 0.0539987
+offset_top = 0.0619507
+offset_right = -0.0534058
+offset_bottom = 0.0618896
+theme_override_styles/panel = SubResource("StyleBoxFlat_lwjqv")
+
+[node name="Control" type="Control" parent="TextureRect/Panel" unique_id=2077592395]
+layout_mode = 1
+anchor_right = 1.002
+anchor_bottom = 1.0
+offset_right = -0.0480957
+offset_bottom = 6.10352e-05
+
+[node name="Items" type="Control" parent="TextureRect/Panel" unique_id=1719997593]
+layout_mode = 1
+anchor_top = -1.079
+anchor_right = 1.0020001
+anchor_bottom = 1.0
+offset_top = -0.026000977
+offset_right = -0.048095703
+offset_bottom = 0.00012207031
+
+[node name="Control" type="Control" parent="TextureRect/Panel/Items" unique_id=559201177]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.008
+offset_left = -56.0
+offset_top = 3.0
+offset_right = -55.0
+offset_bottom = -0.41601563
+
+[node name="mana_stanga" type="TextureRect" parent="TextureRect/Panel/Items/Control" unique_id=195231284]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.09200001
+anchor_top = 0.068
+anchor_right = 0.71300006
+anchor_bottom = 0.869
+offset_left = 0.4840088
+offset_top = 0.12399292
+offset_right = -0.2510376
+offset_bottom = 0.43823242
+mouse_filter = 2
+texture = ExtResource("12_fv4t8")
+flip_h = true
+metadata/_edit_use_anchors_ = true
+
+[node name="principalItem" parent="TextureRect/Panel/Items/Control" unique_id=615428226 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.25498247
+anchor_right = 0.40878388
+anchor_bottom = 0.4079824
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer3" parent="TextureRect/Panel/Items/Control" unique_id=553659866 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.5624565
+anchor_right = 0.40878388
+anchor_bottom = 0.7154564
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer4" parent="TextureRect/Panel/Items/Control" unique_id=1245300753 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.7157897
+anchor_right = 0.40878388
+anchor_bottom = 0.8687897
+offset_left = -0.36605835
+offset_top = 0.41033936
+offset_right = -0.11755371
+offset_bottom = 0.39971924
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer4/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer4/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer5" parent="TextureRect/Panel/Items/Control" unique_id=919265561 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.86912286
+anchor_right = 0.40878388
+anchor_bottom = 1.0221227
+offset_left = -0.36605835
+offset_top = 0.3371582
+offset_right = -0.11755371
+offset_bottom = 0.32666016
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer5/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer5/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="Control2" type="Control" parent="TextureRect/Panel/Items" unique_id=1056915987]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.008
+offset_left = 318.0
+offset_right = 319.0
+offset_bottom = -3.4160156
+
+[node name="mana_dreapta" type="TextureRect" parent="TextureRect/Panel/Items/Control2" unique_id=367157389]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.09200001
+anchor_top = 0.068
+anchor_right = 0.71300006
+anchor_bottom = 0.869
+offset_left = 0.4840088
+offset_top = 0.12399292
+offset_right = -0.2510376
+offset_bottom = 0.43823242
+mouse_filter = 2
+texture = ExtResource("13_fv4t8")
+flip_h = true
+metadata/_edit_use_anchors_ = true
+
+[node name="principalItem" parent="TextureRect/Panel/Items/Control2" unique_id=1144253137 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.25309032
+anchor_right = 0.40878388
+anchor_bottom = 0.40609026
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer3" parent="TextureRect/Panel/Items/Control2" unique_id=1399740971 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.5624565
+anchor_right = 0.4087839
+anchor_bottom = 0.7154564
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer4" parent="TextureRect/Panel/Items/Control2" unique_id=1478838105 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.7157897
+anchor_right = 0.4087839
+anchor_bottom = 0.8687897
+offset_left = -0.36605835
+offset_top = 0.41033936
+offset_right = -0.11755371
+offset_bottom = 0.39971924
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer4/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer4/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer5" parent="TextureRect/Panel/Items/Control2" unique_id=1921026532 instance=ExtResource("7_kr0fs")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.86912286
+anchor_right = 0.4087839
+anchor_bottom = 1.0221227
+offset_left = -0.36605835
+offset_top = 0.3371582
+offset_right = -0.11755371
+offset_bottom = 0.32666016
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer5/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer5/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[editable path="TextureRect/Inv"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer2"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer3"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer4"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer5"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer6"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer7"]
+[editable path="TextureRect/Panel/Items/Control/principalItem"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer3"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer4"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer5"]
+[editable path="TextureRect/Panel/Items/Control2/principalItem"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer3"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer4"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer5"]

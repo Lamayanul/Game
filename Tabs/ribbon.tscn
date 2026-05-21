@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://caave01hjvhf"]
+
+[ext_resource type="Texture2D" uid="uid://c4otxqyxxttjo" path="res://Trade/paper.png" id="1_16deq"]
+[ext_resource type="Texture2D" uid="uid://b7lfmfspmhpa" path="res://Tabs/profil.png" id="2_sf40h"]
+[ext_resource type="FontFile" uid="uid://byvfbv8rtnnd4" path="res://Fonts/Nihonium113.ttf" id="3_qfn8q"]
+
+[node name="Control" type="Control" unique_id=669079976]
+layout_mode = 3
+anchor_bottom = 1.0
+offset_right = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1228349011]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 224.0
+texture = ExtResource("1_16deq")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=21606580]
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 224.0
+offset_bottom = -212.0
+grow_vertical = 2
+size_flags_vertical = 0
+texture = ExtResource("2_sf40h")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1696335972]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -512.0
+offset_right = 224.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfn8q")
+theme_override_font_sizes/normal_font_size = 40
+text = "Lamayanul"
+horizontal_alignment = 1
+vertical_alignment = 1

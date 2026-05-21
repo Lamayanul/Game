@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dunai7qdncarm"]
+
+[ext_resource type="Texture2D" uid="uid://bcimesqcgjxmb" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/barrell.png" id="1_otlm4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1284o"]
+size = Vector2(14, 17)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_otlm4")
+region_enabled = true
+region_rect = Rect2(16, 32, 16, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_1284o")

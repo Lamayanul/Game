@@ -35,6 +35,15 @@ var _db := {
 			{"name":"Parare Up",     "type":"defense","lane":"up", "block":11},
 		]
 	},
+	"PICKAXE": {
+		"name":"Târnăcop",
+		"moves":[
+			{"name":"Lovitură Mid",  "type":"attack","lane":"mid","power":10},
+			{"name":"Lovitură Up",   "type":"attack","lane":"up", "power":9},
+			{"name":"Lovitură Down", "type":"attack","lane":"down","power":12},
+			{"name":"Parare Mid",    "type":"defense","lane":"mid","block":5},
+		]
+	},
 }
 
 func has_weapon(id: String) -> bool:

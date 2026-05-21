@@ -1,7 +1,7 @@
 extends Area2D
 
 # Opacitatea când obiectul este în zona de detectare
-var _darkenedColor = Color(0.7, 0.7, 0.7, 1.0)
+var _darkenedColor = Color(0.9, 0.9, 0.9, 1.0)
 var _transparentColor = Color(1, 1, 1, 0.5) # Semi-transparent
 # Opacitatea normală când obiectul nu este în zona de detectare
 var _normalColor = Color(1, 1, 1, 1) # Opac
@@ -22,6 +22,7 @@ var is_resetting = false
 func _ready():
 	_staticbody = get_node("StaticBody2D")
 	respawn_fruits.start()  
+	animation_player.play("dn")
 
 	if player_path:
 		_playerSprite = get_node(player_path)
@@ -125,6 +126,7 @@ func _on_respawn_tree_timeout():
 # Funcție pentru apariția fructelor
 
 func _on_respawn_fruits_timeout():
-	if not fructe and not is_resetting:  
-		animation_player.play("fructe") 
-		fructe = true  
+	return
+	#if not fructe and not is_resetting:  
+		#animation_player.play("fructe") 
+		#fructe = true  

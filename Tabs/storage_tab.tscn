@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dixna82ah2p5m"]
+[gd_scene format=3 uid="uid://dixna82ah2p5m"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_po6gu"]
-[ext_resource type="Texture2D" uid="uid://e1qwo2v2w7wf" path="res://Tabs/supply_chain.png" id="2_po6gu"]
+[ext_resource type="Texture2D" uid="uid://box88gdryfday" path="res://Tabs/supply_chain.png" id="2_po6gu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
 bg_color = Color(1, 0.768116, 0.73913, 1)
@@ -22,16 +22,17 @@ height = 52
 [sub_resource type="Theme" id="Theme_8twd8"]
 default_font_size = 25
 
-[node name="StorageTab" type="PanelContainer"]
-z_index = 2
-custom_minimum_size = Vector2(180, 180)
+[node name="StorageTab" type="PanelContainer" unique_id=223123584]
+z_index = 4
+custom_minimum_size = Vector2(210, 180)
 offset_right = 180.0
 offset_bottom = 180.0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_po6gu")
 type_tab = "storage"
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=185459472]
 modulate = Color(1, 1, 1, 0.145098)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -39,38 +40,50 @@ size_flags_vertical = 8
 texture = ExtResource("2_po6gu")
 stretch_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=361635451]
 layout_mode = 2
 
-[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer" unique_id=1804432647]
 custom_minimum_size = Vector2(180, 20)
 layout_mode = 2
 mouse_filter = 0
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar" unique_id=1498607836]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = SubResource("GradientTexture2D_iv78q")
 
-[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect"]
-layout_mode = 2
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect" unique_id=335092115]
+layout_mode = 0
 anchor_right = 0.778
 anchor_bottom = 1.0
 offset_right = -0.0400085
 theme_override_font_sizes/font_size = 30
 
-[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect"]
+[node name="ShrinkBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=999999124]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -81.0
+offset_right = -41.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 25
+text = "-"
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=373208127]
 custom_minimum_size = Vector2(40, 0)
 layout_direction = 3
-layout_mode = 2
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 52.0
 size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 25
 text = "x"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=1153860586]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -81,7 +94,9 @@ text = "[center]Local Virtual Storage"
 fit_content = true
 scroll_active = false
 
-[node name="Content_storage" type="GridContainer" parent="VBoxContainer" groups=["storage_tab"]]
+[node name="Content_storage" type="GridContainer" parent="VBoxContainer" unique_id=1935787521 groups=["storage_tab"]]
 clip_contents = true
+layout_direction = 3
 layout_mode = 2
+size_flags_vertical = 3
 columns = 6

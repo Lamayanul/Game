@@ -1,0 +1,186 @@
+[gd_scene format=3 uid="uid://oy7ts38t4g7x"]
+
+[ext_resource type="Shader" uid="uid://ccg84mj85mi4w" path="res://Shaders/iitems_view.gdshader" id="2_326n5"]
+[ext_resource type="Texture2D" uid="uid://w5r5u5dil1vj" path="res://Tabs/evil.png" id="3_13ndr"]
+[ext_resource type="Texture2D" uid="uid://dljv37e1dvrud" path="res://User/Items/1_fundal.png" id="3_326n5"]
+[ext_resource type="Texture2D" uid="uid://dbe2irvd50cj0" path="res://User/Items/banner2.png" id="3_vrdyr"]
+[ext_resource type="Texture2D" uid="uid://damjw28qekgxg" path="res://User/Items/clouds.png" id="4_2i4st"]
+[ext_resource type="FontFile" uid="uid://b1wpsrrkh4ge6" path="res://Fonts/Depressionist_1_Revisited.ttf" id="5_21rqh"]
+[ext_resource type="Script" uid="uid://qgfo52rr42hp" path="res://Fonts/item_script.gd" id="6_5o64f"]
+[ext_resource type="Script" uid="uid://c2xhlsqarkvfv" path="res://User/Items/items_view.gd" id="7_items_view"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2i4st"]
+shader = ExtResource("2_326n5")
+shader_parameter/shine_num = 22.18
+shader_parameter/rotation_speed = 2.465
+shader_parameter/light_magnitude = 2.0
+shader_parameter/filter_distence = 1.0
+shader_parameter/filter_magnitude = 1.0
+shader_parameter/filter_minv = 0.50000002375
+shader_parameter/cut_inner_radius = 0.0
+shader_parameter/color = Color(1, 0, 0.10090351, 1)
+shader_parameter/NOISE = ExtResource("3_13ndr")
+shader_parameter/NOISE_speed = Vector2(0, 0)
+shader_parameter/NOISE_magnitude = 0.6800000323
+
+[sub_resource type="Theme" id="Theme_5o64f"]
+default_font = ExtResource("5_21rqh")
+default_font_size = 80
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_326n5"]
+script = ExtResource("6_5o64f")
+metadata/_custom_type_script = "uid://qgfo52rr42hp"
+
+[sub_resource type="Theme" id="Theme_326n5"]
+default_font = ExtResource("5_21rqh")
+default_font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13ndr"]
+bg_color = Color(0.16862746, 0.16862746, 0.16862746, 0.8352941)
+
+[node name="Control" type="Control" unique_id=960944754]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_items_view")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=283109882]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=874435657]
+material = SubResource("ShaderMaterial_2i4st")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_326n5")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/TextureRect" unique_id=99887766]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83812505
+anchor_top = 0.18748438
+anchor_right = 0.83812505
+anchor_bottom = 0.18748438
+offset_left = -0.24005127
+offset_top = 0.00799942
+offset_right = 83.75995
+offset_bottom = 79.007996
+grow_horizontal = 0
+mouse_filter = 1
+text = "X"
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/TextureRect" unique_id=169520787]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.20117188
+anchor_top = 0.072265625
+anchor_right = 0.80660886
+anchor_bottom = 0.42226565
+offset_right = 0.032470703
+offset_bottom = -0.2000122
+texture = ExtResource("3_vrdyr")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="cloud_1" type="Sprite2D" parent="CanvasLayer/TextureRect" unique_id=222920823]
+position = Vector2(1213, 700)
+texture = ExtResource("4_2i4st")
+region_enabled = true
+region_rect = Rect2(8, -8, 1352, 600)
+
+[node name="cloud_2" type="Sprite2D" parent="CanvasLayer/TextureRect" unique_id=741836617]
+position = Vector2(658, 221)
+texture = ExtResource("4_2i4st")
+region_enabled = true
+region_rect = Rect2(1040, 1288, 1008, 568)
+
+[node name="cloud_3" type="Sprite2D" parent="CanvasLayer/TextureRect" unique_id=649804157]
+position = Vector2(1243, 216)
+texture = ExtResource("4_2i4st")
+region_enabled = true
+region_rect = Rect2(1040, 1280, 1016, 536)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/TextureRect" unique_id=711745591]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.28795314
+anchor_top = 0.087625004
+anchor_right = 0.72595316
+anchor_bottom = 0.294625
+offset_left = 0.13598633
+offset_top = 0.13599777
+offset_right = -0.3760376
+offset_bottom = 0.1519928
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.017453292
+mouse_filter = 2
+theme = SubResource("Theme_5o64f")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[arc inaltime=5 litere=25]WOW NEW ITEM[/arc]"
+horizontal_alignment = 1
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_326n5")]
+
+[node name="Items" type="GridContainer" parent="CanvasLayer/TextureRect" unique_id=1145793902]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.21000001
+anchor_right = 0.5
+anchor_bottom = 0.21000001
+offset_left = -2.0
+offset_top = 63.479996
+offset_right = 2.0
+offset_bottom = 71.479996
+grow_horizontal = 2
+theme_override_constants/h_separation = 15
+columns = 4
+
+[node name="Item_info" type="RichTextLabel" parent="CanvasLayer/TextureRect" unique_id=1410732544]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.34742188
+anchor_top = 0.5642656
+anchor_right = 0.70842195
+anchor_bottom = 1.0722656
+offset_left = 0.23999023
+offset_top = 0.0960083
+offset_right = 0.26342773
+offset_bottom = 0.13696289
+mouse_filter = 2
+theme = SubResource("Theme_326n5")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "DASDASDASDA EFEFDADDADe"
+scroll_active = false
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/TextureRect" unique_id=674768773]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_13ndr")
+
+[connection signal="pressed" from="CanvasLayer/TextureRect/CloseButton" to="." method="_on_close_button_pressed"]

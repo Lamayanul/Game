@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://bqlq0wq6mia5p"]
+
+[ext_resource type="Script" uid="uid://bmeopib3hwol5" path="res://Trade/forex_chart.gd" id="1_037yk"]
+[ext_resource type="Texture2D" uid="uid://dsn1wbldpqp6w" path="res://Trade/apple_gray.png" id="3_ncrw7"]
+[ext_resource type="Texture2D" uid="uid://s8y5tlyn83lg" path="res://Trade/apple.png" id="4_wtmnr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2n0mt"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ncrw7"]
+bg_color = Color(0, 0, 0, 0.85490197)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="ForexChart" type="Control" unique_id=470449504]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_037yk")
+
+[node name="ColorRect" type="PanelContainer" parent="." unique_id=204207606]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2n0mt")
+
+[node name="AppleProgressBar" type="TextureProgressBar" parent="." unique_id=202370260]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.003
+anchor_top = 0.193
+anchor_right = 0.003
+anchor_bottom = 0.193
+offset_left = -0.07199907
+offset_top = 0.18399811
+offset_right = 15.9279995
+offset_bottom = 16.183998
+scale = Vector2(3.9444947, 3.9444947)
+fill_mode = 3
+texture_under = ExtResource("3_ncrw7")
+texture_progress = ExtResource("4_wtmnr")
+
+[node name="Button" type="Button" parent="AppleProgressBar" unique_id=69558832]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 15.971627
+offset_bottom = 15.971628
+
+[node name="InfoPanel" type="Panel" parent="." unique_id=925164860]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.643
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.21600342
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ncrw7")
+
+[node name="Buy" type="Button" parent="." unique_id=161700446]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0029296875
+anchor_top = 0.005859375
+anchor_right = 0.05027344
+anchor_bottom = 0.06873438
+offset_right = -0.48000145
+offset_bottom = -0.19200039
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Sell" type="Button" parent="." unique_id=1814024879]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.051460937
+anchor_top = 0.005859375
+anchor_right = 0.09899219
+anchor_bottom = 0.06873438
+offset_left = 0.30399895
+offset_right = -0.36800385
+offset_bottom = -0.19200039
+metadata/_edit_use_anchors_ = true
+
+[node name="Close potion" type="Button" parent="." unique_id=426403831]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.10164063
+anchor_top = 0.005859375
+anchor_right = 0.16946876
+anchor_bottom = 0.06873438
+offset_left = -0.08000183
+offset_right = 0.4639969
+offset_bottom = -0.19200039
+metadata/_edit_use_anchors_ = true
+
+[node name="Pnl" type="Label" parent="." unique_id=1164879998]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22525
+anchor_top = 0.005859375
+anchor_right = 0.3501875
+anchor_bottom = 0.0684375
+offset_left = 0.34399414
+offset_right = 0.40799713
+offset_bottom = -0.040000916
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="AppleProgressBar/Button" to="." method="_on_button_subtab"]

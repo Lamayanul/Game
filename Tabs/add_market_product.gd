@@ -2,10 +2,9 @@ extends GridContainer
 
 @export var slot_tab: PackedScene = preload("res://Tabs/market_slot.tscn")
 var rng := RandomNumberGenerator.new()
-
 # Dacă e marcat ca "product grid", când îi ceri alt filtru își înlocuiește conținutul.
 @export var is_product_grid := false
-
+@onready var zi = get_node("/root/world/Cycle_d_n")
 # ---- Setări randomizare ----
 @export var add_random_affixes := true
 @export var chance_random_curse := 0.25
@@ -16,6 +15,17 @@ var rng := RandomNumberGenerator.new()
 
 var _db_cache: Dictionary = {}
 var _last_filter := ""
+var current_day := "Monday"
+@export var promotion_chance := 0.25   # 25% șansă ca un item să fie la promoție
+@export var promotion_discount := 0.5 # 50% reducere (prețul va fi 1.0 - 0.5)
+
+const OWNER_ITEMS := {
+	"owner_1": ["3", "7", "10", "15"],
+	"owner_2": ["4", "9", "11"],
+	"owner_3": ["1", "2", "6", "8", "12"],
+	"owner_4": ["13", "14", "16"]
+}
+
 
 const RARITY_BASE := {
 	"common": 10,
@@ -53,6 +63,8 @@ func _ready() -> void:
 	rng.randomize()
 	# Gridul "ALL" își face inițial sloturile + populatează fără filtru.
 	# Gridul "PRODUCT" stă gol până primește filtru din browser.
+	if not zi.is_connected("day_changed", Callable(self, "_on_day_changed")):
+		zi.connect("day_changed", Callable(self, "_on_day_changed"))
 	if not is_product_grid:
 		populate_market("", rng.randi_range(1, 6), true)
 
@@ -88,6 +100,7 @@ func populate_market(filter_name: String, desired_count: int, replace_slots := t
 
 	_fill_slots_with_items_from_pool(pool)
 	return true
+
 
 
 
@@ -137,22 +150,49 @@ func _pool_keys(filter_type: String) -> Array:
 	# IMPORTANT: FĂRĂ fallback la all — dacă nu sunt iteme potrivite, întoarcem listă goală
 	return filt
 
+func _on_day_changed(new_day: String) -> void:
+	print("🛒 Market: restock pentru ziua", new_day)
+	restock_market(new_day)
+
 
 func _fill_slots_with_items_from_pool(pool: Array) -> void:
 	for ctrl in get_children():
 		if not is_instance_valid(ctrl):
 			continue
+
 		var slot := ctrl.get_node_or_null("SlotContainer")
 		if slot == null or not slot.has_method("set_property"):
 			continue
 
-		# Alege RANDOM din pool pentru FIECARE slot (pot fi același item de bază,
-		# dar efectele/curse diferă pentru că sunt randomizate separat)
-		var random_key = pool[rng.randi_range(0, pool.size() - 1)]
+		# 🟣 Găsim Provider-ul din slot_tab
+		var provider_node := ctrl.get_node_or_null("Provider")
+		if provider_node == null:
+			provider_node = ctrl.find_child("Provider", true, false)
+
+		var owner_id := "default"
+
+
+		# 🟢 Dacă ownerul are listă proprie de iteme, folosim aia
+		var allowed_ids: Array = []
+		if OWNER_ITEMS.has(owner_id):
+			allowed_ids = OWNER_ITEMS[owner_id]
+		else:
+			allowed_ids = pool  # fallback, dacă ownerul nu e definit
+
+		# 🔸 Alegem random DOAR din allowed_ids
+		var valid_items: Array = []
+		for id in allowed_ids:
+			if _db_cache.has(id):
+				valid_items.append(id)
+		if valid_items.is_empty():
+			continue
+
+		var random_key = valid_items[rng.randi_range(0, valid_items.size() - 1)]
 		var item_data: Dictionary = _db_cache.get(random_key, {})
 		if item_data.is_empty():
 			continue
 
+		# === codul tău original de setare ===
 		var qty := 1
 		var texture_path := "res://assets/" + String(item_data.get("texture", ""))
 		var texture := load(texture_path)
@@ -168,21 +208,60 @@ func _fill_slots_with_items_from_pool(pool: Array) -> void:
 			"RARITATE": String(item_data.get("raritate", "")),
 			"CURSE": item_data.get("curse", null),
 			"EFFECTS": item_data.get("effects", []),
-			"TYPE": item_data.get("type", [])
+			"TYPE": item_data.get("type", []),
+			"DURABILITY": float(item_data.get("durability", 20))
 		}
-		var types := _types_from_item(item_data)
 
-		# aici se face diferențierea între sloturi: random curse/effects pe fiecare
+		var types := _types_from_item(item_data)
 		if add_random_affixes:
 			_add_random_affixes(data_for_slot, types)
 
 		slot.set_property(data_for_slot)
-		var provider_type := _get_provider_type_from_slot(slot)
-		var price := _compute_item_price(data_for_slot, provider_type)
-		_set_slot_price_label(slot, price)
+		
+		# Găsim provider_type folosind `ctrl` (nodul root al instanței)
+		var provider_type := _get_provider_type_from_slot(ctrl) # <-- Trimitem `ctrl`
+		
+		# Calculăm prețurile
+		var original_price := _compute_item_price(data_for_slot, provider_type)
+		var final_price := original_price
+		var is_on_sale := false
+
+		# Verificăm dacă aplicăm promoția
+		if rng.randf() < promotion_chance:
+			is_on_sale = true
+			final_price = int(round(original_price * (1.0 - promotion_discount)))
+			final_price = max(1, final_price) # Prețul minim să fie 1
+
+		# Setăm prețul de logică (pentru cumpărare)
 		if "price" in slot:
-			slot.price = price
-			slot.price_text.text = str(price)+" 🍎"
+			slot.price = final_price 
+			
+		# Actualizăm VIZUAL slotul (preț și textură "Offer")
+		_update_slot_visuals(ctrl, slot, original_price, final_price, is_on_sale)
+
+func restock_market(new_day: String) -> void:
+	print("🔁 Restock pentru:", new_day)
+
+	# dacă nu există un filtru salvat, îl setăm la "" (fallback)
+	var filter := _last_filter
+	if filter == null or filter == "":
+		filter = ""
+
+	print("🧺 Reumplere pentru tipul:", filter)
+
+	# curățare
+	_clear_children()
+	await get_tree().process_frame
+
+	# populare cu același tip de item
+	var success := populate_market(filter, rng.randi_range(3, 6), true)
+	if not success:
+		print("⚠️ Restock eșuat pentru filtrul '%s'!" % filter)
+	else:
+		print("✅ Market reumplut cu succes pentru tipul:", filter)
+
+
+
 
 
 func _types_from_item(item_data: Dictionary) -> Array:
@@ -330,23 +409,52 @@ func _normalize_name(s: String) -> String:
 		t = t.replace("  ", " ")
 	return t
 
-func _get_provider_type_from_slot(slot: Node) -> String:
-	# Căutăm un nod numit "Provider" în slot sau copii și extragem either:
-	#  - o proprietate `provider_type`
-	#  - sau `.text`/`.name`
-	var p := slot.get_node_or_null("Provider")
-	if p == null:
-		p = slot.find_child("Provider", true, false)
+func _get_provider_type_from_slot(inst: Node) -> String:
+	# Calea corectă este din `inst` (ctrl) -> PanelContainer2 -> Provider
+	var p := inst.get_node_or_null("PanelContainer2/Provider")
+
 	if p != null:
-		if p.has_method("get_text"):     # ex. Label/LineEdit/… în Godot 3
+		if p.has_method("get_text"):
 			return String(p.call("get_text"))
-		if "text" in p:                  # Godot 4 property
+		if "text" in p:
 			return String(p.text)
 		if "provider_type" in p:
 			return String(p.provider_type)
 		return String(p.name)
 	return "default"
 	
+
+
+func _update_slot_visuals(inst: Node, slot: Node, original_price: int, final_price: int, is_on_sale: bool) -> void:
+	
+	# --- 1. Gestionează Textura "Offer" ---
+	# "Offer" este copil al lui `slot` (SlotContainer)
+	var offer_node = slot.get_node_or_null("Offer")
+	if offer_node and offer_node is TextureRect:
+		offer_node.visible = is_on_sale
+
+	# --- 2. Gestionează Eticheta de Preț ---
+	# "Price" este copil al lui `inst` (frate cu `slot`)
+	var price_label := inst.get_node_or_null("PanelContainer3/Price")
+
+	if price_label and price_label is RichTextLabel:
+		price_label.bbcode_enabled = true
+		
+		if is_on_sale:
+			# Afișează prețul vechi tăiat [s]...[/s] și prețul nou
+			price_label.text = "[s]%d[/s] [color=green]%d[/color] 🍎" % [original_price, final_price]
+		else:
+			# Afișează prețul normal
+			price_label.text = "%d 🍎" % final_price
+			
+		# Sincronizare cu variabila din Slot.gd (dacă e nevoie)
+		if "price_text" in slot and slot.price_text == price_label:
+			pass # E același nod, e ok
+		elif "price_text" in slot:
+			slot.price_text.text = price_label.text
+			
+			
+			
 func _compute_item_price(data: Dictionary, provider_type: String) -> int:
 	var rarity := String(data.get("RARITATE","")).to_lower()
 	var base = RARITY_BASE.get(rarity, 10)
@@ -377,11 +485,18 @@ func _compute_item_price(data: Dictionary, provider_type: String) -> int:
 	var ptype := provider_type.to_lower()
 	var mult = PROVIDER_MULT.get(ptype, PROVIDER_MULT["default"])
 
+	# --- INFLUENȚĂ FOREX AMPLFICATĂ ---
+	var forex_mult: float = 1.0
+	var diff = ItemData.current_forex_price - ItemData.forex_baseline
+	forex_mult = 1.0 + (diff * ItemData.forex_sensitivity)
+	forex_mult = max(0.1, forex_mult) # Prețul nu scade sub 10% din baza lui
+	# ----------------------------------
+
 	# cantitatea
 	var qty := int(data.get("CANTITATE", 1))
 	qty = max(1, qty)
 
-	var price := int(round(max(1.0, float(base) * mult))) * qty
+	var price := int(round(max(1.0, float(base) * mult * forex_mult))) * qty
 	return max(0, price)  # niciodată negativ
 	
 	

@@ -344,7 +344,7 @@ size = Vector2i(400, 600)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
-filters = PackedStringArray("*.png", "*.jpeg")
+filters = PackedStringArray("*.png", "*.jpeg", "*.gif")
 
 [node name="SkillTree" parent="." instance=ExtResource("4_op81h")]
 visible = false

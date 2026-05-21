@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ikje2iimpb2w"]
+
+[ext_resource type="Shader" uid="uid://difhy5i7j33vy" path="res://Shaders/univers.gdshader" id="1_wb3d3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vywu"]
+shader = ExtResource("1_wb3d3")
+shader_parameter/VIEWPORT_SIZE = Vector2(1280, 720)
+
+[node name="Control" type="Control" unique_id=1455708648]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1968514831]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=438605440]
+material = SubResource("ShaderMaterial_6vywu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

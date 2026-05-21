@@ -1,4 +1,4 @@
-[gd_scene load_steps=581 format=3 uid="uid://def8fyw03nhf6"]
+[gd_scene format=3 uid="uid://def8fyw03nhf6"]
 
 [ext_resource type="Texture2D" uid="uid://du8pusfbqst35" path="res://Base Character - Free/idle.png" id="1_3sdfn"]
 [ext_resource type="Script" uid="uid://b04sadlh7lvp8" path="res://Scripturi/player.gd" id="1_cqeva"]
@@ -7473,39 +7473,44 @@ fill = 1
 fill_from = Vector2(0.496711, 0.496711)
 fill_to = Vector2(0.914474, 0.177632)
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=2054176548 groups=["player"]]
 y_sort_enabled = true
-collision_layer = 3
-collision_mask = 3
+collision_layer = 63
+collision_mask = 63
 floor_constant_speed = true
 platform_floor_layers = 0
 script = ExtResource("1_cqeva")
 
-[node name="colisiune" type="CollisionShape2D" parent="."]
+[node name="colisiune" type="CollisionShape2D" parent="." unique_id=1324782668]
 position = Vector2(0.576175, 8)
 shape = SubResource("RectangleShape2D_fivss")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=954540578]
 zoom = Vector2(4, 4)
+process_callback = 0
+limit_enabled = false
 limit_smoothed = true
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
+position_smoothing_enabled = true
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
 
-[node name="attack_timer" type="Timer" parent="."]
+[node name="attack_timer" type="Timer" parent="." unique_id=1079944488]
 wait_time = 0.5
 
-[node name="arma" type="Area2D" parent="." groups=["arma"]]
+[node name="arma" type="Area2D" parent="." unique_id=1122642390 groups=["arma"]]
 collision_mask = 5
 
-[node name="arma_colisiune" type="CollisionShape2D" parent="arma"]
+[node name="arma_colisiune" type="CollisionShape2D" parent="arma" unique_id=314522374]
 position = Vector2(2, 10.5)
 shape = SubResource("RectangleShape2D_m2umu")
 disabled = true
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arma"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arma" unique_id=1079608632]
 stream = ExtResource("2_uklu6")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2119197041]
 visible = false
 texture_filter = 1
 position = Vector2(0, 1.90735e-06)
@@ -7513,63 +7518,55 @@ scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_qhxai")
 animation = &"atack-right"
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=1898952675]
 texture_filter = 1
 position = Vector2(0, 4.48227e-06)
 scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_qhxai")
 animation = &"atack-right"
 
-[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="." unique_id=1792422241]
 texture_filter = 1
 position = Vector2(0, 1.90735e-06)
 scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_qhxai")
 animation = &"atack-right"
 
-[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="." unique_id=911860686]
 texture_filter = 1
 position = Vector2(0, 1.90735e-06)
 scale = Vector2(1.35, 1.35)
 sprite_frames = SubResource("SpriteFrames_qhxai")
 animation = &"atack-right"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1643936283]
 root_node = NodePath("../AnimatedSprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_wiib8")
-}
+libraries/ = SubResource("AnimationLibrary_wiib8")
 
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." unique_id=1363996122]
 root_node = NodePath("../AnimatedSprite2D2")
-libraries = {
-&"": SubResource("AnimationLibrary_wiib8")
-}
+libraries/ = SubResource("AnimationLibrary_wiib8")
 
-[node name="AnimationPlayer3" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer3" type="AnimationPlayer" parent="." unique_id=356033402]
 root_node = NodePath("../AnimatedSprite2D3")
-libraries = {
-&"": SubResource("AnimationLibrary_wiib8")
-}
+libraries/ = SubResource("AnimationLibrary_wiib8")
 
-[node name="AnimationPlayer4" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer4" type="AnimationPlayer" parent="." unique_id=1919446926]
 root_node = NodePath("../AnimatedSprite2D4")
-libraries = {
-&"": SubResource("AnimationLibrary_wiib8")
-}
+libraries/ = SubResource("AnimationLibrary_wiib8")
 
-[node name="player_hitbox" type="Area2D" parent="." groups=["player_hitbox"]]
+[node name="player_hitbox" type="Area2D" parent="." unique_id=185830621 groups=["player_hitbox"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox" unique_id=2031907527]
 position = Vector2(1, 5)
 shape = SubResource("RectangleShape2D_l0ftj")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1569527231]
 y_sort_enabled = true
 collision_layer = 4
 collision_mask = 4
 
-[node name="Scut" type="Area2D" parent="StaticBody2D" groups=["scut"]]
+[node name="Scut" type="Area2D" parent="StaticBody2D" unique_id=1860701694 groups=["scut"]]
 visible = false
 y_sort_enabled = true
 position = Vector2(10, -9)
@@ -7577,29 +7574,31 @@ collision_layer = 4
 collision_mask = 4
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Scut"]
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Scut" unique_id=1928311336]
 position = Vector2(9.53674e-07, 12)
 scale = Vector2(0.895007, 0.895007)
 texture = ExtResource("9_hvehg")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/Scut"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/Scut" unique_id=1366194749]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_kcy8e")
 
-[node name="shield-touch" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="shield-touch" type="CollisionShape2D" parent="StaticBody2D" unique_id=1249523765]
 position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_103pq")
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1888834372]
 visible = false
 texture = SubResource("GradientTexture2D_eqfay")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1472815659]
 wait_time = 0.5
 one_shot = true
 
-[node name="StatusEffects" type="Node" parent="."]
+[node name="StatusEffects" type="Node" parent="." unique_id=1253288599]
 script = ExtResource("30_2gnqs")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1384948259]
 
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="area_entered" from="arma" to="." method="_on_arma_area_entered"]

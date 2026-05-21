@@ -34,6 +34,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_hover_out)
 	#set_big_step(150)
 	
+
+	
 func _on_hover_in() -> void:
 	_zoom_to(hover_scale)
 	if raise_z_on_hover:

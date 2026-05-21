@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dluls5pgk36bb"]
+[gd_scene format=3 uid="uid://dluls5pgk36bb"]
 
 [ext_resource type="Script" uid="uid://dyrrlcjhaa4wm" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/slot_container.gd" id="1_ywjpa"]
 [ext_resource type="PackedScene" uid="uid://cywf1hge6uljc" path="res://Scene/providers.tscn" id="3_wp40w"]
@@ -24,11 +24,8 @@ default_font_size = 30
 [sub_resource type="Theme" id="Theme_8yu11"]
 default_font_size = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywjpa"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uumq7"]
-bg_color = Color(0.195313, 0.19197, 0.190487, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbba"]
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -41,12 +38,15 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbba"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uumq7"]
+bg_color = Color(0.195313, 0.19197, 0.190487, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywjpa"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Gradient" id="Gradient_y4thb"]
 offsets = PackedFloat32Array(0)
@@ -57,7 +57,8 @@ gradient = SubResource("Gradient_y4thb")
 width = 100
 height = 2
 
-[node name="SlotContainer8" type="PanelContainer" groups=["market"]]
+[node name="SlotContainer8" type="PanelContainer" unique_id=346311986 groups=["market"]]
+visible = false
 custom_minimum_size = Vector2(64, 300)
 offset_right = 104.0
 offset_bottom = 300.0
@@ -67,11 +68,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_y4thb")
 script = ExtResource("1_ywjpa")
 slot_type = "market"
 
-[node name="TextureHolder" type="Control" parent="."]
+[node name="TextureHolder" type="Control" parent="." unique_id=2007959494]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="TextureRect2" type="TextureRect" parent="TextureHolder"]
+[node name="TextureRect2" type="TextureRect" parent="TextureHolder" unique_id=1286464873]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_right = 128.0
@@ -79,7 +80,7 @@ offset_bottom = 128.0
 expand_mode = 1
 stretch_mode = 4
 
-[node name="TextureRect" type="TextureRect" parent="TextureHolder"]
+[node name="TextureRect" type="TextureRect" parent="TextureHolder" unique_id=944542012]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = -1
@@ -92,7 +93,7 @@ offset_bottom = 127.954
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="TextureHolder/TextureRect"]
+[node name="Label" type="Label" parent="TextureHolder/TextureRect" unique_id=1094036239]
 unique_name_in_owner = true
 texture_filter = 2
 layout_mode = 1
@@ -111,7 +112,7 @@ label_settings = SubResource("LabelSettings_qudmq")
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="TextureRect3" type="TextureRect" parent="TextureHolder"]
+[node name="TextureRect3" type="TextureRect" parent="TextureHolder" unique_id=656126129]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 offset_right = 64.0
@@ -119,7 +120,7 @@ offset_bottom = 129.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="description" type="RichTextLabel" parent="TextureHolder"]
+[node name="description" type="RichTextLabel" parent="TextureHolder" unique_id=1476796344]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.174
@@ -131,20 +132,20 @@ theme = SubResource("Theme_di5wc")
 bbcode_enabled = true
 text = "Nume produs, cantitatea, raritatea, origine, caracteristici"
 
-[node name="Button" type="Button" parent="TextureHolder"]
+[node name="Button" type="Button" parent="TextureHolder" unique_id=1214151306]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 200.0
 offset_right = 135.0
 offset_bottom = 281.0
 theme = SubResource("Theme_8yu11")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ywjpa")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uumq7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wq3ab")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gtbba")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wq3ab")
+theme_override_styles/hover = SubResource("StyleBoxFlat_uumq7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ywjpa")
 text = "BUY"
 
-[node name="Control" parent="TextureHolder" instance=ExtResource("3_wp40w")]
+[node name="Control" parent="TextureHolder" unique_id=715582493 instance=ExtResource("3_wp40w")]
 custom_minimum_size = Vector2(460, 50)
 layout_mode = 1
 anchor_left = 0.33
@@ -160,7 +161,7 @@ grow_vertical = 1
 size_flags_horizontal = 8
 size_flags_vertical = 4
 
-[node name="Offer" type="TextureRect" parent="."]
+[node name="Offer" type="TextureRect" parent="." unique_id=616282059]
 visible = false
 custom_minimum_size = Vector2(200, 150)
 layout_mode = 2
@@ -170,7 +171,7 @@ texture = ExtResource("4_b8l8q")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=720492873]
 custom_minimum_size = Vector2(100, 5)
 layout_mode = 2
 size_flags_vertical = 8

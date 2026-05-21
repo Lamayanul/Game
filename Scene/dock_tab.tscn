@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b77vqi0haq2el"]
+[gd_scene format=3 uid="uid://b77vqi0haq2el"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_8twd8"]
 [ext_resource type="Texture2D" uid="uid://bg62t78h5g64j" path="res://icon.svg" id="2_8twd8"]
@@ -23,14 +23,14 @@ height = 52
 [sub_resource type="Theme" id="Theme_8twd8"]
 default_font_size = 40
 
-[node name="DockTab" type="PanelContainer"]
-z_index = 2
+[node name="DockTab2" type="PanelContainer" unique_id=1255845267]
+z_index = 4
 offset_right = 232.0
 offset_bottom = 181.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_8twd8")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1954847158]
 modulate = Color(1, 1, 1, 0.145098)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -39,48 +39,61 @@ mouse_filter = 2
 texture = ExtResource("2_oa6d7")
 stretch_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=652717849]
 layout_mode = 2
 
-[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer" unique_id=92018161]
 custom_minimum_size = Vector2(180, 40)
 layout_mode = 2
 mouse_filter = 0
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar" unique_id=1939254444]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = SubResource("GradientTexture2D_oa6d7")
 
-[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect"]
-layout_mode = 2
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect" unique_id=1933038047]
+layout_mode = 0
 anchor_right = 0.828
 anchor_bottom = 1.0
 offset_right = -0.0960083
 theme_override_font_sizes/font_size = 30
 
-[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect"]
+[node name="ShrinkBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=999999129]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -81.0
+offset_right = -41.0
+offset_bottom = 52.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 25
+text = "-"
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=1236766613]
 custom_minimum_size = Vector2(40, 0)
 layout_direction = 3
-layout_mode = 2
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 52.0
 size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 25
 text = "x"
 
-[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Content" type="HBoxContainer" parent="VBoxContainer" unique_id=1612208778]
 layout_mode = 2
 alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Content"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Content" unique_id=974620366]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 texture = ExtResource("2_8twd8")
 stretch_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Content"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Content" unique_id=382662571]
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 2
 size_flags_horizontal = 3

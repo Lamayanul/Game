@@ -1,18 +1,51 @@
-[gd_scene load_steps=15 format=3 uid="uid://cj567gtda6mkd"]
+[gd_scene format=3 uid="uid://cj567gtda6mkd"]
 
 [ext_resource type="Script" uid="uid://drb6m5ohpl1a5" path="res://Tabs/pc.gd" id="1_g60ad"]
 [ext_resource type="Texture2D" uid="uid://do6p2of182aah" path="res://Sprout Lands - Sprites - Basic pack/Objects/PC.png" id="2_qq25d"]
+[ext_resource type="Script" uid="uid://bkcoutjh0c1no" path="res://Tabs/inv_2col.gd" id="3_1or72"]
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_52hwo"]
 [ext_resource type="Shader" uid="uid://cx8uaul7w2l23" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/pc_item.gdshader" id="4_qq25d"]
 [ext_resource type="Texture2D" uid="uid://l4h4tdax82bt" path="res://Sprout Lands - Sprites - Basic pack/Objects/Give a hand.jpeg" id="5_1kquy"]
+[ext_resource type="Shader" uid="uid://hcj1ye25dg4m" path="res://Shaders/vhs_edge.gdshader" id="5_4absa"]
 [ext_resource type="PackedScene" uid="uid://c53tjlotiir5s" path="res://Tabs/pc_inv.tscn" id="5_52hwo"]
 [ext_resource type="Shader" uid="uid://ucm2sptjxfls" path="res://Shaders/pc_old.gdshader" id="5_jer4h"]
 [ext_resource type="PackedScene" uid="uid://dvhcggjwy043s" path="res://Tabs/taskbar.tscn" id="8_xj3c6"]
-[ext_resource type="PackedScene" uid="uid://c1fi2o13u0x6x" path="res://notification_tab.tscn" id="9_a4lyx"]
+[ext_resource type="PackedScene" uid="uid://congeq2d3o85n" path="res://notification_tab.tscn" id="9_a4lyx"]
 [ext_resource type="Texture2D" uid="uid://c7inimwv3oyxi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_sus.png" id="9_sieio"]
 [ext_resource type="Texture2D" uid="uid://b0lr4lbldppgi" path="res://Sprout Lands - Sprites - Basic pack/Objects/dvd_jos.png" id="10_a4lyx"]
+[ext_resource type="Texture2D" uid="uid://cmn4wocoqwwts" path="res://Sprout Lands - Sprites - Basic pack/Objects/PC_margini.png" id="12_mvpek"]
+[ext_resource type="Script" uid="uid://bsh1a2gqkxdvi" path="res://Tabs/cupoane_container.gd" id="13_2k5uy"]
+[ext_resource type="Script" uid="uid://crs1a1m0cliu7" path="res://Tabs/CardHandContainer.gd" id="14_4absa"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gqwo1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2k5uy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pu5ex"]
+shader = ExtResource("5_4absa")
+shader_parameter/pixel_size = 1.3550000168625
+shader_parameter/lod_blur = 0.6000000285
+shader_parameter/chroma_offset_px = 3.0
+shader_parameter/saturation = 0.6550000311125
+shader_parameter/contrast = 1.5
+shader_parameter/shadow_lift = 0.25
+shader_parameter/scanline_strength = 0.20000000298023
+shader_parameter/vignette_strength = 0.5
+shader_parameter/noise_strength = 0.11999999731779
+shader_parameter/noise_speed = 30.0
+shader_parameter/base_jitter_px = 0.1870000088825
+shader_parameter/base_jitter_speed = 2.0350000966625
+shader_parameter/glitchiness = 1.0
+shader_parameter/glitch_rate = 0.0
+shader_parameter/glitch_shift_px = 1.9350000919124999
+shader_parameter/glitch_window_min = 0.0310000014725
+shader_parameter/glitch_window_max = 0.0
+shader_parameter/blue_band_start_y = 0.45
+shader_parameter/blue_band_speed = -1.1149999817125
+shader_parameter/blue_band_width = 0.05700000270749
+shader_parameter/blue_band_strength = 0.102000004845
+shader_parameter/blue_band_glitch = 0.18000000855
+shader_parameter/blue_band_distort_px = 1.7550000833625
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gqwo1"]
 shader = ExtResource("5_jer4h")
@@ -38,7 +71,16 @@ shader_parameter/taper_x_top = 0.0
 shader_parameter/use_rect_size = false
 shader_parameter/rect_size = Vector2(0, 0)
 
-[node name="Control" type="Control" groups=["pc"]]
+[sub_resource type="Gradient" id="Gradient_mvpek"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_g60ad"]
+gradient = SubResource("Gradient_mvpek")
+fill_to = Vector2(1, 1)
+
+[node name="Control" type="Control" unique_id=1251301378 groups=["pc"]]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,41 +90,75 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_g60ad")
 
-[node name="Inv" parent="." instance=ExtResource("5_52hwo")]
+[node name="Inv" parent="." unique_id=10858934 instance=ExtResource("5_52hwo")]
 z_index = 2
-layout_mode = 1
-anchor_left = 0.03
-anchor_top = 0.063
-anchor_right = 0.104
-anchor_bottom = 0.631
-offset_left = -0.560005
-offset_top = 0.175999
-offset_right = 0.192001
-offset_bottom = 0.111969
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_gqwo1")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.03
 anchor_top = 0.063
-anchor_right = 0.756
-anchor_bottom = 0.934
-offset_left = -0.560001
+anchor_right = 0.113000005
+anchor_bottom = 0.629
+offset_left = -0.560005
 offset_top = 0.175999
-offset_right = 0.0879517
-offset_bottom = -0.231995
+offset_right = -9.024002
+offset_bottom = 1.1359558
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gqwo1")
+
+[node name="Inv_2" parent="." unique_id=1641641028 instance=ExtResource("5_52hwo")]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.113000005
+anchor_top = 0.0625
+anchor_right = 0.19700001
+anchor_bottom = 0.0625
+offset_left = 0.28799438
+offset_right = 0.27198792
+offset_bottom = 742.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2k5uy")
+script = ExtResource("3_1or72")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=324313476]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.029
+anchor_top = 0.062
+anchor_right = 0.757
+anchor_bottom = 0.934
+offset_left = 0.303999
+offset_top = 0.255997
+offset_right = -0.16803
+offset_bottom = -0.208008
 mouse_filter = 2
 texture = ExtResource("5_1kquy")
 expand_mode = 1
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=277439752]
 layer = 2
 visible = false
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer2" unique_id=1022128878]
+material = SubResource("ShaderMaterial_pu5ex")
+anchors_preset = -1
+anchor_left = 0.029000001
+anchor_top = 0.062000003
+anchor_right = 0.75600004
+anchor_bottom = 0.934
+offset_left = 0.30399895
+offset_top = 0.2559986
+offset_right = -0.14404297
+offset_bottom = -0.20800781
+mouse_filter = 2
+texture = ExtResource("5_1kquy")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1419008501]
+layer = 2
+visible = false
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer" unique_id=511981751]
 material = SubResource("ShaderMaterial_gqwo1")
 anchors_preset = -1
 anchor_left = 0.03
@@ -97,7 +173,7 @@ mouse_filter = 2
 texture = ExtResource("5_1kquy")
 expand_mode = 1
 
-[node name="Ecran" type="TextureRect" parent="."]
+[node name="Ecran" type="TextureRect" parent="." unique_id=1967619954]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.786
@@ -106,7 +182,7 @@ offset_right = 0.527954
 mouse_filter = 2
 texture = ExtResource("2_qq25d")
 
-[node name="SlotContainer" parent="." instance=ExtResource("3_52hwo")]
+[node name="SlotContainer" parent="." unique_id=161427501 instance=ExtResource("3_52hwo")]
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -135,10 +211,13 @@ material = SubResource("ShaderMaterial_52hwo")
 [node name="Label" parent="SlotContainer/TextureHolder/TextureRect" index="0"]
 visible = false
 
-[node name="TaskBar" parent="." instance=ExtResource("8_xj3c6")]
+[node name="TaskBar" parent="." unique_id=1965547857 instance=ExtResource("8_xj3c6")]
+visible = true
+z_index = 5
 layout_mode = 1
+mouse_force_pass_scroll_events = false
 
-[node name="Tray" type="HBoxContainer" parent="TaskBar"]
+[node name="Tray" type="HBoxContainer" parent="TaskBar" unique_id=2030491255]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.002
@@ -149,8 +228,10 @@ offset_left = -0.0500002
 offset_top = 0.0144424
 offset_right = 37.95
 offset_bottom = 38.0144
+mouse_force_pass_scroll_events = false
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1934517712]
+visible = false
 layout_mode = 1
 anchor_left = 0.786
 anchor_right = 1.0
@@ -160,7 +241,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=275942624]
 z_index = 2
 layout_mode = 1
 anchors_preset = -1
@@ -174,7 +255,7 @@ offset_bottom = -0.208008
 mouse_filter = 2
 texture = ExtResource("9_sieio")
 
-[node name="TextureRect2" type="TextureRect" parent="Control"]
+[node name="TextureRect2" type="TextureRect" parent="Control" unique_id=828833070]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.004
@@ -186,7 +267,8 @@ offset_top = -0.208008
 mouse_filter = 2
 texture = ExtResource("10_a4lyx")
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=919740717]
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -200,7 +282,8 @@ offset_right = 0.447937
 offset_bottom = -0.0960083
 text = "D"
 
-[node name="Button2" type="Button" parent="."]
+[node name="Button2" type="Button" parent="." unique_id=377628023]
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -214,7 +297,8 @@ offset_right = 0.039978
 offset_bottom = -0.0960083
 text = "I"
 
-[node name="Scan" type="Button" parent="."]
+[node name="Scan" type="Button" parent="." unique_id=1285070962]
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -228,10 +312,78 @@ offset_right = -0.352051
 offset_bottom = -0.0960083
 text = "SCAN"
 
-[node name="DockTab" parent="." instance=ExtResource("9_a4lyx")]
+[node name="DockTab" parent="." unique_id=1845924926 instance=ExtResource("9_a4lyx")]
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 190.0
+min_size_px = null
+max_size_px = null
+edge_thickness = null
+slot_tab = null
+window_title = null
+market_grid_all_path = null
+market_grid_product_path = null
+pad_left = null
+pad_top = null
+pad_right = null
+pad_bottom = null
+
+[node name="pc_margini" type="TextureRect" parent="." unique_id=2116207682]
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.786
+anchor_bottom = 1.0
+offset_right = 0.135986
+mouse_filter = 2
+texture = ExtResource("12_mvpek")
+
+[node name="Control2" type="Control" parent="." unique_id=2124631701]
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.786
+anchor_top = -0.086
+anchor_right = 1.0
+anchor_bottom = 1.078
+offset_left = 1.13599
+offset_top = 0.0320015
+offset_right = 1.0
+offset_bottom = 0.0639648
+mouse_filter = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control2" unique_id=1815348864]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.01
+offset_bottom = -0.0700073
+texture = SubResource("GradientTexture2D_g60ad")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2" unique_id=1460182459]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.142
+anchor_top = 0.027
+anchor_right = 1.302
+anchor_bottom = 1.037
+offset_left = 0.0979996
+offset_top = -0.092001
+offset_right = 162.862
+offset_bottom = 163.948
+scale = Vector2(0.659899, 0.786311)
+mouse_filter = 0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+script = ExtResource("13_2k5uy")
+
+[node name="Rail" type="Control" parent="Control2/ScrollContainer" unique_id=1528326988]
+clip_contents = true
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("14_4absa")
 
 [connection signal="pressed" from="Button" to="." method="_on_btn_open_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_btn_close_pressed"]

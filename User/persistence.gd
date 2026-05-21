@@ -1116,11 +1116,11 @@ func load_player(data:SaveData):
 			if player_camera:
 				player_camera.make_current()
 		var stat = MenuSaveLoad.get_node("info/VBoxContainer/HBoxContainer/GridContainer")
-		stat.player_reference=new_player
-		stat.update_stats()
-		for enemy in enemies:
-			if is_instance_valid(enemy):
-				enemy.player = new_player
+		#stat.player_reference=new_player
+		#stat.update_stats()
+		#for enemy in enemies:
+		#	if is_instance_valid(enemy):
+		#		enemy.player = new_player
 
 func load_enemy(data:SaveData):
 	# Ștergem EXISTENȚII înamici înainte de a încărca

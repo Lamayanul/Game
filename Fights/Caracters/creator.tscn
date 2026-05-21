@@ -1,0 +1,570 @@
+[gd_scene format=3 uid="uid://4fshpg824hxm"]
+
+[ext_resource type="Script" uid="uid://chws801y3yn8f" path="res://Fights/Caracters/Jake.gd" id="1_nhkii"]
+[ext_resource type="Texture2D" uid="uid://fcvxfkqmo22p" path="res://Fights/soldier_cat_bg.png" id="2_nhkii"]
+[ext_resource type="Texture2D" uid="uid://bdh5w1tkwrekw" path="res://Fights/soldier_cat_fbg.png" id="3_2bfkx"]
+[ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="3_ui4kf"]
+[ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="4_50ffc"]
+[ext_resource type="Texture2D" uid="uid://deagc4swpklua" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill.png" id="5_aj7ri"]
+[ext_resource type="Texture2D" uid="uid://bnq5gdwcfkyd6" path="res://Fights/mana_3.png" id="7_50ffc"]
+[ext_resource type="Texture2D" uid="uid://b8dgfoeo1ek11" path="res://Fights/Free Smoke Fx  Pixel 06.png" id="7_aj7ri"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="8_ui4kf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhkii"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bfkx"]
+bg_color = Color(0.5625, 0, 0.099326, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50ffc"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(448, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aj7ri"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(512, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_omu6q"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(576, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qks8l"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(640, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngf7q"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(640, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kl88e"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(576, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a05hd"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(512, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msf7s"]
+atlas = ExtResource("7_aj7ri")
+region = Rect2(448, 448, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rka4h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50ffc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aj7ri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_omu6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qks8l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ngf7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kl88e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a05hd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msf7s")
+}],
+"loop": true,
+"name": &"acumulare",
+"speed": 15.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui4kf"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aj7ri"]
+radius = 73.082146
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_omu6q"]
+radius = 68.24954
+
+[node name="CaracterCard" type="PanelContainer" unique_id=530656330 node_paths=PackedStringArray("texture_bg", "name_label", "health_text", "health_bar", "description_label", "animated_sprite")]
+anchors_preset = -1
+anchor_right = 0.999859
+anchor_bottom = 1.0
+offset_right = 0.143982
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nhkii")
+script = ExtResource("1_nhkii")
+texture_bg = NodePath("TextureRect/TextureRect")
+name_label = NodePath("TextureRect/Nume")
+health_text = NodePath("TextureRect/Health")
+health_bar = NodePath("TextureRect/TextureProgressBar")
+description_label = NodePath("TextureRect/Description_label")
+animated_sprite = NodePath("TextureRect/AnimatedSprite2D")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="Panel" parent="." unique_id=599150347]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect" unique_id=1906834364]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.00004
+anchor_bottom = 1.0
+offset_right = -0.0360718
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_nhkii")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect" unique_id=1792469673]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.211227
+anchor_top = -1.52689
+anchor_right = 2.30432
+anchor_bottom = 1.00391
+offset_left = -0.119995
+offset_top = -0.231995
+offset_right = 0.199951
+mouse_filter = 2
+texture = ExtResource("3_2bfkx")
+expand_mode = 1
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Description_label" type="RichTextLabel" parent="TextureRect" unique_id=1380927848]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.999883
+anchor_bottom = 0.142453
+offset_right = 0.0640259
+offset_bottom = 0.0639954
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Nume" type="RichTextLabel" parent="TextureRect" unique_id=1327068027]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.562868
+anchor_top = -0.144269
+anchor_right = 1.00295
+anchor_bottom = -0.00605533
+offset_bottom = 0.0639992
+theme_override_font_sizes/normal_font_size = 33
+bbcode_enabled = true
+text = "Le Creator-sama
+
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Health" type="RichTextLabel" parent="TextureRect" unique_id=1358994602]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.00392927
+anchor_top = 0.999874
+anchor_right = 1.005
+anchor_bottom = 1.073
+offset_top = 0.0639954
+offset_right = -0.0899658
+offset_bottom = 0.0619507
+theme_override_styles/normal = SubResource("StyleBoxFlat_2bfkx")
+bbcode_enabled = true
+text = "100/100"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="TextureRect" unique_id=1674302250]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.142453
+anchor_right = 0.999736
+anchor_bottom = 0.357453
+offset_top = 0.0639992
+offset_right = 0.144775
+offset_bottom = -0.0160065
+texture_under = ExtResource("3_ui4kf")
+texture_over = ExtResource("4_50ffc")
+texture_progress = ExtResource("5_aj7ri")
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureRect" unique_id=233578563]
+sprite_frames = SubResource("SpriteFrames_rka4h")
+animation = &"acumulare"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect" unique_id=360064876]
+
+[node name="Panel" type="Panel" parent="TextureRect" unique_id=556577582]
+layout_mode = 0
+anchor_left = -0.003
+anchor_top = 1.073
+anchor_right = 1.003
+anchor_bottom = 2.073
+offset_left = 0.0539987
+offset_top = 0.0619507
+offset_right = -0.0535889
+offset_bottom = 0.0618896
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ui4kf")
+
+[node name="Items" type="Control" parent="TextureRect/Panel" unique_id=1232095960]
+layout_mode = 1
+anchor_top = -1.079
+anchor_right = 1.0020001
+anchor_bottom = 1.0
+offset_top = -0.026000977
+offset_right = -0.048095703
+offset_bottom = 0.00012207031
+
+[node name="Control" type="Control" parent="TextureRect/Panel/Items" unique_id=694205324]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.008
+offset_left = -56.0
+offset_top = 3.0
+offset_right = -55.0
+offset_bottom = -0.41601563
+
+[node name="mana_stanga" type="TextureRect" parent="TextureRect/Panel/Items/Control" unique_id=1252081954]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.066
+anchor_top = 0.068
+anchor_right = 0.73800004
+anchor_bottom = 0.869
+offset_left = -0.21800232
+offset_top = 0.12399292
+offset_right = 0.07397461
+offset_bottom = 0.4381714
+mouse_filter = 2
+texture = ExtResource("7_50ffc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="TextureRect/Panel/Items/Control/mana_stanga" unique_id=724164110]
+position = Vector2(290, 330)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TextureRect/Panel/Items/Control/mana_stanga/Area2D" unique_id=61179352]
+position = Vector2(-7, -7)
+shape = SubResource("CircleShape2D_aj7ri")
+
+[node name="principalItem" parent="TextureRect/Panel/Items/Control" unique_id=1487655399 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2642318
+anchor_top = 0.2691736
+anchor_right = 0.4292318
+anchor_bottom = 0.4221735
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="0"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control/principalItem/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer3" parent="TextureRect/Panel/Items/Control" unique_id=1120762742 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.5624565
+anchor_right = 0.40878388
+anchor_bottom = 0.7154564
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control/SlotContainer3/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer4" parent="TextureRect/Panel/Items/Control" unique_id=1533226705 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.7157897
+anchor_right = 0.40878388
+anchor_bottom = 0.8687897
+offset_left = -0.36605835
+offset_top = 0.41033936
+offset_right = -0.11755371
+offset_bottom = 0.39971924
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer4/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer4/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer5" parent="TextureRect/Panel/Items/Control" unique_id=78654548 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.86912286
+anchor_right = 0.40878388
+anchor_bottom = 1.0221227
+offset_left = -0.36605835
+offset_top = 0.3371582
+offset_right = -0.11755371
+offset_bottom = 0.32666016
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control/SlotContainer5/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control/SlotContainer5/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="Control2" type="Control" parent="TextureRect/Panel/Items" unique_id=1986508630]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.008
+offset_left = 318.0
+offset_right = 319.0
+offset_bottom = -3.4160156
+
+[node name="mana_dreapta" type="TextureRect" parent="TextureRect/Panel/Items/Control2" unique_id=1637574992]
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.12100001
+anchor_top = 0.071
+anchor_right = 0.684
+anchor_bottom = 0.87200004
+offset_left = 0.26700592
+offset_top = -0.047035217
+offset_right = -0.46801758
+offset_bottom = 0.26715088
+mouse_filter = 2
+texture = ExtResource("7_50ffc")
+flip_h = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="TextureRect/Panel/Items/Control2/mana_dreapta" unique_id=852278012]
+position = Vector2(305, 320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TextureRect/Panel/Items/Control2/mana_dreapta/Area2D" unique_id=1949537220]
+shape = SubResource("CircleShape2D_omu6q")
+
+[node name="principalItem" parent="TextureRect/Panel/Items/Control2" unique_id=704185257 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378389
+anchor_top = 0.25309032
+anchor_right = 0.40878388
+anchor_bottom = 0.40609026
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="0"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control2/principalItem/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer3" parent="TextureRect/Panel/Items/Control2" unique_id=1982596777 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.5624565
+anchor_right = 0.4087839
+anchor_bottom = 0.7154564
+offset_left = -0.36605835
+offset_top = 0.4835205
+offset_right = -0.11755371
+offset_bottom = 0.47283936
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" parent="TextureRect/Panel/Items/Control2/SlotContainer3/TextureHolder" index="2"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer4" parent="TextureRect/Panel/Items/Control2" unique_id=1019085021 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.7157897
+anchor_right = 0.4087839
+anchor_bottom = 0.8687897
+offset_left = -0.36605835
+offset_top = 0.41033936
+offset_right = -0.11755371
+offset_bottom = 0.39971924
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer4/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer4/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer5" parent="TextureRect/Panel/Items/Control2" unique_id=1565961478 instance=ExtResource("8_ui4kf")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24378392
+anchor_top = 0.86912286
+anchor_right = 0.4087839
+anchor_bottom = 1.0221227
+offset_left = -0.36605835
+offset_top = 0.3371582
+offset_right = -0.11755371
+offset_bottom = 0.32666016
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" parent="TextureRect/Panel/Items/Control2/SlotContainer5/TextureHolder" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" parent="TextureRect/Panel/Items/Control2/SlotContainer5/TextureHolder" index="1"]
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel2" type="Panel" parent="TextureRect" unique_id=474527486]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.578
+anchor_bottom = 2.073
+offset_left = 5.00043
+offset_right = -0.403931
+offset_bottom = 0.0618896
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/Panel2" unique_id=765764153]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="out_ability" type="VBoxContainer" parent="TextureRect/Panel2/ScrollContainer" unique_id=1797057460]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[editable path="TextureRect/Panel/Items/Control/principalItem"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer3"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer4"]
+[editable path="TextureRect/Panel/Items/Control/SlotContainer5"]
+[editable path="TextureRect/Panel/Items/Control2/principalItem"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer3"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer4"]
+[editable path="TextureRect/Panel/Items/Control2/SlotContainer5"]

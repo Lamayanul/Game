@@ -60,37 +60,38 @@ func assign_closest_generator():
 
 
 func update_lights():
-	var id1 = slot_container.get_id()
-	var id2 = slot_container_2.get_id()
-	var has_gen = is_instance_valid(powg) and powg.generator_on
-	var timer =powg.get_node("Timer")
-	var gen_active = has_gen and not timer.is_stopped()
-	
-	# --- Pentru primul slot ---
-	if gen_active and id1 in ["19", "20", "21"]:
-		$area/PointLight2D.enabled = true
-		match id1:
-			"19":
-				$area/PointLight2D.color = Color(0, 0, 1)   # Albastru
-			"20":
-				$area/PointLight2D.color = Color(1, 0, 0)   # Roșu
-			"21":
-				$area/PointLight2D.color = Color(0, 1, 0)   # Verde
-	else:
-		$area/PointLight2D.enabled = false
+	if is_instance_valid(powg):
+		var id1 = slot_container.get_id()
+		var id2 = slot_container_2.get_id()
+		var has_gen = is_instance_valid(powg) and powg.generator_on
+		var timer =powg.get_node_or_null("Timer")
+		var gen_active = has_gen and not timer.is_stopped()
+		
+		# --- Pentru primul slot ---
+		if gen_active and id1 in ["19", "20", "21"]:
+			$area/PointLight2D.enabled = true
+			match id1:
+				"19":
+					$area/PointLight2D.color = Color(0, 0, 1)   # Albastru
+				"20":
+					$area/PointLight2D.color = Color(1, 0, 0)   # Roșu
+				"21":
+					$area/PointLight2D.color = Color(0, 1, 0)   # Verde
+		else:
+			$area/PointLight2D.enabled = false
 
-	# --- Pentru al doilea slot ---
-	if gen_active and id2 in ["19", "20", "21"]:
-		$area/PointLight2D2.enabled = true
-		match id2:
-			"19":
-				$area/PointLight2D2.color = Color(0, 0, 1)   # Albastru
-			"20":
-				$area/PointLight2D2.color = Color(1, 0, 0)   # Roșu
-			"21":
-				$area/PointLight2D2.color = Color(0, 1, 0)   # Verde
-	else:
-		$area/PointLight2D2.enabled = false
+		# --- Pentru al doilea slot ---
+		if gen_active and id2 in ["19", "20", "21"]:
+			$area/PointLight2D2.enabled = true
+			match id2:
+				"19":
+					$area/PointLight2D2.color = Color(0, 0, 1)   # Albastru
+				"20":
+					$area/PointLight2D2.color = Color(1, 0, 0)   # Roșu
+				"21":
+					$area/PointLight2D2.color = Color(0, 1, 0)   # Verde
+		else:
+			$area/PointLight2D2.enabled = false
 
 
 func _process(delta: float) -> void:

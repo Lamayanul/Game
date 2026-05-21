@@ -1,0 +1,114 @@
+[gd_scene load_steps=6 format=3 uid="uid://do87c50em7t3w"]
+
+[ext_resource type="Script" uid="uid://b1mjxtbrj58r4" path="res://Events/case_opener.gd" id="1_760ot"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_te7w0"]
+[ext_resource type="Texture2D" uid="uid://cqqlcnnciopb0" path="res://Events/arrow.png" id="3_8qqpl"]
+
+[sub_resource type="Gradient" id="Gradient_8qqpl"]
+colors = PackedColorArray(0, 0, 0, 1, 0.410156, 0.410156, 0.410156, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mlwyt"]
+gradient = SubResource("Gradient_8qqpl")
+
+[node name="CaseOpener" type="Control"]
+layout_mode = 3
+anchor_right = 0.614
+anchor_bottom = 0.521
+offset_right = 0.263977
+offset_bottom = 0.247986
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_760ot")
+slot_scene = ExtResource("2_te7w0")
+spin_time = 8.0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 21.5
+offset_top = -133.5
+offset_right = 287.5
+offset_bottom = -89.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+texture = ExtResource("3_8qqpl")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="WindowMask" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MovingStrip" type="HBoxContainer" parent="WindowMask"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpinButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.467
+anchor_top = 0.843
+anchor_right = 0.534
+anchor_bottom = 0.959
+offset_left = 0.256989
+offset_top = -0.0810089
+offset_right = 0.113983
+offset_bottom = -0.053009
+grow_horizontal = 2
+grow_vertical = 0
+text = "Spin"
+
+[node name="RewardLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.102
+anchor_top = 0.843
+anchor_right = 0.432
+anchor_bottom = 0.959
+offset_left = -0.158005
+offset_top = -0.0810089
+offset_right = 0.272003
+offset_bottom = -0.053009
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 40.0
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_mlwyt")
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_mlwyt")
+flip_h = true

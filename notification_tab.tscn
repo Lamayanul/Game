@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1fi2o13u0x6x"]
+[gd_scene load_steps=7 format=3 uid="uid://congeq2d3o85n"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_cochd"]
 [ext_resource type="Texture2D" uid="uid://yvwqj8uqloj7" path="res://Tabs/notification.png" id="2_mfjf2"]
@@ -23,10 +23,12 @@ height = 52
 default_font_size = 25
 
 [node name="DockTab" type="PanelContainer"]
-z_index = 2
+z_index = 4
 custom_minimum_size = Vector2(500, 190)
 offset_right = 403.0
 offset_bottom = 132.0
+mouse_filter = 1
+mouse_force_pass_scroll_events = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_cochd")
 type_tab = "notification"

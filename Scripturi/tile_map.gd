@@ -1,4 +1,4 @@
-extends TileMap
+extends TileMapLayer
 class_name tilemap
 
 @onready var grid = $Grid_ogor
@@ -46,7 +46,7 @@ var placing_roof=false
 
 #-------------------------schimbare tile-uri + griduri---------------------------------------------------------------
 func _process(_delta):
-	watering_ogor()
+	#watering_ogor()
 	handle_grid_display()
 	handle_gard_and_house_placement()
 	handle_harvesting()
@@ -75,15 +75,15 @@ func change_existing_roof_tile(grid_cell: Vector2):
 
 
 func place_gard(grid_cell: Vector2):
-	var tile_data_gard =$items. get_cell_tile_data(grid_cell)
+	var tile_data_gard =$items.get_cell_tile_data(grid_cell)
 	if tile_data_gard != null:
 		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_land =$land. get_cell_tile_data( grid_cell)
+	var tile_data_land =$land.get_cell_tile_data( grid_cell)
 	if  tile_data_land != null and tile_data_land.get_custom_data("land-gard"):
 	
-		$items.set_cell( grid_cell, 5, Vector2(0, 3))  # Plasează gardul
-		$items.set_cells_terrain_connect( [grid_cell], 1 ,0,true) 
+		#$items.set_cell( grid_cell, 2, Vector2(0, 3))  # Plasează gardul
+		$items.set_cells_terrain_connect( [grid_cell], 0 ,0,true) 
 		print("Gard plasat la:", grid_cell)
 		inventory.selected_slot.decrease_cantitate(1)
 	
@@ -92,8 +92,8 @@ func place_gard_deal(grid_cell: Vector2):
 	if tile_data_gard != null:
 		print("Gardul nu poate fi plasat aici, există deja un gard la poziția:", grid_cell)
 		return 
-	var tile_data_cliff_gard =$cliff.get_cell_tile_data( grid_cell)
-	if  tile_data_cliff_gard != null and tile_data_cliff_gard.get_custom_data("place_gard_deal"):
+	#var tile_data_cliff_gard =$cliff.get_cell_tile_data( grid_cell)
+	#if  tile_data_cliff_gard != null and tile_data_cliff_gard.get_custom_data("place_gard_deal"):
 	
 		$"cliff-H".set_cell( grid_cell, 12, Vector2(0, 3))  # Plasează gardul
 		$"cliff-H".set_cells_terrain_connect( [grid_cell], 2 ,0,true) 
@@ -146,10 +146,10 @@ func place_roof(grid_cell: Vector2):
 
 
 
-func remove_gard(grid_cell:Vector2):
-	set_cell(3, grid_cell, -1)
-	set_cell(4, grid_cell, -1)
-	
+#func remove_gard(grid_cell:Vector2):
+	#set_cell(3, grid_cell, -1)
+	#set_cell(4, grid_cell, -1)
+	#
 
 	
 
@@ -171,24 +171,24 @@ func replace_land_with_ogor(grid_cell: Vector2):
 			"tile": selected_tile
 		})
 
-func watering_ogor():
-	var cellLocalCoord=local_to_map(grid.position)
-	var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
-	if tile==null  or curentSeed==null:
-		return
-	if tile.get_custom_data("ogor") and fantana_bar.value>=0:
-		if plantedFlower.has(cellLocalCoord):
-			if inventory.selected_slot:
-				var ID=inventory.selected_slot.get_id()
-				if ID=="22" and player.farming_on and player:
-					var player_position = player.global_position
-					var player_direction = player.last_direction.normalized()  # Direcția „în față”
-					var drop_distance = 10  # Ajustează distanța conform nevoilor tale
-					var _drop_position = player_position + (player_direction * drop_distance)#####################
-					var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
-					var grid_cell = local_to_map(mouse_pos)
-					$ogor.set_cell( grid_cell, 14, Vector2(0,0))  
-					$umezeala.start()
+#func watering_ogor():
+	#var cellLocalCoord=local_to_map(grid.position)
+	#var tile:TileData=$ogor.get_cell_tile_data(cellLocalCoord)
+	#if tile==null  or curentSeed==null:
+		#return
+	#if tile.get_custom_data("ogor") and fantana_bar.value>=0:
+		#if plantedFlower.has(cellLocalCoord):
+			#if inventory.selected_slot:
+				#var ID=inventory.selected_slot.get_id()
+				#if ID=="22" and player.farming_on and player:
+					#var player_position = player.global_position
+					#var player_direction = player.last_direction.normalized()  # Direcția „în față”
+					#var drop_distance = 10  # Ajustează distanța conform nevoilor tale
+					#var _drop_position = player_position + (player_direction * drop_distance)#####################
+					#var mouse_pos = player_position + (player_direction * drop_distance)  # Obține poziția mouse-ului în coordonatele globale
+					#var grid_cell = local_to_map(mouse_pos)
+					#$ogor.set_cell( grid_cell, 14, Vector2(0,0))  
+					#$umezeala.start()
 #----------------------------------plantare plante-----------------------------------------------------------
 func _on_player_plant_seed():
 	var cellLocalCoord=local_to_map(grid.position)
@@ -381,3 +381,51 @@ func handle_harvesting():
 		#$cliff.modulate = Color(1, 1, 1, 0.3)
 	#else:
 		#$cliff.modulate = Color(1, 1, 1, 1)
+
+
+var perete_fata_datas: Array[TileData] = []
+
+func _ready() -> void:
+	# Colectăm tile-urile pentru peretele din față
+	_colectează_perete_fata(self)
+	for child in get_children():
+		if child is TileMapLayer:
+			_colectează_perete_fata(child)
+
+func _colectează_perete_fata(layer: TileMapLayer) -> void:
+	var ts = layer.tile_set
+	if not ts: return
+	
+	var custom_data_index = -1
+	for i in range(ts.get_custom_data_layers_count()):
+		if ts.get_custom_data_layer_name(i) == "perete_fata_casa":
+			custom_data_index = i
+			break
+			
+	if custom_data_index == -1: return
+
+	for s_index in range(ts.get_source_count()):
+		var source_id = ts.get_source_id(s_index)
+		var source = ts.get_source(source_id)
+		if source is TileSetAtlasSource:
+			for i in range(source.get_tiles_count()):
+				var coords = source.get_tile_id(i)
+				for alt_idx in range(source.get_alternative_tiles_count(coords)):
+					var alt_id = source.get_alternative_tile_id(coords, alt_idx)
+					var data = source.get_tile_data(coords, alt_id)
+					if data and data.get_custom_data("perete_fata_casa") == true:
+						if not data in perete_fata_datas:
+							perete_fata_datas.append(data)
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		set_perete_transparent(true)
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		set_perete_transparent(false)
+
+func set_perete_transparent(transparent: bool) -> void:
+	var alpha = 0.5 if transparent else 1.0
+	for data in perete_fata_datas:
+		data.modulate.a = alpha

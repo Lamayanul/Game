@@ -44,10 +44,12 @@ func _ready() -> void:
 
 
 
+
 func _process(delta: float) -> void:
 	rotate_velocity(delta)
 	#follow_mouse(delta)
 	handle_shadow(delta)
+
 	
 func destroy() -> void:
 	card_texture.use_parent_material = true

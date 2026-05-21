@@ -1,0 +1,53 @@
+[
+	{
+		"id": "trade_basic_wood",
+		"title":"Lemn pentru suflet",
+		"description": "Am nevoie de lemne pentru iarnă.",
+		"rarity": "comuna",
+		"givers": ["Father"],
+		"req": {
+			"item_id": 1,
+			"min_amount": 3,
+			"max_amount": 6
+		},
+		"reward": {
+			"item_id": 2, 
+			"min_amount": 1,
+			"max_amount": 2
+		}
+	},
+	{
+		"id": "trade_rare_iron",
+		"title":"Lemn pentru suflet",
+		"description": "Fierarul are nevoie de materiale urgente.",
+		"rarity": "rara",
+		"givers": ["Nu"],
+		"req": {
+			"item_id": 2,
+			"min_amount": 5,
+			"max_amount": 10
+		},
+		"reward": {
+			"item_id": 3,
+			"min_amount": 1,
+			"max_amount": 1
+		}
+	},
+	{
+		"id": "trade_epic_gold",
+		"title":"Lemn pentru suflet",
+		"description": "Caut aur pur pentru o bijuterie regală.",
+		"rarity": "epica",
+		"givers": ["Nu"],
+		"req": {
+			"item_id": 3,
+			"min_amount": 10,
+			"max_amount": 20
+		},
+		"reward": {
+			"item_id": 4,
+			"min_amount": 5,
+			"max_amount": 10
+		}
+	}
+]

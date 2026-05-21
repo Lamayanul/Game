@@ -144,7 +144,7 @@ func _ready():
 		var first_slot = grid_container.get_child(0)
 		if first_slot is Slot_app:
 			_on_slot_selected(first_slot)
-	slots = [slot_container, slot_container_2, slot_container_3, slot_container_4]
+	slots = [slot_container, slot_container_2, slot_container_3, slot_container_4,slot_container_5]
 	#print("Slots list:", slots)  # Verifică dacă toate sunt valide
 	#
 #func _process(_delta: float) -> void:
@@ -157,6 +157,7 @@ func _ready():
 	add_item("31",1)
 	add_item("32",1)
 	add_item("33",1)
+	add_item("46",1)
 #func _on_slot_right_clicked(item_data):
 		#var tray_slot = SlotTrayScene.instantiate()
 		#tray_slot.get_node("TextureHolder/TextureRect2").texture=null
@@ -242,6 +243,7 @@ func update_selector_position(slot: Slot_app):
 @onready var slot_container_2: Slot_app = $MarginContainer/GridContainer/SlotContainer2
 @onready var slot_container_4: Slot_app = $MarginContainer/GridContainer/SlotContainer4
 @onready var slot_container_3: Slot_app = $MarginContainer/GridContainer/SlotContainer3
+@onready var slot_container_5: Slot_app = $MarginContainer/GridContainer/SlotContainer5
 
 # Sloturile tale
 var slots = []

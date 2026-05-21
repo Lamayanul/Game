@@ -1,14 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bv8uja720nwja"]
+[gd_scene format=3 uid="uid://bv8uja720nwja"]
 
 [ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="1_3b6ml"]
 [ext_resource type="Script" uid="uid://bynr4sokm2qm6" path="res://Tabs/inv_fight.gd" id="2_cpjgs"]
 
-[node name="Inv_figth" instance=ExtResource("1_3b6ml")]
+[node name="Inv_figth" unique_id=1439782651 instance=ExtResource("1_3b6ml")]
+anchor_right = 0.28300002
+anchor_bottom = 0.16800001
+offset_right = -32.048035
+offset_bottom = -18.104004
 script = ExtResource("2_cpjgs")
 chest_scene = null
 oven_scene = null
 pillar_scene = null
 gen_scene = null
+
+[node name="GridContainer" parent="MarginContainer" index="0"]
+columns = 8
 
 [editable path="MarginContainer/GridContainer/SlotContainer"]
 [editable path="MarginContainer/GridContainer/SlotContainer2"]

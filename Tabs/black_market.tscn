@@ -1,0 +1,124 @@
+[gd_scene load_steps=12 format=3 uid="uid://b34w407l3qnve"]
+
+[ext_resource type="Script" uid="uid://d88nytvotiim" path="res://Tabs/market.gd" id="1_obgk0"]
+[ext_resource type="FontFile" uid="uid://c3y8aej1f3qau" path="res://Fonts/The Melody.otf" id="2_fi0lc"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_i2xwc"]
+[ext_resource type="Script" uid="uid://qwmukk1rm858" path="res://Tabs/add_black_market.gd" id="4_fi0lc"]
+[ext_resource type="PackedScene" uid="uid://dknaew4curckx" path="res://Tabs/black_slot_container.tscn" id="5_fi0lc"]
+[ext_resource type="PackedScene" uid="uid://b3vsvhwfvjkdk" path="res://Tabs/market_slot_advance.tscn" id="5_khgyd"]
+[ext_resource type="PackedScene" uid="uid://dluls5pgk36bb" path="res://Tabs/market_slot.tscn" id="6_yeopn"]
+[ext_resource type="Script" uid="uid://1dme5s8h1y7c" path="res://Tabs/add_market_product.gd" id="7_ifeex"]
+
+[sub_resource type="Theme" id="Theme_qrddg"]
+default_font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_504uh"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="Theme" id="Theme_imgpv"]
+default_font = ExtResource("2_fi0lc")
+default_font_size = 25
+
+[node name="BlackMarket" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_obgk0")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_right = 1.002
+offset_left = 2.048
+offset_top = 16.0
+offset_right = -3.04797
+offset_bottom = 95.0
+grow_horizontal = 2
+rotation = -0.00235349
+mouse_filter = 2
+theme = SubResource("Theme_qrddg")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_504uh")
+bbcode_enabled = true
+text = "BLACKmarketo"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Total_money" type="RichTextLabel" parent="RichTextLabel"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.295
+offset_right = -0.557495
+offset_bottom = 79.0
+theme = SubResource("Theme_imgpv")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotContainer" parent="RichTextLabel" instance=ExtResource("3_i2xwc")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.035
+anchor_top = 0.09
+anchor_right = 0.035
+anchor_bottom = 0.09
+offset_left = -0.0165901
+offset_top = -0.0111723
+offset_right = 63.9834
+offset_bottom = 63.9888
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 135.0
+offset_right = -40.0
+offset_bottom = 592.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_force_pass_scroll_events = false
+theme_override_constants/v_separation = 40
+script = ExtResource("4_fi0lc")
+slot_tab = ExtResource("5_fi0lc")
+
+[node name="SlotContainer11" parent="ScrollContainer/GridContainer" instance=ExtResource("6_yeopn")]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GridContainer2" type="GridContainer" parent="ScrollContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 40
+script = ExtResource("7_ifeex")
+slot_tab = ExtResource("5_khgyd")
+
+[editable path="RichTextLabel/SlotContainer"]

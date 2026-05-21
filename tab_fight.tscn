@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c735shh2nmkwv"]
+[gd_scene format=3 uid="uid://i13o1kublpgj"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_is67g"]
 [ext_resource type="Script" uid="uid://cujhk7582fsje" path="res://Tabs/inventory_combat.gd" id="2_01xiv"]
@@ -25,8 +25,8 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0.958239, 0.943124, 1)
 gradient = SubResource("Gradient_po6gu")
 height = 52
 
-[node name="Royal_battle" type="PanelContainer"]
-z_index = 2
+[node name="Royal_battle" type="PanelContainer" unique_id=1697562198]
+z_index = 4
 custom_minimum_size = Vector2(1487, 680)
 offset_right = 1237.0
 offset_bottom = 597.0
@@ -34,49 +34,58 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_is67g")
 type_tab = "fight"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=75626366]
 layout_mode = 2
 
-[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer" unique_id=1603592179]
 custom_minimum_size = Vector2(180, 40)
 layout_mode = 2
 mouse_filter = 0
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar" unique_id=1557815699]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = SubResource("GradientTexture2D_oa6d7")
 
-[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect"]
-layout_mode = 2
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect" unique_id=1478862544]
+layout_mode = 0
 anchor_right = 0.828
 anchor_bottom = 1.0
 offset_right = -0.0960083
 theme_override_font_sizes/font_size = 30
 text = "Fight Tab"
 
-[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect"]
+[node name="ShrinkBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=999999127]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_left = 1110.0
+offset_right = 1150.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 25
+text = "-"
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect" unique_id=254661165]
 custom_minimum_size = Vector2(40, 0)
 layout_direction = 3
-layout_mode = 2
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 52.0
 size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 25
 text = "x"
 
-[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Content" type="HBoxContainer" parent="VBoxContainer" unique_id=1539066490]
 layout_mode = 2
 alignment = 2
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1270556135]
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("2_01xiv")
 
-[node name="TextureRect2" type="TextureRect" parent="Control"]
+[node name="TextureRect2" type="TextureRect" parent="Control" unique_id=1235642371]
 clip_contents = true
-layout_mode = 2
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 52.0
@@ -88,17 +97,16 @@ inv_enemy = NodePath("Inv_enemy")
 fight_button = NodePath("Button")
 result_slot_path = NodePath("../SlotContainer")
 
-[node name="Inv_enemy" parent="Control/TextureRect2" instance=ExtResource("4_01xiv")]
-layout_mode = 2
-anchors_preset = 0
-anchor_top = 0.433
-anchor_right = 0.001
-anchor_bottom = 0.433
-offset_left = 1.0
-offset_top = 289.808
-offset_right = 289.517
-offset_bottom = 375.808
-rotation = 4.71238
+[node name="Inv_enemy" parent="Control/TextureRect2" unique_id=1744427951 instance=ExtResource("4_01xiv")]
+layout_mode = 1
+anchor_top = 0.042000003
+anchor_right = 0.0
+anchor_bottom = 0.042000003
+offset_left = -2.0
+offset_top = 561.792
+offset_right = 560.0
+offset_bottom = 647.792
+rotation = 4.7123823
 mouse_filter = 2
 
 [node name="SlotContainer" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer" index="0"]
@@ -137,17 +145,17 @@ slot_type = "not"
 rotation = 1.5708
 pivot_offset = Vector2(32, 32)
 
-[node name="Inv_player" parent="Control/TextureRect2" instance=ExtResource("4_01xiv")]
+[node name="Inv_player" parent="Control/TextureRect2" unique_id=1702204738 instance=ExtResource("4_01xiv")]
 layout_mode = 1
-anchor_left = 1.0
-anchor_top = 0.107
-anchor_right = 1.0
-anchor_bottom = 0.107
-offset_left = -86.0
-offset_top = 290.232
-offset_right = 204.0
-offset_bottom = 376.232
+anchor_left = 0.94000006
+anchor_top = 0.05448718
+anchor_right = 0.94000006
+anchor_bottom = 0.05448718
+offset_left = -0.020141602
+offset_top = 560.0
+offset_bottom = 646.0
 rotation = -1.57079
+metadata/_edit_use_anchors_ = true
 
 [node name="SlotContainer" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer" index="0" groups=["comslot"]]
 slot_type = "comslot"
@@ -177,7 +185,7 @@ slot_type = "comslot"
 rotation = 1.5708
 pivot_offset = Vector2(32, 32)
 
-[node name="Button" type="Button" parent="Control/TextureRect2"]
+[node name="Button" type="Button" parent="Control/TextureRect2" unique_id=301443053]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 3
@@ -192,7 +200,7 @@ grow_vertical = 0
 text = "Fight
 "
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=264843598]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.566
@@ -205,7 +213,7 @@ offset_right = 554.622
 offset_bottom = 488.1
 texture = ExtResource("4_wgsfa")
 
-[node name="TextureRect3" type="TextureRect" parent="Control"]
+[node name="TextureRect3" type="TextureRect" parent="Control" unique_id=1949810450]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.061
@@ -219,7 +227,7 @@ offset_bottom = 506.948
 texture = ExtResource("5_2rp67")
 flip_h = true
 
-[node name="SlotContainer" parent="Control" instance=ExtResource("8_3h5ga")]
+[node name="SlotContainer" parent="Control" unique_id=1772850073 instance=ExtResource("8_3h5ga")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -233,7 +241,7 @@ offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=653896836]
 visible = false
 modulate = Color(1, 1, 1, 0.145098)
 layout_mode = 2
@@ -248,8 +256,16 @@ stretch_mode = 2
 [editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer2"]
 [editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer3"]
 [editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer4"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer5"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer6"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer7"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer8"]
 [editable path="Control/TextureRect2/Inv_player"]
 [editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer"]
 [editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer2"]
 [editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer3"]
 [editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer4"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer5"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer6"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer7"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer8"]

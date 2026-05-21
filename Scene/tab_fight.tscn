@@ -1,0 +1,255 @@
+[gd_scene load_steps=13 format=3 uid="uid://c735shh2nmkwv"]
+
+[ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_is67g"]
+[ext_resource type="Script" uid="uid://cujhk7582fsje" path="res://Tabs/inventory_combat.gd" id="2_01xiv"]
+[ext_resource type="Texture2D" uid="uid://da12t27felh3u" path="res://Tabs/devil.png" id="2_wgsfa"]
+[ext_resource type="Texture2D" uid="uid://1ndd1wxbg3x6" path="res://Tabs/fund.jpeg" id="3_2rp67"]
+[ext_resource type="PackedScene" uid="uid://bv8uja720nwja" path="res://Tabs/inv_fight.tscn" id="4_01xiv"]
+[ext_resource type="Script" uid="uid://1y03cbajpakx" path="res://Tabs/Configure_fight.gd" id="4_moxqd"]
+[ext_resource type="Texture2D" uid="uid://gf15tlirai4m" path="res://Tabs/Lions/mac_mac.png" id="4_wgsfa"]
+[ext_resource type="Texture2D" uid="uid://dbsqxp20hdwk3" path="res://Tabs/Lions/cichen.png" id="5_2rp67"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="8_3h5ga"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
+bg_color = Color(1, 0.768116, 0.73913, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0, 0.0149773, 1)
+
+[sub_resource type="Gradient" id="Gradient_po6gu"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.958239, 0.943124, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oa6d7"]
+gradient = SubResource("Gradient_po6gu")
+height = 52
+
+[node name="Royal_battle" type="PanelContainer"]
+z_index = 4
+custom_minimum_size = Vector2(1487, 680)
+offset_right = 1237.0
+offset_bottom = 597.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
+script = ExtResource("1_is67g")
+type_tab = "fight"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitleBar" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+mouse_filter = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture2D_oa6d7")
+
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/TextureRect"]
+layout_mode = 2
+anchor_right = 0.828
+anchor_bottom = 1.0
+offset_right = -0.0960083
+theme_override_font_sizes/font_size = 30
+text = "Fight Tab"
+
+[node name="CloseBtn" type="Button" parent="VBoxContainer/TitleBar/TextureRect"]
+custom_minimum_size = Vector2(40, 0)
+layout_direction = 3
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 52.0
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 25
+text = "x"
+
+[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("2_01xiv")
+
+[node name="TextureRect2" type="TextureRect" parent="Control"]
+clip_contents = true
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 52.0
+texture = ExtResource("3_2rp67")
+expand_mode = 1
+script = ExtResource("4_moxqd")
+inv_player = NodePath("Inv_player")
+inv_enemy = NodePath("Inv_enemy")
+fight_button = NodePath("Button")
+result_slot_path = NodePath("../SlotContainer")
+
+[node name="Inv_enemy" parent="Control/TextureRect2" instance=ExtResource("4_01xiv")]
+layout_mode = 2
+anchors_preset = 0
+anchor_top = 0.433
+anchor_right = 0.001
+anchor_bottom = 0.433
+offset_left = 1.0
+offset_top = 289.808
+offset_right = 289.517
+offset_bottom = 375.808
+rotation = 4.71238
+mouse_filter = 2
+
+[node name="SlotContainer" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer" index="0"]
+mouse_filter = 2
+slot_type = "not"
+
+[node name="TextureRect2" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer/TextureHolder" index="0"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer2" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer" index="1"]
+mouse_filter = 2
+slot_type = "not"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer2/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer3" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer" index="2"]
+mouse_filter = 2
+slot_type = "not"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer3/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer4" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer" index="3"]
+mouse_filter = 2
+slot_type = "not"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer4/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="Inv_player" parent="Control/TextureRect2" instance=ExtResource("4_01xiv")]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 0.107
+anchor_right = 1.0
+anchor_bottom = 0.107
+offset_left = -86.0
+offset_top = 290.232
+offset_right = 204.0
+offset_bottom = 376.232
+rotation = -1.57079
+
+[node name="SlotContainer" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer" index="0" groups=["comslot"]]
+slot_type = "comslot"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer2" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer" index="1" groups=["comslot"]]
+slot_type = "comslot"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer2/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer3" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer" index="2" groups=["comslot"]]
+slot_type = "comslot"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer3/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="SlotContainer4" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer" index="3" groups=["comslot"]]
+slot_type = "comslot"
+
+[node name="TextureRect" parent="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer4/TextureHolder" index="1"]
+rotation = 1.5708
+pivot_offset = Vector2(32, 32)
+
+[node name="Button" type="Button" parent="Control/TextureRect2"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Fight
+"
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.566
+anchor_top = 0.275
+anchor_right = 0.566
+anchor_bottom = 0.275
+offset_left = 0.621948
+offset_top = 0.0999908
+offset_right = 554.622
+offset_bottom = 488.1
+texture = ExtResource("4_wgsfa")
+
+[node name="TextureRect3" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.061
+anchor_top = 0.077
+anchor_right = 0.061
+anchor_bottom = 0.077
+offset_left = -0.463005
+offset_top = -0.0520058
+offset_right = 559.537
+offset_bottom = 506.948
+texture = ExtResource("5_2rp67")
+flip_h = true
+
+[node name="SlotContainer" parent="Control" instance=ExtResource("8_3h5ga")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.145098)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+texture = ExtResource("2_wgsfa")
+stretch_mode = 2
+
+[editable path="Control/TextureRect2/Inv_enemy"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer2"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer3"]
+[editable path="Control/TextureRect2/Inv_enemy/MarginContainer/GridContainer/SlotContainer4"]
+[editable path="Control/TextureRect2/Inv_player"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer2"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer3"]
+[editable path="Control/TextureRect2/Inv_player/MarginContainer/GridContainer/SlotContainer4"]

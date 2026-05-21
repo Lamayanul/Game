@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://q7ab478gnjwa"]
+
+[ext_resource type="Script" uid="uid://cn1fbnnafxscf" path="res://Tabs/Lights/LightControlRow.gd" id="1_row"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_slot"]
+
+[node name="LightControlRow" type="HBoxContainer" unique_id=834036241]
+custom_minimum_size = Vector2(0, 70)
+offset_right = 400.0
+offset_bottom = 70.0
+theme_override_constants/separation = 10
+script = ExtResource("1_row")
+
+[node name="Label" type="Label" parent="." unique_id=1287317146]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Light 1"
+vertical_alignment = 1
+
+[node name="PowerButton" type="Button" parent="." unique_id=335690077]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+size_flags_vertical = 4
+toggle_mode = true
+text = "OFF"
+
+[node name="Slot1" parent="." unique_id=1264047512 instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot2" parent="." unique_id=1693687207 instance=ExtResource("2_slot")]
+layout_mode = 2

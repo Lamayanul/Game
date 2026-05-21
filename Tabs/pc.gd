@@ -8,7 +8,7 @@ extends Control
 const MARGIN := 00.0     #10.0            # doar pentru clamp (spațiu deasupra marginii)
 
 @onready var slot_container: Slot = $SlotContainer
-@onready var storage_tab = get_node_or_null("/root/world/CanvasLayer/Control/TaskBar/Tray/StorageTab")
+@onready var storage_tab = get_node_or_null("/root/world/CanvasLayer/Control/StorageTab")
 @onready var ecran: Control = $CanvasLayer/TextureRect2
 @onready var task_bar: Control = $TaskBar
 
@@ -30,8 +30,17 @@ func _ready() -> void:
 		ecran.resized.connect(_on_resized)
 		ecran.visibility_changed.connect(_on_resized)
 
+	visibility_changed.connect(_on_visibility_changed) # NOU
+	
 	_update_taskbar_to_screen()
 	_apply_state_position()          # poziționează corect în funcție de lock (inițial false)
+
+func _on_visibility_changed() -> void:
+	if visible and not _storage_pre_instantiated:
+		if TabManager.has_method("pre_instantiate_tab"):
+			TabManager.pre_instantiate_tab("31")
+			_storage_pre_instantiated = true
+			
 
 # --- TASKBAR lipit de baza lui `ecran` ---
 func _update_taskbar_to_screen() -> void:
@@ -92,10 +101,17 @@ func _slide_to_y_local(p: Control, y_local: float, do_clamp: bool) -> void:
 	tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_property(p, "position:y", y, secs)
 
+var _storage_pre_instantiated := false
+
 # --- Butoane ---
 func _on_btn_open_pressed() -> void:
 	lock = true
 	_slide_to_y_local(target, base_y + offset_y, true)  # clamp la open
+	
+	if not _storage_pre_instantiated:
+		if TabManager.has_method("pre_instantiate_tab"):
+			TabManager.pre_instantiate_tab("31") # "31" e ID-ul pentru Storage în TAB_REGISTRY
+			_storage_pre_instantiated = true
 
 func _on_btn_close_pressed() -> void:
 	lock = false

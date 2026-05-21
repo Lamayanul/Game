@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://bt2pvbk3pdqkq"]
+
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="1_lfdb4"]
+[ext_resource type="FontFile" uid="uid://byvfbv8rtnnd4" path="res://Fonts/Nihonium113.ttf" id="1_qnftj"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="3_kb0ra"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnftj"]
+bg_color = Color(0.6, 0.4627451, 0.54509807, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.041534185, 0, 1)
+corner_radius_top_left = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kb0ra"]
+bg_color = Color(0.6, 0.4627451, 0.54509807, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.009793616, 0, 1)
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+
+[sub_resource type="Theme" id="Theme_qnftj"]
+
+[node name="Control" type="Control" unique_id=738124580]
+custom_minimum_size = Vector2(450, 256)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 450.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Principal" type="RichTextLabel" parent="." unique_id=1338087327]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 153.0
+offset_right = -230.0
+offset_bottom = -5.0
+theme_override_fonts/normal_font = ExtResource("1_qnftj")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1807911930]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qnftj")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1405550126]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kb0ra")
+
+[node name="SlotContainer" parent="." unique_id=734973011 instance=ExtResource("1_lfdb4")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25300002
+anchor_top = 0.47300002
+anchor_right = 0.25300002
+anchor_bottom = 0.47300002
+offset_left = -95.850006
+offset_top = -96.088005
+offset_right = -31.850006
+offset_bottom = -32.088005
+scale = Vector2(3, 3)
+
+[node name="TextureRect2" parent="SlotContainer/TextureHolder" index="0"]
+visible = false
+
+[node name="Label" parent="SlotContainer/TextureHolder/TextureRect" index="0"]
+theme = SubResource("Theme_qnftj")
+
+[node name="Secundar" type="RichTextLabel" parent="." unique_id=812156977]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.518
+anchor_top = 0.023000002
+anchor_right = 0.518
+anchor_bottom = 0.023000002
+offset_left = -0.1000061
+offset_top = 0.11199951
+offset_right = 204.9
+offset_bottom = 245.112
+theme_override_fonts/normal_font = ExtResource("1_qnftj")
+theme_override_fonts/bold_font = ExtResource("1_qnftj")
+theme_override_fonts/italics_font = ExtResource("3_kb0ra")
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 30
+theme_override_font_sizes/italics_font_size = 25
+
+[editable path="SlotContainer"]

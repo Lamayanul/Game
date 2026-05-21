@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://crsigwvlw12u2"]
+
+[sub_resource type="Gradient" id="Gradient_soft"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.7)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_32h2x"]
+gradient = SubResource("Gradient_soft")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Light" type="Node2D" unique_id=969804227]
+
+[node name="EnvironmentLight" type="PointLight2D" parent="." unique_id=541947211]
+position = Vector2(6.67572e-06, 39.499992)
+scale = Vector2(2.4687502, 1.234375)
+color = Color(1, 0.9490196, 0.8, 0.1764706)
+energy = 0.76
+texture = SubResource("GradientTexture2D_32h2x")

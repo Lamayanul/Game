@@ -1,0 +1,117 @@
+[gd_scene load_steps=8 format=3 uid="uid://ur23uoea4j2n"]
+
+[ext_resource type="Texture2D" uid="uid://bb0mmb65b6xo3" path="res://Sprout Lands - Sprites - Basic pack/Objects/under.png" id="1_h8emb"]
+[ext_resource type="Script" uid="uid://db7fd6gshhj5u" path="res://Fights/Caracters/Jake.gd" id="1_unlu2"]
+[ext_resource type="Texture2D" uid="uid://crd8jgiswrvtm" path="res://Sprout Lands - Sprites - Basic pack/Objects/border.png" id="2_d2on4"]
+[ext_resource type="Texture2D" uid="uid://bpf7wuqdrip72" path="res://Fights/caracter.png" id="2_yexn6"]
+[ext_resource type="Texture2D" uid="uid://deagc4swpklua" path="res://Sprout Lands - Sprites - Basic pack/Objects/fill.png" id="3_unlu2"]
+[ext_resource type="PackedScene" uid="uid://cl0ym50w3lybq" path="res://User/inv.tscn" id="4_yexn6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rka4h"]
+
+[node name="CaracterCard" type="PanelContainer" node_paths=PackedStringArray("texture_bg", "nume_label", "health_text", "health_bar", "animated_sprite", "animation_player", "description_label", "inv_panel", "slots_container")]
+anchors_preset = -1
+anchor_right = 1.0002
+anchor_bottom = 1.0
+offset_right = -0.208069
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_unlu2")
+texture_bg = NodePath("TextureRect")
+nume_label = NodePath("TextureRect/Nume")
+health_text = NodePath("TextureRect/Health")
+health_bar = NodePath("TextureRect/TextureProgressBar")
+animated_sprite = NodePath("TextureRect/AnimatedSprite2D")
+animation_player = NodePath("TextureRect/AnimationPlayer")
+description_label = NodePath("TextureRect/Description_label")
+inv_panel = NodePath("TextureRect/Inv")
+slots_container = NodePath("TextureRect/Inv/MarginContainer/GridContainer")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_yexn6")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="Description_label" type="RichTextLabel" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.189453
+anchor_top = 0.699219
+anchor_right = 0.811461
+anchor_bottom = 0.853391
+offset_right = 0.0640259
+offset_bottom = 0.0639954
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Nume" type="RichTextLabel" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.078
+offset_bottom = 0.0639992
+bbcode_enabled = true
+text = "Le Creator-sama"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Health" type="RichTextLabel" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.078
+anchor_right = 0.34
+anchor_bottom = 0.227
+offset_top = 0.0639992
+offset_right = -0.160004
+offset_bottom = -0.224007
+bbcode_enabled = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.753906
+anchor_top = -0.000124998
+anchor_right = 1.005
+anchor_bottom = 0.215
+offset_top = 0.0639992
+offset_right = -0.307129
+offset_bottom = -0.0800018
+texture_under = ExtResource("1_h8emb")
+texture_over = ExtResource("2_d2on4")
+texture_progress = ExtResource("3_unlu2")
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureRect"]
+sprite_frames = SubResource("SpriteFrames_rka4h")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect"]
+
+[node name="Inv" parent="TextureRect" instance=ExtResource("4_yexn6")]
+layout_mode = 1
+anchor_left = 0.916016
+anchor_top = 0.433594
+anchor_right = 1.00002
+anchor_bottom = 0.999594
+offset_right = -0.0159988
+offset_bottom = 0.207977
+metadata/_edit_use_anchors_ = true
+
+[node name="GridContainer" parent="TextureRect/Inv/MarginContainer" index="0"]
+columns = 1
+
+[editable path="TextureRect/Inv"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer2"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer3"]
+[editable path="TextureRect/Inv/MarginContainer/GridContainer/SlotContainer4"]

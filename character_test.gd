@@ -202,8 +202,6 @@ func handle_movement():
 		animation_player_4.play("idle-" + _currentIdleAnimation + "-corp"+clothes(current_clothes))
 		current_state = "idle"
 
-	move_and_slide()
-
 func set_clothes(piece: String):
 	current_clothes = piece
 

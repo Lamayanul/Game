@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://bkeiyethgylky"]
+
+[ext_resource type="Script" uid="uid://biqcgwfrey5x0" path="res://Tabs/main_game.gd" id="1_1274w"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="2_mkbuh"]
+[ext_resource type="Texture2D" uid="uid://g2nknj28mrgx" path="res://Sprout Lands - Sprites - Basic pack/Objects/Inventory_select.png" id="3_vxes7"]
+
+[node name="MainGame" type="Control" unique_id=610251499]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1274w")
+
+[node name="BoardContainer" type="CenterContainer" parent="." unique_id=363891543]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GridContainer" type="GridContainer" parent="BoardContainer" unique_id=633807050]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 8
+
+[node name="UI" type="Control" parent="." unique_id=2074640612]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PhaseLabel" type="Label" parent="UI" unique_id=1202029798]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0430001
+anchor_right = 1.0430001
+offset_left = -0.032104492
+offset_right = 399.9679
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_mkbuh")
+theme_override_font_sizes/font_size = 20
+text = "Faza 1: Pune piesele pe tabla"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PlacementStorage" type="PanelContainer" parent="UI" unique_id=1083718115]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0200001
+anchor_top = 0.59400004
+anchor_right = 1.0200001
+anchor_bottom = 0.59400004
+offset_left = -0.48010254
+offset_top = -0.12802124
+offset_right = 273.5199
+offset_bottom = 199.87198
+grow_horizontal = 0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBox" type="VBoxContainer" parent="UI/PlacementStorage" unique_id=2029187085]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/PlacementStorage/VBox" unique_id=1429587796]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_mkbuh")
+theme_override_font_sizes/font_size = 14
+text = "Piese disponibile"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="UI/PlacementStorage/VBox" unique_id=1589602369]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="PieceGrid" type="GridContainer" parent="UI/PlacementStorage/VBox/Scroll" unique_id=313363776]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="StartBattleBtn" type="Button" parent="UI" unique_id=1711871606]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0172657
+anchor_top = 0.59400004
+anchor_right = 1.0172657
+anchor_bottom = 0.59400004
+offset_left = 2.3199463
+offset_top = 199.87198
+offset_right = 276.31995
+offset_bottom = 239.87198
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_mkbuh")
+theme_override_font_sizes/font_size = 18
+text = "Incepe Lupta!"
+metadata/_edit_use_anchors_ = true
+
+[node name="ActivateEffectsBtn" type="Button" parent="UI" unique_id=909534955]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.2382813
+anchor_top = 0.96484375
+anchor_right = 1.2382813
+anchor_bottom = 0.96484375
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 170.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Activeaza Efecte"
+metadata/_edit_use_anchors_ = true
+
+[node name="Selector" type="TextureRect" parent="." unique_id=1897742224]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+texture = ExtResource("3_vxes7")
+expand_mode = 1
+stretch_mode = 4

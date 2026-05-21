@@ -4,8 +4,11 @@ extends PanelContainer
 @onready var grid_container = $MarginContainer/GridContainer
 @onready var grid = $"../../TileMap/Grid_ogor"  # Referința la grid
 
-
-
+var SlotTrayScene = preload("res://User/slot_container_cuppon.tscn") 
+var NormalSlotScene = preload("res://User/slot_container.tscn")
+@onready var tray_container = get_node("/root/world/CanvasLayer/Masa/TextureRect")
+@onready var items_view = get_node_or_null("/root/world/CanvasLayer/Control2")
+@onready var items_grid = get_node_or_null("/root/world/CanvasLayer/Control2/CanvasLayer/TextureRect/Items")
 #-------------------------------diverse---------------------------------------------------------------
 @onready var texture_rect = $MarginContainer/TextureRect
 @export var plin:int =0
@@ -32,7 +35,7 @@ var buton = null
 
 signal plantSeed
 signal attacking
-
+signal inventory_updated
 
 
 #func instantiate_chest():
@@ -122,6 +125,7 @@ func _ready():
 	for child in grid_container.get_children():
 		if child is Slot_Cup:
 			child.connect("slot_selected", Callable(self, "_on_slot_selected"))
+			child.connect("item_changed", Callable(self, "_on_slot_item_changed"))
 			
 	for child in grid_container.get_children():
 		if child is Slot_Cup:
@@ -129,8 +133,9 @@ func _ready():
 			buton = child.get_node("TextureHolder/TextureRect/Button")
 			if buton:
 				buton.connect("pressed", Callable(self, "_on_buton_apasat"))
-	
-
+	for slot in grid_container.get_children():
+		if slot.has_signal("request_tray_spawn"):
+			slot.connect("request_tray_spawn", Callable(self, "_on_slot_right_clicked"))
 	
 	  # Selectează automat primul slot
 	if grid_container.get_child_count() > 0:
@@ -144,6 +149,17 @@ func _ready():
 	#lamp()
 	##has_backpack()
 	
+	
+func _on_slot_item_changed():
+	emit_signal("inventory_updated")
+
+func get_all_items() -> Array:
+	var items = []
+	for child in grid_container.get_children():
+		if child is Slot_Cup:
+			items.append(child.get_item())
+	return items
+
 #-----------------------------------selectie-slot----------------------------------------------------
 func _on_slot_selected(slot: Slot_Cup):
 	if selected_slot and is_instance_valid(player):
@@ -187,7 +203,15 @@ func _on_slot_selected(slot: Slot_Cup):
 	if  slot.get_texture() != null and is_instance_valid(player):
 		player.equip_item(slot.get_texture(), slot.get_nume(), slot.get_raritate())
 
-
+func _on_slot_right_clicked(item_data):
+		var tray_slot = SlotTrayScene.instantiate()
+		tray_slot.get_node("TextureHolder/TextureRect2").texture=null
+		tray_slot.slot_type="tray"
+		tray_slot.scale = Vector2(0.7, 0.7)
+		tray_slot.card_efect = false
+		tray_container.add_child(tray_slot)
+		tray_slot.set_property(item_data)  
+		
 
 func update_selector_position(slot: Slot_Cup):
 	var slot_position = slot.get_global_position()
@@ -657,6 +681,16 @@ func generate_cuppon_items(selected_id = null):
 		print("Nu sunt suficiente iteme în interval pentru num_drops!")
 		return
 
+	if items_view:
+		print("[InvCuppon] Items view gasit. Il fac vizibil.")
+		items_view.get_node("CanvasLayer").visible = true
+	else:
+		print("[InvCuppon] EROARE: Items view nu a fost gasit!")
+
+	#if items_grid:
+		#for child in items_grid.get_children():
+			#child.queue_free()
+
 	for i in range(num_drops):
 		var id_item = pool_keys[rng.randi_range(0, pool_keys.size() - 1)]
 		var item_data = items_dict[str(id_item)]
@@ -684,7 +718,37 @@ func generate_cuppon_items(selected_id = null):
 				random_quantity = 1  # fallback
 
 		print("Drop ID: %s, Q: %s, raritate: %s" % [str(id_item), str(random_quantity), raritate])
-		drop_item_generare(str(id_item), random_quantity)
+		
+		if items_grid:
+			var slot = NormalSlotScene.instantiate()
+			slot.custom_minimum_size = Vector2(128,128)
+			slot.get_node("TextureHolder/TextureRect2").visible=false
+			items_grid.add_child(slot)
+			
+			#slot.slot_type = "display"
+			# slot.card_efect = false  # Removed as it's not in Slot.gd
+			
+			if items_view and items_view.has_method("_on_slot_selected"):
+				slot.slot_selected.connect(items_view._on_slot_selected)
+				print("[InvCuppon] Semnal conectat pentru slotul ", i)
+			
+			var item_texture = load("res://assets/" + DatabaseCuppon.get_texture(str(id_item)))
+			var item_nume = DatabaseCuppon.get_nume(str(id_item))
+			var item_number = DatabaseCuppon.get_number(str(id_item))
+			var item_raritate_db = DatabaseCuppon.get_raritate(str(id_item))
+			
+			slot.set_property({
+				"TEXTURE": item_texture,
+				"CANTITATE": random_quantity,
+				"NUMBER": item_number,
+				"NUME": item_nume,
+				"RARITATE": item_raritate_db
+			})
+		
+		# Adăugare în inventarul principal
+		#var inv_main = get_node_or_null("/root/world/CanvasLayer/Inv")
+		#if inv_main and inv_main.has_method("add_item"):
+			#inv_main.add_item(str(id_item), random_quantity)
 
 
 

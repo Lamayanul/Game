@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://ejxa045tgo28"]
+
+[ext_resource type="Script" uid="uid://gjj32h0v6b4i" path="res://Tabs/live_camera_page.gd" id="1_me8qd"]
+[ext_resource type="Shader" uid="uid://bu1hfpb04d8pg" path="res://Shaders/VHS.gdshader" id="2_w4sv3"]
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="3_w4sv3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gxhad"]
+shader = ExtResource("2_w4sv3")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.0
+shader_parameter/scanlines_width = 0.0
+shader_parameter/grille_opacity = 0.3150000149625
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = false
+shader_parameter/roll = true
+shader_parameter/roll_speed = 4.0
+shader_parameter/roll_size = 31.9850015192875
+shader_parameter/roll_variation = 0.62500002642762
+shader_parameter/distort_intensity = 0.022000001045
+shader_parameter/noise_opacity = 0.1750000083125
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.2450000116375
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 1.0
+
+[sub_resource type="Theme" id="Theme_gxhad"]
+default_font = ExtResource("3_w4sv3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_me8qd"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="Theme" id="Theme_yip2y"]
+default_font = ExtResource("3_w4sv3")
+
+[node name="LiveCamera" type="Control" unique_id=1696873442]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 256.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_me8qd")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=733715941]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=188722855]
+handle_input_locally = false
+size = Vector2i(1024, 512)
+render_target_update_mode = 4
+
+[node name="InternalCamera" type="Camera2D" parent="SubViewportContainer/SubViewport" unique_id=2060731605]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1027665213]
+material = SubResource("ShaderMaterial_gxhad")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 256.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.23137255)
+
+[node name="CameraLabel" type="Label" parent="." unique_id=1929653148]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme = SubResource("Theme_gxhad")
+theme_override_font_sizes/font_size = 24
+text = "NO SIGNAL"
+horizontal_alignment = 2
+
+[node name="ColorRect2" type="PanelContainer" parent="." unique_id=1178832201]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0610001
+offset_top = 254.0
+offset_bottom = -0.23205566
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_me8qd")
+
+[node name="CameraButtons" type="HBoxContainer" parent="." unique_id=1574281300]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 12.0
+offset_top = 520.0
+offset_right = 210.0
+offset_bottom = 560.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_yip2y")
+alignment = 1
+
+[node name="CameraPlay" type="Label" parent="." unique_id=299217900]
+layout_mode = 1
+offset_left = 23.0
+offset_top = 20.0
+offset_right = 203.0
+offset_bottom = 54.0
+theme = SubResource("Theme_gxhad")
+theme_override_font_sizes/font_size = 24
+text = "PLAY▶"
