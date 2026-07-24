@@ -23,29 +23,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pu5ex"]
 shader = ExtResource("5_4absa")
-shader_parameter/pixel_size = 1.3550000168625
-shader_parameter/lod_blur = 0.6000000285
-shader_parameter/chroma_offset_px = 3.0
-shader_parameter/saturation = 0.6550000311125
-shader_parameter/contrast = 1.5
-shader_parameter/shadow_lift = 0.25
-shader_parameter/scanline_strength = 0.20000000298023
-shader_parameter/vignette_strength = 0.5
-shader_parameter/noise_strength = 0.11999999731779
-shader_parameter/noise_speed = 30.0
-shader_parameter/base_jitter_px = 0.1870000088825
-shader_parameter/base_jitter_speed = 2.0350000966625
-shader_parameter/glitchiness = 1.0
-shader_parameter/glitch_rate = 0.0
-shader_parameter/glitch_shift_px = 1.9350000919124999
-shader_parameter/glitch_window_min = 0.0310000014725
-shader_parameter/glitch_window_max = 0.0
-shader_parameter/blue_band_start_y = 0.45
-shader_parameter/blue_band_speed = -1.1149999817125
-shader_parameter/blue_band_width = 0.05700000270749
-shader_parameter/blue_band_strength = 0.102000004845
-shader_parameter/blue_band_glitch = 0.18000000855
-shader_parameter/blue_band_distort_px = 1.7550000833625
+shader_parameter/brightnessMult = 1.8000000268221599
+shader_parameter/wiggleMult = 0.0
+shader_parameter/chromaticAberrationOffset = 0.00074999998125
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gqwo1"]
 shader = ExtResource("5_jer4h")
@@ -141,6 +121,8 @@ layer = 2
 visible = false
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer2" unique_id=1022128878]
+modulate = Color(1, 1, 1, 0.011764706)
+self_modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_pu5ex")
 anchors_preset = -1
 anchor_left = 0.029000001
@@ -316,17 +298,6 @@ text = "SCAN"
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 190.0
-min_size_px = null
-max_size_px = null
-edge_thickness = null
-slot_tab = null
-window_title = null
-market_grid_all_path = null
-market_grid_product_path = null
-pad_left = null
-pad_top = null
-pad_right = null
-pad_bottom = null
 
 [node name="pc_margini" type="TextureRect" parent="." unique_id=2116207682]
 z_index = 5

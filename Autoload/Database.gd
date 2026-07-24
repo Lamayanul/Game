@@ -157,6 +157,35 @@ func buy_item_from_provider(p_name: String, item_id: String, qty: int = 1):
 	# Notificăm UI-ul să facă refresh
 	inventory_changed.emit()
 
+func expire_item_from_market(item_id: String, p_name: String):
+	# 1. Găsim și eliminăm din Market Global
+	var found = false
+	for i in range(market_inventory.size() - 1, -1, -1):
+		var m_item = market_inventory[i]
+		if str(m_item["id"]) == str(item_id) and m_item["provider"] == p_name:
+			# Returnăm marfa în depozit ca să nu se piardă
+			var p = providers.get(p_name)
+			if p:
+				for s_item in p["stock_internal"]:
+					if str(s_item["id"]) == str(item_id):
+						s_item["qty_total"] += m_item["qty"]
+						break
+				# Eliminăm și din inventarul activ al providerului
+				for j in range(p["inventory"].size() - 1, -1, -1):
+					if str(p["inventory"][j]["id"]) == str(item_id):
+						p["inventory"].remove_at(j)
+						break
+			
+			market_inventory.remove_at(i)
+			found = true
+			break
+	
+	if found:
+		# 2. Forțăm un restock imediat de la un provider random pentru a umple golul
+		_check_all_providers_for_restock()
+		inventory_changed.emit()
+		print("ECONOMIE: Itemul %s de la %s a expirat si a fost retras de pe piata." % [item_id, p_name])
+
 func _process_provider_restock(p_name: String, initial := false):
 	var p = providers[p_name]
 	var stock = p["stock_internal"]
@@ -198,11 +227,13 @@ func _process_provider_restock(p_name: String, initial := false):
 			found_in_market = true
 			break
 	if not found_in_market:
+		var on_sale = randf() < 0.25 # 25% șansă de promoție
 		market_inventory.append({
 			"id": item["id"], 
 			"qty": qty_to_list, 
 			"provider": p_name,
-			"price_base": int(get_number(item["id"])) # Prețul de bază din JSON
+			"price_base": int(get_number(item["id"])),
+			"is_on_sale": on_sale
 		})
 		
 	# Mesaj de istoric/news
@@ -217,6 +248,20 @@ func _process_provider_restock(p_name: String, initial := false):
 	if p["history"].size() > 10: p["history"].pop_back()
 	
 	print("ECONOMIE: ", p_name, " a scos pe piață ", qty_to_list, " bucăți.")
+
+func daily_market_restock():
+	# 1. Curățăm piața actuală
+	market_inventory.clear()
+	
+	# 2. Resetăm inventarele active ale providerilor
+	for p_name in providers:
+		providers[p_name]["inventory"].clear()
+		# 3. Facem un restock proaspăt (mai generos fiind zi nouă)
+		for i in range(randi_range(2, 4)):
+			_process_provider_restock(p_name, true)
+	
+	inventory_changed.emit()
+	print("ECONOMIE: Piața a fost complet reînnoită pentru noua zi.")
 
 func _generate_random_event():
 	event_timer = 0.0

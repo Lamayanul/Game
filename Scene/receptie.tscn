@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cdfdyhsdl2egm" path="res://Structure/receptie.gd" id="1_jkxve"]
 [ext_resource type="Texture2D" uid="uid://dvx81lcy5ofvt" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/connected table.png" id="1_r1l0r"]
+[ext_resource type="Script" uid="uid://crw3ae0gtija4" path="res://Tabs/Electricity/CablePlugManager.gd" id="2_mgr"]
+[ext_resource type="PackedScene" uid="uid://dt3sa6tggfuc0" path="res://Tabs/computer.tscn" id="3_c6d0b"]
+[ext_resource type="PackedScene" path="res://Tabs/Electricity/StandaloneCable.tscn" id="5_e6bj2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jkxve"]
 texture = ExtResource("1_r1l0r")
@@ -15,7 +18,7 @@ texture = ExtResource("1_r1l0r")
 0:1/0/y_sort_origin = -10
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -1, -8, -1, 1, 8, 1)
 1:1/0 = 0
-1:1/0/y_sort_origin = -10
+1:1/0/y_sort_origin = -20
 1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 1, -8, 1)
 0:5/0 = 0
 0:6/0 = 0
@@ -33,20 +36,25 @@ texture = ExtResource("1_r1l0r")
 4:4/0 = 0
 0:2/0 = 0
 0:3/0 = 0
+0:3/0/y_sort_origin = -10
 1:4/0 = 0
+1:4/0/y_sort_origin = -10
 1:3/0 = 0
+1:3/0/y_sort_origin = -10
 1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-3, -8, -8, -8, -8, 8, -3, 8)
 1:2/0 = 0
 0:4/0 = 0
+0:4/0/y_sort_origin = -10
 4:1/0 = 0
 4:1/0/y_sort_origin = -5
 4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-1, -8, 8, -8, 8, 8, -1, 8)
 4:1/0/custom_data_0 = true
 4:2/0 = 0
+4:2/0/y_sort_origin = -10
 4:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-1, -8, 8, -8, 8, 8, -1, 8)
 4:2/0/custom_data_0 = true
 5:3/0 = 0
-5:3/0/y_sort_origin = -10
+5:3/0/y_sort_origin = -20
 5:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 1, -8, 1)
 5:3/0/custom_data_0 = true
 6:3/0 = 0
@@ -60,6 +68,7 @@ texture = ExtResource("1_r1l0r")
 5:0/0 = 0
 5:0/0/custom_data_0 = true
 5:2/0 = 0
+5:2/0/y_sort_origin = -20
 5:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -8, -8, -8, -8, 8, -2, 8)
 5:2/0/custom_data_0 = true
 6:1/0 = 0
@@ -87,7 +96,7 @@ sources/1 = SubResource("TileSetAtlasSource_jkxve")
 texture = ExtResource("1_r1l0r")
 0:5/0 = 0
 0:6/0 = 0
-0:6/0/y_sort_origin = -10
+0:6/0/y_sort_origin = -20
 
 [sub_resource type="TileSet" id="TileSet_e6bj2"]
 sources/0 = SubResource("TileSetAtlasSource_rmqd5")
@@ -97,10 +106,11 @@ size = Vector2(21.878029, 21.750702)
 
 [node name="Node2D" type="Node2D" unique_id=376628894]
 y_sort_enabled = true
+script = ExtResource("2_mgr")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1710099108]
 y_sort_enabled = true
-tile_map_data = PackedByteArray("AAD+////AQAAAAAAAAD/////AQABAAAAAAD+/wAAAQAEAAEAAAD//wAAAQAFAAEAAAAAAP//AQACAAAAAAAAAAAAAQACAAEAAAD//wEAAQAFAAIAAAD+/wEAAQAEAAIAAAD+/wIAAQAEAAMAAAD//wIAAQAFAAMAAAAAAAEAAQABAAAAAAAAAAIAAQABAAEAAAABAP//AQAAAAAAAAABAAAAAQAAAAEAAAACAP//AQACAAAAAAACAAAAAQACAAEAAAACAAEAAQAFAAQAAAACAAIAAQAFAAUAAAABAAIAAQAEAAUAAAABAAEAAQAEAAQAAAA=")
+tile_map_data = PackedByteArray("AAD+/wAAAQAEAAEAAAAAAP//AQACAAAAAAD//wEAAQAFAAIAAAD+/wEAAQAEAAIAAAD+/wIAAQAEAAMAAAD//wIAAQAFAAMAAAAAAAEAAQABAAAAAAAAAAIAAQABAAEAAAABAP//AQAAAAAAAAABAAAAAQAAAAEAAAACAP//AQACAAAAAAACAAAAAQACAAEAAAACAAEAAQAFAAQAAAACAAIAAQAFAAUAAAABAAIAAQAEAAUAAAABAAEAAQAEAAQAAAAAAAAAAQACAAEAAAD//wAAAQAFAAEAAAD/////AQABAAAAAAD+////AQAAAAAAAAA=")
 tile_set = SubResource("TileSet_c6d0b")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=802821013]
@@ -116,6 +126,11 @@ harta_tile = NodePath("../TileMapLayer")
 position = Vector2(32.333, 33.225002)
 scale = Vector2(0.659, 0.684)
 shape = SubResource("RectangleShape2D_c6d0b")
+
+[node name="Node2D" parent="." unique_id=1425034724 instance=ExtResource("3_c6d0b")]
+position = Vector2(-16, 26)
+
+[node name="StandaloneCable" parent="." unique_id=1538945312 instance=ExtResource("5_e6bj2")]
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_area_2d_body_exited"]

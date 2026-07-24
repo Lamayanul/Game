@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvx4h074stip4"]
+[gd_scene format=3 uid="uid://bvx4h074stip4"]
 
 [ext_resource type="Script" uid="uid://bmlp54iyeyen4" path="res://Scripturi/skill_scroll.gd" id="1_2fkws"]
 [ext_resource type="PackedScene" uid="uid://ucxmlnyme6rl" path="res://Scene/skill_button.tscn" id="1_87dj2"]
@@ -15,7 +15,7 @@ colors = PackedColorArray(0, 0, 0, 1)
 gradient = SubResource("Gradient_2fkws")
 fill_from = Vector2(0, 1)
 
-[node name="SkillTree" type="Control"]
+[node name="SkillTree" type="Control" unique_id=781173619]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,9 +23,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=393257828]
 modulate = Color(1, 1, 1, 0.788235)
-layout_mode = 2
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -34,7 +34,7 @@ texture = SubResource("GradientTexture2D_hq2u4")
 expand_mode = 2
 stretch_mode = 6
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1610784950]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -42,13 +42,14 @@ anchor_bottom = 1.0
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 
-[node name="Panel" type="Control" parent="ScrollContainer"]
+[node name="Panel" type="Control" parent="ScrollContainer" unique_id=812157518]
 custom_minimum_size = Vector2(3000, 2000)
 layout_mode = 2
 script = ExtResource("1_2fkws")
 
-[node name="SkillButton" parent="ScrollContainer/Panel" instance=ExtResource("1_87dj2")]
-layout_mode = 2
+[node name="SkillButton" parent="ScrollContainer/Panel" unique_id=500436067 instance=ExtResource("1_87dj2")]
+z_index = 0
+layout_mode = 0
 anchor_left = 0.049
 anchor_top = 0.107
 anchor_right = 0.049
@@ -58,7 +59,8 @@ offset_top = -150.0
 offset_right = 74.0
 offset_bottom = -1.52588e-05
 
-[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton" instance=ExtResource("1_87dj2")]
+[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton" unique_id=293080429 instance=ExtResource("1_87dj2")]
+z_index = 0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 2.007
@@ -72,7 +74,8 @@ offset_bottom = 0.0
 disabled = true
 texture_normal = ExtResource("2_0e74u")
 
-[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton" instance=ExtResource("1_87dj2")]
+[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton" unique_id=1373147786 instance=ExtResource("1_87dj2")]
+z_index = 0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 2.007
@@ -86,7 +89,8 @@ offset_bottom = -3.05176e-05
 disabled = true
 texture_normal = ExtResource("3_2fkws")
 
-[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton/SkillButton2" instance=ExtResource("1_87dj2")]
+[node name="SkillButton" parent="ScrollContainer/Panel/SkillButton/SkillButton2" unique_id=802433948 instance=ExtResource("1_87dj2")]
+z_index = 0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.94
@@ -100,7 +104,8 @@ offset_bottom = 0.0
 disabled = true
 texture_normal = ExtResource("4_hq2u4")
 
-[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton/SkillButton2" instance=ExtResource("1_87dj2")]
+[node name="SkillButton2" parent="ScrollContainer/Panel/SkillButton/SkillButton2" unique_id=793360590 instance=ExtResource("1_87dj2")]
+z_index = 0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.94

@@ -117,11 +117,22 @@ func _check_and_apply_helper_item():
 	if db_item.is_empty():
 		return # Nu am găsit item compatibil
 
-	# 3. Construim datele pentru slot (Convertim din format JSON în format Slot)
-	var texture_path = "res://assets/" + str(db_item.get("texture", ""))
-	var tex = load(texture_path)
+	# 3. Construim datele pentru slot
+	var texture_name = str(db_item.get("texture", ""))
+	var texture_path = "res://assets/" + texture_name
 	
-	if tex == null: return
+	if not ResourceLoader.exists(texture_path):
+		# Fallback: poate e direct în res:// sau altundeva
+		if ResourceLoader.exists("res://" + texture_name):
+			texture_path = "res://" + texture_name
+		else:
+			print("❌ Textura nu există: ", texture_path)
+			return
+
+	var tex = load(texture_path)
+	if tex == null: 
+		print("❌ Eroare la load() pentru: ", texture_path)
+		return
 
 	var real_bonus_item = {
 		"TEXTURE": tex,
@@ -131,19 +142,25 @@ func _check_and_apply_helper_item():
 		"RARITATE": str(db_item.get("raritate", required_rarity)),
 		"EFFECTS": db_item.get("effects", []),
 		"CURSE": db_item.get("curse", null),
-		"TYPE": db_item.get("type", [])
+		"TYPE": db_item.get("type", []),
+		"DITTO": db_item.get("ditto", false),
+		"DURABILITY": db_item.get("durability", 20)
 	}
 	
-	print("🎁 Bonus acordat: ", real_bonus_item["NUME"])
+	print("🎁 Bonus acordat: ", real_bonus_item["NUME"], " (", texture_path, ")")
 
-	# 4. Căutăm primul slot GOL și îl punem acolo
-	# (Nu suprascriem iteme existente!)
+	# 4. Căutăm primul slot GOL
 	if not _is_slot_valid(input_slot_1):
+		print("  -> Slot 1 populat")
 		input_slot_1.set_property(real_bonus_item)
 	elif not _is_slot_valid(input_slot_2):
+		print("  -> Slot 2 populat")
 		input_slot_2.set_property(real_bonus_item)
 	elif not _is_slot_valid(input_slot_3):
+		print("  -> Slot 3 populat")
 		input_slot_3.set_property(real_bonus_item)
+	else:
+		print("  -> Niciun slot liber pentru bonus")
 func _update_requirement_visuals():
 	if current_cost.is_empty(): return
 	
@@ -258,3 +275,17 @@ func _is_slot_valid(slot: Slot) -> bool:
 	if slot.property.get("TEXTURE") == null: return false
 	if slot.property.get("CANTITATE", 0) <= 0: return false
 	return true
+
+# --- FUNCȚII NOI PENTRU PERSISTENȚĂ ---
+func has_food_bonus() -> bool:
+	for s in [input_slot_1, input_slot_2, input_slot_3]:
+		if _is_slot_valid(s):
+			var types = s.property.get("TYPE", [])
+			if types is Array and "food" in types:
+				return true
+	return false
+
+func clear_all_inputs():
+	input_slot_1.clear_item()
+	input_slot_2.clear_item()
+	input_slot_3.clear_item()

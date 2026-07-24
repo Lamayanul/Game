@@ -4,9 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="2_slot"]
 
 [node name="LightControlRow" type="HBoxContainer" unique_id=834036241]
-custom_minimum_size = Vector2(0, 70)
-offset_right = 400.0
-offset_bottom = 70.0
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = -1
+anchor_right = 0.39100003
+anchor_bottom = 0.19500001
+offset_right = -0.3840332
+offset_bottom = -29.840004
+size_flags_vertical = 0
 theme_override_constants/separation = 10
 script = ExtResource("1_row")
 
@@ -25,6 +29,10 @@ text = "OFF"
 
 [node name="Slot1" parent="." unique_id=1264047512 instance=ExtResource("2_slot")]
 layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
 
 [node name="Slot2" parent="." unique_id=1693687207 instance=ExtResource("2_slot")]
 layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4

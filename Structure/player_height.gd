@@ -82,6 +82,7 @@ func _on_area_under_body_entered(body: Node2D) -> void:
 			player.z_index=1
 			player.is_high=true
 			$"../../StativBody2D/CollisionShape2D".set_deferred("disabled", true)
+	
 			
 		else:
 			body.set_collision_mask_value(2,false)
@@ -90,6 +91,7 @@ func _on_area_under_body_entered(body: Node2D) -> void:
 			player.is_high=false
 			$"../../StativBody2D/CollisionShape2D".set_deferred("disabled", false)
 			$"../..".modulate=Color(1, 1, 1, 0.5)
+			
 
 
 func _on_area_under_body_exited(body: Node2D) -> void:
@@ -97,3 +99,4 @@ func _on_area_under_body_exited(body: Node2D) -> void:
 		if player.este_transparent==false:
 			$"../..".modulate=Color(1, 1, 1, 1)
 			$"../../StativBody2D/CollisionShape2D".set_deferred("disabled", true)
+			

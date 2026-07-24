@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dt3sa6tggfuc0"]
+
+[ext_resource type="Texture2D" uid="uid://b43wv65iteyus" path="res://Tabs/unitate.png" id="1_fep5o"]
+[ext_resource type="Texture2D" uid="uid://65mbilrpyg6s" path="res://Tabs/com.png" id="2_fep5o"]
+[ext_resource type="Script" uid="uid://buitbly15j403" path="res://Tabs/reactive_line.gd" id="3_fep5o"]
+
+[node name="Node2D" type="Node2D" unique_id=1425034724]
+y_sort_enabled = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1707126148]
+y_sort_enabled = true
+position = Vector2(0, -6)
+texture = ExtResource("1_fep5o")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=689158966]
+y_sort_enabled = true
+position = Vector2(15, 1)
+scale = Vector2(1.15625, 1.15625)
+texture = ExtResource("2_fep5o")
+flip_h = true
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1689223318]
+points = PackedVector2Array(20, 2, 20, 9, 20, 11, 20.4808, 11.961599, 21, 13, 21, 14, 21, 15, 20.528793, 15.471207, 20, 16, 19, 16, 17, 15, 15, 15, 9, 15, 5, 15, 1, 16, -3, 16, -4, 16, -7, 17, -8, 17, -8, 17, -8.281789, 17, -9, 17, -9, 17, -9, 17, -10, 17, -11, 17, -12, 16, -12, 15, -12, 14, -11, 13, -10, 12, -10, 11, -10, 2, -10, 1, -9, 0, -8, 0, -7, 1, -6, 1)
+width = 1.0
+default_color = Color(0, 0, 0, 1)
+script = ExtResource("3_fep5o")

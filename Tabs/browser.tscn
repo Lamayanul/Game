@@ -1,15 +1,20 @@
 [gd_scene format=3 uid="uid://bdbqa40w6fhjf"]
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_i7rw4"]
+[ext_resource type="Texture2D" uid="uid://bv701d6ih4c4k" path="res://Tabs/space.jpg" id="2_gggth"]
 [ext_resource type="Texture2D" uid="uid://cmnntvo131h3l" path="res://Tabs/browser.png" id="2_klhmi"]
 [ext_resource type="Script" uid="uid://b0bmlexml3ijq" path="res://Tabs/ItemLookup.gd" id="3_2t4ub"]
-[ext_resource type="Texture2D" uid="uid://chn1jffvu5m20" path="res://Tabs/java.png" id="3_21n6t"]
 [ext_resource type="PackedScene" uid="uid://caave01hjvhf" path="res://Tabs/ribbon.tscn" id="3_da1i6"]
 [ext_resource type="Script" uid="uid://cvnxu1c8acktn" path="res://Tabs/MarqueeButtonsE.gd" id="4_5twsn"]
 [ext_resource type="PackedScene" uid="uid://dh5rxbokk4dqq" path="res://Tabs/moving_buton.tscn" id="4_a5wrn"]
 [ext_resource type="Texture2D" uid="uid://cex5k4ahk336a" path="res://Tabs/loupe.png" id="4_ggdit"]
 [ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="4_jw1qc"]
+[ext_resource type="Shader" uid="uid://cocomocl30m52" path="res://Shaders/moon.gdshader" id="5_0hhfj"]
+[ext_resource type="Texture2D" uid="uid://chvb2c8fly1h" path="res://Tabs/earth.jpg" id="5_ailfk"]
+[ext_resource type="Texture2D" uid="uid://ewtnod6hulwp" path="res://Tabs/mooon.png" id="6_0hhfj"]
 [ext_resource type="Script" uid="uid://c6cyxgsmb5ymh" path="res://Tabs/MarqueeButtonsD.gd" id="6_5twsn"]
+[ext_resource type="Script" uid="uid://d2c4c54nfsp5y" path="res://Scripturi/moving_sprite.gd" id="6_x6jn8"]
+[ext_resource type="Texture2D" uid="uid://cvgefpe23gayo" path="res://Tabs/stars.png" id="9_x6jn8"]
 [ext_resource type="FontFile" uid="uid://c3y8aej1f3qau" path="res://Fonts/The Melody.otf" id="10_inpi5"]
 [ext_resource type="Script" uid="uid://biuhnkve5plwp" path="res://Tabs/add_market.gd" id="10_jj33y"]
 [ext_resource type="Script" uid="uid://d88nytvotiim" path="res://Tabs/market.gd" id="10_jvlu3"]
@@ -19,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://dluls5pgk36bb" path="res://Tabs/market_slot.tscn" id="13_kcrse"]
 [ext_resource type="PackedScene" uid="uid://do87c50em7t3w" path="res://Scene/case_opener.tscn" id="17_jchau"]
 [ext_resource type="PackedScene" uid="uid://b34w407l3qnve" path="res://Tabs/black_market.tscn" id="18_ex0vr"]
+[ext_resource type="Texture2D" uid="uid://bixdn64e0di65" path="res://Tabs/gravity.png" id="19_0ay8f"]
 [ext_resource type="PackedScene" uid="uid://cvub08d3jius4" path="res://Tabs/siteNotFound.tscn" id="19_eqeel"]
 [ext_resource type="PackedScene" uid="uid://bqlq0wq6mia5p" path="res://Trade/forex_chart.tscn" id="20_qj6mc"]
 [ext_resource type="PackedScene" uid="uid://c6y7s2f5n4m3j" path="res://Tabs/provider_page.tscn" id="21_p1"]
@@ -32,8 +38,20 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.8, 0, 0.0149773, 1)
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x6jn8"]
+shader = ExtResource("5_0hhfj")
+shader_parameter/rotation_speed = -0.00999976297500016
+shader_parameter/mineral_blend = 0.0
+shader_parameter/shadow_sharpness = 1.0
+shader_parameter/light_direction = Vector2(20.9, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ailfk"]
+shader = ExtResource("5_0hhfj")
+shader_parameter/rotation_speed = 0.02000023844999976
+shader_parameter/mineral_blend = 0.0
+shader_parameter/shadow_sharpness = 1.0
+shader_parameter/light_direction = Vector2(1, 0)
 
 [sub_resource type="Gradient" id="Gradient_po6gu"]
 colors = PackedColorArray(0.679688, 0, 0.109528, 1, 0.07038841, 0.13504763, 0.53125, 1)
@@ -137,7 +155,7 @@ default_font_size = 25
 [node name="DockTab2" type="PanelContainer" unique_id=69386010 groups=["browser"]]
 z_index = 4
 clip_contents = true
-custom_minimum_size = Vector2(1200, 710)
+custom_minimum_size = Vector2(1200, 810)
 offset_right = 1200.0
 offset_bottom = 710.0
 mouse_filter = 1
@@ -146,23 +164,62 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_i7rw4")
 
 [node name="fundal" type="TextureRect" parent="." unique_id=2008461279]
+clip_contents = true
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 6
 
 [node name="TopBack" type="TextureRect" parent="fundal" unique_id=790372334]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0020001
-anchor_bottom = 0.20400001
-offset_right = -2.3920898
-offset_bottom = -0.024002075
+anchor_right = 1.0
+anchor_bottom = 0.215
 size_flags_horizontal = 0
 size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 6
 
+[node name="TextureRect" type="TextureRect" parent="fundal" unique_id=1438299073]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.001
+offset_top = 52.47284
+offset_bottom = -0.7060547
+texture = ExtResource("2_gggth")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Sprite2D2" type="Sprite2D" parent="fundal" unique_id=823021318]
+visible = false
+modulate = Color(0.06640625, 0.06640625, 0.06640625, 1)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_x6jn8")
+position = Vector2(141.98761, 186.28125)
+scale = Vector2(0.015041514, 0.025741583)
+texture = ExtResource("5_ailfk")
+script = ExtResource("6_x6jn8")
+float_linear = true
+float_amplitude = Vector2(50, -50)
+float_speed = 0.01
+rotate_enabled = false
+drift_velocity = Vector2(50, 10)
+orbit_enabled = true
+orbit_center_offset = Vector2(350, 300)
+orbit_radius = Vector2(-250, 800)
+orbit_speed = 0.01
+
+[node name="Sprite2D" type="Sprite2D" parent="fundal" unique_id=1187614114]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ailfk")
+position = Vector2(864.00006, 499)
+scale = Vector2(0.48710477, 0.9256894)
+texture = ExtResource("6_0hhfj")
+
 [node name="TextureRect" type="TextureRect" parent="." unique_id=759443525]
+visible = false
 modulate = Color(1, 1, 1, 0.145098)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -256,19 +313,20 @@ theme_override_constants/separation = 24
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Search/SearchContent" unique_id=1833285816]
 layout_mode = 2
-texture = ExtResource("3_21n6t")
+texture = ExtResource("9_x6jn8")
 stretch_mode = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Search/SearchContent" unique_id=1343840793]
-visible = false
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = SubResource("Theme_8twd8")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
 bbcode_enabled = true
-text = "Next Browser"
+text = "[color=#f4c44e]<STAR[/color] [color=white]Browser>[/color]"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -314,18 +372,30 @@ placeholder_text = "Search"
 caret_blink = true
 
 [node name="Control" type="Control" parent="VBoxContainer/Search/SearchContent" unique_id=766257930]
-custom_minimum_size = Vector2(0, 50)
+y_sort_enabled = true
+custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
+size_flags_vertical = 3
 theme = SubResource("Theme_jw1qc")
 script = ExtResource("4_5twsn")
 button_scene = ExtResource("4_a5wrn")
+speed_angular = 0.1
+orbit_radius = Vector2(0.75, 0)
+orbit_offset = Vector2(140, 0)
 
 [node name="Control2" type="Control" parent="VBoxContainer/Search/SearchContent" unique_id=936725980]
+visible = false
+y_sort_enabled = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme = SubResource("Theme_i7rw4")
 script = ExtResource("6_5twsn")
 button_scene = ExtResource("4_a5wrn")
+speed_angular = -0.1
+radius_scale = Vector2(0.8, 0.4)
+orbit_radius = Vector2(0.75, 0)
+orbit_offset = Vector2(150, 0)
+hide_back_delay = 5.0
 
 [node name="Label" type="Label" parent="VBoxContainer/Search/SearchContent" unique_id=423022686]
 layout_mode = 2
@@ -337,6 +407,7 @@ layout_mode = 2
 script = ExtResource("3_2t4ub")
 
 [node name="EventsContainer" type="VBoxContainer" parent="VBoxContainer/Search/SearchContent" unique_id=123456789]
+visible = false
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -351,7 +422,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_jw1qc")
 layout_mode = 2
 
 [node name="Market" type="Control" parent="VBoxContainer" unique_id=1186938704]
-visible = false
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -359,6 +429,7 @@ mouse_filter = 2
 script = ExtResource("10_jvlu3")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Market" unique_id=1374511200]
+clip_contents = false
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = -1
@@ -443,6 +514,12 @@ size_flags_vertical = 3
 theme_override_constants/v_separation = 40
 script = ExtResource("13_inpi5")
 slot_tab = ExtResource("11_wehm2")
+
+[node name="logo_shop" type="Sprite2D" parent="VBoxContainer" unique_id=116894860]
+visible = false
+position = Vector2(270, 160)
+scale = Vector2(0.62440133, 0.62440133)
+texture = ExtResource("19_0ay8f")
 
 [node name="Csgo" type="Control" parent="VBoxContainer" unique_id=1287037587]
 visible = false

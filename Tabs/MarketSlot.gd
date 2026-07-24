@@ -14,6 +14,17 @@ func _ready():
 	if provider_node and provider_node.has_signal("provider_clicked"):
 		if not provider_node.provider_clicked.is_connected(_on_provider_clicked):
 			provider_node.provider_clicked.connect(_on_provider_clicked)
+	
+	# Sincronizăm textura din Provider cu rect-ul "prov"
+	var prov_rect = get_node_or_null("PanelContainer2/prov")
+	if prov_rect and provider_node:
+		var provider_tex_rect = provider_node.get_node_or_null("PanelContainer/TextureRect")
+		if provider_tex_rect:
+			prov_rect.texture = provider_tex_rect.texture
+		
+		# Ne asigurăm că rămâne sincronizat dacă se schimbă ulterior
+		if provider_node.has_signal("texture_changed"):
+			provider_node.texture_changed.connect(func(tex): prov_rect.texture = tex)
 
 func _on_provider_clicked(p_name: String):
 	# Folosim sistemul de navigare al browserului

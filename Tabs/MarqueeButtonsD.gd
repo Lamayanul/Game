@@ -2,18 +2,26 @@ extends Control
 
 @export var button_scene: PackedScene              # scena cu butonul tău
 @export var button_count: int = 10                 # câte instanțe pui pe bandă
-@export var speed_px_s: float = 30                 # viteză spre dreapta (px/s)
-@export var spacing: float = 15                    # spațiu între butoane
-@export var center_vertically: bool = true         # centrează pe Y în înălțimea benzii
-@export var use_clip: bool = true                  # taie desenul în afara benzii
+@export var speed_angular: float = -0.3      # viteză mai lentă (radiani/s)
+@export var radius_scale: Vector2 = Vector2(0.9, 0.4) # relativ la mărime
+@export var orbit_radius: Vector2 = Vector2.ZERO   # lungime/înălțime absolută în pixeli
+@export var orbit_offset: Vector2 = Vector2.ZERO # deplasare manuală a centrului
+@export var hide_back_delay: float = 2.0          # secunde până dispare în spate
+@export var enable_back_hiding: bool = true       # activează/dezactivează dispariția
+@export var use_clip: bool = false            # de obicei la cerc nu vrei clip dacă ies butoanele
 @export var button_names: PackedStringArray = []   # numele dorite (opțional)
 @export var cycle_names: bool = true               # dacă sunt mai puține nume decât butoane, se ciclizează
 
 var _buttons: Array[Control] = []
+var _time: float = 0.0
+var _back_timers: Array[float] = []
+var _initial_z_index: int = 0
 
 func _ready() -> void:
 	clip_contents = use_clip
 	mouse_filter = Control.MOUSE_FILTER_PASS
+	_back_timers.resize(button_count)
+	_back_timers.fill(0.0)
 
 	if button_scene == null:
 		push_error("Setează 'button_scene' în Inspector!")
@@ -25,42 +33,62 @@ func _ready() -> void:
 		add_child(b)
 		_buttons.append(b)
 		_set_button_text_for(b, _name_for(i))
-
-	await get_tree().process_frame
-	_layout_horiz()
-	resized.connect(_layout_horiz)
-
-func _layout_horiz() -> void:
-	if _buttons.is_empty():
-		return
-
-	var x := 0.0
-	for b in _buttons:
-		var bw = max(b.size.x, b.get_combined_minimum_size().x)
-		var bh = max(b.size.y, b.get_combined_minimum_size().y)
-
-		b.position.x = x
-		b.position.y = (size.y - bh) * 0.5 if center_vertically else 0.0
-		x += bw + spacing
+		if i == 0:
+			_initial_z_index = b.z_index
 
 func _process(delta: float) -> void:
 	if _buttons.is_empty():
 		return
 
-	# mișcă toate spre DREAPTA
-	for b in _buttons:
-		b.position.x += speed_px_s * delta
+	_time += delta
+	var center = (size / 2.0) + orbit_offset
 
-	# cel mai din stânga capăt (left edge)
-	var leftmost_edge := INF
-	for b in _buttons:
-		leftmost_edge = min(leftmost_edge, b.position.x)
+	var rx = 0.0
+	if orbit_radius.x > 0:
+		rx = (size.x / 2.0) * orbit_radius.x if orbit_radius.x <= 1.0 else orbit_radius.x
+	else:
+		rx = (size.x / 2.0) * radius_scale.x
 
-	# repoziționează pe cele ieșite complet în dreapta
-	for b in _buttons:
-		if b.position.x >= size.x:
-			b.position.x = leftmost_edge - b.size.x - spacing
-			leftmost_edge = b.position.x
+	var ry = 0.0
+	if orbit_radius.y > 0:
+		ry = (size.y / 2.0) * orbit_radius.y if orbit_radius.y <= 1.0 else orbit_radius.y
+	else:
+		ry = (size.y / 2.0) * radius_scale.y
+	var total = _buttons.size()
+	for i in total:
+		var b = _buttons[i]
+		var angle = (float(i) / total) * TAU + _time * speed_angular
+		angle = fposmod(angle, TAU)
+
+		var target_x = center.x + cos(angle) * rx
+		var target_y = center.y + sin(angle) * ry
+
+		b.position = Vector2(target_x, target_y) - b.size / 2.0
+
+		var sin_a = sin(angle)
+		var is_front = sin_a > 0
+		var depth = (sin_a + 1.0) / 2.0
+
+		b.scale = Vector2.ONE * lerp(0.7, 1.0, depth)
+		b.modulate.a = lerp(0.5, 1.0, depth)
+
+		# Z-index: 0 (față) sau -1 (spate)
+		b.z_index = _initial_z_index if is_front else _initial_z_index - 1
+
+		# Logica de dispariție
+		if enable_back_hiding:
+			if not is_front:
+				_back_timers[i] += delta
+				if _back_timers[i] >= hide_back_delay:
+					b.visible = false
+				else:
+					b.visible = true
+			else:
+				_back_timers[i] = 0.0
+				b.visible = true
+		else:
+			b.visible = true
+
 
 # ---------- Naming helpers ----------
 

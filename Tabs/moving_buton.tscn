@@ -1,17 +1,19 @@
 [gd_scene format=3 uid="uid://dh5rxbokk4dqq"]
 
+[ext_resource type="FontFile" uid="uid://bqvj3eli3cce" path="res://Fonts/Nihonium113-Console.ttf" id="1_ywhfi"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5iuu"]
 bg_color = Color(0.394531, 0.394531, 0.394531, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.8, 0, 0.32941177, 0.4745098)
+border_color = Color(0.8, 0.677423, 0, 0.4745098)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-shadow_color = Color(0.8, 0, 0.32941177, 0.4745098)
+shadow_color = Color(0.8, 0.74719, 0.4534771, 0.4745098)
 shadow_size = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywhfi"]
@@ -56,7 +58,12 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_t5iuu")
 [node name="Button" type="Button" parent="PanelContainer" unique_id=1758293829]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_ywhfi")
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_ywhfi")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jnik0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_j4ov7")
 text = "Rainbow team"
+clip_text = true

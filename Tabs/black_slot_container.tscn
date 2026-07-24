@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dknaew4curckx"]
+[gd_scene format=3 uid="uid://dknaew4curckx"]
 
 [ext_resource type="Script" uid="uid://dyrrlcjhaa4wm" path="res://Sprout Lands - Sprites - Basic pack/Tilesets/slot_container.gd" id="1_6ojd2"]
 [ext_resource type="Script" uid="uid://xpw0mr553yp5" path="res://Tabs/MarketSlot.gd" id="1_amiid"]
@@ -30,18 +30,8 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="Theme" id="Theme_8yu11"]
 default_font_size = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywjpa"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_314ai"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbba"]
 bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uumq7"]
-bg_color = Color(0.195313, 0.19197, 0.190487, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -54,12 +44,22 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbba"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uumq7"]
+bg_color = Color(0.195313, 0.19197, 0.190487, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_314ai"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywjpa"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Gradient" id="Gradient_y4thb"]
 offsets = PackedFloat32Array(0)
@@ -111,23 +111,23 @@ corner_radius_bottom_left = 10
 [sub_resource type="Theme" id="Theme_y23aj"]
 default_font_size = 20
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=117306487]
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 3
 anchor_top = -0.049
 anchor_right = 1.0
-anchor_bottom = 0.662
+anchor_bottom = 0.697
 offset_top = 0.0879993
-offset_bottom = 0.0559692
+offset_bottom = -17.864044
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_amiid")
 
-[node name="SlotContainer" type="PanelContainer" parent="." groups=["market"]]
+[node name="SlotContainer" type="PanelContainer" parent="." unique_id=1650176490 groups=["market"]]
 custom_minimum_size = Vector2(64, 200)
-layout_mode = 2
+layout_mode = 0
 offset_right = 147.0
 offset_bottom = 343.0
 size_flags_horizontal = 3
@@ -136,11 +136,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_lmmu1")
 script = ExtResource("1_6ojd2")
 slot_type = "market"
 
-[node name="TextureHolder" type="Control" parent="SlotContainer"]
+[node name="TextureHolder" type="Control" parent="SlotContainer" unique_id=1406466944]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="TextureRect2" type="TextureRect" parent="SlotContainer/TextureHolder"]
+[node name="TextureRect2" type="TextureRect" parent="SlotContainer/TextureHolder" unique_id=282916366]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_right = 128.0
@@ -148,7 +148,7 @@ offset_bottom = 128.0
 expand_mode = 1
 stretch_mode = 4
 
-[node name="TextureRect" type="TextureRect" parent="SlotContainer/TextureHolder"]
+[node name="TextureRect" type="TextureRect" parent="SlotContainer/TextureHolder" unique_id=2094186942]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = -1
@@ -161,7 +161,7 @@ offset_bottom = 127.954
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="SlotContainer/TextureHolder/TextureRect"]
+[node name="Label" type="Label" parent="SlotContainer/TextureHolder/TextureRect" unique_id=2091332468]
 unique_name_in_owner = true
 visible = false
 texture_filter = 2
@@ -181,7 +181,7 @@ label_settings = SubResource("LabelSettings_qudmq")
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="TextureRect3" type="TextureRect" parent="SlotContainer/TextureHolder"]
+[node name="TextureRect3" type="TextureRect" parent="SlotContainer/TextureHolder" unique_id=1065144762]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 offset_right = 145.0
@@ -189,7 +189,7 @@ offset_bottom = 129.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Button" type="Button" parent="SlotContainer/TextureHolder"]
+[node name="Button" type="Button" parent="SlotContainer/TextureHolder" unique_id=2071708961]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 264.0
@@ -197,21 +197,21 @@ offset_right = 135.0
 offset_bottom = 337.0
 theme = SubResource("Theme_8yu11")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_styles/focus = SubResource("StyleBoxFlat_ywjpa")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_314ai")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uumq7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wq3ab")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gtbba")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wq3ab")
+theme_override_styles/hover = SubResource("StyleBoxFlat_uumq7")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_314ai")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ywjpa")
 text = "BUY"
 
-[node name="Offer" type="TextureRect" parent="SlotContainer"]
+[node name="Offer" type="TextureRect" parent="SlotContainer" unique_id=52569014]
 custom_minimum_size = Vector2(140, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("3_acqed")
 
-[node name="TextureRect" type="TextureRect" parent="SlotContainer"]
+[node name="TextureRect" type="TextureRect" parent="SlotContainer" unique_id=13792926]
 visible = false
 custom_minimum_size = Vector2(100, 5)
 layout_mode = 2
@@ -219,7 +219,7 @@ size_flags_vertical = 8
 texture = SubResource("GradientTexture2D_ywjpa")
 expand_mode = 1
 
-[node name="PanelContainer3" type="PanelContainer" parent="."]
+[node name="PanelContainer3" type="PanelContainer" parent="." unique_id=1988465196]
 z_index = -1
 layout_mode = 1
 anchors_preset = -1
@@ -227,7 +227,7 @@ offset_right = 147.0
 offset_bottom = 270.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8i1dh")
 
-[node name="Price" type="RichTextLabel" parent="PanelContainer3"]
+[node name="Price" type="RichTextLabel" parent="PanelContainer3" unique_id=1100508202]
 z_index = 1
 layout_mode = 2
 size_flags_vertical = 8
@@ -239,22 +239,22 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 2
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=586036439]
+layout_mode = 0
 anchor_right = 0.794
 offset_left = 153.0
 offset_right = -0.0560303
 offset_bottom = 300.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rqlci")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer" unique_id=17735271]
 layout_mode = 2
 mouse_filter = 0
 mouse_force_pass_scroll_events = false
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="description" type="RichTextLabel" parent="PanelContainer/ScrollContainer"]
+[node name="description" type="RichTextLabel" parent="PanelContainer/ScrollContainer" unique_id=1125913614]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -265,13 +265,13 @@ text = "Nume produs, cantitatea, raritatea, origine, caracteristici"
 fit_content = true
 scroll_active = false
 
-[node name="ItemZomm" type="TextureRect" parent="PanelContainer/ScrollContainer"]
+[node name="ItemZomm" type="TextureRect" parent="PanelContainer/ScrollContainer" unique_id=447335400]
 visible = false
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1094949434]
 clip_contents = true
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.801
 anchor_right = 1.0
 offset_left = -0.224121
@@ -279,10 +279,10 @@ offset_right = -2.0
 offset_bottom = 300.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rqlci")
 
-[node name="Provider" parent="PanelContainer2" instance=ExtResource("5_ou8vq")]
+[node name="Provider" parent="PanelContainer2" unique_id=197829694 instance=ExtResource("5_ou8vq")]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer2" unique_id=2106592242]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -293,13 +293,13 @@ horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("10_ny6it")
 
-[node name="CardList" type="VBoxContainer" parent="PanelContainer2/ScrollContainer"]
+[node name="CardList" type="VBoxContainer" parent="PanelContainer2/ScrollContainer" unique_id=295161002]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Alternative" type="Button" parent="."]
-layout_mode = 2
+[node name="Alternative" type="Button" parent="." unique_id=1523759242]
+layout_mode = 0
 anchor_right = 0.792
 offset_left = 153.0
 offset_top = 306.0
@@ -308,7 +308,7 @@ offset_bottom = 364.0
 size_flags_vertical = 8
 script = ExtResource("11_n72wl")
 
-[node name="SlotContainer" parent="Alternative" instance=ExtResource("12_807en")]
+[node name="SlotContainer" parent="Alternative" unique_id=411266563 instance=ExtResource("12_807en")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -326,7 +326,7 @@ offset_bottom = 64.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="SlotContainer2" parent="Alternative" instance=ExtResource("12_807en")]
+[node name="SlotContainer2" parent="Alternative" unique_id=637272902 instance=ExtResource("12_807en")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -344,7 +344,7 @@ offset_bottom = 64.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="SlotContainer3" parent="Alternative" instance=ExtResource("12_807en")]
+[node name="SlotContainer3" parent="Alternative" unique_id=1960048598 instance=ExtResource("12_807en")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -363,7 +363,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_filter = 0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Alternative"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Alternative" unique_id=830017531]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.807
@@ -375,21 +375,21 @@ text = "Alternative sale method"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ReqIcon" type="TextureRect" parent="Alternative"]
+[node name="ReqIcon" type="TextureRect" parent="Alternative" unique_id=1509229235]
 modulate = Color(1, 1, 1, 0.647059)
 layout_mode = 0
 offset_left = 285.0
 offset_right = 398.0
 offset_bottom = 57.0
 
-[node name="ReqAmount" type="Label" parent="Alternative/ReqIcon"]
+[node name="ReqAmount" type="Label" parent="Alternative/ReqIcon" unique_id=1112160778]
 layout_mode = 0
 offset_right = 113.0
 offset_bottom = 57.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button2" type="Button" parent="."]
+[node name="Button2" type="Button" parent="." unique_id=1801055541]
 layout_mode = 0
 offset_left = 111.0
 offset_top = 8.0
@@ -397,7 +397,7 @@ offset_right = 137.0
 offset_bottom = 34.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_y23aj")
 
-[node name="TextureRect" type="TextureRect" parent="Button2"]
+[node name="TextureRect" type="TextureRect" parent="Button2" unique_id=1711454195]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -407,9 +407,9 @@ grow_vertical = 2
 texture = ExtResource("13_brjer")
 expand_mode = 1
 
-[node name="TimerLabel" type="Label" parent="."]
+[node name="TimerLabel" type="Label" parent="." unique_id=612716630]
 custom_minimum_size = Vector2(140, 30)
-layout_mode = 2
+layout_mode = 0
 offset_top = 339.0
 offset_right = 147.0
 offset_bottom = 369.0

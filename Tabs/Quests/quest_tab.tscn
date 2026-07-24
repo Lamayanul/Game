@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_26n0y"]
 [ext_resource type="Texture2D" uid="uid://da12t27felh3u" path="res://Tabs/devil.png" id="2_mt2ms"]
+[ext_resource type="Texture2D" uid="uid://bixl27u6r2xhy" path="res://Tabs/board.jpg" id="2_o54an"]
 [ext_resource type="Script" uid="uid://clj13s36hyejk" path="res://Tabs/Quests/QuestBoard.gd" id="3_dkbgg"]
 [ext_resource type="Script" uid="uid://hf1xvikgd4vd" path="res://Tabs/Quests/CharacterProfile.gd" id="4_s6spt"]
 [ext_resource type="Resource" uid="uid://bpq4g1b4dyowo" path="res://Tabs/Quests/priest.tres" id="5_o54an"]
+[ext_resource type="PackedScene" uid="uid://div5hesv71j4c" path="res://Tabs/Quests/Characters/priest.tscn" id="7_64tln"]
+[ext_resource type="Script" uid="uid://b73qdmfckhkjn" path="res://Scripturi/infinite_board.gd" id="infinite_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
 bg_color = Color(1, 0.768116, 0.73913, 1)
@@ -22,13 +25,42 @@ colors = PackedColorArray(1, 0, 0.230477, 1)
 gradient = SubResource("Gradient_po6gu")
 height = 52
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o54an"]
+
 [node name="DockTab" type="PanelContainer" unique_id=1413326459]
 z_index = 4
+clip_contents = true
 custom_minimum_size = Vector2(1000, 600)
 offset_right = 232.0
 offset_bottom = 181.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_26n0y")
+
+[node name="BoardViewport" type="Control" parent="." unique_id=20240604]
+clip_contents = true
+layout_mode = 2
+script = ExtResource("infinite_script")
+
+[node name="background_tex" type="TextureRect" parent="BoardViewport" unique_id=570887169]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_o54an")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="board" type="Control" parent="BoardViewport" unique_id=20240605]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=329979870]
 modulate = Color(1, 1, 1, 0.145098)
@@ -41,6 +73,7 @@ stretch_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1937232392]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TitleBar" type="HBoxContainer" parent="VBoxContainer" unique_id=1646881379]
 custom_minimum_size = Vector2(180, 40)
@@ -82,15 +115,36 @@ theme_override_font_sizes/font_size = 25
 text = "x"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=2040761254]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="VBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer" unique_id=8459844]
 custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 theme_override_constants/v_separation = 15
 script = ExtResource("3_dkbgg")
 available_characters = Array[ExtResource("4_s6spt")]([ExtResource("5_o54an")])
 spawn_interval = 10.0
+
+[node name="quest" type="PanelContainer" parent="VBoxContainer" unique_id=647014341]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_o54an")
+
+[node name="quest_panel" type="TextureRect" parent="VBoxContainer/quest" unique_id=1032629871]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PanelContainer" parent="VBoxContainer/quest/quest_panel" unique_id=1436663348 instance=ExtResource("7_64tln")]
+visible = false
+layout_mode = 0
+offset_left = 29.0
+offset_top = 12.0
+offset_right = 559.0
+offset_bottom = 242.0

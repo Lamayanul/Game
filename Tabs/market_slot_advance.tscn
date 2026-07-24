@@ -67,15 +67,6 @@ corner_radius_bottom_left = 20
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywjpa"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="Gradient" id="Gradient_y4thb"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ywjpa"]
-gradient = SubResource("Gradient_y4thb")
-width = 100
-height = 2
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8i1dh"]
 bg_color = Color(0.6, 0.462137, 0.543272, 1)
 border_width_left = 2
@@ -93,7 +84,7 @@ default_font = ExtResource("3_ssor2")
 default_font_size = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rqlci"]
-bg_color = Color(0.6, 0.462745, 0.545098, 1)
+bg_color = Color(0.6, 0.4627451, 0.54509807, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -107,6 +98,18 @@ corner_radius_bottom_left = 40
 [sub_resource type="Theme" id="Theme_di5wc"]
 default_font = ExtResource("5_af7gc")
 default_font_size = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ssor2"]
+bg_color = Color(0, 0.7176471, 1, 0.23529412)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0, 0.1764706, 0.18039216)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="Theme" id="Theme_5jn20"]
 default_font = ExtResource("3_ssor2")
@@ -126,11 +129,10 @@ default_font_size = 20
 [node name="Control" type="Control" unique_id=1635398240]
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 3
-anchor_top = -0.049
 anchor_right = 1.0
-anchor_bottom = 0.662
-offset_top = 0.0879993
-offset_bottom = 0.0559692
+anchor_bottom = 0.697
+offset_top = -25.0
+offset_bottom = -17.864044
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -140,8 +142,8 @@ script = ExtResource("1_y23aj")
 [node name="SlotContainer" type="PanelContainer" parent="." unique_id=1033633859 groups=["market"]]
 custom_minimum_size = Vector2(64, 200)
 layout_mode = 0
-offset_right = 147.0
-offset_bottom = 343.0
+offset_right = 173.0
+offset_bottom = 363.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_lmmu1")
@@ -166,10 +168,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.027
 anchor_bottom = 0.027
-offset_left = 8.0
-offset_top = -0.0460005
-offset_right = 135.0
-offset_bottom = 127.954
+offset_left = 21.0
+offset_top = -1.1529837
+offset_right = 148.0
+offset_bottom = 126.847015
 expand_mode = 1
 stretch_mode = 5
 
@@ -204,37 +206,41 @@ stretch_mode = 5
 [node name="Button" type="Button" parent="SlotContainer/TextureHolder" unique_id=729198024]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 264.0
-offset_right = 135.0
-offset_bottom = 337.0
+offset_top = 280.0
+offset_right = 162.0
+offset_bottom = 353.0
 theme = SubResource("Theme_8yu11")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gtbba")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_wq3ab")
 theme_override_styles/hover = SubResource("StyleBoxFlat_uumq7")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_314ai")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ywjpa")
-text = "BUY"
-
-[node name="Offer" type="TextureRect" parent="SlotContainer" unique_id=2078293167]
-custom_minimum_size = Vector2(140, 150)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("3_ne8fh")
+text = "TRY"
 
 [node name="TextureRect" type="TextureRect" parent="SlotContainer" unique_id=1825674352]
-visible = false
 custom_minimum_size = Vector2(100, 5)
 layout_mode = 2
 size_flags_vertical = 8
-texture = SubResource("GradientTexture2D_ywjpa")
-expand_mode = 1
+
+[node name="Offer" type="TextureRect" parent="SlotContainer/TextureRect" unique_id=2078293167]
+custom_minimum_size = Vector2(140, 150)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -71.200005
+anchor_bottom = -71.200005
+offset_left = -2.0
+offset_top = 74.00003
+offset_right = 169.0
+offset_bottom = 259.00003
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ne8fh")
 
 [node name="PanelContainer3" type="PanelContainer" parent="." unique_id=1325334066]
 z_index = -1
 layout_mode = 1
 anchors_preset = -1
-offset_right = 147.0
+offset_right = 173.0
 offset_bottom = 270.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8i1dh")
 
@@ -251,10 +257,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1801097174]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 0.794
-offset_left = 153.0
-offset_right = -0.0560303
+offset_left = 181.0
+offset_right = -0.056030273
 offset_bottom = 300.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rqlci")
 
@@ -291,6 +298,14 @@ offset_right = -2.0
 offset_bottom = 300.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rqlci")
 
+[node name="prov" type="TextureRect" parent="PanelContainer2" unique_id=1652339527]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("5_8jxfl")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Provider" parent="PanelContainer2" unique_id=44661036 instance=ExtResource("2_314ai")]
 layout_mode = 2
 size_flags_vertical = 8
@@ -317,13 +332,15 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Alternative" type="Button" parent="." unique_id=570209280]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 0.792
-offset_left = 153.0
+offset_left = 181.0
 offset_top = 306.0
 offset_right = -260.008
 offset_bottom = 364.0
 size_flags_vertical = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_ssor2")
 script = ExtResource("11_qkwqc")
 
 [node name="SlotContainer" parent="Alternative" unique_id=170654112 instance=ExtResource("11_qys1i")]
@@ -384,8 +401,10 @@ mouse_filter = 0
 [node name="RichTextLabel" type="RichTextLabel" parent="Alternative" unique_id=588047632]
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 0.07
 anchor_right = 0.807
-offset_right = -0.186005
+offset_left = 0.13999939
+offset_right = -0.18600464
 offset_bottom = 58.0
 mouse_filter = 1
 theme = SubResource("Theme_5jn20")
@@ -410,10 +429,10 @@ vertical_alignment = 1
 
 [node name="Button2" type="Button" parent="." unique_id=1853263235]
 layout_mode = 0
-offset_left = 111.0
-offset_top = 8.0
-offset_right = 137.0
-offset_bottom = 34.0
+offset_left = 137.0
+offset_top = 8.000015
+offset_right = 163.0
+offset_bottom = 34.000015
 theme_override_styles/normal = SubResource("StyleBoxFlat_y23aj")
 
 [node name="TextureRect" type="TextureRect" parent="Button2" unique_id=1964575062]
@@ -425,13 +444,20 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("10_d76gk")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="TimerLabel" type="Label" parent="." unique_id=1188940052]
 custom_minimum_size = Vector2(140, 30)
-layout_mode = 0
-offset_top = 339.0
-offset_right = 147.0
-offset_bottom = 369.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.81100005
+anchor_top = 0.80500007
+anchor_right = 0.975
+anchor_bottom = 0.80500007
+offset_left = -0.4640503
+offset_top = -3.0517578e-05
+offset_right = 2.5999756
+offset_bottom = 29.99997
 size_flags_vertical = 8
 theme = SubResource("Theme_y23aj")
 theme_override_colors/font_color = Color(0, 0, 0, 1)

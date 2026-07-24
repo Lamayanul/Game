@@ -393,7 +393,10 @@ func _on_gui_input(event):
 
 func _process(delta):
 	if filled and "food" in get_type() and slot_type != "market":
-		if decrease_durability(delta):
+		var amount = delta
+		if slot_type == "fridge":
+			amount *= 0.05 # Food lasts 20x longer in fridge
+		if decrease_durability(amount):
 			pass # Food spoiled logic handled in decrease_durability (clear_item)
 	if dragging:
 		# Safety check: if mouse button is released outside, stop dragging
@@ -697,7 +700,8 @@ func update_description() -> void:
 		"epic": "#a335ee",
 		"legendary": "#ff8000",
 	}.get(rar, "#ffffff")
-
+	
+	#lines.append("\n")
 	lines.append("[b]%s[/b]" % name)
 	if rar != "":
 		lines.append("[color=%s][i]%s[/i][/color]" % [rar_color, rar])

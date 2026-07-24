@@ -2,6 +2,7 @@
 extends Control
 
 signal provider_clicked(p_name: String)
+signal texture_changed(new_texture: Texture2D)
 
 # --- Provider enum ---
 enum ProviderType { OWNER_1, OWNER_2, OWNER_3, OWNER_4 }
@@ -67,6 +68,7 @@ func _pick_provider_and_texture() -> void:
 	var tex: Texture2D = imgs[_rng.randi_range(0, imgs.size() - 1)]
 	if tex and icon_node:
 		icon_node.texture = tex
+		texture_changed.emit(tex)
 	else:
 		push_warning("Textura selectată este invalidă pentru providerul ales.")
 
@@ -126,7 +128,9 @@ func force_provider_visuals(target_uid: String) -> void:
 	# 3. Alegem o imagine random DOAR din lista provider-ului ales
 	var imgs := _get_provider_images(_provider)
 	if not imgs.is_empty():
-		icon_node.texture = imgs[_rng.randi_range(0, imgs.size() - 1)]
+		var tex = imgs[_rng.randi_range(0, imgs.size() - 1)]
+		icon_node.texture = tex
+		texture_changed.emit(tex)
 	
 	# 4. Actualizăm textul
 	_update_ui()

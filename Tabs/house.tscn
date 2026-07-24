@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b8ldoc7mn5l8l" path="res://Scripturi/dock_tab.gd" id="1_ft2xn"]
 [ext_resource type="Texture2D" uid="uid://br4pcq13ar3hl" path="res://Tabs/house.png" id="2_y1nd0"]
-[ext_resource type="PackedScene" path="res://Tabs/Lights/LightPanel.tscn" id="3_panel"]
+[ext_resource type="PackedScene" uid="uid://dv1aq0r0qcwke" path="res://Tabs/Lights/LightPanel.tscn" id="3_panel"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8twd8"]
 bg_color = Color(1, 0.768116, 0.73913, 1)
@@ -22,8 +22,9 @@ height = 52
 
 [node name="DockTab2" type="PanelContainer" unique_id=1255845267]
 z_index = 4
+custom_minimum_size = Vector2(0, 200)
 offset_right = 432.0
-offset_bottom = 350.0
+offset_bottom = 200.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8twd8")
 script = ExtResource("1_ft2xn")
 

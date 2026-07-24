@@ -8,7 +8,9 @@ class_name BaseQuestCard
 @export var description_label: RichTextLabel
 @export var icon_texture: TextureRect
 @export var time_bar: ProgressBar
+@export var time_label: Label
 @export var submit_btn: Button
+@export var hide_btn: Button # Buton pentru a transforma inapoi in icon
 @export var stars_container: Container # Container orizontal pentru stele
 
 @export_group("Extra Panels")
@@ -23,8 +25,8 @@ class_name BaseQuestCard
 
 # --- DATE INTERNE ---
 var quest_data: Dictionary = {}
-@export var offer_lifetime: float = 15.0
-var current_offer_time: float = 0.0
+var quest_scene_resource: PackedScene 
+var origin_icon: Control # Referinta catre iconita de pe board
 var is_accepted: bool = false
 
 # Resursa pentru stea (asigură-te că calea e corectă)
@@ -34,11 +36,12 @@ signal quest_completed(quest_data)
 signal quest_expired()
 
 func _ready():
-	current_offer_time = offer_lifetime
-	
-	# Inițializare buton
+	# Inițializare butoane
 	submit_btn.text = "ACCEPTĂ"
 	submit_btn.pressed.connect(_on_submit_pressed)
+	
+	if hide_btn:
+		hide_btn.pressed.connect(_on_hide_pressed)
 	
 	# Inițializare panouri extra (ascunse la început)
 	if panel_stanga: panel_stanga.visible = false
@@ -49,8 +52,39 @@ func _ready():
 		description_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		description_label.gui_input.connect(_on_description_gui_input)
 	
-	# Pornim timer-ul de expirare ofertă
-	set_process(true)
+	# Nu mai avem nevoie de set_process(true) aici pentru timer, 
+	# dar s-ar putea să ai nevoie de el pentru altceva.
+	set_process(false)
+
+func update_offer_time(current: float, max_val: float):
+	if is_accepted: return
+	
+	if time_bar:
+		time_bar.max_value = max_val
+		time_bar.value = current
+	
+	if time_label:
+		var mins = int(current / 60)
+		var secs = int(current) % 60
+		time_label.text = "%02d:%02d" % [mins, secs]
+
+func _process(_delta):
+	pass
+
+func set_card_highlight(active: bool):
+	if active:
+		# Efect de stralucire si bordura galbena
+		modulate = Color(1.2, 1.2, 0.8)
+		var sb = get_theme_stylebox("panel")
+		if sb:
+			var new_sb = sb.duplicate()
+			if new_sb is StyleBoxFlat:
+				new_sb.border_color = Color(1, 0.9, 0, 1)
+				new_sb.set_border_width_all(5)
+				add_theme_stylebox_override("panel", new_sb)
+	else:
+		modulate = Color.WHITE
+		remove_theme_stylebox_override("panel")
 
 func _on_description_gui_input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -69,6 +103,27 @@ func _toggle_panels():
 		for child in parent.get_children():
 			if child != self and child is CanvasItem:
 				child.visible = not is_visible
+
+func _on_hide_pressed():
+	# Stingem highlight-ul iconitei la inchidere
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
+		
+	# Doar închidem cardul, deoarece iconița originală a rămas pe board
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(0, 0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.tween_callback(queue_free)
+
+func _find_board() -> Node:
+	# Căutăm nodul "board" urcând în ierarhie
+	var p = get_parent()
+	while p != null:
+		if p.has_node("board"):
+			return p.get_node("board")
+		var b = p.find_child("board", true, false)
+		if b: return b
+		p = p.get_parent()
+	return null
 
 # Această funcție este apelată de Spawner
 func setup_data(data: Dictionary):
@@ -93,28 +148,19 @@ func _spawn_slots():
 		return
 
 	# --- 1. CONFIGURARE SLOT CERINȚĂ (INPUT) ---
-	# --- 1. CONFIGURARE SLOT CERINȚĂ (INPUT) ---
 	for child in input_slot_container.get_children(): 
 		child.queue_free()
 	
 	var input_slot = slot_scene.instantiate()
-	# 1. Adăugăm copilul ca să se inițializeze variabilele (@onready)
 	input_slot_container.add_child(input_slot)
 	
-	# 2. GOLIM slotul logic
-	# Asta setează filled = false și resetează datele, permițând drop-ul
 	if input_slot.has_method("clear_item"):
 		input_slot.clear_item()
 		
-	# 3. Setăm tipul pentru a permite drop-ul (verifică logica ta din _can_drop_data)
 	input_slot.slot_type = "quest_input" 
 	
-	# 4. TRUCUL VIZUAL: Punem imaginea manual, fără să umplem datele
-	# Accesăm direct variabila 'texture_rect' din Slot.gd
 	if input_slot.texture_rect.texture:
 		input_slot.texture_rect.texture = quest_data.get("req_display_tex", null)
-		
-		# Opțional: O facem semi-transparentă ca să arate a "fantomă" (ceea ce se cere)
 		input_slot.texture_rect.modulate.a = 0.5
 		input_slot.label.text = str(quest_data["req_target_amount"])
 
@@ -126,7 +172,6 @@ func _spawn_slots():
 	var reward_slot = slot_scene.instantiate()
 	reward_slot_container.add_child(reward_slot)
 	
-	# Datele de recompensă sunt deja în formatul corect în quest_data["reward"]
 	if reward_slot.has_method("set_property"):
 		reward_slot.set_property(quest_data["reward"])
 		reward_slot.slot_type = "display_only"
@@ -149,22 +194,8 @@ func _generate_stars(raritate: String):
 		var star = TextureRect.new()
 		star.texture = star_texture
 		star.expand_mode = TextureRect.EXPAND_FIT_WIDTH
-		star.custom_minimum_size = Vector2(16, 16) # Ajustează mărimea
+		star.custom_minimum_size = Vector2(16, 16)
 		stars_container.add_child(star)
-
-func _process(delta):
-	# Timer-ul merge DOAR dacă misiunea NU e acceptată încă
-	if not is_accepted:
-		current_offer_time -= delta
-		
-		if time_bar:
-			time_bar.max_value = offer_lifetime
-			time_bar.value = current_offer_time
-		
-		# Dacă timpul expiră, ștergem cardul
-		if current_offer_time <= 0:
-			emit_signal("quest_expired")
-			queue_free()
 
 func _on_submit_pressed():
 	if not is_accepted:
@@ -174,33 +205,16 @@ func _on_submit_pressed():
 
 func _accept_quest():
 	is_accepted = true
-	set_process(false) # Oprim timer-ul de expirare, misiunea e a noastră acum
+	set_process(false)
 	
-	# Actualizăm UI-ul
-	if time_bar: time_bar.value = time_bar.max_value # Plin, sau îl ascunzi
+	if origin_icon and "is_accepted" in origin_icon:
+		origin_icon.is_accepted = true
+	
+	if time_bar: time_bar.value = time_bar.max_value
+	if time_label: time_label.text = ""
 	submit_btn.text = "VERIFICĂ"
-	
-	print("Misiune acceptată! Ai tot timpul să o faci.")
 
 func _complete_quest():
-	# Aici verificăm Inventarul Player-ului
-
-	var req_id = quest_data["req_item_id"]
-	var req_amount = quest_data["req_amount"]
-	
-	print("Verific inventar: ID ", req_id, " Cantitate ", req_amount)
-	
-	# --- EXEMPLU LOGICĂ INVENTAR ---
-	# if Inventory.has_item(req_id, req_amount):
-	#     Inventory.remove_item(req_id, req_amount)
-	#     Inventory.add_item(quest_data["reward"]["NUMBER"], quest_data["reward"]["CANTITATE"])
-	#     _finish_animation()
-	# else:
-	#     submit_btn.text = "LIPSA ITEME"
-	#     await get_tree().create_timer(1.0).timeout
-	#     submit_btn.text = "VERIFICĂ"
-	
-	# PENTRU TEST, considerăm că e gata:
 	_finish_animation()
 
 func _finish_animation():
@@ -208,6 +222,9 @@ func _finish_animation():
 	submit_btn.text = "FINALIZAT!"
 	emit_signal("quest_completed", quest_data)
 	
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
+
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(queue_free)

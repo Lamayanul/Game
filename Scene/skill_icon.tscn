@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bqk3ku1r7euci"]
+
+[ext_resource type="Script" uid="uid://dsh3xmcw70hwj" path="res://Scripturi/skill_icon.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dyb62sguy3ykn" path="res://Tabs/pin.png" id="2_pin"]
+
+[node name="Control" type="Control" unique_id=92540964]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 1
+script = ExtResource("1_script")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1510496239]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Line1" type="Line2D" parent="." unique_id=1573158975]
+width = 4.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2" type="Line2D" parent="." unique_id=1637421060]
+width = 4.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line3" type="Line2D" parent="." unique_id=826098473]
+width = 4.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="PinSprite" type="Sprite2D" parent="." unique_id=1368908538]
+position = Vector2(46, 8)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_pin")
+
+[node name="Label" type="Label" parent="." unique_id=994183060]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "0/3"
+horizontal_alignment = 1
+vertical_alignment = 1

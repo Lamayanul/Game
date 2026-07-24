@@ -16,6 +16,7 @@ class_name QuestCard
 @onready var progress_lbl: Label = $MainLayout/ActionArea/Input/ProgressLabel
 @onready var reward_slot: Slot = $MainLayout/ActionArea/Output/RewardSlotHolder/Slot
 @onready var submit_btn: Button = $MainLayout/SubmitButton
+@export var hide_btn: Button # Butonul "-" adăugat de tine
 
 # --- CONFIGURARE & RESURSE ---
 @export var star_texture: Texture2D # Trage o iconiță cu o stea aici în Inspector
@@ -25,6 +26,9 @@ class_name QuestCard
 @export var offer_lifetime: float = 15.0 # Cât timp stă pe panou (secunde)
 var current_offer_time: float = 0.0
 var is_accepted: bool = false # Starea misiunii
+var quest_scene_resource: PackedScene
+var origin_icon: Control
+
 # --- DATE INTERNE ---
 var quest_id: String = ""
 var req_item_id: int = 0
@@ -46,6 +50,18 @@ func _ready():
 	set_process(false) # Oprim procesarea până primim date
 	submit_btn.pressed.connect(_on_submit_pressed)
 
+	# Configurare vizuală pentru TimeText (să fie centrat pe bară)
+	if time_text:
+		time_text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		time_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		time_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		time_text.add_theme_color_override("font_color", Color.WHITE)
+		time_text.add_theme_color_override("font_outline_color", Color.BLACK)
+		time_text.add_theme_constant_override("outline_size", 4)
+	
+	if time_bar:
+		time_bar.custom_minimum_size.y = 24
+		time_bar.show_percentage = false # Ascundem procentajul implicit ca să nu se suprapună
 	
 	# Asigurăm că slotul de recompensă nu poate fi furat
 	# (Presupunând că Slot.gd are o variabilă sau mod de a bloca drag-ul)
@@ -57,9 +73,27 @@ func _ready():
 	submit_btn.pressed.disconnect(_on_submit_pressed) # Deconectăm logica veche temporar
 	submit_btn.pressed.connect(_on_accept_pressed)    # Conectăm logica de acceptare
 	
+	if hide_btn:
+		hide_btn.pressed.connect(_on_hide_pressed)
+
 	# Ascundem sloturile de input până se acceptă misiunea (Opțional, pentru curățenie)
 	input_slot.visible = false
 	reward_slot.visible = false
+
+func set_card_highlight(active: bool):
+	if active:
+		# Un efect vizual de highlight puternic
+		modulate = Color(1.3, 1.3, 0.9)
+		var sb = get_theme_stylebox("panel")
+		if sb:
+			var new_sb = sb.duplicate()
+			if new_sb is StyleBoxFlat:
+				new_sb.border_color = Color.YELLOW
+				new_sb.set_border_width_all(6)
+				add_theme_stylebox_override("panel", new_sb)
+	else:
+		modulate = Color.WHITE
+		remove_theme_stylebox_override("panel")
 
 # ============================================================
 # 1. SETUP (Inițializare)
@@ -109,17 +143,23 @@ func _process(delta):
 	if not is_accepted:
 		current_offer_time -= delta
 		
-		# Actualizăm bara vizuală (scade rapid)
+		# Actualizăm bara vizuală și textul (scade rapid)
 		if offer_bar:
 			offer_bar.visible = true
 			offer_bar.max_value = offer_lifetime
 			offer_bar.value = current_offer_time
 			offer_bar.modulate = Color.ORANGE # Culoare de "urgență"
 		
+		if time_text:
+			var o_mins = int(current_offer_time / 60)
+			var o_secs = int(current_offer_time) % 60
+			time_text.text = "Expiră în: %02d:%02d" % [o_mins, o_secs]
+		
 		# Dacă timpul a expirat, distrugem cardul
 		if current_offer_time <= 0:
 			_expire_offer()
 		return # Nu rulăm logica de misiune încă
+
 	if is_timed:
 		current_time -= delta
 		if offer_bar: # Refolosim bara pentru timpul misiunii
@@ -128,9 +168,10 @@ func _process(delta):
 		time_bar.value = current_time
 		
 		# Formatăm timpul MM:SS
-		var mins = int(current_time / 60)
-		var secs = int(current_time) % 60
-		time_text.text = "%02d:%02d" % [mins, secs]
+		if time_text:
+			var mins = int(current_time / 60)
+			var secs = int(current_time) % 60
+			time_text.text = "Timp rămas: %02d:%02d" % [mins, secs]
 		
 		# Schimbăm culoarea barei dacă e critic (sub 20%)
 		if current_time < time_limit_seconds * 0.2:
@@ -166,10 +207,33 @@ func _on_accept_pressed():
 
 func _expire_offer():
 	# Animație de dispariție și ștergere
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
+
 	set_process(false)
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5) # Fade out
 	tween.tween_callback(queue_free)
+
+func _on_hide_pressed():
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
+		
+	# Doar închidem cardul, deoarece iconița originală a rămas pe board
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(0, 0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.tween_callback(queue_free)
+
+func _find_board() -> Node:
+	var p = get_parent()
+	while p != null:
+		if p.has_node("board"):
+			return p.get_node("board")
+		var b = p.find_child("board", true, false)
+		if b: return b
+		p = p.get_parent()
+	return null
+
 	
 func _check_input_slot():
 	# Citim ce e în slotul de input
@@ -207,6 +271,9 @@ func _on_submit_pressed():
 	# Consumăm itemele
 	input_slot.decrease_cantitate(req_amount)
 	
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
+
 	# Animăm și finalizăm
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.GREEN, 0.2)
@@ -222,6 +289,9 @@ func _fail_quest():
 	submit_btn.text = "EXPIRAT"
 	modulate = Color(0.5, 0.5, 0.5, 0.8) # Facem cardul gri
 	emit_signal("quest_failed", quest_id)
+
+	if origin_icon and origin_icon.has_method("set_highlight"):
+		origin_icon.set_highlight(false)
 
 
 

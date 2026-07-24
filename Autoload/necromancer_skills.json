@@ -1,0 +1,29 @@
+{
+  "skills": [
+    {"name": "Necro Skill 1", "path": "res://Skills/Necromancer_Free/Necromancer_1.png"},
+    {"name": "Necro Skill 2", "path": "res://Skills/Necromancer_Free/Necromancer_2.png"},
+    {"name": "Necro Skill 3", "path": "res://Skills/Necromancer_Free/Necromancer_3.png"},
+    {"name": "Necro Skill 4", "path": "res://Skills/Necromancer_Free/Necromancer_4.png"},
+    {"name": "Necro Skill 5", "path": "res://Skills/Necromancer_Free/Necromancer_5.png"},
+    {"name": "Necro Skill 6", "path": "res://Skills/Necromancer_Free/Necromancer_6.png"},
+    {"name": "Necro Skill 7", "path": "res://Skills/Necromancer_Free/Necromancer_7.png"},
+    {"name": "Necro Skill 8", "path": "res://Skills/Necromancer_Free/Necromancer_8.png"},
+    {"name": "Necro Skill 9", "path": "res://Skills/Necromancer_Free/Necromancer_9.png"},
+    {"name": "Necro Skill 10", "path": "res://Skills/Necromancer_Free/Necromancer_10.png"},
+    {"name": "Necro Skill 11", "path": "res://Skills/Necromancer_Free/Necromancer_11.png"},
+    {"name": "Necro Skill 12", "path": "res://Skills/Necromancer_Free/Necromancer_12.png"},
+    {"name": "Necro Skill 13", "path": "res://Skills/Necromancer_Free/Necromancer_13.png"},
+    {"name": "Necro Skill 14", "path": "res://Skills/Necromancer_Free/Necromancer_14.png"},
+    {"name": "Necro Skill 15", "path": "res://Skills/Necromancer_Free/Necromancer_15.png"},
+    {"name": "Necro Skill 16", "path": "res://Skills/Necromancer_Free/Necromancer_16.png"},
+    {"name": "Necro Skill 17", "path": "res://Skills/Necromancer_Free/Necromancer_17.png"},
+    {"name": "Necro Skill 18", "path": "res://Skills/Necromancer_Free/Necromancer_18.png"},
+    {"name": "Necro Skill 19", "path": "res://Skills/Necromancer_Free/Necromancer_19.png"},
+    {"name": "Necro Skill 20", "path": "res://Skills/Necromancer_Free/Necromancer_20.png"},
+    {"name": "Necro Skill 21", "path": "res://Skills/Necromancer_Free/Necromancer_21.png"},
+    {"name": "Necro Skill 22", "path": "res://Skills/Necromancer_Free/Necromancer_22.png"},
+    {"name": "Necro Skill 23", "path": "res://Skills/Necromancer_Free/Necromancer_23.png"},
+    {"name": "Necro Skill 24", "path": "res://Skills/Necromancer_Free/Necromancer_24.png"},
+    {"name": "Necro Skill 25", "path": "res://Skills/Necromancer_Free/Necromancer_25.png"}
+  ]
+}

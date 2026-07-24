@@ -73,6 +73,7 @@
 [ext_resource type="PackedScene" uid="uid://coc24jtvmdh4h" path="res://NiceToHave/light.tscn" id="50_fgw6o"]
 [ext_resource type="Script" uid="uid://bokfxjtm62j78" path="res://Scripturi/camera_sus.gd" id="54_b4mq4"]
 [ext_resource type="Texture2D" uid="uid://ojln7vee43cp" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Floor/Floor2.png" id="54_frg5o"]
+[ext_resource type="PackedScene" uid="uid://crngdddbjrkpm" path="res://Structure/fridge.tscn" id="54_n0jy1"]
 [ext_resource type="PackedScene" uid="uid://cj567gtda6mkd" path="res://Tabs/pc.tscn" id="54_n4quh"]
 [ext_resource type="PackedScene" uid="uid://bq865rkdcos1b" path="res://Scene/mana_profesonala.tscn" id="54_vx50t"]
 [ext_resource type="PackedScene" uid="uid://oole82yty3pu" path="res://Scene/electricity_pillar.tscn" id="55_ll6pr"]
@@ -2993,6 +2994,7 @@ texture = ExtResource("48_dgpnb")
 7:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_y7bks"]
+occlusion_layer_0/light_mask = 0
 physics_layer_0/collision_layer = 3
 physics_layer_0/collision_mask = 3
 physics_layer_1/collision_layer = 1
@@ -3722,7 +3724,7 @@ draw_center = false
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b4mq4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0jy1"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3736,7 +3738,7 @@ shader_parameter/inset = 0.0
 bg_color = Color(0.6, 0.615686, 0.584314, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0jy1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1wbj4"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3750,7 +3752,7 @@ shader_parameter/inset = 0.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1wbj4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wo3ep"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3764,7 +3766,7 @@ shader_parameter/inset = 0.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wo3ep"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_26623"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3778,7 +3780,7 @@ shader_parameter/inset = 0.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_26623"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_24o31"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3792,7 +3794,7 @@ shader_parameter/inset = 0.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_24o31"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xrcoj"]
 resource_local_to_scene = true
 shader = ExtResource("59_iy7id")
 shader_parameter/rect_size = Vector2(152, 207)
@@ -3820,7 +3822,7 @@ shader_parameter/mask_radius = 0.050000002375
 shader_parameter/mask_softness = 0.050000002375
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n4quh"]
-size = Vector2(19, 18)
+size = Vector2(19, 13)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xkp3a"]
 resource_local_to_scene = true
@@ -3988,7 +3990,12 @@ tile_set = SubResource("TileSet_0ab61")
 [node name="StaticBody2D" parent="TileMap/items" unique_id=694028308 instance=ExtResource("28_0jksm")]
 position = Vector2(-352, 742)
 
+[node name="Control" parent="TileMap/items" unique_id=1408086583 instance=ExtResource("54_n0jy1")]
+position = Vector2(-536, 828)
+
 [node name="cliff-H" type="TileMapLayer" parent="TileMap" unique_id=1541987019]
+light_mask = 2
+visibility_layer = 2
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(0, -1)
@@ -4253,7 +4260,7 @@ grow_vertical = 2
 stretch_mode = 4
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer/TextureHolder" index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_b4mq4")
+material = SubResource("ShaderMaterial_n0jy1")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4289,7 +4296,7 @@ custom_minimum_size = Vector2(128, 100)
 stretch_mode = 0
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer2/TextureHolder" index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_n0jy1")
+material = SubResource("ShaderMaterial_1wbj4")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4324,7 +4331,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_wvxsq")
 custom_minimum_size = Vector2(128, 100)
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer3/TextureHolder" index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_1wbj4")
+material = SubResource("ShaderMaterial_wo3ep")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4359,7 +4366,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8qght")
 custom_minimum_size = Vector2(128, 100)
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer4/TextureHolder" index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_wo3ep")
+material = SubResource("ShaderMaterial_26623")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4395,7 +4402,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_qao3f")
 custom_minimum_size = Vector2(128, 100)
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer5/TextureHolder" parent_id_path=PackedInt32Array(378026884, 518741389) index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_26623")
+material = SubResource("ShaderMaterial_24o31")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4423,7 +4430,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_lvq7r")
 custom_minimum_size = Vector2(128, 100)
 
 [node name="TextureRect" parent="CanvasLayer/Inv2/MarginContainer/GridContainer/SlotContainer6/TextureHolder" parent_id_path=PackedInt32Array(1270689115, 518741389) index="1" unique_id=1765139344]
-material = SubResource("ShaderMaterial_24o31")
+material = SubResource("ShaderMaterial_xrcoj")
 anchors_preset = 15
 anchor_left = 0.0
 anchor_right = 1.0
@@ -4546,7 +4553,7 @@ type = "slot_cup"
 position = Vector2(-635, 865)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=324876278]
-position = Vector2(-8.5, 1)
+position = Vector2(-8.5, 6.5)
 shape = SubResource("RectangleShape2D_n4quh")
 
 [node name="Node2D4" parent="." unique_id=1234970066 instance=ExtResource("61_iy7id")]

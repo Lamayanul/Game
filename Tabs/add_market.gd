@@ -53,30 +53,96 @@ func _ready() -> void:
 	
 	if not zi.is_connected("day_changed", Callable(self, "_on_day_changed")):
 		zi.connect("day_changed", Callable(self, "_on_day_changed"))
+		
+	if not ItemData.is_connected("inventory_changed", Callable(self, "refresh_market_view")):
+		ItemData.inventory_changed.connect(refresh_market_view)
 
 func refresh_market_view() -> void:
-	# Curățăm sloturile vechi
-	for c in get_children():
-		c.queue_free()
-		
-	# Creăm sloturi pentru fiecare item din market_inventory global
 	var items_to_show = ItemData.market_inventory
-	for m_item in items_to_show:
-		_create_slot_from_data(m_item)
+	
+	# 1. Colectăm ce avem deja și identificăm ce poate fi refolosit
+	var existing_slots = {} # Key: "id_provider" -> Node
+	var reusable_pool = []
+	
+	for c in get_children():
+		if not is_instance_valid(c): continue
+		
+		if c.has_meta("market_key"):
+			var key = c.get_meta("market_key")
+			# Verificăm dacă acest item mai e în piață
+			var still_in_market = false
+			for m_item in items_to_show:
+				if (str(m_item["id"]) + "_" + m_item["provider"]) == key:
+					still_in_market = true
+					break
+			
+			if still_in_market:
+				existing_slots[key] = c
+			else:
+				# Itemul a expirat sau a fost cumpărat. 
+				# Verificăm dacă are bonus tip food care trebuie salvat.
+				var alt_buy = c.get_node_or_null("Alternative")
+				if alt_buy and alt_buy.has_method("has_food_bonus") and alt_buy.has_food_bonus():
+					reusable_pool.append(c)
+				else:
+					c.queue_free()
+		else:
+			c.queue_free()
 
-func _create_slot_from_data(m_item: Dictionary) -> void:
-	var inst := slot_tab.instantiate()
+	# 2. Vedem ce trebuie să adăugăm sau să păstrăm
+	for m_item in items_to_show:
+		var key = str(m_item["id"]) + "_" + m_item["provider"]
+		
+		if existing_slots.has(key):
+			var inst = existing_slots[key]
+			var slot = inst.get_node_or_null("SlotContainer")
+			if slot:
+				slot.cantitate = m_item["qty"]
+		else:
+			# Item nou. Încercăm să refolosim un slot cu bonus sau creăm unul nou.
+			var reuse_inst = null
+			if not reusable_pool.is_empty():
+				reuse_inst = reusable_pool.pop_front()
+			
+			_create_slot_from_data(m_item, reuse_inst)
+
+	# 3. Ce a rămas în reusable_pool și nu a fost folosit -> îi lăsăm acolo să expire natural food-ul?
+	# Nu, dacă nu au fost refolosite pentru un item nou, le lăsăm "invizibile" sau le ștergem?
+	# Userul vrea să nu dispară, deci le lăsăm în GridContainer, dar fără item principal.
+	for old_inst in reusable_pool:
+		var slot = old_inst.get_node_or_null("SlotContainer")
+		if slot:
+			slot.clear_item() # Golește itemul principal expirat
+		var timer_lbl = old_inst.get_node_or_null("TimerLabel")
+		if timer_lbl: timer_lbl.text = "EXPIRED"
+		# Ștergem meta ca să nu mai fie considerat "activ" la următorul refresh
+		if old_inst.has_meta("market_key"):
+			old_inst.remove_meta("market_key")
+
+func _create_slot_from_data(m_item: Dictionary, existing_inst: Node = null) -> void:
+	var inst = existing_inst
+	if inst == null:
+		inst = slot_tab.instantiate()
+		add_child(inst)
+	
 	var slot := inst.get_node_or_null("SlotContainer")
 	if slot == null:
 		inst.queue_free()
 		return
 	
 	slot.slot_type = "market"
-	add_child(inst)
+	var key = str(m_item["id"]) + "_" + m_item["provider"]
+	inst.set_meta("market_key", key)
 	
-	# PORNIM TIMERUL (Acesta este cel care făcea numărătoarea inversă)
-	if enable_live_refresh:
-		_start_slot_timer(inst)
+	# Dacă am refolosit instanța, trebuie să restartăm timerul
+	if existing_inst != null:
+		var old_timer = inst.get_node_or_null("SlotLifetimeTimer")
+		if old_timer: old_timer.queue_free()
+		if enable_live_refresh:
+			_start_slot_timer(inst)
+	else:
+		if enable_live_refresh:
+			_start_slot_timer(inst)
 	
 	# --- SETARE PROVIDER VIZUAL ---
 	var provider_node := inst.get_node_or_null("PanelContainer2/Provider")
@@ -117,15 +183,22 @@ func _create_slot_from_data(m_item: Dictionary) -> void:
 
 	slot.set_property(data_for_slot)
 	
-	# --- CALCUL PREȚ ---
+	# --- CALCUL PREȚ ȘI PROMOȚII ---
 	var original_price = _compute_item_price(data_for_slot, p_uid)
-	slot.price = original_price
+	var is_on_sale = m_item.get("is_on_sale", false)
+	var final_price = original_price
 	
-	_update_slot_visuals(inst, slot, original_price, original_price, false)
+	if is_on_sale:
+		final_price = int(round(original_price * (1.0 - promotion_discount)))
+		final_price = max(1, final_price)
+	
+	slot.price = final_price
+	
+	_update_slot_visuals(inst, slot, original_price, final_price, is_on_sale)
 
 func _on_day_changed(new_day: String) -> void:
-	# La fiecare zi nouă, forțăm un refresh al vizualului
-	refresh_market_view()
+	# La fiecare zi nouă, forțăm un restock complet în baza de date
+	ItemData.daily_market_restock()
 
 # ================================================================
 # 2. GENERATORUL MASIV (MODIFICAT SĂ PORNEASCĂ TIMERE)
@@ -152,13 +225,33 @@ func generate_items_market() -> void:
 
 # Se apelează când un timer expiră
 func _on_slot_timeout(old_slot: Node) -> void:
-	# În loc să creăm unul random, pur și simplu dăm refresh la toată piața 
-	# pentru a reflecta starea curentă a depozitelor din Database.gd
-	if is_instance_valid(old_slot):
-		old_slot.queue_free()
-	
-	# Așteptăm un cadru pentru a ne asigura că nodul e șters, apoi dăm refresh
-	call_deferred("refresh_market_view")
+	if is_instance_valid(old_slot) and old_slot.has_meta("market_key"):
+		var key = old_slot.get_meta("market_key")
+		var parts = key.split("_")
+		if parts.size() >= 2:
+			var item_id = parts[0]
+			var provider_name = parts[1]
+			
+			# Verificăm dacă are bonus food înainte de a decide ștergerea
+			var alt_buy = old_slot.get_node_or_null("Alternative")
+			var has_food = false
+			if alt_buy and alt_buy.has_method("has_food_bonus") and alt_buy.has_food_bonus():
+				has_food = true
+
+			# Spunem bazei de date că acest item a expirat
+			ItemData.expire_item_from_market(item_id, provider_name)
+			
+			# Dacă NU are food, îl ștergem noi acum pentru feedback instant
+			if not has_food:
+				old_slot.queue_free()
+			else:
+				# Dacă ARE food, refresh_market_view va fi chemat de semnalul inventory_changed
+				# și va decide dacă îl refolosește sau îl lasă "expired"
+				pass
+	else:
+		if is_instance_valid(old_slot):
+			old_slot.queue_free()
+		refresh_market_view()
 
 # Funcția veche _populate_slot_data este înlocuită de _create_slot_from_data
 # care este mult mai sigură deoarece primește datele direct din Database.gd
@@ -336,7 +429,7 @@ func _populate_slot_data(inst: Node, slot: Node, filter_crit: String = "") -> bo
 # ... (Păstrează restul funcțiilor tale helper: _update_slot_visuals, _compute_item_price, etc. la fel ca înainte) ...
 
 func _update_slot_visuals(inst: Node, slot: Node, original_price: int, final_price: int, is_on_sale: bool) -> void:
-	var offer_node = slot.get_node_or_null("Offer")
+	var offer_node = slot.get_node_or_null("TextureRect/Offer")
 	if offer_node and offer_node is TextureRect:
 		offer_node.visible = is_on_sale
 	var price_label := inst.get_node_or_null("PanelContainer3/Price")

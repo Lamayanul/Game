@@ -31,7 +31,7 @@ extends PanelContainer
 @onready var provider_page= get_node_or_null ("VBoxContainer/ProviderPage")
 @onready var cam = get_node_or_null ("VBoxContainer/LiveCamera")
 @onready var top_back = get_node_or_null("fundal/TopBack")
-
+@onready var logo_shop = get_node_or_null("VBoxContainer/logo_shop")
 @onready var ora = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Hour")
 @onready var minut = get_node("/root/world/Cycle_d_n/CanvasLayer/VBoxContainer/HBoxContainer/Minute")
 
@@ -72,13 +72,15 @@ var ROUTES := [
 		"title": "Market",
 		"handler": "_route_market_default",
 		"fundal":"",
+		"top_back": "res://Tabs/gravity.png",
 	},
 	# www.search sau orice necunoscut → fallback la Search
 	{
 		"pattern": r"^www\.search(?:/.*)?$",
 		"show": ["search"],
 		"title": "Search",
-		"fundal":"res://Tabs/luna.png",
+		"handler": "_route_search",
+		"fundal":"res://Tabs/space.jpg",
 	},
 	# www.storage
 	{
@@ -116,6 +118,7 @@ var ROUTES := [
 		"title": "Market",
 		"handler": "_route_market_product",
 		"fundal":"",
+		"top_back": "res://Tabs/for_shop.png",
 	},
 	{
 		"pattern": r"^www\.forex(?:/.*)?$",
@@ -223,6 +226,13 @@ func _ready():
 		(taskbar as Control).resized.connect(_on_viewport_resized)
 		(taskbar as Control).visibility_changed.connect(_on_viewport_resized)
 	call_deferred("_on_viewport_resized")
+	if is_instance_valid(search):
+		search.visibility_changed.connect(func():
+			var sprite = get_node_or_null("fundal/Sprite2D")
+			if is_instance_valid(sprite):
+				sprite.visible = search.visible
+		)
+
 	if is_instance_valid(www):
 		(www as TextEdit).gui_input.connect(_on_www_gui_input)
 		PAGES = {
@@ -696,6 +706,9 @@ func _apply_route(url: String) -> void:
 		top_back.texture = null
 		top_back.modulate = Color.WHITE
 
+	if is_instance_valid(logo_shop):
+		logo_shop.visible = false
+
 	for route in ROUTES:
 		var re := RegEx.new()
 		re.compile(route["pattern"])
@@ -719,7 +732,14 @@ func _apply_route(url: String) -> void:
 			else:
 				# AICI ESTE CHEIA: Dacă nu există "fundal" în JSON, îl ștergem pe cel vechi!
 				fundal.texture = null 
-	# fundal.visible = false # Opțional, poți să-l și ascunzi
+
+			# Gestionare TopBack din rută
+			if route.has("top_back") and route["top_back"] != "":
+				var tb_path = route["top_back"]
+				if ResourceLoader.exists(tb_path) and is_instance_valid(top_back):
+					top_back.texture = load(tb_path)
+					#top_back.visible = true
+
 			# handler opțional (ex: pentru parametri)
 			if route.has("handler") and has_method(String(route["handler"])):
 				# treci url + capturi RegEx
@@ -773,6 +793,9 @@ func _parse_query(url: String) -> Dictionary:
 	return d
 	
 func _route_market_product(_url: String, groups: Array) -> void:
+	if is_instance_valid(logo_shop):
+		logo_shop.visible = true
+		
 	if groups.is_empty():
 		# nu avem produs -> fallback la market normal
 		if is_instance_valid(market_grid_all): market_grid_all.visible = true
@@ -800,6 +823,7 @@ func _route_market_product(_url: String, groups: Array) -> void:
 		if is_instance_valid(market_grid_all):     market_grid_all.visible = true
 
 
+	
 func _normalize_product_token(s: String) -> String:
 	var t := s.strip_edges().to_lower()
 	t = t.replace("_", " ").replace("-", " ").replace(".", " ")
@@ -808,9 +832,15 @@ func _normalize_product_token(s: String) -> String:
 		t = t.replace("  ", " ")
 	return t
 	
+func _route_search(_url: String, _groups: Array) -> void:
+	pass
+	
 	
 func _route_market_default(_url: String, _groups: Array) -> void:
-	if is_instance_valid(market): market.visible = true
+	if is_instance_valid(market): 
+		market.visible = true
+	if is_instance_valid(logo_shop):
+		logo_shop.visible = true
 
 func _route_black(_url: String, _groups: Array) -> void:
 	# Verificăm ora din joc (trebuie să fie ora 00 pentru acces la Black Market)

@@ -38,6 +38,7 @@ collision_mask = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cable/CableCollision" unique_id=888932791]
 shape = SubResource("SegmentShape2D_o22q4")
+disabled = true
 
 [node name="Plug" type="Control" parent="." unique_id=1302469469 groups=["plug"]]
 layout_mode = 1

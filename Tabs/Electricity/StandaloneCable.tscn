@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://dpx876cable12"]
+
+[ext_resource type="Script" uid="uid://crw3ae0gtija4" path="res://Tabs/Electricity/CablePlugManager.gd" id="1_mgr"]
+[ext_resource type="Texture2D" uid="uid://dsg2byxwxqe1f" path="res://Tabs/Electricity/plug_out.png" id="2_plugout"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plug"]
+size = Vector2(40, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_area"]
+size = Vector2(40, 60)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_cable"]
+
+[node name="StandaloneCable" type="Node2D" unique_id=1929782020 node_paths=PackedStringArray("cable", "plug", "cable_start_node")]
+y_sort_enabled = true
+script = ExtResource("1_mgr")
+cable = NodePath("Cable")
+plug = NodePath("PlugOut")
+cable_start_node = NodePath("CableStart")
+max_cable_length = 20.0
+snap_distance = 5.0
+push_force = 20.0
+cable_attach_offset = Vector2(-3.7, 20.225)
+
+[node name="CableStart" type="Marker2D" parent="." unique_id=1725398798]
+y_sort_enabled = true
+position = Vector2(5, 30)
+
+[node name="PlugOut" type="Control" parent="." unique_id=475777068]
+y_sort_enabled = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 0.9999999
+offset_top = -11.999997
+offset_right = 41.0
+offset_bottom = 48.000004
+scale = Vector2(0.10860327, 0.10860327)
+pivot_offset = Vector2(20, 30)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlugOut" unique_id=546361580]
+z_index = -1
+position = Vector2(20, 30)
+scale = Vector2(0.7, 0.88)
+texture = ExtResource("2_plugout")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="PlugOut" unique_id=2109042557]
+position = Vector2(20, 30)
+collision_layer = 64
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlugOut/CharacterBody2D" unique_id=73601266]
+shape = SubResource("RectangleShape2D_plug")
+
+[node name="Area2D" type="Area2D" parent="PlugOut" unique_id=762599882 groups=["plug", "plug_priza"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlugOut/Area2D" unique_id=1228703198]
+position = Vector2(20, 30)
+shape = SubResource("RectangleShape2D_area")
+
+[node name="Cable" type="Line2D" parent="." unique_id=55514634]
+physics_interpolation_mode = 1
+y_sort_enabled = true
+width = 1.0
+default_color = Color(0.12549, 0.12549, 0.12549, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CableCollision" type="StaticBody2D" parent="Cable" unique_id=2063006100]
+collision_layer = 15
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cable/CableCollision" unique_id=411029763]
+shape = SubResource("SegmentShape2D_cable")
+disabled = true

@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cpjmldie02gxn"]
+
+[ext_resource type="Texture2D" uid="uid://ctwsfkjp5edwb" path="res://Sprout Lands - Sprites - Basic pack/Objects/Necromancer_8.png" id="1_03i1w"]
+[ext_resource type="Script" uid="uid://dsh3xmcw70hwj" path="res://Scripturi/skill_icon.gd" id="1_o1blr"]
+[ext_resource type="Texture2D" uid="uid://dyb62sguy3ykn" path="res://Tabs/pin.png" id="2_o1blr"]
+
+[node name="Control" type="Control" unique_id=92540964]
+layout_mode = 3
+anchor_right = 0.21000001
+anchor_bottom = 0.42000002
+offset_right = -0.040008545
+offset_bottom = -0.040008545
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o1blr")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1510496239]
+layout_mode = 0
+offset_right = 215.0
+offset_bottom = 215.0
+texture_normal = ExtResource("1_03i1w")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1368908538]
+position = Vector2(111.99999, 17.999998)
+scale = Vector2(0.24925151, 0.24925151)
+texture = ExtResource("2_o1blr")
+
+[node name="Label" type="Label" parent="." unique_id=994183060]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.707
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.005004883
+grow_horizontal = 2
+grow_vertical = 2

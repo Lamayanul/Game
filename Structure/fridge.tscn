@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://crngdddbjrkpm"]
+
+[ext_resource type="Texture2D" uid="uid://ddjnx6jcm5ucw" path="res://Base Character - Premium/Hana Caraka - Fantasy Interior/Props/kitchen props.png" id="1_504e1"]
+[ext_resource type="Script" uid="uid://c8hl8dd5ngobv" path="res://Structure/fridge.gd" id="1_cyei7"]
+[ext_resource type="PackedScene" uid="uid://bgc7bfs3whjaw" path="res://User/slot_container.tscn" id="3_c1jmp"]
+[ext_resource type="PackedScene" uid="uid://crsigwvlw12u2" path="res://NiceToHave/light_house.tscn" id="4_c1jmp"]
+
+[sub_resource type="Gradient" id="Gradient_fridge"]
+offsets = PackedFloat32Array(0, 0.5)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fridge"]
+gradient = SubResource("Gradient_fridge")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kcrb"]
+size = Vector2(14, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_504e1"]
+size = Vector2(14, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cyei7"]
+polygon = PackedVector2Array(-5, -4, -8, 2, -7, 13, -14, 16, -9.511768, 16, 12, 16, 10, 16, 8, 17, 12, 16, 10, 11, 6.5881424, 2.175517, 6, -4)
+
+[node name="Control" type="StaticBody2D" unique_id=1201192979]
+y_sort_enabled = true
+script = ExtResource("1_cyei7")
+
+[node name="close_fridge" type="Sprite2D" parent="." unique_id=839885683]
+texture = ExtResource("1_504e1")
+region_enabled = true
+region_rect = Rect2(112, 136, 16, 32)
+
+[node name="open_fridge" type="Sprite2D" parent="." unique_id=783318369]
+texture = ExtResource("1_504e1")
+region_enabled = true
+region_rect = Rect2(144, 136, 16, 32)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=27190875]
+z_index = -1
+y_sort_enabled = true
+position = Vector2(-6.0000114, 16)
+scale = Vector2(1.0468749, 1)
+enabled = false
+color = Color(1, 1, 0.768627, 1)
+energy = 4.09
+range_z_max = 0
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 11.3
+texture = SubResource("GradientTexture2D_fridge")
+offset = Vector2(0, 16)
+texture_scale = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1945730846]
+position = Vector2(0, 12.5)
+shape = SubResource("RectangleShape2D_0kcrb")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1025140904]
+position = Vector2(0, 13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1184588664]
+shape = SubResource("RectangleShape2D_504e1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=948832400]
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer" unique_id=938567611]
+clip_contents = true
+anchors_preset = -1
+anchor_left = 0.52500004
+anchor_top = 0.404
+anchor_right = 0.52500004
+anchor_bottom = 0.404
+offset_left = 0.39996338
+offset_top = 0.1519928
+offset_right = 132.39996
+offset_bottom = 200.152
+columns = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SlotContainer" parent="CanvasLayer/GridContainer" unique_id=378096181 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="SlotContainer2" parent="CanvasLayer/GridContainer" unique_id=791368276 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="SlotContainer3" parent="CanvasLayer/GridContainer" unique_id=1071901749 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="SlotContainer4" parent="CanvasLayer/GridContainer" unique_id=1694260272 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="SlotContainer5" parent="CanvasLayer/GridContainer" unique_id=858881588 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="SlotContainer6" parent="CanvasLayer/GridContainer" unique_id=1010269560 instance=ExtResource("3_c1jmp")]
+layout_mode = 2
+slot_type = "fridge"
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1928453804]
+y_sort_enabled = true
+occluder = SubResource("OccluderPolygon2D_cyei7")
+
+[node name="Light" parent="." unique_id=969804227 instance=ExtResource("4_c1jmp")]
+z_index = -1
+y_sort_enabled = true
+
+[node name="EnvironmentLight" parent="Light" index="0" unique_id=541947211]
+y_sort_enabled = true
+position = Vector2(0, 16)
+scale = Vector2(0.35937503, 0.1796875)
+color = Color(0.32517904, 0.77142537, 1, 1)
+energy = 5.06
+range_z_max = -1
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+
+[editable path="Light"]
